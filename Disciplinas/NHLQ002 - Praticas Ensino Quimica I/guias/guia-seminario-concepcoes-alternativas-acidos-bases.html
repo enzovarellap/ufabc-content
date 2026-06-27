@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Estudo — Concepções Alternativas: Ácidos e Bases | PEQ I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1117; --bg2:#141925; --card:#1a2030; --card2:#212a3d;
+    --ink:#e8ecf3; --ink-dim:#aab4c5; --ink-faint:#7b8699;
+    --line:#2a3447; --line2:#384459;
+    --acid:#ff7a59; --acid-bg:rgba(255,122,89,.12);
+    --base:#4dabf7; --base-bg:rgba(77,171,247,.12);
+    --theory:#b197fc; --theory-bg:rgba(177,151,252,.12);
+    --tip:#51cf66; --tip-bg:rgba(81,207,102,.12);
+    --warn:#ffd43b; --warn-bg:rgba(255,212,59,.10);
+    --accent:#7c9cff;
+    --radius:14px; --maxw:920px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.2}
+  code,.mono{font-family:'JetBrains Mono',monospace}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* pH gradient signature bar */
+  .ph-bar{height:5px;background:linear-gradient(90deg,#ff5252 0%,#ff7a59 18%,#ffd43b 38%,#51cf66 58%,#4dabf7 80%,#7048e8 100%);position:fixed;top:0;left:0;right:0;z-index:60}
+
+  /* layout */
+  .wrap{display:flex;min-height:100vh}
+  .sidebar{width:300px;flex:0 0 300px;background:var(--bg2);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 0 60px}
+  .content{flex:1;min-width:0;padding:32px clamp(18px,5vw,64px) 120px;max-width:calc(var(--maxw) + 128px);margin:0 auto}
+
+  .brand{padding:6px 22px 16px}
+  .brand .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acid);font-weight:700}
+  .brand h1{font-size:21px;margin:6px 0 4px}
+  .brand .sub{font-size:12.5px;color:var(--ink-faint)}
+
+  .search{padding:10px 18px 14px}
+  .search input{width:100%;background:var(--card);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit}
+  .search input::placeholder{color:var(--ink-faint)}
+  .search input:focus{outline:none;border-color:var(--accent)}
+
+  nav .group{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;padding:16px 22px 6px}
+  nav a.navlink{display:flex;gap:9px;align-items:baseline;padding:7px 22px;font-size:13.5px;color:var(--ink-dim);border-left:2.5px solid transparent}
+  nav a.navlink:hover{background:var(--card);color:var(--ink);text-decoration:none}
+  nav a.navlink.active{color:var(--ink);border-left-color:var(--acid);background:linear-gradient(90deg,var(--acid-bg),transparent)}
+  nav a.navlink .n{font-family:'JetBrains Mono';font-size:11px;color:var(--ink-faint);min-width:16px}
+
+  /* hero */
+  .hero{background:linear-gradient(135deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;margin-bottom:26px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--acid-bg),transparent 70%);pointer-events:none}
+  .hero .tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .hero h2{font-size:clamp(22px,3.4vw,30px);margin-bottom:8px}
+  .hero p{color:var(--ink-dim);max-width:62ch}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}
+  .meta-grid .mi{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .meta-grid .mi .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-weight:700}
+  .meta-grid .mi .v{font-size:14px;color:var(--ink);font-weight:600;margin-top:2px}
+
+  /* integrity banner */
+  .banner{display:flex;gap:13px;background:var(--warn-bg);border:1px solid rgba(255,212,59,.35);border-radius:12px;padding:14px 16px;margin-bottom:26px}
+  .banner .ic{font-size:20px;line-height:1.3}
+  .banner .bd{font-size:13.5px;color:#f0e3b8}
+  .banner .bd b{color:#fff2cc}
+
+  section{margin-bottom:40px;scroll-margin-top:24px}
+  section>h3.sec{font-size:23px;margin-bottom:6px;display:flex;align-items:center;gap:11px}
+  section>h3.sec .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+  .sec-lead{color:var(--ink-dim);margin-bottom:18px;max-width:64ch}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
+  .card h4{font-size:17px;margin-bottom:9px;color:var(--ink)}
+  .card p{color:var(--ink-dim);margin-bottom:10px}
+  .card p:last-child{margin-bottom:0}
+  .card ul,.card ol{color:var(--ink-dim);padding-left:20px;margin-bottom:10px}
+  .card li{margin-bottom:6px}
+  .card li::marker{color:var(--ink-faint)}
+  strong,b{color:var(--ink);font-weight:600}
+
+  .tag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:99px;border:1px solid transparent;white-space:nowrap}
+  .t-fio{background:var(--acid-bg);color:var(--acid);border-color:rgba(255,122,89,.4)}
+  .t-teo{background:var(--theory-bg);color:var(--theory);border-color:rgba(177,151,252,.4)}
+  .t-dado{background:var(--base-bg);color:var(--base);border-color:rgba(77,171,247,.4)}
+  .t-perg{background:var(--warn-bg);color:var(--warn);border-color:rgba(255,212,59,.4)}
+  .t-dica{background:var(--tip-bg);color:var(--tip);border-color:rgba(81,207,102,.4)}
+
+  table{width:100%;border-collapse:collapse;margin:6px 0 12px;font-size:14px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line)}
+  th{color:var(--ink-faint);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;background:var(--bg2)}
+  td{color:var(--ink-dim)}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .num{font-family:'JetBrains Mono';color:var(--ink);font-weight:500}
+  .pct-a{color:var(--acid);font-weight:700}
+  .pct-b{color:var(--base);font-weight:700}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+  .tbl-wrap table{margin:0}
+  .tbl-wrap th:first-child,.tbl-wrap td:first-child{padding-left:14px}
+
+  /* quote */
+  .quote{border-left:3px solid var(--line2);padding:4px 0 4px 16px;margin:10px 0;color:var(--ink-faint);font-style:italic;font-size:14px}
+  .quote .who{display:block;font-style:normal;font-size:12px;color:var(--ink-faint);margin-top:3px}
+
+  /* callout */
+  .callout{display:flex;gap:12px;border-radius:12px;padding:14px 16px;margin:14px 0;border:1px solid var(--line)}
+  .callout .ic{font-size:18px;flex:0 0 auto}
+  .callout.key{background:var(--theory-bg);border-color:rgba(177,151,252,.35)}
+  .callout.tip{background:var(--tip-bg);border-color:rgba(81,207,102,.3)}
+  .callout.link{background:var(--base-bg);border-color:rgba(77,171,247,.3)}
+  .callout .bd{font-size:14px;color:var(--ink-dim)}
+  .callout .bd b{color:var(--ink)}
+
+  /* collapsible */
+  .acc{border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden;background:var(--bg2)}
+  .acc>button{width:100%;background:none;border:none;color:var(--ink);font-family:'DM Sans';font-size:14.5px;font-weight:600;text-align:left;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .acc>button:hover{background:var(--card)}
+  .acc>button .arr{transition:transform .25s;color:var(--ink-faint);flex:0 0 auto}
+  .acc.open>button .arr{transform:rotate(90deg)}
+  .acc .body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .acc .body .inner{padding:4px 16px 16px}
+
+  /* roteiro */
+  .step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:14px;overflow:hidden}
+  .step .head{display:flex;align-items:center;gap:12px;padding:13px 16px;background:linear-gradient(90deg,var(--card2),var(--card));border-bottom:1px solid var(--line)}
+  .step .head .badge{font-family:'JetBrains Mono';font-size:13px;font-weight:700;background:var(--acid-bg);color:var(--acid);border:1px solid rgba(255,122,89,.4);border-radius:8px;padding:3px 9px;flex:0 0 auto}
+  .step .head .ttl{font-family:'Fraunces';font-size:16px;font-weight:600;flex:1}
+  .step .head .time{font-size:12px;color:var(--ink-faint);font-family:'JetBrains Mono'}
+  .step .inner{padding:14px 16px}
+  .step .inner .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--theory);font-weight:700;margin-bottom:6px}
+  .step .inner ul{margin:0 0 12px;padding-left:18px;color:var(--ink-dim);font-size:14px}
+  .step .prompts{background:var(--bg2);border:1px dashed var(--line2);border-radius:10px;padding:12px 14px;margin-top:8px}
+  .step .prompts .lbl{color:var(--tip)}
+  .step .prompts ol{margin:0;padding-left:18px;color:var(--ink);font-size:14px}
+  .step .prompts li{margin-bottom:5px}
+  .fill{display:block;border-bottom:1px dashed var(--line2);min-height:1.4em;margin-top:3px}
+
+  /* feynman */
+  .fey{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .fey .q{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;display:flex;gap:9px}
+  .fey .q .ico{color:var(--theory)}
+  .fey .hint{font-size:13px;color:var(--ink-faint);margin-bottom:10px}
+  .fey textarea{width:100%;min-height:74px;background:var(--bg);border:1px solid var(--line2);border-radius:10px;color:var(--ink);padding:10px 12px;font-family:inherit;font-size:14px;resize:vertical}
+  .fey textarea:focus{outline:none;border-color:var(--theory)}
+  .reveal-btn{margin-top:10px;background:var(--theory-bg);color:var(--theory);border:1px solid rgba(177,151,252,.4);border-radius:8px;padding:7px 13px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .reveal-btn:hover{background:rgba(177,151,252,.2)}
+  .answer{margin-top:10px;background:var(--theory-bg);border:1px solid rgba(177,151,252,.3);border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--ink-dim);display:none}
+  .answer.show{display:block;animation:fade .3s}
+  .answer b{color:var(--ink)}
+  @keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  /* quiz */
+  .quiz-q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .quiz-q .qn{font-size:11px;font-family:'JetBrains Mono';color:var(--ink-faint);font-weight:700;margin-bottom:6px}
+  .quiz-q .qt{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:12px}
+  .opt{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:11px 13px;margin-bottom:8px;color:var(--ink-dim);font-family:inherit;font-size:14px;cursor:pointer;transition:.15s}
+  .opt:hover{border-color:var(--accent);color:var(--ink)}
+  .opt.correct{background:var(--tip-bg);border-color:var(--tip);color:#d3f9d8}
+  .opt.wrong{background:rgba(255,82,82,.1);border-color:#ff6b6b;color:#ffc9c9}
+  .opt .mk{font-weight:700;margin-right:8px;font-family:'JetBrains Mono'}
+  .explain{font-size:13px;color:var(--ink-faint);margin-top:8px;padding:10px 12px;background:var(--bg2);border-radius:9px;border-left:3px solid var(--tip);display:none}
+  .explain.show{display:block}
+  .quiz-score{position:sticky;bottom:14px;background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:12px 16px;font-size:14px;font-weight:600;text-align:center;color:var(--ink);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+
+  .pill-list{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .pill{background:var(--bg2);border:1px solid var(--line2);border-radius:99px;padding:5px 12px;font-size:13px;color:var(--ink-dim)}
+
+  .gloss dt{font-weight:700;color:var(--ink);margin-top:12px;font-size:14.5px}
+  .gloss dd{color:var(--ink-dim);font-size:14px;margin-left:0}
+  .refs{list-style:none;padding:0}
+  .refs li{padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink-dim)}
+  .refs li b{color:var(--ink)}
+
+  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-faint)}
+
+  mark{background:var(--warn);color:#1a1a1a;padding:0 2px;border-radius:3px}
+
+  /* mobile */
+  .menu-btn{display:none;position:fixed;top:14px;left:14px;z-index:55;background:var(--card);border:1px solid var(--line2);color:var(--ink);width:42px;height:42px;border-radius:10px;font-size:18px;cursor:pointer}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45}
+  @media(max-width:860px){
+    .menu-btn{display:block}
+    .sidebar{position:fixed;left:0;top:0;z-index:50;transform:translateX(-105%);transition:transform .28s;box-shadow:4px 0 30px rgba(0,0,0,.5)}
+    .sidebar.open{transform:none}
+    .overlay.show{display:block}
+    .content{padding-top:70px}
+  }
+</style>
+</head>
+<body>
+<div class="ph-bar"></div>
+<button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+<div class="overlay" id="overlay"></div>
+
+<div class="wrap">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="kicker">Práticas de Ensino de Química I · NHLQ002</div>
+      <h1>Concepções Alternativas: Ácidos &amp; Bases</h1>
+      <div class="sub">Guia de estudo do seminário · Enzo Pastore · 2026.2</div>
+    </div>
+    <div class="search">
+      <input type="text" id="searchBox" placeholder="🔎 Buscar no guia…" autocomplete="off">
+    </div>
+    <nav id="nav">
+      <div class="group">Comece aqui</div>
+      <a class="navlink" href="#visao"><span class="n">00</span><span>Visão geral &amp; fio condutor</span></a>
+      <a class="navlink" href="#mapa"><span class="n">0</span><span>Mapa do seminário</span></a>
+      <div class="group">Conteúdo (por conceito)</div>
+      <a class="navlink" href="#t1"><span class="n">1</span><span>O que são concepções alternativas</span></a>
+      <a class="navlink" href="#t2"><span class="n">2</span><span>Mudança conceitual × Perfil conceitual</span></a>
+      <a class="navlink" href="#t3"><span class="n">3</span><span>O estudo de caso (Figueira et al.)</span></a>
+      <a class="navlink" href="#t4"><span class="n">4</span><span>Implicações para o ensino</span></a>
+      <div class="group">Para apresentar</div>
+      <a class="navlink" href="#roteiro"><span class="n">★</span><span>Roteiro de fala (esqueleto)</span></a>
+      <a class="navlink" href="#feynman"><span class="n">✎</span><span>Bloco Feynman</span></a>
+      <a class="navlink" href="#quiz"><span class="n">?</span><span>Quiz de revisão</span></a>
+      <div class="group">Apoio</div>
+      <a class="navlink" href="#gloss"><span class="n">§</span><span>Glossário &amp; referências</span></a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="hero" id="visao">
+      <div class="tagrow">
+        <span class="tag t-fio">Fio condutor</span>
+        <span class="tag t-teo">Base teórica: Mortimer 1996</span>
+        <span class="tag t-dado">Caso: Figueira et al. 2009</span>
+      </div>
+      <h2>Por que o aluno não chega “vazio” à aula de química</h2>
+      <p>Este guia prepara você para <b>dominar</b> o tema do seminário e construir a sua própria apresentação. A ideia central que costura tudo: <b>ensinar ácidos e bases não é encher uma mente vazia, mas dialogar com as ideias que o aluno já traz</b> — ideias que o estudo de Figueira et al. mapeou e que a teoria de Mortimer ajuda a interpretar.</p>
+      <div class="meta-grid">
+        <div class="mi"><div class="k">Disciplina</div><div class="v">PEQ I · Profª Rafaela Valero</div></div>
+        <div class="mi"><div class="k">Grupo de trabalho</div><div class="v">1 · Ácido–Base</div></div>
+        <div class="mi"><div class="k">Avaliação</div><div class="v">I3 — Seminário</div></div>
+        <div class="mi"><div class="k">Como estudar</div><div class="v">Ler → Quiz → Feynman</div></div>
+      </div>
+    </div>
+
+    <div class="banner">
+      <div class="ic">⚠️</div>
+      <div class="bd"><b>Este é material de ESTUDO, não a entrega.</b> A disciplina proíbe uso de IA em atividades avaliadas. Use este guia para entender a fundo o conteúdo; o <b>texto da sua fala e os slides você escreve com suas próprias palavras</b>. O “Roteiro de fala” aqui é só um esqueleto com perguntas-guia para você preencher.</div>
+    </div>
+
+    <!-- MAPA -->
+    <section id="mapa">
+      <h3 class="sec"><span class="dot" style="background:var(--acid)"></span>Mapa do seminário</h3>
+      <p class="sec-lead">Quatro blocos conectados. Se você fixar este encadeamento, a apresentação flui sozinha.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Bloco</th><th>Pergunta que ele responde</th><th>Ideia-chave para levar</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td><b>Concepções alternativas</b></td><td>O que o aluno já pensa antes da aula?</td><td>São ideias prévias estáveis, do senso comum, resistentes à mudança.</td></tr>
+            <tr><td class="num">2</td><td><b>O debate teórico</b></td><td>O que fazer com essas ideias?</td><td>Não basta “substituir” (mudança conceitual) — elas convivem (perfil conceitual).</td></tr>
+            <tr><td class="num">3</td><td><b>Estudo de caso</b></td><td>Como isso aparece em ácidos e bases?</td><td>Definições decoradas + concepções de senso comum (corrosivo, sustentação…).</td></tr>
+            <tr><td class="num">4</td><td><b>Implicações</b></td><td>Como ensinar melhor?</td><td>Partir da ideia prévia (Ausubel) e dar consciência do perfil (Mortimer).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout key"><div class="ic">🧭</div><div class="bd"><b>Frase-âncora do seminário:</b> “As concepções alternativas mostram que aprender química é menos apagar o que o aluno sabe e mais ampliar — com consciência — o seu repertório de ideias.”</div></div>
+    </section>
+
+    <!-- TÓPICO 1 -->
+    <section id="t1">
+      <h3 class="sec"><span class="dot" style="background:var(--acid)"></span>1 · O que são concepções alternativas</h3>
+      <p class="sec-lead">O ponto de partida do seminário: definir o conceito com precisão e mostrar suas características.</p>
+
+      <div class="card">
+        <h4>Definição</h4>
+        <p><b>Concepções alternativas</b> são ideias que os estudantes têm sobre conceitos, conteúdos e fenômenos que <b>diferem substancialmente da ciência que se pretende ensinar</b>, influenciam a aprendizagem futura e podem ser resistentes a mudanças <span class="tag t-dado" style="vertical-align:middle">Aula 1</span>.</p>
+        <p>Elas são “alternativas” no sentido de serem uma alternativa <b>ao conhecimento científico</b> — não são simplesmente “erros bobos”, mas explicações funcionais que o aluno construiu.</p>
+      </div>
+
+      <div class="acc">
+        <button><span>Outros nomes para o mesmo fenômeno (e por que importam)</span><span class="arr">▸</span></button>
+        <div class="body"><div class="inner">
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Termo</th><th>Ênfase / filiação</th></tr></thead>
+            <tbody>
+              <tr><td><b>Concepções alternativas</b></td><td>Alternativa ao conhecimento científico</td></tr>
+              <tr><td><b>Concepções prévias</b> / preconcepções</td><td>Existem <i>antes</i> do ensino formal</td></tr>
+              <tr><td><b>Concepções espontâneas</b> / intuitivas</td><td>Nascem da experiência cotidiana não-sistematizada</td></tr>
+              <tr><td><b>Misconceptions</b></td><td>Visão clássica: “erros” a corrigir (Gilbert &amp; Watts)</td></tr>
+              <tr><td><b>Conceito espontâneo</b></td><td>Termo de Vygotsky, oposto a “conceito científico”</td></tr>
+            </tbody>
+          </table></div>
+          <div class="callout link"><div class="ic">💡</div><div class="bd">O nome escolhido não é neutro: ele revela o que o pesquisador acha que se deve fazer com a ideia do aluno — <b>corrigir, substituir ou reconhecer</b> como parte legítima do repertório (Mortimer, 1996).</div></div>
+        </div></div>
+      </div>
+
+      <div class="card">
+        <h4>As 5 características (decorar estas!)</h4>
+        <span class="tag t-perg" style="margin-bottom:8px;display:inline-block">Provável pergunta da plateia/professora</span>
+        <ul>
+          <li><b>Pessoais</b> — construídas a partir da experiência de cada um.</li>
+          <li><b>Influenciadas pelo contexto</b> — o mesmo aluno responde diferente conforme a situação.</li>
+          <li><b>Estáveis e resistentes à mudança</b> — persistem mesmo após o ensino; aparecem até em universitários.</li>
+          <li><b>Iguais em diferentes partes do mundo</b> — pesquisas em vários países acham o <i>mesmo</i> padrão por conceito.</li>
+          <li><b>Amplamente mapeadas</b> — décadas de pesquisa (desde os anos 1970) catalogaram concepções dos principais conceitos.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h4>Origem e por que importam</h4>
+        <p><b>Origem:</b> a linguagem e as representações simbólicas da cultura cotidiana. O aluno não é “tábula rasa” — ele já tem explicações que fazem sentido no senso comum (Mortimer, 1996; Aula 2).</p>
+        <p><b>Por que importam:</b> ignorá-las gera <b>aprendizagem mecânica</b> (decoreba sem ancoragem), facilmente esquecida.</p>
+        <div class="callout key"><div class="ic">🔑</div><div class="bd"><b>Ausubel (a frase que resume tudo):</b> “O fator isolado mais importante que influencia a aprendizagem é aquilo que o aprendiz já sabe.” É a base da <b>aprendizagem significativa</b>.</div></div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 2 -->
+    <section id="t2">
+      <h3 class="sec"><span class="dot" style="background:var(--theory)"></span>2 · Mudança conceitual × Perfil conceitual</h3>
+      <p class="sec-lead">O coração teórico do seminário: identificadas as concepções, <b>o que fazer com elas?</b> Há duas respostas — e a segunda critica a primeira.</p>
+
+      <div class="card">
+        <h4>Resposta A — Modelo de Mudança Conceitual (Posner et al., 1982)</h4>
+        <p>Usar o <b>conflito cognitivo</b> para fazer o aluno <b>substituir</b> a concepção alternativa pela científica. Inspira-se em três fontes:</p>
+        <ul>
+          <li><b>Kuhn</b> — ciência avança por <i>revoluções</i>: uma <b>anomalia</b> que o paradigma não explica força a reestruturação. Paradigmas são <i>incomensuráveis</i> (ex.: “massa” em Newton ≠ em Einstein).</li>
+          <li><b>Piaget</b> — mudança = <b>acomodação</b> (reestruturar o esquema), diferente de <b>assimilação</b> (encaixar sem mudar o esquema).</li>
+          <li><b>Vygotsky</b> — <b>conceito espontâneo</b> (cotidiano, difuso) × <b>conceito científico</b> (sistemático, escolar); desenvolvem-se interligados.</li>
+        </ul>
+        <div class="acc">
+          <button><span>As 4 condições de Posner para a acomodação acontecer</span><span class="arr">▸</span></button>
+          <div class="body"><div class="inner">
+            <ol style="color:var(--ink-dim);padding-left:20px">
+              <li><b>Insatisfação</b> — perceber que a ideia atual não resolve uma anomalia.</li>
+              <li><b>Inteligibilidade</b> — a nova ideia precisa fazer sentido.</li>
+              <li><b>Plausibilidade</b> — resolve a anomalia e é coerente com o que já se sabe.</li>
+              <li><b>Fertilidade</b> — abre portas para novas descobertas / outros contextos.</li>
+            </ol>
+            <div class="callout tip"><div class="ic">🧪</div><div class="bd"><b>Exemplo (Aula 2):</b> palha de aço enferruja e a <b>massa aumenta</b> (anomalia) → professor apresenta a oxidação → a ideia resolve o caso e ainda explica combustão e conservação de massa (fértil).</div></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>Resposta B — Perfil Conceitual (Mortimer, 1996) <span class="tag t-teo" style="vertical-align:middle">Teoria-chave</span></h4>
+        <p>Mortimer <b>critica</b> a ideia de “substituir”. A evidência mostra que as concepções prévias <b>não desaparecem</b>: o aluno que aprendeu o conceito newtoniano volta a usar “movimento exige força” em situações novas (Galili &amp; Bar). Não há troca — há <b>convivência</b>.</p>
+        <p>Aprender ciência, então, é <b>acrescentar novas “zonas” ao perfil</b> — cada uma usada no contexto adequado — e <b>tomar consciência</b> de qual usar onde.</p>
+        <div class="callout key"><div class="ic">⚛️</div><div class="bd"><b>Exemplo que convence qualquer plateia:</b> um químico com formação quântica <b>não abandona</b> o átomo de Dalton (bolinha indivisível) — ele o usa tranquilamente para fazer estequiometria. Ele só <b>sabe em que contexto</b> cada modelo serve.</div></div>
+
+        <div class="acc">
+          <button><span>A raiz: o “perfil epistemológico” de Bachelard (zonas)</span><span class="arr">▸</span></button>
+          <div class="body"><div class="inner">
+            <p style="color:var(--ink-dim);font-size:14px">Para cada conceito, cada pessoa tem um perfil com zonas que coexistem. Exemplo com o conceito de <b>massa</b>:</p>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Zona</th><th>Como pensa</th><th>Massa…</th></tr></thead>
+              <tbody>
+                <tr><td><b>Realismo</b> (senso comum)</td><td>Percepção imediata</td><td>“o que é pesado; aprecia-se pela vista”</td></tr>
+                <tr><td><b>Empirismo</b></td><td>Instrumentos de medida</td><td>medida na balança</td></tr>
+                <tr><td><b>Racionalismo clássico</b></td><td>rede de relações racionais</td><td>massa = F/a (Newton)</td></tr>
+                <tr><td><b>Racionalismo moderno</b></td><td>noção simples vira complexa</td><td>massa depende da velocidade (Einstein)</td></tr>
+                <tr><td><b>Racionalismo contemporâneo</b></td><td>“desrealizado”</td><td>mecânica de Dirac</td></tr>
+              </tbody>
+            </table></div>
+            <p style="color:var(--ink-faint);font-size:13px">A zona “realista” costuma ser justamente a das concepções alternativas. O especialista é <b>consciente</b> do seu perfil; o aluno novato, muitas vezes, não.</p>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>O contraste que você precisa saber explicar</h4>
+        <span class="tag t-perg" style="margin-bottom:8px;display:inline-block">Pergunta quase certa</span>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th></th><th>Mudança Conceitual</th><th>Perfil Conceitual</th></tr></thead>
+          <tbody>
+            <tr><td><b>Objetivo</b></td><td>substituir a concepção alternativa</td><td>acrescentar zonas + dar consciência</td></tr>
+            <tr><td><b>Destino da ideia prévia</b></td><td>abandono / subsunção</td><td>permanece e convive</td></tr>
+            <tr><td><b>Metáfora</b></td><td>revolução científica (Kuhn)</td><td>enriquecer um repertório</td></tr>
+            <tr><td><b>Senso comum no expert</b></td><td>problemático, a eliminar</td><td>legítimo, usado com consciência</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 3 -->
+    <section id="t3">
+      <h3 class="sec"><span class="dot" style="background:var(--base)"></span>3 · O estudo de caso — Figueira et al. (2009)</h3>
+      <p class="sec-lead">O texto base do seminário. Aqui a teoria vira dado concreto sobre ácidos e bases.</p>
+
+      <div class="card">
+        <h4>Objetivo &amp; metodologia</h4>
+        <p>Identificar as <b>concepções prévias</b> de alunos do Ensino Médio sobre ácidos e bases, para subsidiar novas estratégias de ensino.</p>
+        <div class="pill-list">
+          <span class="pill">203 alunos (escola estadual, interior do RS)</span>
+          <span class="pill">111 do 1º ano · 92 do 3º ano</span>
+          <span class="pill">Questionário semiestruturado (4 perguntas abertas)</span>
+          <span class="pill">Análise de Conteúdo (Bardin, 1977)</span>
+        </div>
+        <p style="margin-top:8px"><b>As 4 perguntas:</b> (a) o que você entende por ácidos? (b) por bases? (c) o que ácidos têm a ver com sua vida? (d) o que bases têm a ver com sua vida? As respostas foram agrupadas em <b>categorias emergentes</b>, sem rotular como “certo/errado” a priori.</p>
+      </div>
+
+      <div class="card">
+        <h4>Concepções sobre <span style="color:var(--acid)">ÁCIDOS</span> <span class="tag t-dado" style="vertical-align:middle">Dado do estudo</span></h4>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Categoria</th><th>1º ano</th><th>3º ano</th><th>Natureza</th></tr></thead>
+          <tbody>
+            <tr><td>Definição de Arrhenius decorada e incompleta</td><td class="pct-a">73%</td><td class="pct-a">14%</td><td>Decoreba</td></tr>
+            <tr><td>Substâncias corrosivas</td><td class="pct-a">27%</td><td class="pct-a">47%</td><td>Concepção alternativa</td></tr>
+            <tr><td>Função orgânica / carboxila (–COOH)</td><td class="pct-a">0%</td><td class="pct-a">47%</td><td>Decoreba</td></tr>
+          </tbody>
+        </table></div>
+        <p><b>“Arrhenius decorada”:</b> o aluno trata ácido como uma <i>palavra com uma pista</i> — “tem H no início / contém hidrogênio”. <b>Nenhum</b> aluno escreveu a ionização (HX → H⁺ + X⁻). O H⁺ é símbolo sem significado.</p>
+        <div class="quote">“Ácido é todo composto que contém hidrogênio.”<span class="who">— aluno 1-P1</span></div>
+        <div class="callout link"><div class="ic">🔗</div><div class="bd"><b>Ponte com a teoria:</b> a queda de <b>73%→14%</b> do 1º para o 3º ano não é aprendizado — é <b>esquecimento</b>. E note: “corrosivo” (senso comum) <b>cresce</b> 27%→47%. Quando o conteúdo recente some, a zona realista do perfil reassume (Mortimer).</div></div>
+      </div>
+
+      <div class="card">
+        <h4>Concepções sobre <span style="color:var(--base)">BASES</span> <span class="tag t-dado" style="vertical-align:middle">Dado do estudo</span></h4>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Categoria</th><th>1º ano</th><th>3º ano</th><th>Natureza</th></tr></thead>
+          <tbody>
+            <tr><td>Arrhenius decorada (inclui bases nitrogenadas no 3º)</td><td class="pct-b">83%</td><td class="pct-b">34%</td><td>Decoreba</td></tr>
+            <tr><td>Neutralização de ácidos</td><td class="pct-b">6%</td><td class="pct-b">4%</td><td>Concepção alternativa</td></tr>
+            <tr><td>Não sabem / não responderam</td><td class="pct-b">6%</td><td class="pct-b">27%</td><td>—</td></tr>
+            <tr><td>Sustentação (suporte / origem / família)</td><td class="pct-b">5%</td><td class="pct-b">35%</td><td>Concepção alternativa</td></tr>
+          </tbody>
+        </table></div>
+        <p><b>Confusão reveladora (3º ano):</b> dos 34% em “Arrhenius”, <b>23%</b> falaram de <b>bases nitrogenadas</b> (conteúdo de genética). A palavra “base” foi puxada do contexto recente — sem ligação com química. A palavra “base” substituiu “hidroxila”, mas o nível das partículas não apareceu.</p>
+        <div class="quote">“Que para gente ser uma boa pessoa… precisamos de uma base, como uma família boa e etc.”<span class="who">— aluno 10-P4 (categoria “sustentação”)</span></div>
+        <div class="callout link"><div class="ic">🔗</div><div class="bd"><b>Ponte com a teoria:</b> “sustentação” salta de <b>5%→35%</b>. Quanto mais longe o conteúdo escolar, mais o sentido cotidiano de “base” domina — exatamente o que o perfil conceitual prevê na ausência de <b>consciência</b> do perfil.</div></div>
+      </div>
+
+      <div class="acc">
+        <button><span>Ácidos e bases “na vida” (perguntas 3 e 4) — dados de apoio</span><span class="arr">▸</span></button>
+        <div class="body"><div class="inner">
+          <p style="color:var(--ink-dim);font-size:14px"><b>Ácidos:</b> a maioria associa a <b>alimentos</b> (78% no 1º / 87% no 3º das “outras respostas”) — limão, laranja, abacaxi, vinagre (sentido “azedo/cítrico”). Pouquíssimos citam digestão; “condução de eletricidade” aparece só por causa de um experimento recente.</p>
+          <p style="color:var(--ink-dim);font-size:14px"><b>Bases:</b> citam produtos de limpeza, cosméticos, medicamentos, sabão — e, como “alimento-base”, <b>sal e açúcar</b> (no sentido de “sustento”). 38% do 3º ano <b>não responderam</b>.</p>
+          <p style="color:var(--ink-faint);font-size:13px">Mesmo quando acertam o exemplo (limão = ácido), é <b>repetição decorada</b> dos livros: não ligam a substância à estrutura química nem ao comportamento em solução.</p>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- TÓPICO 4 -->
+    <section id="t4">
+      <h3 class="sec"><span class="dot" style="background:var(--tip)"></span>4 · Implicações para o ensino</h3>
+      <p class="sec-lead">O fecho do seminário: o que esses dados nos dizem sobre <b>como ensinar</b>.</p>
+
+      <div class="card">
+        <h4>Diagnóstico do artigo</h4>
+        <ol>
+          <li><b>Aprendizagem mecânica</b> — H⁺, OH⁻, –COOH viram palavras-chave sem significado de partícula.</li>
+          <li><b>O conteúdo não sobrevive</b> — a queda de Arrhenius do 1º→3º ano mostra falta de ancoragem.</li>
+          <li><b>Respostas guiadas pelo conteúdo recente</b> — 1º ano “fala Arrhenius”, 3º ano “fala carboxila/bases nitrogenadas”.</li>
+          <li><b>Descontextualização</b> — não conectam o conceito ao cotidiano de forma genuína.</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h4>Diagnóstico → teoria (a tabela que “amarra” seu seminário)</h4>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Observação no estudo</th><th>Conceito teórico</th></tr></thead>
+          <tbody>
+            <tr><td>Aluno não liga símbolo à partícula</td><td>Aprendizagem mecânica ≠ significativa (Ausubel)</td></tr>
+            <tr><td>“Ácido = corrosivo” cresce no 3º ano</td><td>Zona realista do perfil reativada (Mortimer)</td></tr>
+            <tr><td>Troca “H no início” por “–COOH”, sem ganho</td><td>Símbolo muda, forma de pensar não (Vygotsky)</td></tr>
+            <tr><td>“Base = família/sustentação” cresce</td><td>Falta de consciência do perfil (Mortimer)</td></tr>
+            <tr><td>Resposta muda com o conteúdo recente</td><td>Concepções dependentes do contexto</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="card">
+        <h4>O que o artigo sugere fazer <span class="tag t-dica" style="vertical-align:middle">Dica</span></h4>
+        <p>Partir da concepção “ácido = corrosivo/azedo” como <b>ponto de partida</b>, não como erro a apagar:</p>
+        <ul>
+          <li><b>Experimento do prego:</b> prego em ácido muriático (HCl) e em vinagre; observar a corrosão; discutir o que ocorre nas partículas.</li>
+          <li>Comparar vinagre × solução mais concentrada de ácido acético para introduzir <b>grau de acidez/dissociação</b> de forma concreta.</li>
+        </ul>
+        <div class="callout tip"><div class="ic">✅</div><div class="bd">Isso casa com <b>Ausubel</b> (partir do que o aluno sabe) e com <b>Mortimer</b> (reconhecer a zona de senso comum como trampolim e dar <b>consciência do perfil</b>).</div></div>
+      </div>
+    </section>
+
+    <!-- ROTEIRO -->
+    <section id="roteiro">
+      <h3 class="sec"><span class="dot" style="background:var(--acid)"></span>★ Roteiro de fala (esqueleto para você preencher)</h3>
+      <p class="sec-lead">Estrutura sugerida para ~<b>12–15 min</b> (ajuste ao tempo real do seu grupo). Os tópicos e perguntas-guia são <b>seus prompts</b> — a fala você escreve com suas palavras nas linhas pontilhadas.</p>
+
+      <div class="banner" style="margin-bottom:18px">
+        <div class="ic">✍️</div>
+        <div class="bd">De propósito, <b>não há texto pronto aqui.</b> O valor (e a regra da disciplina) está em você formular. Use as perguntas-guia em verde para destravar.</div>
+      </div>
+
+      <div class="step">
+        <div class="head"><span class="badge">0</span><span class="ttl">Abertura — fisgar a plateia</span><span class="time">~1,5 min</span></div>
+        <div class="inner">
+          <div class="lbl">Cobrir</div>
+          <ul><li>Uma pergunta/curiosidade que mostre que “todo mundo já tem uma ideia de ácido”.</li><li>Apresentar o fio condutor do seminário (o mapa dos 4 blocos).</li></ul>
+          <div class="prompts">
+            <div class="lbl">Perguntas-guia (responda com suas palavras)</div>
+            <ol>
+              <li>Que pergunta eu faço à plateia para mostrar que eles já têm concepções de ácido? <span class="fill"></span></li>
+              <li>Em uma frase, qual é o recado central do meu seminário? <span class="fill"></span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="head"><span class="badge">1</span><span class="ttl">O que são concepções alternativas</span><span class="time">~2,5 min</span></div>
+        <div class="inner">
+          <div class="lbl">Cobrir</div>
+          <ul><li>Definição + 1 outro nome.</li><li>As 5 características (escolha 2–3 para enfatizar).</li><li>Por que importam: aluno não é tábula rasa (Ausubel).</li></ul>
+          <div class="prompts">
+            <div class="lbl">Perguntas-guia</div>
+            <ol>
+              <li>Como eu defino “concepção alternativa” sem ler o slide? <span class="fill"></span></li>
+              <li>Qual característica eu acho mais marcante e por quê? <span class="fill"></span></li>
+              <li>Como eu explico a frase de Ausubel com um exemplo meu? <span class="fill"></span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="head"><span class="badge">2</span><span class="ttl">O debate: mudança conceitual × perfil conceitual</span><span class="time">~3 min</span></div>
+        <div class="inner">
+          <div class="lbl">Cobrir</div>
+          <ul><li>Ideia do conflito cognitivo / 4 condições de Posner (rápido).</li><li>A virada de Mortimer: não substituir, mas conviver.</li><li>O exemplo do átomo de Dalton que o químico não abandona.</li></ul>
+          <div class="prompts">
+            <div class="lbl">Perguntas-guia</div>
+            <ol>
+              <li>Como eu explico “conflito cognitivo” em 2 frases? <span class="fill"></span></li>
+              <li>Com minhas palavras, qual a diferença entre “substituir” e “conviver”? <span class="fill"></span></li>
+              <li>Que exemplo do dia a dia eu uso para “perfil conceitual”? <span class="fill"></span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="head"><span class="badge">3</span><span class="ttl">O estudo de caso (ácidos e bases)</span><span class="time">~4 min · núcleo</span></div>
+        <div class="inner">
+          <div class="lbl">Cobrir</div>
+          <ul><li>Método em 1 frase (203 alunos, questionário, Bardin).</li><li>2–3 concepções de ácidos e 2–3 de bases, com os percentuais.</li><li>O “momento aha”: as % mudando do 1º→3º ano = esquecimento + volta do senso comum.</li></ul>
+          <div class="prompts">
+            <div class="lbl">Perguntas-guia</div>
+            <ol>
+              <li>Quais 2 dados eu destaco em ácidos e 2 em bases? <span class="fill"></span></li>
+              <li>Como eu narro a queda 73%→14% ligando à teoria do bloco 2? <span class="fill"></span></li>
+              <li>Qual citação de aluno eu leio em voz alta para dar impacto? <span class="fill"></span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="head"><span class="badge">4</span><span class="ttl">Implicações + fechamento</span><span class="time">~3 min</span></div>
+        <div class="inner">
+          <div class="lbl">Cobrir</div>
+          <ul><li>1 problema do ensino + 1 sugestão prática (experimento do prego).</li><li>Retomar a frase-âncora; fechar conectando os 4 blocos.</li></ul>
+          <div class="prompts">
+            <div class="lbl">Perguntas-guia</div>
+            <ol>
+              <li>Que proposta prática eu defendo e por quê? <span class="fill"></span></li>
+              <li>Qual frase de efeito eu uso para encerrar? <span class="fill"></span></li>
+              <li>Se sobrar 30s, que pergunta eu deixo no ar para a turma? <span class="fill"></span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip"><div class="ic">⏱️</div><div class="bd"><b>Dica de ensaio (método Feynman):</b> tente apresentar cada bloco <b>sem olhar</b> usando só as perguntas-guia. Onde você travar, volte ao conteúdo correspondente acima — esse é o ponto que precisa de mais estudo.</div></div>
+    </section>
+
+    <!-- FEYNMAN -->
+    <section id="feynman">
+      <h3 class="sec"><span class="dot" style="background:var(--theory)"></span>✎ Bloco Feynman — explique com suas palavras</h3>
+      <p class="sec-lead">Escreva a explicação como se ensinasse um colega. Depois abra o “check” para ver se acertou os pontos essenciais. Se sua explicação cobre os pontos, você domina o tema.</p>
+
+      <div class="fey">
+        <div class="q"><span class="ico">①</span><span>O que é uma concepção alternativa, e por que ela não é só “um erro do aluno”?</span></div>
+        <div class="hint">Use: senso comum · prévia · resistente · funcional.</div>
+        <textarea placeholder="Sua explicação…"></textarea>
+        <button class="reveal-btn">Ver pontos essenciais ▾</button>
+        <div class="answer"><b>Sua explicação deveria tocar em:</b> ideia que o aluno traz <b>antes</b> da aula, vinda do senso comum/linguagem cotidiana; difere da ciência; é <b>funcional</b> para ele (faz sentido no dia a dia); é estável e resistente. Não é “burrice”: é uma construção legítima — por isso o ensino precisa dialogar com ela, não apenas marcá-la como errada.</div>
+      </div>
+
+      <div class="fey">
+        <div class="q"><span class="ico">②</span><span>Qual a diferença entre “mudança conceitual” e “perfil conceitual”?</span></div>
+        <div class="hint">Use: substituir · conviver · contexto · consciência · átomo de Dalton.</div>
+        <textarea placeholder="Sua explicação…"></textarea>
+        <button class="reveal-btn">Ver pontos essenciais ▾</button>
+        <div class="answer"><b>Pontos essenciais:</b> mudança conceitual quer <b>substituir</b> a ideia antiga pela científica (via conflito cognitivo). Perfil conceitual (Mortimer) diz que a ideia antiga <b>não some</b> — ela <b>convive</b> com a nova, e cada uma serve a um <b>contexto</b>. Aprender é ganhar novas zonas e <b>consciência</b> de qual usar. Exemplo: o químico usa o átomo de Dalton na estequiometria sem abandonar a visão quântica.</div>
+      </div>
+
+      <div class="fey">
+        <div class="q"><span class="ico">③</span><span>Por que a porcentagem de “Arrhenius” cai de 73% (1º ano) para 14% (3º ano)? O que isso prova?</span></div>
+        <div class="hint">Use: esquecimento · ancoragem · senso comum · conteúdo recente.</div>
+        <textarea placeholder="Sua explicação…"></textarea>
+        <button class="reveal-btn">Ver pontos essenciais ▾</button>
+        <div class="answer"><b>Pontos essenciais:</b> a queda indica <b>esquecimento</b>, não aprendizado — o conteúdo foi decorado sem <b>ancoragem</b> cognitiva, então some quando sai da série em que foi visto. Em paralelo, a concepção de senso comum (“corrosivo”) <b>cresce</b> (27%→47%). Prova que o aprendizado foi mecânico e que, sem consciência do perfil, a zona realista volta a dominar.</div>
+      </div>
+
+      <div class="fey">
+        <div class="q"><span class="ico">④</span><span>Como você conectaria o estudo de Figueira com uma proposta concreta de ensino?</span></div>
+        <div class="hint">Use: ponto de partida · experimento do prego · Ausubel · consciência do perfil.</div>
+        <textarea placeholder="Sua explicação…"></textarea>
+        <button class="reveal-btn">Ver pontos essenciais ▾</button>
+        <div class="answer"><b>Pontos essenciais:</b> usar a concepção “ácido = corrosivo” como <b>ponto de partida</b> (não erro a apagar): ex. prego em HCl/vinagre para observar a corrosão e discutir o nível das partículas. Isso ancora o novo no que o aluno já sabe (Ausubel) e dá <b>consciência</b> de quando o senso comum serve e quando o modelo científico é necessário (Mortimer).</div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz">
+      <h3 class="sec"><span class="dot" style="background:var(--base)"></span>? Quiz de revisão (active recall)</h3>
+      <p class="sec-lead">Responda de memória. O quiz corrige na hora e explica. Ótimo também para a <b>prova escrita (I1)</b> de 14/08.</p>
+      <div id="quiz"></div>
+      <div class="quiz-score" id="score">Pontuação: 0 / 10</div>
+    </section>
+
+    <!-- GLOSSÁRIO -->
+    <section id="gloss">
+      <h3 class="sec"><span class="dot" style="background:var(--warn)"></span>§ Glossário &amp; referências</h3>
+      <div class="card">
+        <h4>Glossário rápido</h4>
+        <dl class="gloss">
+          <dt>Concepção alternativa</dt><dd>Ideia prévia do aluno, do senso comum, que difere da ciência e resiste à mudança.</dd>
+          <dt>Aprendizagem significativa (Ausubel)</dt><dd>Aprender ancorando o novo conhecimento no que o aluno já sabe (oposto de aprendizagem mecânica/decoreba).</dd>
+          <dt>Mudança conceitual (Posner et al.)</dt><dd>Modelo que busca substituir a concepção alternativa pela científica via conflito cognitivo (insatisfação, inteligibilidade, plausibilidade, fertilidade).</dd>
+          <dt>Perfil conceitual (Mortimer)</dt><dd>Modelo em que diferentes formas de pensar um conceito <b>coexistem</b> em zonas, cada uma usada no contexto adequado; aprender é ganhar zonas e consciência delas.</dd>
+          <dt>Perfil epistemológico (Bachelard)</dt><dd>Raiz filosófica do anterior: zonas (realismo → empirismo → racionalismos) para um mesmo conceito.</dd>
+          <dt>Assimilação / Acomodação (Piaget)</dt><dd>Encaixar a informação no esquema existente / reestruturar o esquema diante de uma anomalia.</dd>
+          <dt>Conceito espontâneo × científico (Vygotsky)</dt><dd>Cotidiano e difuso × sistemático e escolar; desenvolvem-se interligados.</dd>
+          <dt>Análise de Conteúdo (Bardin)</dt><dd>Método qualitativo que organiza respostas abertas em categorias emergentes.</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <h4>Referências (texto base + apoio)</h4>
+        <ul class="refs">
+          <li><b>FIGUEIRA, A. C. M.; OLIVEIRA, A. M.; SALLA, L. F.; ROCHA, J. B. T.</b> Concepções alternativas de estudantes do Ensino Médio: ácidos e bases. <i>VII ENPEC</i> — Encontro Nacional de Pesquisa em Educação em Ciências, Florianópolis, 2009. <span style="color:var(--acid)">[texto base do seminário]</span></li>
+          <li><b>MORTIMER, E. F.</b> Construtivismo, mudança conceitual e ensino de ciências: para onde vamos? <i>Investigações em Ensino de Ciências</i>, v.1, n.1, p.20–39, 1996.</li>
+          <li><b>AUSUBEL, D. P.</b> <i>Educational psychology: a cognitive view.</i> 1968/1980.</li>
+          <li><b>POSNER, G. et al.</b> Accommodation of a scientific conception. <i>Science Education</i>, 1982.</li>
+          <li><b>BARDIN, L.</b> <i>Análise de Conteúdo.</i> Lisboa: Edições 70, 1977.</li>
+          <li><b>Aulas 1 e 2</b> — Profª Rafaela Valero, PEQ I (NHLQ002), UFABC, 2026.2.</li>
+        </ul>
+      </div>
+      <footer>
+        Guia de estudo gerado como apoio pessoal · NHLQ002 — Práticas de Ensino de Química I · UFABC 2026.2 ·
+        <b>Lembrete:</b> a disciplina proíbe IA em atividades avaliadas — a apresentação e os slides devem ser produzidos por você.
+      </footer>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ---------- data: quiz ---------- */
+const QUIZ=[
+ {q:"Uma concepção alternativa é, sobretudo:",o:["Um erro de distração do aluno na prova","Uma ideia prévia, do senso comum, estável e resistente à mudança","Uma falha que some sozinha com mais exercícios","Um conceito científico mal copiado do quadro"],a:1,e:"São ideias prévias funcionais, vindas do senso comum/linguagem cotidiana, estáveis e resistentes — não 'erros bobos'."},
+ {q:"Qual NÃO é uma característica das concepções alternativas?",o:["Pessoais","Influenciadas pelo contexto","Exclusivas de um único país","Resistentes à mudança"],a:2,e:"Pelo contrário: pesquisas em diferentes partes do mundo encontram o MESMO padrão por conceito."},
+ {q:"A frase de Ausubel que fundamenta a aprendizagem significativa diz que o mais importante é:",o:["A motivação do professor","Aquilo que o aprendiz já sabe","A quantidade de exercícios","A ordem dos conteúdos no livro"],a:1,e:"“O fator isolado mais importante que influencia a aprendizagem é aquilo que o aprendiz já sabe.”"},
+ {q:"No modelo de Mudança Conceitual, o objetivo é:",o:["Manter a concepção prévia intacta","Substituir a concepção alternativa pela científica","Ignorar o que o aluno pensa","Memorizar definições"],a:1,e:"Via conflito cognitivo, busca-se a substituição — é justamente o que Mortimer critica."},
+ {q:"A noção de perfil conceitual (Mortimer) propõe que:",o:["A ideia antiga é apagada","Diferentes formas de pensar coexistem, cada uma para um contexto","Só o cientista tem concepções alternativas","Não existem concepções prévias"],a:1,e:"Aprender é acrescentar zonas e ganhar consciência de qual usar em cada contexto."},
+ {q:"O exemplo do átomo de Dalton (Mortimer) serve para mostrar que:",o:["Dalton estava errado","O químico abandona Dalton ao aprender física quântica","O especialista usa o modelo antigo no contexto adequado, sem abandoná-lo","Estequiometria exige mecânica quântica"],a:2,e:"O químico usa Dalton na estequiometria conscientemente — convivência de zonas do perfil."},
+ {q:"Sobre ácidos, a categoria 'Arrhenius decorada' caiu de 73% (1º) para 14% (3º ano). Isso indica:",o:["Aprendizado consolidado","Esquecimento por falta de ancoragem","Que o 3º ano é mais inteligente","Erro na coleta de dados"],a:1,e:"Conteúdo decorado sem ancoragem some quando sai da série; em paralelo, 'corrosivo' (senso comum) cresce."},
+ {q:"A concepção 'base = sustentação/família' no estudo:",o:["Desaparece no 3º ano","Cresce de 5% para 35% do 1º ao 3º ano","Aparece só no 1º ano","É um conceito científico correto"],a:1,e:"Quanto mais distante o conteúdo escolar, mais o sentido cotidiano de 'base' domina (perfil sem consciência)."},
+ {q:"No 3º ano, 23% definiram base como 'bases nitrogenadas'. O que isso ilustra?",o:["Domínio do conceito químico","Uso da palavra puxada de um contexto recente (genética), sem ligação química","Que aprenderam Arrhenius muito bem","Uma concepção cientificamente correta"],a:1,e:"A palavra 'base' foi ativada pelo contexto recente — sem conectar ao comportamento em solução."},
+ {q:"A sugestão prática do artigo (prego em ácido) é coerente com:",o:["Ignorar a concepção prévia","Partir do senso comum como ponto de partida (Ausubel + Mortimer)","Apenas decorar definições","Eliminar experimentos"],a:1,e:"Usa a concepção 'corrosivo' como trampolim concreto, ancorando o novo no que o aluno já sabe."}
+];
+
+/* render quiz */
+const quizEl=document.getElementById('quiz');
+let answered=0,correct=0;
+QUIZ.forEach((item,i)=>{
+  const box=document.createElement('div');box.className='quiz-q';
+  const letters=['A','B','C','D'];
+  box.innerHTML='<div class="qn">Pergunta '+(i+1)+' / '+QUIZ.length+'</div><div class="qt">'+item.q+'</div>';
+  item.o.forEach((opt,j)=>{
+    const b=document.createElement('button');b.className='opt';
+    b.innerHTML='<span class="mk">'+letters[j]+'</span>'+opt;
+    b.onclick=()=>{
+      if(box.dataset.done)return;
+      box.dataset.done=1;answered++;
+      if(j===item.a){b.classList.add('correct');correct++;}
+      else{b.classList.add('wrong');box.querySelectorAll('.opt')[item.a].classList.add('correct');}
+      box.querySelector('.explain').classList.add('show');
+      updateScore();
+    };
+    box.appendChild(b);
+  });
+  const ex=document.createElement('div');ex.className='explain';ex.innerHTML='<b>Por quê:</b> '+item.e;
+  box.appendChild(ex);
+  quizEl.appendChild(box);
+});
+function updateScore(){
+  const s=document.getElementById('score');
+  s.textContent='Pontuação: '+correct+' / '+QUIZ.length+(answered===QUIZ.length?'  ✓ completo!':'');
+  if(answered===QUIZ.length){s.style.borderColor=correct>=8?'var(--tip)':'var(--warn)';}
+}
+
+/* ---------- collapsibles ---------- */
+document.querySelectorAll('.acc>button').forEach(btn=>{
+  btn.onclick=()=>{
+    const acc=btn.parentElement,body=acc.querySelector('.body');
+    acc.classList.toggle('open');
+    body.style.maxHeight=acc.classList.contains('open')?body.scrollHeight+'px':0;
+  };
+});
+
+/* ---------- feynman reveal ---------- */
+document.querySelectorAll('.reveal-btn').forEach(b=>{
+  b.onclick=()=>{const ans=b.nextElementSibling;ans.classList.toggle('show');b.textContent=ans.classList.contains('show')?'Ocultar pontos essenciais ▴':'Ver pontos essenciais ▾';};
+});
+
+/* ---------- mobile menu ---------- */
+const sb=document.getElementById('sidebar'),ov=document.getElementById('overlay');
+document.getElementById('menuBtn').onclick=()=>{sb.classList.add('open');ov.classList.add('show');};
+ov.onclick=()=>{sb.classList.remove('open');ov.classList.remove('show');};
+
+/* ---------- nav + scrollspy ---------- */
+const links=[...document.querySelectorAll('.navlink')];
+links.forEach(l=>l.onclick=()=>{sb.classList.remove('open');ov.classList.remove('show');});
+const secs=links.map(l=>document.querySelector(l.getAttribute('href')));
+const spy=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){
+    const id='#'+e.target.id;links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')===id));
+  }});
+},{rootMargin:'-15% 0px -75% 0px'});
+secs.forEach(s=>s&&spy.observe(s));
+
+/* ---------- search ---------- */
+const sBox=document.getElementById('searchBox');
+const sections=[...document.querySelectorAll('main section, main .hero')];
+sBox.oninput=()=>{
+  const q=sBox.value.trim().toLowerCase();
+  // clear old marks
+  document.querySelectorAll('mark').forEach(m=>{const p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize();});
+  if(!q){sections.forEach(s=>s.style.display='');return;}
+  sections.forEach(s=>{
+    const hit=s.textContent.toLowerCase().includes(q);
+    s.style.display=hit?'':'none';
+    if(hit){
+      // open collapsibles within a hit section so matches are visible
+      s.querySelectorAll('.acc:not(.open)>button').forEach(b=>b.click());
+    }
+  });
+};
+</script>
+</body>
+</html>

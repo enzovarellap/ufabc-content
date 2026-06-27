@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDO · Guia de Estudo — Prova 1 (Fundamentos, Separáveis, Lineares 1ª ordem)</title>
+
+<!-- MathJax -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true
+    },
+    chtml: { scale: 1.0 },
+    options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+  };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0e1419; --bg-elev:#151c24; --card:#1a2330; --card-2:#202c3a;
+  --border:#2a3a4d; --border-soft:#223040;
+  --text:#e7eef5; --dim:#9db0c2; --faint:#6f8398;
+  --accent:#6ea8fe; --accent-2:#7ee0c8; --accent-3:#c9a4ff;
+  --ok:#8ce99a; --warn:#ffd166; --danger:#ff8a8a;
+  --formula-bg:#11202b; --formula-bd:#2f7d6b;
+  --r:14px; --shadow:0 10px 30px rgba(0,0,0,.35);
+  --maxw:880px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:radial-gradient(1200px 600px at 80% -10%, #16222e 0%, var(--bg) 55%) fixed;
+  color:var(--text); font-family:'DM Sans',system-ui,sans-serif; line-height:1.65;
+  font-size:16.5px;
+}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* layout */
+.layout{display:grid; grid-template-columns:300px 1fr; min-height:100vh}
+.sidebar{
+  position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:linear-gradient(180deg,var(--bg-elev),#10171e);
+  border-right:1px solid var(--border-soft); padding:22px 16px 60px;
+}
+.sidebar::-webkit-scrollbar{width:8px} .sidebar::-webkit-scrollbar-thumb{background:#26323f;border-radius:8px}
+.brand{display:flex; gap:11px; align-items:center; margin-bottom:6px}
+.brand .dot{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:600;color:#06121a;font-size:14px}
+.brand b{font-family:'Fraunces';font-size:18px;font-weight:600;letter-spacing:.2px}
+.brand small{display:block;color:var(--faint);font-size:11.5px;letter-spacing:.4px;text-transform:uppercase}
+
+.search{margin:16px 0 10px; position:relative}
+.search input{width:100%; padding:10px 12px 10px 34px; border-radius:10px; border:1px solid var(--border);
+  background:#0d141b; color:var(--text); font-size:14px; font-family:inherit}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(110,168,254,.15)}
+.search svg{position:absolute; left:10px; top:11px; opacity:.55}
+.search .count{position:absolute; right:10px; top:10px; font-size:11px; color:var(--faint)}
+
+nav.toc{margin-top:10px}
+nav.toc .group{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);
+  margin:18px 0 6px 8px}
+nav.toc a{display:block; color:var(--dim); padding:7px 10px; border-radius:8px; font-size:14px;
+  border-left:2px solid transparent}
+nav.toc a:hover{background:#172029;color:var(--text);text-decoration:none}
+nav.toc a.active{background:#13202c;color:#fff;border-left-color:var(--accent)}
+nav.toc a.sub{padding-left:24px;font-size:13px;color:var(--faint)}
+nav.toc a.sub.active{color:#fff}
+
+/* main */
+main{padding:34px clamp(18px,5vw,64px) 120px; max-width:calc(var(--maxw) + 128px); margin:0 auto; width:100%}
+section{scroll-margin-top:70px; margin-bottom:46px}
+h1{font-family:'Fraunces';font-weight:600;font-size:clamp(26px,4vw,38px);line-height:1.15;margin:.2em 0 .3em}
+h2{font-family:'Fraunces';font-weight:600;font-size:clamp(21px,3vw,27px);margin:1.4em 0 .5em;
+  padding-bottom:.3em;border-bottom:1px solid var(--border-soft)}
+h3{font-family:'Fraunces';font-weight:600;font-size:19px;margin:1.5em 0 .4em;color:#eaf2fb}
+h4{font-size:15px;margin:1.2em 0 .3em;color:var(--accent-2);letter-spacing:.2px}
+p{margin:.55em 0}
+strong{color:#fff}
+.lead{color:var(--dim);font-size:17px}
+
+/* hero */
+.hero{background:linear-gradient(135deg,#172534,#141d27); border:1px solid var(--border);
+  border-radius:var(--r); padding:26px 28px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-40% 60% auto auto;width:380px;height:380px;
+  background:radial-gradient(circle,rgba(126,224,200,.12),transparent 60%)}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:#0e1a23;border:1px solid var(--border);
+  border-radius:999px;padding:6px 13px;font-size:13px;color:var(--dim)}
+.pill b{color:#fff}
+.pill.exam{background:linear-gradient(135deg,#3a2630,#2a1d24);border-color:#5a3a44;color:#ffd9df}
+.pill.exam b{color:#fff}
+.countdown{font-family:'JetBrains Mono';color:var(--warn)}
+
+/* cards / callouts */
+.grid{display:grid;gap:14px}
+.grid.two{grid-template-columns:1fr 1fr}
+.grid.three{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);border:1px solid var(--border-soft);border-radius:12px;padding:16px 18px}
+.card h4{margin-top:0}
+
+.callout{border-radius:12px;padding:14px 16px 14px 18px;margin:16px 0;border:1px solid var(--border);
+  border-left-width:4px;background:var(--card)}
+.callout .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:4px}
+.callout.note{border-left-color:var(--accent)} .callout.note .lab{color:var(--accent)}
+.callout.tip{border-left-color:var(--ok)} .callout.tip .lab{color:var(--ok)}
+.callout.warn{border-left-color:var(--warn)} .callout.warn .lab{color:var(--warn)}
+.callout.danger{border-left-color:var(--danger)} .callout.danger .lab{color:var(--danger)}
+.callout.proof{border-left-color:var(--accent-3);background:#191428} .callout.proof .lab{color:var(--accent-3)}
+
+/* formula block */
+.fml{background:var(--formula-bg);border:1px solid var(--border-soft);border-left:4px solid var(--formula-bd);
+  border-radius:10px;padding:12px 16px;margin:14px 0;overflow-x:auto}
+.fml.center{text-align:center}
+
+/* tables */
+.tablewrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border-soft);vertical-align:top}
+th{color:var(--accent-2);font-weight:600;background:#121b24;position:sticky;top:0}
+tr:hover td{background:#141d27}
+.tag{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;white-space:nowrap}
+.tag.lin{background:#13322a;color:#8ce9c0}
+.tag.nlin{background:#3a2230;color:#ffb3c6}
+
+/* details: worked examples + feynman */
+details.ex,details.fy{border:1px solid var(--border);border-radius:12px;margin:14px 0;background:var(--card);overflow:hidden}
+details.ex>summary,details.fy>summary{cursor:pointer;list-style:none;padding:13px 16px;display:flex;align-items:center;gap:10px;
+  font-weight:600;user-select:none}
+details>summary::-webkit-details-marker{display:none}
+summary .chev{transition:transform .25s;color:var(--accent);flex:none}
+details[open]>summary .chev{transform:rotate(90deg)}
+details.ex>summary{background:#16212c;border-bottom:1px solid transparent}
+details.ex[open]>summary{border-bottom-color:var(--border-soft)}
+summary .extag{margin-left:auto;font-size:11px;color:var(--faint);font-weight:500}
+.ex .body,.fy .body{padding:6px 18px 18px}
+.step{display:flex;gap:12px;margin:10px 0;align-items:flex-start}
+.step .n{flex:none;width:25px;height:25px;border-radius:50%;background:#143040;color:var(--accent-2);
+  display:grid;place-items:center;font-size:13px;font-weight:700;font-family:'JetBrains Mono';margin-top:2px}
+
+details.fy>summary{background:#1b1730}
+details.fy{border-color:#3a2f55}
+.fy .prompt{font-size:15px;color:#eadcff;margin:6px 0 10px}
+.fy textarea{width:100%;min-height:90px;background:#0d141b;border:1px solid var(--border);border-radius:10px;
+  color:var(--text);padding:10px 12px;font-family:inherit;font-size:14.5px;resize:vertical}
+.fy textarea:focus{outline:none;border-color:var(--accent-3)}
+.fy .rubric{margin-top:12px}
+
+kbd{font-family:'JetBrains Mono';background:#0d141b;border:1px solid var(--border);border-bottom-width:2px;
+  border-radius:6px;padding:1px 6px;font-size:12.5px}
+mark{background:#5b4a16;color:#fff;border-radius:3px;padding:0 2px}
+.muted{color:var(--faint)}
+ul.clean{margin:.4em 0;padding-left:1.2em} ul.clean li{margin:.3em 0}
+
+/* mobile */
+.topbar{display:none}
+@media(max-width:880px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:fixed;z-index:50;width:300px;left:-320px;transition:left .25s;box-shadow:var(--shadow)}
+  .sidebar.open{left:0}
+  .topbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:40;
+    background:rgba(14,20,25,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border-soft);
+    padding:10px 14px}
+  .topbar b{font-family:'Fraunces';font-size:16px}
+  .hamb{background:#16212c;border:1px solid var(--border);color:var(--text);border-radius:9px;
+    width:40px;height:38px;font-size:18px;cursor:pointer}
+  .grid.two,.grid.three{grid-template-columns:1fr}
+  main{padding-top:18px}
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;display:none}
+  .backdrop.show{display:block}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="hamb" id="hamb" aria-label="Menu">☰</button>
+  <b>EDO · Guia P1</b>
+</div>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="dot">∂y</div>
+      <div><b>EDO — Guia P1</b><small>BCN0405 · UFABC</small></div>
+    </div>
+
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar no guia…" autocomplete="off">
+      <span class="count" id="count"></span>
+    </div>
+
+    <nav class="toc" id="toc">
+      <div class="group">Começo</div>
+      <a href="#intro">Visão geral &amp; como usar</a>
+      <a href="#mapa">Mapa da matéria &amp; escopo da P1</a>
+
+      <div class="group">1 · Fundamentos</div>
+      <a href="#fundamentos">O que é uma EDO</a>
+      <a href="#classificacao" class="sub">Tipo, ordem, linearidade</a>
+      <a href="#solucao" class="sub">Solução, família, PVI</a>
+
+      <div class="group">2 · Separáveis</div>
+      <a href="#separaveis">Equações separáveis</a>
+      <a href="#sep-metodo" class="sub">Método &amp; por que funciona</a>
+
+      <div class="group">3 · Lineares 1ª ordem</div>
+      <a href="#lineares">Forma padrão</a>
+      <a href="#fator" class="sub">Dedução do fator integrante</a>
+      <a href="#receita" class="sub">Receita &amp; assintótica</a>
+
+      <div class="group">Fechamento</div>
+      <a href="#erros">Erros comuns</a>
+      <a href="#resto-p1">O que mais cai na P1</a>
+    </nav>
+  </aside>
+
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section id="intro">
+      <div class="hero">
+        <h1 style="margin-top:0">Equações Diferenciais Ordinárias</h1>
+        <p class="lead">Guia <strong>aprofundado</strong> dos três tópicos já dados em aula — base da <strong>Prova 1</strong>: fundamentos, equações separáveis e equações lineares de 1ª ordem.</p>
+        <div class="meta">
+          <span class="pill">BCN0405-15 · <b>Prof. Edson Arrázola</b></span>
+          <span class="pill">Turma NA1 · noturno</span>
+          <span class="pill exam">📌 P1: <b>30/06/2026</b> · <span class="countdown" id="cd">—</span></span>
+        </div>
+      </div>
+
+      <div class="callout note" style="margin-top:20px">
+        <div class="lab">Como usar este guia</div>
+        Leia a teoria de cada tópico, <strong>abra um exemplo resolvido</strong> e acompanhe os passos. Depois <strong>feche e tente refazer sozinho</strong>. Ao fim de cada tópico há um <strong>bloco Feynman</strong>: escreva a explicação com suas palavras — se quiser correção ao vivo, é só colar sua explicação aqui no chat que eu aponto as lacunas. Exemplos saem das <em>Listas 0 e 1</em> (que já têm gabarito).
+      </div>
+    </section>
+
+    <!-- ===================== MAPA ===================== -->
+    <section id="mapa">
+      <h2>Mapa da matéria &amp; escopo da P1</h2>
+      <p>A P1 cobre toda a 1ª ordem. Os <strong>slides</strong> (Aulas 1–3) vão até lineares de 1ª ordem — é o que este guia aprofunda. O restante do escopo da P1 está nas Listas e listado <a href="#resto-p1">no fim</a>.</p>
+      <div class="grid two">
+        <div class="card">
+          <h4 style="color:var(--ok)">✓ Coberto aqui (em profundidade)</h4>
+          <ul class="clean">
+            <li><strong>Fundamentos:</strong> terminologia, classificação, solução, PVI.</li>
+            <li><strong>Separáveis:</strong> método, implícita/explícita, domínio.</li>
+            <li><strong>Lineares de 1ª ordem:</strong> fator integrante (com dedução).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--warn)">↪ Resto da P1 (ver Listas 1 e 2)</h4>
+          <ul class="clean">
+            <li>Substituições: homogênea, <strong>Bernoulli</strong>, Riccati.</li>
+            <li>Campo de direções; <strong>equações autônomas</strong> e estabilidade.</li>
+            <li><strong>Modelagem</strong> (decaimento, resfriamento, misturas, populacional, RC).</li>
+            <li><strong>Teorema de Existência e Unicidade</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 1. FUNDAMENTOS ===================== -->
+    <section id="fundamentos">
+      <h2>1 · Fundamentos</h2>
+      <p>Uma <strong>equação diferencial</strong> relaciona uma função desconhecida com suas derivadas. Resolver a equação é <em>encontrar a função</em> (não um número). O adjetivo <strong>ordinária</strong> (EDO) significa que há <strong>uma única variável independente</strong> — logo só aparecem derivadas ordinárias, não parciais.</p>
+
+      <div class="fml center">\[ \underbrace{\frac{dy}{dx}+5y=e^{x}}_{\text{EDO}} \qquad\qquad \underbrace{\frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial y^2}=0}_{\text{EDP (não é nosso foco)}} \]</div>
+
+      <h3 id="classificacao">1.1 · Classificação: tipo, ordem e linearidade</h3>
+      <p>Toda EDO se classifica por três critérios. Saber classificar é o <strong>primeiro passo</strong> — ele decide qual método usar.</p>
+
+      <h4>Ordem</h4>
+      <p>É a ordem da <strong>maior derivada</strong> que aparece. Não confunda com <em>grau</em> (a potência da maior derivada).</p>
+
+      <h4>Linearidade</h4>
+      <p>A EDO é <strong>linear</strong> quando pode ser escrita na forma</p>
+      <div class="fml center">\[ a_n(x)\,y^{(n)}+a_{n-1}(x)\,y^{(n-1)}+\cdots+a_1(x)\,y'+a_0(x)\,y=g(x). \]</div>
+      <p>Na prática, é linear quando <strong>\(y\) e todas as suas derivadas aparecem só na potência 1</strong>, não multiplicadas entre si e não dentro de funções não-lineares (como \(\operatorname{sen} y,\ e^{y},\ y^2\)).</p>
+      <div class="callout warn">
+        <div class="lab">Atenção — não se engane</div>
+        Os coeficientes \(a_i(x)\) <strong>podem</strong> depender de \(x\) à vontade (até \(x^2,\ \operatorname{sen} x\dots\)) e a EDO continua linear. O termo livre \(g(x)\) também não afeta a linearidade. O que importa é como \(y\) e suas derivadas entram.
+      </div>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Equação</th><th>Ordem</th><th>Classe</th><th>Por quê</th></tr></thead>
+        <tbody>
+          <tr><td>\(y'+5y=e^{x}\)</td><td>1ª</td><td><span class="tag lin">linear</span></td><td>\(y,\ y'\) na potência 1</td></tr>
+          <tr><td>\(x^2y''-xy'+y=\ln x\)</td><td>2ª</td><td><span class="tag lin">linear</span></td><td>coef. \(x^2,-x\) podem variar</td></tr>
+          <tr><td>\(y'''-y''-6=0\)</td><td>3ª</td><td><span class="tag lin">linear</span></td><td>derivadas potência 1</td></tr>
+          <tr><td>\(\theta''+\frac{g}{\ell}\operatorname{sen}\theta=0\)</td><td>2ª</td><td><span class="tag nlin">não-linear</span></td><td>\(\operatorname{sen}\theta\)</td></tr>
+          <tr><td>\(y'+y^2=0\)</td><td>1ª</td><td><span class="tag nlin">não-linear</span></td><td>\(y^2\)</td></tr>
+          <tr><td>\(y\,y''+y'=0\)</td><td>2ª</td><td><span class="tag nlin">não-linear</span></td><td>produto \(y\cdot y''\)</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h4>Forma geral e forma normal</h4>
+      <p>Uma EDO de ordem \(n\) escreve-se de forma <strong>implícita</strong> como \(F\big(x,y,y',\dots,y^{(n)}\big)=0\). Quando conseguimos isolar a maior derivada, temos a <strong>forma normal</strong>:</p>
+      <div class="fml center">\[ y^{(n)}=f\big(x,y,y',\dots,y^{(n-1)}\big). \qquad\text{Ex.: 1ª ordem } \Rightarrow\ y'=f(x,y). \]</div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo resolvido — Classificar EDOs <span class="extag">Lista 1, ex. 1</span></summary>
+        <div class="body">
+          <p class="muted">Determine a ordem e diga se é linear ou não-linear.</p>
+          <div class="step"><div class="n">a</div><div>\(t^2\dfrac{d^2y}{dt^2}+t\dfrac{dy}{dt}+2y=\operatorname{sen} t\) → maior derivada é \(y''\) ⇒ <strong>2ª ordem</strong>. \(y,y',y''\) entram na potência 1 (coef. \(t^2,t\) podem variar) ⇒ <strong>linear</strong>.</div></div>
+          <div class="step"><div class="n">d</div><div>\(\dfrac{dy}{dt}+t\,y^2=0\) → maior derivada \(y'\) ⇒ <strong>1ª ordem</strong>. Aparece \(y^2\) ⇒ <strong>não-linear</strong>.</div></div>
+          <div class="step"><div class="n">e</div><div>\(y''+\operatorname{sen}(t+y)=\operatorname{sen} t\) → <strong>2ª ordem</strong>. O \(y\) está dentro de \(\operatorname{sen}(\cdot)\) ⇒ <strong>não-linear</strong>.</div></div>
+        </div>
+      </details>
+
+      <h3 id="solucao">1.2 · O que é uma solução (família, PVI, domínio)</h3>
+      <p>Uma função \(\varphi\) é <strong>solução</strong> da EDO num intervalo \(I\) se \(\varphi\) e suas derivadas <em>satisfazem a equação para todo \(x\in I\)</em>. Esse \(I\) é o <strong>intervalo de definição</strong>; o gráfico de \(\varphi\) é a <strong>curva integral</strong>. Se \(\varphi\equiv 0\) resolve a EDO, é a <strong>solução trivial</strong>.</p>
+      <ul class="clean">
+        <li><strong>Explícita:</strong> \(y=\varphi(x)\) (y isolado). <strong>Implícita:</strong> \(G(x,y)=0\) (nem sempre dá pra isolar \(y\)).</li>
+        <li><strong>Família de soluções:</strong> a solução geral traz constante(s) arbitrária(s) \(C\) — é uma infinidade de curvas.</li>
+        <li><strong>PVI</strong> (Problema de Valor Inicial): uma condição \(y(x_0)=y_0\) fixa o \(C\) e seleciona <em>uma</em> curva.</li>
+      </ul>
+
+      <div class="callout proof">
+        <div class="lab">Como verificar se \(\varphi\) é solução</div>
+        (1) derive \(\varphi\) até a ordem \(n\); (2) substitua \(\varphi\) e suas derivadas na EDO; (3) confira se vira identidade; (4) ache o \(I\) onde tudo é contínuo.
+      </div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo — Verificar soluções por substituição <span class="extag">Lista 1, ex. 2(b)</span></summary>
+        <div class="body">
+          <p class="muted">Mostre que \(y_1=e^{-3t}\) e \(y_2=e^{t}\) resolvem \(y''+2y'-3y=0\).</p>
+          <div class="step"><div class="n">1</div><div>Para \(y_1=e^{-3t}\): \(y_1'=-3e^{-3t}\), \(y_1''=9e^{-3t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>Substituindo: \(9e^{-3t}+2(-3e^{-3t})-3e^{-3t}=(9-6-3)e^{-3t}=0\) ✓.</div></div>
+          <div class="step"><div class="n">3</div><div>Para \(y_2=e^{t}\): \(1+2-3=0\) ✓. Ambas valem em \(I=\mathbb{R}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo — Achar \(r\) em \(y=e^{rt}\) <span class="extag">Lista 1, ex. 3(c)</span></summary>
+        <div class="body">
+          <p class="muted">Para que valores de \(r\) a função \(y=e^{rt}\) resolve \(y''+y'-6y=0\)?</p>
+          <div class="step"><div class="n">1</div><div>\(y=e^{rt}\Rightarrow y'=re^{rt},\ y''=r^2e^{rt}\). Substituindo: \((r^2+r-6)e^{rt}=0\).</div></div>
+          <div class="step"><div class="n">2</div><div>Como \(e^{rt}\neq 0\): \(r^2+r-6=0\Rightarrow(r+3)(r-2)=0\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(\boxed{r=2\ \text{ou}\ r=-3}\). (Esse truque é a semente da 2ª ordem que vem na P2.)</div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — Fundamentos</summary>
+        <div class="body">
+          <p class="prompt">Explique para um colega: <strong>como você decide a ordem e a linearidade</strong> de uma EDO? Dê um exemplo de cada.</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <p>Uma boa explicação contém:</p>
+              <ul class="clean">
+                <li><strong>Ordem</strong> = ordem da maior derivada (não é a potência dela).</li>
+                <li><strong>Linear</strong> = \(y\) e derivadas só na potência 1, sem produtos entre elas e sem funções não-lineares de \(y\).</li>
+                <li>Coeficientes \(a_i(x)\) variáveis <strong>não</strong> quebram a linearidade; \(g(x)\) também não.</li>
+              </ul>
+              <p class="muted"><strong>Lacunas comuns:</strong> achar que \(a_i(x)\) variável vira não-linear; confundir ordem com grau; esquecer que \(\operatorname{sen} y\) ou \(y\cdot y'\) tornam não-linear.</p>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== 2. SEPARÁVEIS ===================== -->
+    <section id="separaveis">
+      <h2>2 · Equações separáveis</h2>
+      <p>É o método mais direto de 1ª ordem. Uma EDO é <strong>separável</strong> quando o lado direito fatora num produto de <em>uma função só de \(x\)</em> por <em>uma função só de \(y\)</em>:</p>
+      <div class="fml center">\[ \frac{dy}{dx}=\frac{g(x)}{h(y)} \qquad\Longleftrightarrow\qquad h(y)\,dy=g(x)\,dx. \]</div>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Equação</th><th>Separável?</th><th>Observação</th></tr></thead>
+        <tbody>
+          <tr><td>\(\dfrac{dy}{dx}=2xy\)</td><td><span class="tag lin">sim</span></td><td>já é produto \(x\cdot y\)</td></tr>
+          <tr><td>\(x^2y'=1-x^2+y^2-x^2y^2\)</td><td><span class="tag lin">sim</span></td><td>fatora: \((1-x^2)(1+y^2)\)</td></tr>
+          <tr><td>\(\dfrac{dy}{dx}=1+xy\)</td><td><span class="tag nlin">não</span></td><td>\(1+xy\) não fatora</td></tr>
+          <tr><td>\(\dfrac{dy}{dx}=x^2+y^2\)</td><td><span class="tag nlin">não</span></td><td>soma não fatora</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3 id="sep-metodo">2.1 · Por que funciona (e a receita)</h3>
+      <div class="callout proof">
+        <div class="lab">Justificativa (regra da cadeia)</div>
+        Se \(H\) é primitiva de \(h\) (isto é, \(H'=h\)), a regra da cadeia dá \(\dfrac{d}{dx}\big[H(y(x))\big]=H'(y)\,y'=h(y)\,y'\). Então de \(h(y)\,y'=g(x)\) integramos os dois lados em \(x\) e obtemos \(H(y)=G(x)+C\). A notação \(\int h(y)\,dy\) é só um atalho conveniente para \(\int h(y)\,y'\,dx\) — <em>não</em> significa que "cancelamos \(dx\)".
+      </div>
+
+      <div class="grid two">
+        <div class="card"><h4>Receita</h4>
+          <div class="step"><div class="n">1</div><div>Separe: \(h(y)\,dy=g(x)\,dx\).</div></div>
+          <div class="step"><div class="n">2</div><div>Integre os dois lados (lembre do \(+C\)).</div></div>
+          <div class="step"><div class="n">3</div><div>Se for PVI, use \(y(x_0)=y_0\) para achar \(C\).</div></div>
+          <div class="step"><div class="n">4</div><div>Isole \(y\) (explícita) se der; senão deixe implícita. Defina o domínio \(I\).</div></div>
+        </div>
+        <div class="callout danger" style="margin:0">
+          <div class="lab">Erro clássico — soluções perdidas</div>
+          Ao dividir por \(h(y)\) você pode <strong>perder soluções constantes</strong>. Em \(\frac{dy}{dx}=2xy\), dividir por \(y\) esconde a solução \(y=0\). Sempre verifique à parte os \(y\) que zeram o denominador.
+        </div>
+      </div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 1 — \(\dfrac{dy}{dx}=2xy\) <span class="extag">Aula 2</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Separe: \(\dfrac{1}{y}\,dy=2x\,dx\).</div></div>
+          <div class="step"><div class="n">2</div><div>Integre: \(\ln|y|=x^2+c\).</div></div>
+          <div class="step"><div class="n">3</div><div>Exponencie: \(|y|=e^{x^2+c}=e^{c}e^{x^2}\Rightarrow y=k\,e^{x^2}\) (com \(k=\pm e^{c}\)).</div></div>
+          <div class="step"><div class="n">4</div><div>Permitindo \(k=0\) recuperamos a solução perdida \(y=0\). Solução geral: \(\boxed{y=k\,e^{x^2}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 2 — \(x^2y'=1-x^2+y^2-x^2y^2\) <span class="extag">Aula 2</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Fatore o lado direito: \(1-x^2+y^2-x^2y^2=(1-x^2)(1+y^2)\). Então \(x^2y'=(1-x^2)(1+y^2)\).</div></div>
+          <div class="step"><div class="n">2</div><div>Separe: \(\dfrac{1}{1+y^2}\,dy=\dfrac{1-x^2}{x^2}\,dx=\Big(\dfrac{1}{x^2}-1\Big)dx\).</div></div>
+          <div class="step"><div class="n">3</div><div>Integre: \(\arctan(y)=-\dfrac{1}{x}-x+c\) (família de soluções implícitas).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 3 (PVI) — \(\operatorname{sen}(x)\,dx+y\,dy=0,\ y(0)=-2\) <span class="extag">Lista 1, ex. 5(c)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Separe: \(y\,dy=-\operatorname{sen}(x)\,dx\).</div></div>
+          <div class="step"><div class="n">2</div><div>Integre: \(\dfrac{y^2}{2}=\cos x+C\Rightarrow y^2=2\cos x+C'\).</div></div>
+          <div class="step"><div class="n">3</div><div>PVI \(y(0)=-2\): \(4=2\cos 0+C'=2+C'\Rightarrow C'=2\).</div></div>
+          <div class="step"><div class="n">4</div><div>Como \(y(0)=-2\lt 0\), escolhemos o ramo negativo: \(\boxed{y=-\sqrt{2\cos x+2}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — Separáveis</summary>
+        <div class="body">
+          <p class="prompt">Por que podemos "passar \(dy\) e \(dx\) para lados diferentes"? E em que momento uma solução acaba ficando <strong>implícita</strong>?</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>A separação é um <strong>atalho de notação</strong> para a regra da cadeia: \(\frac{d}{dx}H(y(x))=h(y)y'\).</li>
+                <li>Fica <strong>implícita</strong> quando, depois de integrar, não dá para isolar \(y\) (ex.: \(\arctan y=\dots\) ainda dá, mas \(y^3+y^2=\dots\) não).</li>
+                <li>Inclua o \(+C\) <strong>na hora de integrar</strong> e cheque soluções constantes perdidas na divisão.</li>
+              </ul>
+              <p class="muted"><strong>Lacunas comuns:</strong> esquecer o domínio \(I\); aplicar a condição inicial antes de integrar; perder \(y=\) constante.</p>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== 3. LINEARES 1ª ORDEM ===================== -->
+    <section id="lineares">
+      <h2>3 · Equações lineares de 1ª ordem</h2>
+      <p>A forma geral é \(a_1(x)y'+a_0(x)y=g(x)\) com \(a_1\neq 0\). Dividindo por \(a_1(x)\) chegamos à <strong>forma padrão</strong> — e <strong>o método só funciona na forma padrão</strong>:</p>
+      <div class="fml center">\[ y'+p(x)\,y=q(x),\qquad p=\frac{a_0}{a_1},\quad q=\frac{g}{a_1}. \]</div>
+
+      <h4>Construindo a ideia (casos simples)</h4>
+      <div class="grid three">
+        <div class="card"><h4>\(p=0\)</h4><p>\(y'=q(x)\Rightarrow y=\int q\,dx+C\). É só integrar.</p></div>
+        <div class="card"><h4>\(p=a\) const, \(q=0\)</h4><p>\(y'=-ay\Rightarrow y=Ce^{-ax}\). Derivada proporcional a si mesma.</p></div>
+        <div class="card"><h4>\(p=a\) const, \(q\neq0\)</h4><p>Multiplique por \(e^{ax}\): \(\frac{d}{dx}(e^{ax}y)=e^{ax}q\), aí integre.</p></div>
+      </div>
+
+      <h3 id="fator">3.1 · Dedução do fator integrante</h3>
+      <p>O truque acima (multiplicar por \(e^{ax}\)) se generaliza. Procuramos uma função \(u(x)\) que, ao multiplicar a equação, torne o lado esquerdo a <strong>derivada de um produto</strong>.</p>
+      <div class="callout proof">
+        <div class="lab">Demonstração — de onde vem \(\mu=e^{\int p\,dx}\)</div>
+        <div class="step"><div class="n">1</div><div>Multiplique \(y'+p\,y=q\) por \(u(x)\): \(\;u\,y'+u\,p\,y=u\,q\).</div></div>
+        <div class="step"><div class="n">2</div><div>Queremos que o lado esquerdo seja \(\dfrac{d}{dx}(u\,y)=u\,y'+u'\,y\).</div></div>
+        <div class="step"><div class="n">3</div><div>Comparando os dois: precisamos de \(u'\,y=u\,p\,y\Rightarrow u'=p\,u\).</div></div>
+        <div class="step"><div class="n">4</div><div>Essa é separável: \(\dfrac{u'}{u}=p\Rightarrow \ln u=\int p\,dx\) (tomando a constante \(=0\)).</div></div>
+        <div class="step"><div class="n">5</div><div>Logo \(\boxed{\,\mu(x)=e^{\int p(x)\,dx}\,}\), o <strong>fator integrante</strong>.</div></div>
+        <p style="margin-top:10px">Com ele, \(\dfrac{d}{dx}\big(\mu y\big)=\mu q\), e integrando: \(\;\mu y=\displaystyle\int \mu q\,dx+C\).</p>
+      </div>
+
+      <div class="fml center">\[ y=\frac{1}{\mu(x)}\left(\int \mu(x)\,q(x)\,dx+C\right),\qquad \mu(x)=e^{\int p(x)\,dx}. \]</div>
+      <div class="callout warn">
+        <div class="lab">Cuidado</div>
+        O \(C\) fica <strong>dentro</strong> dos parênteses e é multiplicado por \(1/\mu\). Esquecer disso é o erro nº 1 em lineares.
+      </div>
+
+      <h3 id="receita">3.2 · Receita em 4 passos &amp; comportamento assintótico</h3>
+      <div class="grid two">
+        <div class="card"><h4>Receita</h4>
+          <div class="step"><div class="n">0</div><div>Coloque na forma padrão \(y'+p\,y=q\).</div></div>
+          <div class="step"><div class="n">1</div><div>Calcule \(\mu=e^{\int p\,dx}\).</div></div>
+          <div class="step"><div class="n">2</div><div>Multiplique: \(\frac{d}{dx}(\mu y)=\mu q\).</div></div>
+          <div class="step"><div class="n">3</div><div>Integre e isole \(y\) (aplique o PVI se houver).</div></div>
+        </div>
+        <div class="card"><h4>Transiente + estacionário</h4>
+          <p>A solução geral = <strong>homogênea</strong> (transiente) + <strong>particular</strong> (estacionária). Se \(p\gt 0\) constante, o termo \(Ce^{-px}\to 0\) e sobra o regime permanente.</p>
+          <p class="muted">Ex.: \(y'+y=x\Rightarrow y=x-1+Ce^{-x}\). Quando \(x\to\infty\), \(y\approx x-1\).</p>
+        </div>
+      </div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 1 — \(y'+y=x\) <span class="extag">Aula 3</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">0</div><div>Já está na forma padrão: \(p=1,\ q=x\).</div></div>
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{\int 1\,dx}=e^{x}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\frac{d}{dx}(e^{x}y)=x\,e^{x}\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(\int x e^{x}dx=e^{x}(x-1)\) (por partes). Então \(e^{x}y=e^{x}(x-1)+C\).</div></div>
+          <div class="step"><div class="n">4</div><div>\(\boxed{y=x-1+Ce^{-x}},\ I=\mathbb{R}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 2 — \(\dfrac{dy}{dt}-2y=4-t\) <span class="extag">Aula 3</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">0</div><div>Forma padrão: \(p=-2,\ q=4-t\).</div></div>
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{\int -2\,dt}=e^{-2t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\frac{d}{dt}\big(e^{-2t}y\big)=(4-t)e^{-2t}\).</div></div>
+          <div class="step"><div class="n">3</div><div>Integrando (por partes): \(\int(4-t)e^{-2t}dt=e^{-2t}\big(\tfrac{t}{2}-\tfrac{7}{4}\big)\). Logo \(e^{-2t}y=e^{-2t}\big(\tfrac{t}{2}-\tfrac{7}{4}\big)+C\).</div></div>
+          <div class="step"><div class="n">4</div><div>\(\boxed{y=\tfrac{1}{2}t-\tfrac{7}{4}+Ce^{2t}}\). Como \(p\lt 0\), o termo \(Ce^{2t}\) <em>cresce</em>: a solução escapa quando \(t\to\infty\) (salvo \(C=0\)).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 3 — \(y'+3y=t+e^{-2t}\) <span class="extag">Lista 1, ex. 6(a)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{3t}\). Então \(\frac{d}{dt}(e^{3t}y)=(t+e^{-2t})e^{3t}=t\,e^{3t}+e^{t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\int t e^{3t}dt=\tfrac{t}{3}e^{3t}-\tfrac{1}{9}e^{3t}\) e \(\int e^{t}dt=e^{t}\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(e^{3t}y=\tfrac{t}{3}e^{3t}-\tfrac{1}{9}e^{3t}+e^{t}+C\).</div></div>
+          <div class="step"><div class="n">4</div><div>\(\boxed{y=\tfrac{t}{3}-\tfrac{1}{9}+e^{-2t}+Ce^{-3t}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 4 (PVI) — \(y'-y=2t\,e^{2t},\ y(0)=1\) <span class="extag">Lista 1, ex. 7(a)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{-t}\). \(\frac{d}{dt}(e^{-t}y)=2t\,e^{2t}e^{-t}=2t\,e^{t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\int 2t e^{t}dt=2e^{t}(t-1)\). Então \(e^{-t}y=2e^{t}(t-1)+C\Rightarrow y=2e^{2t}(t-1)+Ce^{t}\).</div></div>
+          <div class="step"><div class="n">3</div><div>PVI: \(y(0)=2(-1)+C=1\Rightarrow C=3\).</div></div>
+          <div class="step"><div class="n">4</div><div>\(\boxed{y=2e^{2t}(t-1)+3e^{t}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 5 — coeficiente variável: \(y'+\tfrac{1}{t}y=3\cos 2t,\ t\gt 0\) <span class="extag">Lista 1, ex. 6(c)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{\int \frac{1}{t}dt}=e^{\ln t}=t\). (Aqui \(p\) depende de \(t\) — o método é o mesmo.)</div></div>
+          <div class="step"><div class="n">2</div><div>\(\frac{d}{dt}(t\,y)=3t\cos 2t\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(\int 3t\cos 2t\,dt=\tfrac{3t}{2}\operatorname{sen}2t+\tfrac{3}{4}\cos 2t\). Então \(t\,y=\tfrac{3t}{2}\operatorname{sen}2t+\tfrac{3}{4}\cos 2t+C\).</div></div>
+          <div class="step"><div class="n">4</div><div>\(\boxed{y=\tfrac{3}{2}\operatorname{sen}2t+\tfrac{3}{4t}\cos 2t+\tfrac{C}{t}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — Lineares</summary>
+        <div class="body">
+          <p class="prompt">Deduza o fator integrante do zero: <strong>por que \(\mu=e^{\int p\,dx}\)</strong>? Explique cada passo.</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>Primeiro a <strong>forma padrão</strong> (dividir por \(a_1\)) — sem isso, nada funciona.</li>
+                <li>Multiplica por \(u\) e <strong>exige</strong> que o lado esquerdo vire \((uy)'\).</li>
+                <li>Isso força \(u'=pu\), que é <strong>separável</strong>, dando \(u=e^{\int p\,dx}\).</li>
+                <li>Integra \((\mu y)'=\mu q\) e isola \(y\), com o \(C\) <strong>dividido por \(\mu\)</strong>.</li>
+              </ul>
+              <p class="muted"><strong>Lacunas comuns:</strong> esquecer a forma padrão; somar \(C\) fora do \(1/\mu\); errar a integral \(\int \mu q\,dx\) (revise por partes na Lista 0).</p>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== ERROS COMUNS ===================== -->
+    <section id="erros">
+      <h2>Erros comuns na P1</h2>
+      <div class="grid two">
+        <div class="callout danger" style="margin:0"><div class="lab">Forma padrão esquecida</div>Em lineares, divida por \(a_1(x)\) <strong>antes</strong> de achar \(\mu\). \(\mu\) usa \(p\), não \(a_0\).</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Soluções constantes perdidas</div>Ao dividir por \(h(y)\) em separáveis, cheque os \(y\) que zeram \(h\) (ex.: \(y=0\)).</div>
+        <div class="callout danger" style="margin:0"><div class="lab">\(+C\) no lugar errado</div>Em lineares, \(y=\frac{1}{\mu}\big(\int\mu q\,dx+C\big)\): o \(C\) também é dividido por \(\mu\).</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Ordem × grau</div>Ordem é a maior derivada; potência dela é o grau. Não confunda.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Coeficiente variável ≠ não-linear</div>\(a_i(x)\) pode depender de \(x\); a EDO continua linear.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Domínio ignorado</div>Sempre diga o intervalo \(I\) onde a solução vale (ex.: \(t\gt 0\)).</div>
+      </div>
+    </section>
+
+    <!-- ===================== RESTO DA P1 ===================== -->
+    <section id="resto-p1">
+      <h2>O que mais cai na P1 (próximos passos)</h2>
+      <p>Os slides param em lineares de 1ª ordem, mas a P1 (30/06) vai além. Esses tópicos estão nas <strong>Listas 1 e 2</strong> (com gabarito) e ainda <strong>não</strong> têm slide:</p>
+      <ul class="clean">
+        <li><strong>Substituições:</strong> equação homogênea (\(y'=F(y/x)\)), <strong>Bernoulli</strong> (\(y'+p\,y=q\,y^n\), troca \(u=y^{1-n}\)) e Riccati.</li>
+        <li><strong>Campo de direções</strong> e <strong>equações autônomas</strong>: pontos críticos e estabilidade (estável/instável).</li>
+        <li><strong>Modelagem:</strong> decaimento radioativo, resfriamento de Newton, misturas em tanques, dinâmica populacional (Gompertz, Von Bertalanffy), circuitos RC.</li>
+        <li><strong>Teorema de Existência e Unicidade:</strong> onde \(f\) e \(\partial f/\partial y\) são contínuas → solução única.</li>
+      </ul>
+      <div class="callout tip">
+        <div class="lab">Quer continuar?</div>
+        Quando estes tópicos forem dados em aula (ou se quiser adiantar), é só me pedir: <em>"estende o guia de EDO para Bernoulli / autônomas / modelagem / TEU"</em> que eu acrescento as seções no mesmo formato — com dedução e exemplos das Listas.
+      </div>
+    </section>
+
+    <p class="muted" style="text-align:center;margin-top:50px;font-size:13px">
+      Guia gerado para Enzo · BCN0405-15 EDO · base: slides Aulas 1–3 + Listas 0/1 · foco Prova 1 (30/06/2026)
+    </p>
+  </main>
+</div>
+
+<script>
+// ---------- countdown to P1 ----------
+(function(){
+  var exam=new Date(2026,5,30); // 30/06/2026
+  var today=new Date(); today.setHours(0,0,0,0);
+  var days=Math.round((exam-today)/86400000);
+  var el=document.getElementById('cd');
+  if(el) el.textContent = days>0 ? ('faltam '+days+' dias') : (days===0?'é hoje!':'já passou');
+})();
+
+// ---------- mobile sidebar ----------
+var sb=document.getElementById('sidebar'), bd=document.getElementById('backdrop'), hb=document.getElementById('hamb');
+function closeSb(){sb.classList.remove('open');bd.classList.remove('show');}
+if(hb){hb.addEventListener('click',function(){sb.classList.toggle('open');bd.classList.toggle('show');});}
+if(bd){bd.addEventListener('click',closeSb);}
+document.querySelectorAll('nav.toc a').forEach(function(a){a.addEventListener('click',closeSb);});
+
+// ---------- scroll spy ----------
+var links=Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+var map={}; links.forEach(function(a){var id=a.getAttribute('href').slice(1); map[id]=a;});
+var spy=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('active');});
+      var id=e.target.id; if(map[id]) map[id].classList.add('active');
+    }
+  });
+},{rootMargin:'-15% 0px -75% 0px',threshold:0});
+document.querySelectorAll('main section, main h3[id]').forEach(function(s){spy.observe(s);});
+
+// ---------- search (highlight + open details) ----------
+var q=document.getElementById('q'), count=document.getElementById('count'), main=document.querySelector('main');
+var openedBySearch=[];
+function clearMarks(){
+  main.querySelectorAll('mark[data-s]').forEach(function(m){
+    var t=document.createTextNode(m.textContent); m.parentNode.replaceChild(t,m);
+  });
+  main.normalize();
+  openedBySearch.forEach(function(d){d.open=false;}); openedBySearch=[];
+}
+function doSearch(term){
+  clearMarks();
+  if(!term||term.length<2){count.textContent='';return;}
+  var rx=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  var walker=document.createTreeWalker(main,NodeFilter.SHOW_TEXT,{
+    acceptNode:function(n){
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p=n.parentNode;
+      if(p.closest('mjx-container, script, style, textarea, .search, mark')) return NodeFilter.FILTER_REJECT;
+      return rx.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }
+  });
+  var nodes=[],n; while(n=walker.nextNode()){nodes.push(n);}
+  var hits=0, first=null;
+  nodes.forEach(function(node){
+    var frag=document.createDocumentFragment(), last=0, s=node.nodeValue; rx.lastIndex=0; var m;
+    while(m=rx.exec(s)){
+      if(m.index>last) frag.appendChild(document.createTextNode(s.slice(last,m.index)));
+      var mk=document.createElement('mark'); mk.setAttribute('data-s','1'); mk.textContent=m[0];
+      frag.appendChild(mk); last=m.index+m[0].length; hits++; if(!first) first=mk;
+      if(m[0].length===0) rx.lastIndex++;
+    }
+    if(last<s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  });
+  // open any <details> containing a hit
+  main.querySelectorAll('mark[data-s]').forEach(function(mk){
+    var d=mk.closest('details');
+    while(d){ if(!d.open){d.open=true; openedBySearch.push(d);} d=d.parentElement?d.parentElement.closest('details'):null; }
+  });
+  count.textContent=hits?hits+' result.':'0';
+  if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+}
+var t; if(q){q.addEventListener('input',function(){clearTimeout(t); t=setTimeout(function(){doSearch(q.value.trim());},220);});}
+</script>
+</body>
+</html>

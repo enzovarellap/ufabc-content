@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDO · Resolução Lista 1 — Classificação e EDOs de 1ª ordem (exercícios recomendados)</title>
+<script>
+  window.MathJax = { tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+    options:{skipHtmlTags:['script','noscript','style','textarea','pre']} };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1419;--bg-elev:#151c24;--card:#1a2330;--border:#2a3a4d;--border-soft:#223040;
+--text:#e7eef5;--dim:#9db0c2;--faint:#6f8398;--accent:#6ea8fe;--accent-2:#7ee0c8;--accent-3:#c9a4ff;
+--ok:#8ce99a;--warn:#ffd166;--danger:#ff8a8a;--formula-bg:#11202b;--formula-bd:#2f7d6b;--r:14px;--shadow:0 10px 30px rgba(0,0,0,.35);--maxw:860px;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#16222e 0%,var(--bg) 55%) fixed;color:var(--text);font-family:'DM Sans',system-ui,sans-serif;line-height:1.65;font-size:16.5px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:288px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:linear-gradient(180deg,var(--bg-elev),#10171e);border-right:1px solid var(--border-soft);padding:22px 15px 60px}
+.sidebar::-webkit-scrollbar{width:8px}.sidebar::-webkit-scrollbar-thumb{background:#26323f;border-radius:8px}
+.brand{display:flex;gap:11px;align-items:center;margin-bottom:6px}
+.brand .dot{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent-3));display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:600;color:#06121a;font-size:12px}
+.brand b{font-family:'Fraunces';font-size:17px;font-weight:600}.brand small{display:block;color:var(--faint);font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+.glink{display:block;margin:4px 0 0;padding:9px 11px;border:1px solid var(--border-soft);border-radius:9px;background:#121b24;color:var(--dim);font-size:12.5px}
+.glink:hover{text-decoration:none;border-color:var(--accent);color:var(--text)}.glink b{color:var(--accent-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;display:block}
+.search{margin:14px 0 10px;position:relative}
+.search input{width:100%;padding:10px 12px 10px 34px;border-radius:10px;border:1px solid var(--border);background:#0d141b;color:var(--text);font-size:14px;font-family:inherit}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(110,168,254,.15)}
+.search svg{position:absolute;left:10px;top:11px;opacity:.55}.search .count{position:absolute;right:10px;top:10px;font-size:11px;color:var(--faint)}
+nav.toc .group{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);margin:16px 0 6px 8px}
+nav.toc a{display:block;color:var(--dim);padding:6px 10px;border-radius:8px;font-size:14px;border-left:2px solid transparent}
+nav.toc a:hover{background:#172029;color:var(--text);text-decoration:none}nav.toc a.active{background:#13202c;color:#fff;border-left-color:var(--accent)}
+main{padding:34px clamp(18px,5vw,60px) 120px;max-width:calc(var(--maxw) + 120px);margin:0 auto;width:100%}
+section{scroll-margin-top:24px;margin-bottom:40px}
+h1{font-family:'Fraunces';font-weight:600;font-size:clamp(25px,4vw,35px);line-height:1.15;margin:.2em 0 .3em}
+h2{font-family:'Fraunces';font-weight:600;font-size:clamp(20px,3vw,25px);margin:1.3em 0 .5em;padding-bottom:.3em;border-bottom:1px solid var(--border-soft)}
+p{margin:.5em 0}strong{color:#fff}.lead{color:var(--dim);font-size:17px}
+.hero{background:linear-gradient(135deg,#1d2433,#141d27);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px;box-shadow:var(--shadow)}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:#0e1a23;border:1px solid var(--border);border-radius:999px;padding:6px 13px;font-size:13px;color:var(--dim)}.pill b{color:#fff}
+.callout{border-radius:12px;padding:13px 16px 13px 18px;margin:15px 0;border:1px solid var(--border);border-left-width:4px;background:var(--card)}
+.callout .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:4px}
+.callout.note{border-left-color:var(--accent)}.callout.note .lab{color:var(--accent)}
+.callout.tip{border-left-color:var(--ok)}.callout.tip .lab{color:var(--ok)}
+.callout.warn{border-left-color:var(--warn)}.callout.warn .lab{color:var(--warn)}
+.fml{background:var(--formula-bg);border:1px solid var(--border-soft);border-left:4px solid var(--formula-bd);border-radius:10px;padding:10px 15px;margin:12px 0;overflow-x:auto}.fml.center{text-align:center}
+.tablewrap{overflow-x:auto;margin:14px 0}table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border-soft);vertical-align:top}
+th{color:var(--accent-2);font-weight:600;background:#121b24}tr:hover td{background:#141d27}
+.tag{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;white-space:nowrap}.tag.lin{background:#13322a;color:#8ce9c0}.tag.nlin{background:#3a2230;color:#ffb3c6}
+details.ex{border:1px solid var(--border);border-radius:12px;margin:12px 0;background:var(--card);overflow:hidden}
+details.ex>summary{cursor:pointer;list-style:none;padding:13px 16px;display:flex;align-items:center;gap:11px;font-weight:600;user-select:none}
+details>summary::-webkit-details-marker{display:none}
+summary .chev{transition:transform .25s;color:var(--accent);flex:none}details[open]>summary .chev{transform:rotate(90deg)}
+summary .qn{font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:#06121a;background:var(--accent-2);border-radius:6px;padding:2px 8px;flex:none}
+summary .qt{flex:1;font-weight:500;color:var(--text)}
+details.ex>summary{background:#16212c}details.ex[open]>summary{border-bottom:1px solid var(--border-soft)}
+.body{padding:8px 18px 16px}
+.step{display:flex;gap:12px;margin:9px 0;align-items:flex-start}
+.step .n{flex:none;width:24px;height:24px;border-radius:50%;background:#143040;color:var(--accent-2);display:grid;place-items:center;font-size:12px;font-weight:700;font-family:'JetBrains Mono';margin-top:2px}
+.ans{background:#102a1c;border:1px solid #2f6b4a;border-left:4px solid var(--ok);border-radius:10px;padding:10px 15px;margin:12px 0 4px}
+.ans .lab{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--ok);font-weight:700}
+.gv{display:inline-block;margin-top:6px;font-size:12px;color:var(--ok)}
+.muted{color:var(--faint)}mark{background:#5b4a16;color:#fff;border-radius:3px;padding:0 2px}
+.topbar{display:none}
+@media(max-width:880px){.layout{grid-template-columns:1fr}
+.sidebar{position:fixed;z-index:50;width:288px;left:-310px;transition:left .25s;box-shadow:var(--shadow)}.sidebar.open{left:0}
+.topbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:40;background:rgba(14,20,25,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border-soft);padding:10px 14px}.topbar b{font-family:'Fraunces';font-size:15px}
+.hamb{background:#16212c;border:1px solid var(--border);color:var(--text);border-radius:9px;width:40px;height:38px;font-size:18px;cursor:pointer}
+main{padding-top:16px}.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;display:none}.backdrop.show{display:block}}
+</style>
+</head>
+<body>
+<div class="topbar"><button class="hamb" id="hamb">☰</button><b>Resolução · Lista 1</b></div>
+<div class="backdrop" id="backdrop"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="dot">y′</div><div><b>Resolução · Lista 1</b><small>EDO · BCN0405</small></div></div>
+    <a class="glink" href="../guias/guia-edo-p1-fundamentos.html"><b>Guia 1</b>Fundamentos · Separáveis · Lineares</a>
+    <a class="glink" href="resolucao-lista0.html"><b>Resolução Lista 0</b>Derivadas &amp; integrais</a>
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar…" autocomplete="off"><span class="count" id="count"></span>
+    </div>
+    <nav class="toc" id="toc">
+      <div class="group">Recomendados pelo prof.</div>
+      <a href="#intro">Visão geral</a>
+      <a href="#classif">1 · Ordem &amp; linearidade</a>
+      <a href="#verif">2 · Verificar soluções (b,e,f,g,h)</a>
+      <a href="#separaveis">5 · Separáveis (a–f)</a>
+      <a href="#fatint">6 · Fator integrante (a–k)</a>
+      <a href="#pvi">7 · PVI (a–g)</a>
+      <a href="#assint">8–10 · Comportamento t→∞</a>
+    </nav>
+  </aside>
+
+  <main>
+    <section id="intro">
+      <div class="hero">
+        <h1 style="margin-top:0">Resolução — Lista 1</h1>
+        <p class="lead">Classificação de EDOs e equações de 1ª ordem. Exercícios <strong>destacados pelo professor</strong>: <strong>1 · 2(b,e,f,g,h) · 5(a–f)</strong> (08/06) e <strong>6 · 7 · 8 · 9 · 10</strong> (10/06).</p>
+        <div class="meta">
+          <span class="pill">BCN0405-15 · <b>Lista 1</b></span>
+          <span class="pill">passo a passo</span>
+          <span class="pill">✓ soluções conferidas no sympy</span>
+        </div>
+      </div>
+      <div class="callout note">
+        <div class="lab">Mapa rápido</div>
+        Quase tudo aqui é <strong>fator integrante</strong> (Guia 1): toda EDO de 6, 7, 8 está na forma \(y'+p(t)y=q(t)\). Os itens 5(a–f) são <strong>separáveis</strong>. Cada solução foi substituída de volta na EDO e bate com o gabarito da lista.
+      </div>
+      <div class="callout tip">
+        <div class="lab">Receita do fator integrante (use em 6, 7, 8)</div>
+        <strong>0)</strong> forma padrão \(y'+p\,y=q\) · <strong>1)</strong> \(\mu=e^{\int p\,dt}\) · <strong>2)</strong> \((\mu y)'=\mu q\) · <strong>3)</strong> integre e isole \(y\) · <strong>4)</strong> PVI: ache \(C\).
+      </div>
+    </section>
+
+    <!-- ===== 1 CLASSIFICAÇÃO ===== -->
+    <section id="classif">
+      <h2>1 · Ordem e linearidade</h2>
+      <p>Ordem = maior derivada. Linear = \(y\) e derivadas só na potência 1, sem produtos/funções não-lineares delas (coeficientes em \(t\) podem variar).</p>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Item</th><th>Equação</th><th>Ordem</th><th>Classe</th><th>Motivo</th></tr></thead>
+        <tbody>
+          <tr><td>a</td><td>\(t^2y''+ty'+2y=\operatorname{sen} t\)</td><td>2ª</td><td><span class="tag lin">linear</span></td><td>coef. \(t^2,t\) variam, mas \(y,y',y''\) potência 1</td></tr>
+          <tr><td>b</td><td>\((1+y^2)y''+ty'+y=e^{t}\)</td><td>2ª</td><td><span class="tag nlin">não-linear</span></td><td>coef. \((1+y^2)\) depende de \(y\)</td></tr>
+          <tr><td>c</td><td>\(y^{(4)}+y'''+y''+y'+y=1\)</td><td>4ª</td><td><span class="tag lin">linear</span></td><td>tudo potência 1</td></tr>
+          <tr><td>d</td><td>\(y'+ty^2=0\)</td><td>1ª</td><td><span class="tag nlin">não-linear</span></td><td>\(y^2\)</td></tr>
+          <tr><td>e</td><td>\(y''+\operatorname{sen}(t+y)=\operatorname{sen} t\)</td><td>2ª</td><td><span class="tag nlin">não-linear</span></td><td>\(y\) dentro de \(\operatorname{sen}\)</td></tr>
+          <tr><td>f</td><td>\(y'''+ty'+(\cos^2 t)\,y=t^3\)</td><td>3ª</td><td><span class="tag lin">linear</span></td><td>coef. variáveis, \(y\) potência 1</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="gv">✓ confere com o gabarito (a:2ª lin · b:2ª n-lin · c:4ª lin · d:1ª n-lin · e:2ª n-lin · f:3ª lin)</p>
+    </section>
+
+    <!-- ===== 2 VERIFICAR ===== -->
+    <section id="verif">
+      <h2>2 · Verificar soluções dadas</h2>
+      <p class="muted">Substitua a função e suas derivadas na EDO e confira que dá identidade.</p>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">2b</span><span class="qt">\(y''+2y'-3y=0\); \(y_1=e^{-3t},\ y_2=e^{t}\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(y_1=e^{-3t}\): \((9)e^{-3t}+2(-3)e^{-3t}-3e^{-3t}=(9-6-3)e^{-3t}=0\) ✓.</div></div>
+          <div class="step"><div class="n">2</div><div>\(y_2=e^{t}\): \(1+2-3=0\) ✓.</div></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">2e</span><span class="qt">\(2t^2y''+3ty'-y=0,\ t\gt 0\); \(y_1=t^{1/2},\ y_2=t^{-1}\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(y_1=t^{1/2}\): \(y_1'=\tfrac12 t^{-1/2}\), \(y_1''=-\tfrac14 t^{-3/2}\). Logo \(2t^2(-\tfrac14 t^{-3/2})+3t(\tfrac12 t^{-1/2})-t^{1/2}=(-\tfrac12+\tfrac32-1)t^{1/2}=0\) ✓.</div></div>
+          <div class="step"><div class="n">2</div><div>\(y_2=t^{-1}\): \(y_2'=-t^{-2}\), \(y_2''=2t^{-3}\). \(2t^2(2t^{-3})+3t(-t^{-2})-t^{-1}=(4-3-1)t^{-1}=0\) ✓.</div></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">2f</span><span class="qt">\(t^2y''+5ty'+4y=0,\ t\gt 0\); \(y_1=t^{-2},\ y_2=t^{-2}\ln t\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(y_1=t^{-2}\): \(y_1'=-2t^{-3}\), \(y_1''=6t^{-4}\). \(t^2(6t^{-4})+5t(-2t^{-3})+4t^{-2}=(6-10+4)t^{-2}=0\) ✓.</div></div>
+          <div class="step"><div class="n">2</div><div>\(y_2=t^{-2}\ln t\): \(y_2'=-2t^{-3}\ln t+t^{-3}\), \(y_2''=6t^{-4}\ln t-5t^{-4}\).</div></div>
+          <div class="step"><div class="n">3</div><div>Somando: \((6-10+4)t^{-2}\ln t+(-5+5)t^{-2}=0\) ✓.</div></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">2g</span><span class="qt">\(y''+y=\sec t,\ 0\lt t\lt \tfrac{\pi}{2}\); \(y_1=\cos t\,\ln(\cos t)+t\operatorname{sen} t\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(y_1'=-\operatorname{sen} t\,\ln(\cos t)+t\cos t\) (os termos \(\cos t\cdot\frac{-\operatorname{sen} t}{\cos t}\) e \(\operatorname{sen} t\) se cancelam).</div></div>
+          <div class="step"><div class="n">2</div><div>\(y_1''=-\cos t\,\ln(\cos t)+\dfrac{\operatorname{sen}^2 t}{\cos t}+\cos t-t\operatorname{sen} t\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(y_1''+y_1=\dfrac{\operatorname{sen}^2 t}{\cos t}+\cos t=\dfrac{\operatorname{sen}^2 t+\cos^2 t}{\cos t}=\dfrac{1}{\cos t}=\sec t\) ✓.</div></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">2h</span><span class="qt">\(y'-2ty=1\); \(y_1=e^{t^2}\!\displaystyle\int_0^t e^{-s^2}ds+e^{t^2}\) <span class="muted">(usa o TFC)</span></span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Pelo Teorema Fundamental do Cálculo, \(\dfrac{d}{dt}\displaystyle\int_0^t e^{-s^2}ds=e^{-t^2}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(y_1'=2t\,e^{t^2}\!\displaystyle\int_0^t e^{-s^2}ds+e^{t^2}e^{-t^2}+2t\,e^{t^2}=2t\,e^{t^2}\!\int_0^t e^{-s^2}ds+1+2t\,e^{t^2}\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(y_1'-2t\,y_1=\big(2t e^{t^2}\!\int+1+2t e^{t^2}\big)-2t\big(e^{t^2}\!\int+e^{t^2}\big)=1\) ✓.</div></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 5 SEPARÁVEIS ===== -->
+    <section id="separaveis">
+      <h2>5 · Equações separáveis</h2>
+      <div class="callout tip"><div class="lab">Receita</div>Separe \(h(y)\,dy=g(x)\,dx\), integre os dois lados, aplique a condição inicial (se houver) e isole \(y\) quando der.</div>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">5a</span><span class="qt">\(x\,dx+y\,dy=0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\int x\,dx+\int y\,dy=C_1\Rightarrow \dfrac{x^2}{2}+\dfrac{y^2}{2}=C_1\Rightarrow y^2=2C-x^2\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\pm\sqrt{2C-x^2}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">5b</span><span class="qt">\(\tfrac1x\,dx-\tfrac1y\,dy=0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\int\tfrac1x dx=\int\tfrac1y dy\Rightarrow \ln|x|=\ln|y|+c\Rightarrow \ln\left|\tfrac{x}{y}\right|=c\).</div></div>
+          <div class="step"><div class="n">2</div><div>Exponenciando, \(\tfrac{x}{y}=\) const, ou seja \(y\) proporcional a \(x\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=Cx\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">5c</span><span class="qt">\(\operatorname{sen}(x)\,dx+y\,dy=0,\ y(0)=-2\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\int y\,dy=-\int\operatorname{sen} x\,dx\Rightarrow \dfrac{y^2}{2}=\cos x+C\Rightarrow y^2=2\cos x+C'\).</div></div>
+          <div class="step"><div class="n">2</div><div>PVI \(y(0)=-2\): \(4=2+C'\Rightarrow C'=2\). Ramo negativo (pois \(y(0)\lt 0\)).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=-\sqrt{2\cos x+2}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">5d</span><span class="qt">\(\tfrac1x\,dy-dx=0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\tfrac1x\,dy=dx\Rightarrow dy=x\,dx\Rightarrow y=\dfrac{x^2}{2}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac{x^2}{2}+C\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">5e</span><span class="qt">\((x^2+1)\,dx+(y^2+y)\,dy=0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Integre cada lado: \(\int(y^2+y)\,dy=-\int(x^2+1)\,dx\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\dfrac{y^3}{3}+\dfrac{y^2}{2}=-\dfrac{x^3}{3}-x+C\) (não dá pra isolar \(y\) — fica implícita).</div></div>
+          <div class="ans"><div class="lab">Resposta (implícita)</div>\(\;\dfrac{y^3}{3}+\dfrac{y^2}{2}=-\dfrac{x^3}{3}-x+C\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">5f</span><span class="qt">\(x e^{x^2}\,dx+(y^5-1)\,dy=0,\ y(0)=0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\int(y^5-1)\,dy=-\int x e^{x^2}\,dx\Rightarrow \dfrac{y^6}{6}-y=-\dfrac12 e^{x^2}+C\).</div></div>
+          <div class="step"><div class="n">2</div><div>PVI \(y(0)=0\): \(0=-\tfrac12+C\Rightarrow C=\tfrac12\).</div></div>
+          <div class="ans"><div class="lab">Resposta (implícita)</div>\(\;\dfrac{y^6}{6}-y=\dfrac{1-e^{x^2}}{2}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 6 FATOR INTEGRANTE ===== -->
+    <section id="fatint">
+      <h2>6 · Solução geral (fator integrante)</h2>
+      <p class="muted">Todas são lineares de 1ª ordem não-homogêneas. Forma padrão → \(\mu=e^{\int p\,dt}\) → integrar.</p>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6a</span><span class="qt">\(y'+3y=t+e^{-2t}\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{3t}\). \((e^{3t}y)'=t e^{3t}+e^{t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(e^{3t}y=\big(\tfrac{t}{3}-\tfrac19\big)e^{3t}+e^{t}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac{t}{3}-\dfrac19+e^{-2t}+Ce^{-3t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6b</span><span class="qt">\(y'-2y=t^2 e^{2t}\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{-2t}\). \((e^{-2t}y)'=t^2\Rightarrow e^{-2t}y=\tfrac{t^3}{3}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\big(\tfrac{t^3}{3}+C\big)e^{2t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6c</span><span class="qt">\(y'+\tfrac1t y=3\cos 2t,\ t\gt 0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{\int dt/t}=t\). \((ty)'=3t\cos 2t\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\int 3t\cos 2t\,dt=\tfrac{3t}{2}\operatorname{sen}2t+\tfrac34\cos 2t\). Então \(ty=\tfrac{3t}{2}\operatorname{sen}2t+\tfrac34\cos2t+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac32\operatorname{sen}2t+\dfrac{3\cos2t}{4t}+\dfrac{C}{t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6d</span><span class="qt">\(y'+y=te^{-t}+1\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{t}\). \((e^{t}y)'=t+e^{t}\Rightarrow e^{t}y=\tfrac{t^2}{2}+e^{t}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=e^{-t}\big(\tfrac{t^2}{2}+C\big)+1\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6e</span><span class="qt">\(y'-2y=3e^{t}\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{-2t}\). \((e^{-2t}y)'=3e^{-t}\Rightarrow e^{-2t}y=-3e^{-t}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=Ce^{2t}-3e^{t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6f</span><span class="qt">\(ty'+2y=\operatorname{sen} t,\ t\gt 0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Padrão: \(y'+\tfrac2t y=\tfrac{\operatorname{sen} t}{t}\). \(\mu=e^{\int 2/t\,dt}=t^2\).</div></div>
+          <div class="step"><div class="n">2</div><div>\((t^2y)'=t\operatorname{sen} t\Rightarrow t^2y=\operatorname{sen} t-t\cos t+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac{1}{t^2}\big(\operatorname{sen} t-t\cos t+C\big)\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6g</span><span class="qt">\(y'+2ty=2te^{-t^2}\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{t^2}\). \((e^{t^2}y)'=2t\Rightarrow e^{t^2}y=t^2+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=(t^2+C)e^{-t^2}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6h</span><span class="qt">\(2y'+y=3t\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Padrão: \(y'+\tfrac12 y=\tfrac32 t\). \(\mu=e^{t/2}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\((e^{t/2}y)'=\tfrac32 t e^{t/2}\Rightarrow e^{t/2}y=3t e^{t/2}-6e^{t/2}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=3(t-2)+Ce^{-t/2}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6i</span><span class="qt">\(ty'-y=t^2 e^{-t},\ t\gt 0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Padrão: \(y'-\tfrac1t y=t e^{-t}\). \(\mu=e^{-\int dt/t}=t^{-1}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\((t^{-1}y)'=e^{-t}\Rightarrow t^{-1}y=-e^{-t}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=Ct-t e^{-t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6j</span><span class="qt">\(y'+y=5\operatorname{sen} 2t\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{t}\). \((e^{t}y)'=5e^{t}\operatorname{sen}2t\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\int 5e^{t}\operatorname{sen}2t\,dt=e^{t}(\operatorname{sen}2t-2\cos2t)\). Então \(e^{t}y=e^{t}(\operatorname{sen}2t-2\cos2t)+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=Ce^{-t}+\operatorname{sen}2t-2\cos2t\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">6k</span><span class="qt">\(2y'+y=3t^2\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Padrão: \(y'+\tfrac12 y=\tfrac32 t^2\). \(\mu=e^{t/2}\).</div></div>
+          <div class="step"><div class="n">2</div><div>Integrando \(\tfrac32 t^2 e^{t/2}\) (partes 2×): \(e^{t/2}y=3(t^2-4t+8)e^{t/2}+C\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=Ce^{-t/2}+3(t^2-4t+8)\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 7 PVI ===== -->
+    <section id="pvi">
+      <h2>7 · Problemas de valor inicial</h2>
+      <p class="muted">Mesma receita: ache a solução geral e use a condição inicial para fixar \(C\).</p>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">7a</span><span class="qt">\(y'-y=2te^{2t},\ y(0)=1\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{-t}\). \((e^{-t}y)'=2t e^{t}\Rightarrow e^{-t}y=2e^{t}(t-1)+C\Rightarrow y=2e^{2t}(t-1)+Ce^{t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(y(0)=-2+C=1\Rightarrow C=3\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=2e^{2t}(t-1)+3e^{t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">7b</span><span class="qt">\(ty'+2y=t^2-t+1,\ y(1)=\tfrac12,\ t\gt 0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Padrão \(y'+\tfrac2t y=t-1+\tfrac1t\). \(\mu=t^2\). \((t^2y)'=t^3-t^2+t\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(t^2y=\tfrac{t^4}{4}-\tfrac{t^3}{3}+\tfrac{t^2}{2}+C\Rightarrow y=\tfrac{t^2}{4}-\tfrac{t}{3}+\tfrac12+\tfrac{C}{t^2}\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(y(1)=\tfrac14-\tfrac13+\tfrac12+C=\tfrac12\Rightarrow C=\tfrac{1}{12}\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac{t^2}{4}-\dfrac{t}{3}+\dfrac12+\dfrac{1}{12t^2}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">7c</span><span class="qt">\(y'+2y=te^{-2t},\ y(1)=0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{2t}\). \((e^{2t}y)'=t\Rightarrow e^{2t}y=\tfrac{t^2}{2}+C\Rightarrow y=e^{-2t}\big(\tfrac{t^2}{2}+C\big)\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(y(1)=e^{-2}(\tfrac12+C)=0\Rightarrow C=-\tfrac12\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac{e^{-2t}}{2}\big(t^2-1\big)\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">7d</span><span class="qt">\(y'+\tfrac2t y=\tfrac{\cos t}{t^2},\ y(\pi)=0,\ t\gt 0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=t^2\). \((t^2y)'=\cos t\Rightarrow t^2y=\operatorname{sen} t+C\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(y(\pi)=\dfrac{\operatorname{sen}\pi+C}{\pi^2}=0\Rightarrow C=0\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac{\operatorname{sen} t}{t^2}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">7e</span><span class="qt">\(y'-2y=e^{2t},\ y(0)=2\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{-2t}\). \((e^{-2t}y)'=1\Rightarrow e^{-2t}y=t+C\Rightarrow y=(t+C)e^{2t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(y(0)=C=2\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=(t+2)e^{2t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">7f</span><span class="qt">\(ty'+2y=\operatorname{sen} t,\ y(\tfrac{\pi}{2})=1,\ t\gt 0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Geral (do 6f): \(y=\dfrac{\operatorname{sen} t-t\cos t+C}{t^2}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(y(\tfrac{\pi}{2})=\dfrac{1-0+C}{\pi^2/4}=1\Rightarrow C=\dfrac{\pi^2}{4}-1\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=\dfrac{\operatorname{sen} t+\big(\tfrac{\pi^2}{4}-1\big)}{t^2}-\dfrac{\cos t}{t}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">7g</span><span class="qt">\(t^3y'+4t^2y=e^{-t},\ y(-1)=0,\ t\lt 0\)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Padrão \(y'+\tfrac4t y=\tfrac{e^{-t}}{t^3}\). \(\mu=t^4\). \((t^4y)'=t e^{-t}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\int t e^{-t}dt=-e^{-t}(t+1)\Rightarrow t^4y=-e^{-t}(t+1)+C\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(y(-1)=\dfrac{-e^{1}(0)+C}{1}=C=0\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y=-\dfrac{e^{-t}(1+t)}{t^4}\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 8-10 ASSINTÓTICO ===== -->
+    <section id="assint">
+      <h2>8–10 · Comportamento quando \(t\to\infty\)</h2>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">8a</span><span class="qt">\(ty'+2y=\operatorname{sen} t,\ t\gt 0\) — geral e limite</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Do 6f: \(y=t^{-2}\big(C-t\cos t+\operatorname{sen} t\big)\).</div></div>
+          <div class="step"><div class="n">2</div><div>O numerador cresce no máximo como \(\sim t\) (termo \(-t\cos t\)); dividido por \(t^2\) tende a 0.</div></div>
+          <div class="ans"><div class="lab">Comportamento</div>\(\;y(t)\to 0\) quando \(t\to\infty\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">8b</span><span class="qt">\(2y'+y=3t\) — geral e limite</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Do 6h: \(y=3(t-2)+Ce^{-t/2}\). O termo \(Ce^{-t/2}\to0\).</div></div>
+          <div class="ans"><div class="lab">Comportamento</div>\(\;y\) é assintótica a \(3(t-2)\); logo \(y(t)\to\infty\) quando \(t\to\infty\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">9</span><span class="qt">\(y'-y=1+3\operatorname{sen} t,\ y(0)=y_0\): qual \(y_0\) mantém \(y\) finita?</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Geral: \(y=Ce^{t}-1-\tfrac32(\operatorname{sen} t+\cos t)\) (homogênea \(Ce^t\) + particular).</div></div>
+          <div class="step"><div class="n">2</div><div>O termo \(Ce^{t}\) explode quando \(t\to\infty\), <strong>a menos que \(C=0\)</strong>.</div></div>
+          <div class="step"><div class="n">3</div><div>\(y(0)=C-1-\tfrac32=C-\tfrac52\). Com \(C=0\): \(y_0=-\tfrac52\).</div></div>
+          <div class="ans"><div class="lab">Resposta</div>\(\;y_0=-\dfrac52\)<span class="gv">✓ gabarito</span></div>
+        </div>
+      </details>
+
+      <details class="ex"><summary><span class="chev">▶</span><span class="qn">10</span><span class="qt">Mostre: se \(a,\lambda\gt0\), toda solução de \(y'+ay=be^{-\lambda t}\) tende a 0.</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(\mu=e^{at}\Rightarrow (e^{at}y)'=b\,e^{(a-\lambda)t}\).</div></div>
+          <div class="step"><div class="n">2</div><div><strong>Caso \(a\neq\lambda\):</strong> \(y=\dfrac{b}{a-\lambda}e^{-\lambda t}+Ce^{-at}\). Como \(\lambda\gt0\) e \(a\gt0\), <em>ambos</em> os termos \(\to0\).</div></div>
+          <div class="step"><div class="n">3</div><div><strong>Caso \(a=\lambda\):</strong> \((e^{at}y)'=b\Rightarrow y=(bt+C)e^{-at}\); a exponencial vence o \(t\), então \(\to0\).</div></div>
+          <div class="ans"><div class="lab">Conclusão</div>Em todos os casos, \(y(t)\to 0\) quando \(t\to\infty\). \(\blacksquare\)</div>
+        </div>
+      </details>
+    </section>
+
+    <p class="muted" style="text-align:center;margin-top:46px;font-size:13px">
+      Resolução para Enzo · Lista 1 (recomendados pelo prof., 08–10/06) · cada solução substituída de volta na EDO via sympy
+    </p>
+  </main>
+</div>
+<script>
+var sb=document.getElementById('sidebar'),bd=document.getElementById('backdrop'),hb=document.getElementById('hamb');
+function closeSb(){sb.classList.remove('open');bd.classList.remove('show');}
+if(hb)hb.addEventListener('click',function(){sb.classList.toggle('open');bd.classList.toggle('show');});
+if(bd)bd.addEventListener('click',closeSb);
+document.querySelectorAll('nav.toc a').forEach(function(a){a.addEventListener('click',closeSb);});
+var links=[].slice.call(document.querySelectorAll('nav.toc a')),map={};
+links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+var spy=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active');});if(map[e.target.id])map[e.target.id].classList.add('active');}});},{rootMargin:'-10% 0px -80% 0px'});
+document.querySelectorAll('main section').forEach(function(s){spy.observe(s);});
+var q=document.getElementById('q'),count=document.getElementById('count'),main=document.querySelector('main'),opened=[];
+function clearMarks(){main.querySelectorAll('mark[data-s]').forEach(function(m){m.replaceWith(document.createTextNode(m.textContent));});main.normalize();opened.forEach(function(d){d.open=false;});opened=[];}
+function doSearch(term){clearMarks();if(!term||term.length<2){count.textContent='';return;}
+var rx=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+var w=document.createTreeWalker(main,NodeFilter.SHOW_TEXT,{acceptNode:function(n){if(!n.nodeValue.trim())return 2;if(n.parentNode.closest('mjx-container,script,style,.search,mark'))return 2;return rx.test(n.nodeValue)?1:2;}});
+var nodes=[],n;while(n=w.nextNode())nodes.push(n);var hits=0,first=null;
+nodes.forEach(function(node){var f=document.createDocumentFragment(),last=0,s=node.nodeValue,m;rx.lastIndex=0;while(m=rx.exec(s)){if(m.index>last)f.appendChild(document.createTextNode(s.slice(last,m.index)));var mk=document.createElement('mark');mk.setAttribute('data-s','1');mk.textContent=m[0];f.appendChild(mk);last=m.index+m[0].length;hits++;if(!first)first=mk;if(m[0].length===0)rx.lastIndex++;}if(last<s.length)f.appendChild(document.createTextNode(s.slice(last)));node.parentNode.replaceChild(f,node);});
+main.querySelectorAll('mark[data-s]').forEach(function(mk){var d=mk.closest('details');while(d){if(!d.open){d.open=true;opened.push(d);}d=d.parentElement?d.parentElement.closest('details'):null;}});
+count.textContent=hits?hits+' res.':'0';if(first)first.scrollIntoView({behavior:'smooth',block:'center'});}
+var tm;if(q)q.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){doSearch(q.value.trim());},220);});
+</script>
+</body>
+</html>

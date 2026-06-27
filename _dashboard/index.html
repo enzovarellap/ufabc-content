@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UFABC 2026.2 — Central de Estudos</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2027; --panel2:#222b34; --line:#2e3a45;
+    --txt:#e6edf3; --muted:#9bb0c0; --accent:#4da3ff; --accent2:#7ee787;
+    --warn:#ffb454; --danger:#ff6b6b; --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--txt);line-height:1.5;padding:28px;max-width:1180px;margin:0 auto}
+  h1{font-size:1.7rem;letter-spacing:-.5px}
+  h2{font-size:1.05rem;margin:0 0 14px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:8px}
+  .sub{color:var(--muted);font-size:.95rem}
+  .progress-wrap{margin:18px 0 30px}
+  .bar{height:12px;background:var(--panel2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+  .bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0}
+  .bar-meta{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-top:6px}
+  section{margin-bottom:34px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;transition:.15s;border-left:4px solid var(--c,#4da3ff)}
+  .card:hover{border-color:var(--accent)}
+  .card .code{font-size:.75rem;color:var(--muted);letter-spacing:.5px}
+  .card h3{font-size:1.08rem;margin:3px 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .chip{font-size:.72rem;background:var(--panel2);border:1px solid var(--line);padding:3px 9px;border-radius:99px;color:var(--muted)}
+  .links-guias{display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--line);padding-top:11px;margin-bottom:2px}
+  .links-guias a{font-weight:600;font-size:.9rem}
+  .files{border-top:1px solid var(--line);padding-top:9px;margin-top:8px;display:flex;flex-direction:column;gap:9px}
+  .grp{display:flex;flex-wrap:wrap;gap:6px 11px;align-items:baseline}
+  .grp-t{color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-size:.66rem;min-width:52px;font-weight:600}
+  .grp a{font-size:.82rem}
+  .empty{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:11px}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:.9rem}
+  th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+  td.slot{font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+  .cell-fill{background:rgba(77,163,255,.10);font-weight:500}
+  tr.today{outline:2px solid var(--accent);outline-offset:-2px}
+  .cal li{list-style:none;display:flex;gap:14px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+  .cal li:last-child{border:0}
+  .cal .d{min-width:118px;color:var(--accent2);font-weight:600;font-variant-numeric:tabular-nums}
+  .cal li.done .d{color:var(--muted);opacity:.6}
+  .cal li.next{background:rgba(255,180,84,.08);border-radius:8px;padding-left:8px}
+  .foot{color:var(--muted);font-size:.8rem;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  .pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:.78rem;font-weight:600}
+  .pill.live{background:rgba(126,231,135,.15);color:var(--accent2)}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div>
+      <h1>UFABC 2026.2 — Central de Estudos</h1>
+      <div class="sub">Enzo Pastore · Bacharelado em Ciência e Tecnologia · Santo André · Noturno</div>
+    </div>
+    <div style="text-align:right">
+      <span class="pill live" id="status">●  Quadrimestre em andamento</span>
+      <div class="sub" id="weekno" style="margin-top:6px"></div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="bar"><span id="barfill"></span></div>
+    <div class="bar-meta">
+      <span>Início 25/05/2026</span>
+      <span id="pctlabel"></span>
+      <span>Conclusão 24/08/2026</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>Disciplinas</h2>
+    <div class="grid" id="cards"></div>
+  </section>
+
+  <section>
+    <h2>Grade de horários</h2>
+    <table id="grade">
+      <thead><tr><th>Dia</th><th>19:00 – 21:00</th><th>21:00 – 23:00</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="sub" style="margin-top:8px">Quarta 19:00 (Práticas de Ens. de Química I) é <b>quinzenal — semana I</b>.</div>
+  </section>
+
+  <section>
+    <h2>Provas e entregas por matéria</h2>
+    <ul class="cal" id="provas"></ul>
+    <div class="sub" style="margin-top:8px">ESMA001 (projeto) tem datas de entrega <b>a confirmar</b> com o docente. Química proíbe uso de IA em atividades avaliadas.</div>
+  </section>
+
+  <section>
+    <h2>Datas-chave do quadrimestre</h2>
+    <ul class="cal" id="cal"></ul>
+  </section>
+
+  <div class="foot">
+    Painel gerado automaticamente. Fonte do calendário: Pró-Reitoria de Graduação da UFABC.
+    Os cards linkam direto para cada arquivo (guias HTML, listas e materiais PDF) — sem depender de listagem de pasta.
+  </div>
+
+<script>
+  const START=new Date(2026,4,25), END=new Date(2026,7,24), today=new Date();
+  const pct=Math.max(0,Math.min(100,Math.round((today-START)/(END-START)*100)));
+  document.getElementById('barfill').style.width=pct+'%';
+  document.getElementById('pctlabel').textContent=pct+'% do quadrimestre';
+  const wk=Math.max(1,Math.floor((today-START)/(7*864e5))+1);
+  document.getElementById('weekno').textContent='Semana '+wk+' · '+today.toLocaleDateString('pt-BR');
+  if(today<START){document.getElementById('status').textContent='● Ainda não começou';}
+  if(today>END){document.getElementById('status').textContent='● Quadrimestre encerrado';}
+
+  // Cada item é [rótulo, caminho-relativo-à-pasta-da-disciplina] -> link direto pro arquivo real.
+  // build-site.py troca "../Disciplinas/" por "Disciplinas/" ao publicar.
+  const disc=[
+    {code:'BCN0405-15',name:'Introdução às Equações Diferenciais Ordinárias',c:'#4da3ff',tpi:'4-0-4',horas:['Ter 21–23','Sex 19–21'],
+     dir:'../Disciplinas/BCN0405 - EDO',
+     guias:[['★ Guia 1 — Fundamentos · Separáveis · Lineares','guias/guia-edo-p1-fundamentos.html'],['★ Guia 2 — Substituições · Bernoulli · Riccati','guias/guia-edo-p1-substituicoes.html']],
+     listas:[['Lista 0','listas/lista0.pdf'],['★ Lista 0 resolvida','listas/resolucao-lista0.html'],['Lista 1','listas/lista1 (1).pdf'],['★ Lista 1 resolvida','listas/resolucao-lista1.html'],['Lista 2','listas/lista2 (1).pdf']],
+     material:[['Aula 1','material/aula1.pdf'],['Aula 2','material/aula2.pdf'],['Aula 3','material/aula3.pdf'],['Aula 4','material/aula4.pdf'],['Plano de ensino','material/plano de ensino.pdf']]},
+    {code:'ESTO017-17',name:'Métodos Experimentais em Engenharia',c:'#7ee787',tpi:'2-2-4',horas:['Ter 19–21','Qui 21–23'],
+     dir:'../Disciplinas/ESTO017 - Metodos Experimentais',
+     guias:[],listas:[],
+     material:[['Cronograma 2º quad. 2026 (DOCX)','material/ESTO017-17 cronograma 2quad2026.docx']]},
+    {code:'ESMA001-23',name:'Soluções para Desafios em Engenharia',c:'#ffb454',tpi:'0-2-5',horas:['Qui 19–21'],
+     dir:'../Disciplinas/ESMA001 - Solucoes Desafios Eng',
+     guias:[],listas:[],
+     material:[['Material 18/05','material/ESMA001-23N_260518.pdf'],['Plano de ensino','material/plano_de_ensino_ESMA001-23_Noturno_26.2A1 (1).pdf']]},
+    {code:'NHLQ002-22',name:'Práticas de Ensino de Química I',c:'#d2a8ff',tpi:'0-3-4',horas:['Sex 21–23','Qua 19–21 (quinz.)'],
+     dir:'../Disciplinas/NHLQ002 - Praticas Ensino Quimica I',
+     guias:[['★ Guia Seminário — Ácidos & Bases','guias/guia-seminario-concepcoes-alternativas-acidos-bases.html']],
+     listas:[],
+     material:[['Aula 1','material/Aula 1.pdf'],['Aula 2','material/Aula 2.pdf'],['Mortimer 1996','material/Mortimer 1996.pdf'],['Plano — PEQ I','material/Plano - PEQ I.pdf'],['Seminário 1 — Ácidos/Bases','material/SEMINARIO_1_ÁCIDOS_BASES.pdf']]},
+    {code:'MCCC010-23',name:'Matemática Discreta II',c:'#ff6b6b',tpi:'4-0-4',horas:['Seg 19–21','Qua 21–23'],
+     dir:'../Disciplinas/MCCC010 - Matematica Discreta II',
+     guias:[['★ Guia Teoria — Sem. 1–4','guias/guia-teoria-semanas1-4.html'],['★ Lista 1 resolvida','listas/resolucao-lista1.html']],
+     listas:[['Lista 1 (enunciado)','listas/lista1-md2.pdf']],
+     material:[['Intro','material/intro.pdf'],['Aula 1','material/aula1.pdf'],['Aula 2','material/aula2.pdf'],['Aula 3','material/aula3.pdf'],['Aula 3.2','material/aula3.2.pdf'],['Aula 4','material/aula4.pdf'],['Plano de ensino','material/plano-ensino-md2.pdf']]},
+    {code:'ESTA020-17',name:'Modelagem e Controle',c:'#56d4dd',tpi:'2-0-5',horas:['Seg 21–23'],
+     dir:'../Disciplinas/ESTA020 - Modelagem e Controle',
+     guias:[],listas:[],material:[]},
+  ];
+  const fileLinks=(dir,arr)=>arr.map(it=>`<a href="${encodeURI(dir+'/'+it[1])}">${it[0]}</a>`).join('');
+  document.getElementById('cards').innerHTML=disc.map(d=>{
+    const guias=(d.guias&&d.guias.length)?`<div class="links-guias">${fileLinks(d.dir,d.guias)}</div>`:'';
+    const blocks=[];
+    if(d.listas&&d.listas.length) blocks.push(`<div class="grp"><span class="grp-t">Listas</span>${fileLinks(d.dir,d.listas)}</div>`);
+    if(d.material&&d.material.length) blocks.push(`<div class="grp"><span class="grp-t">Material</span>${fileLinks(d.dir,d.material)}</div>`);
+    const files=blocks.length?`<div class="files">${blocks.join('')}</div>`:'';
+    const empty=(!d.guias.length&&!blocks.length)?`<div class="empty">Sem material publicado ainda.</div>`:'';
+    return `<div class="card" style="--c:${d.c}">
+      <div class="code">${d.code} · TPI ${d.tpi}</div>
+      <h3>${d.name}</h3>
+      <div class="chips">${d.horas.map(h=>`<span class="chip">${h}</span>`).join('')}</div>
+      ${guias}${files}${empty}
+    </div>`;
+  }).join('');
+
+  const grade=[
+    ['Segunda','Matemática Discreta II','Modelagem e Controle'],
+    ['Terça','Métodos Experimentais','EDO'],
+    ['Quarta','Práticas Ens. Química I (quinz.)','Matemática Discreta II'],
+    ['Quinta','Soluções p/ Desafios em Eng.','Métodos Experimentais'],
+    ['Sexta','EDO','Práticas Ens. Química I'],
+  ];
+  const dayIdx=today.getDay();
+  document.querySelector('#grade tbody').innerHTML=grade.map((r,i)=>{
+    const isToday=(i+1)===dayIdx;
+    return `<tr class="${isToday?'today':''}"><td class="slot">${r[0]}</td>
+      <td class="${r[1]?'cell-fill':''}">${r[1]||'—'}</td>
+      <td class="${r[2]?'cell-fill':''}">${r[2]||'—'}</td></tr>`;
+  }).join('');
+
+  const cal=[
+    ['03–04/06','Reajuste de matrículas (2026.2)',new Date(2026,5,4)],
+    ['05/07','Fim do trancamento sem justificativa',new Date(2026,6,5)],
+    ['24/08','Conclusão do quadrimestre 2026.2',new Date(2026,7,24)],
+    ['24/08–01/09','Lançamento de conceitos',new Date(2026,8,1)],
+    ['15–22/09','Revisão de conceito',new Date(2026,8,22)],
+    ['28/09–02/10','Avaliação das disciplinas',new Date(2026,9,2)],
+    ['05–11/10','Recuperação — lançamento de conceitos',new Date(2026,9,11)],
+  ];
+  let nextMarked=false;
+  document.getElementById('cal').innerHTML=cal.map(e=>{
+    const done=today>e[2]; let cls=done?'done':'';
+    if(!done&&!nextMarked){cls+=' next';nextMarked=true;}
+    return `<li class="${cls}"><span class="d">${e[0]}</span><span>${e[1]}</span></li>`;
+  }).join('');
+
+  const provas=[
+    [new Date(2026,5,15),'15/06','Modelagem e Controle','Prova 1'],
+    [new Date(2026,5,29),'29/06','Matemática Discreta II','Prova 1 (P1) — Sem. 1–4'],
+    [new Date(2026,5,30),'30/06','EDO','Prova 1 (P1)'],
+    [new Date(2026,7,3),'03/08','Modelagem e Controle','Prova 2'],
+    [new Date(2026,7,7),'07/08','EDO','Prova 2 (P2)'],
+    [new Date(2026,7,10),'10/08','Matemática Discreta II','Prova 2 (P2) — Sem. 5–11'],
+    [new Date(2026,7,11),'11/08','Métodos Experimentais','Prova individual'],
+    [new Date(2026,7,14),'14/08','Práticas Ens. Química I','Prova escrita individual'],
+  ];
+  provas.sort((a,b)=>a[0]-b[0]);
+  let pNext=false;
+  document.getElementById('provas').innerHTML=provas.map(e=>{
+    const done=today>e[0]; let cls=done?'done':'';
+    if(!done&&!pNext){cls+=' next';pNext=true;}
+    const dd=Math.ceil((e[0]-today)/864e5);
+    const tag=done?'':(dd>=0?` <span class="chip">em ${dd}d</span>`:'');
+    return `<li class="${cls}"><span class="d">${e[1]}</span><span><b>${e[2]}</b> — ${e[3]}${tag}</span></li>`;
+  }).join('');
+</script>
+</body>
+</html>

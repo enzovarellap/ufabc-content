@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MD II — Resolução da Lista 1 (E1–E7)</title>
+<style>
+:root{
+  --bg:#0f1419;--bg2:#161c24;--bg3:#1d252f;--panel:#1a222c;
+  --ink:#e6edf3;--muted:#9aa7b4;--line:#2a3441;
+  --accent:#6ea8fe;--accent2:#7ee0c0;--warn:#ffcf6e;--bad:#ff8b8b;--formula:#ffe9b0;
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;--serif:'Georgia',serif;--sans:'Inter','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{display:flex;min-height:100vh}
+#sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 14px}
+#main{flex:1;min-width:0;padding:32px 40px 120px;max-width:920px;margin:0 auto}
+@media(max-width:880px){#sidebar{position:fixed;left:-300px;z-index:50;transition:left .25s;box-shadow:0 0 40px #000a}#sidebar.open{left:0}#main{padding:70px 18px 120px}#hamb{display:flex!important}}
+#hamb{display:none;position:fixed;top:12px;left:12px;z-index:60;background:var(--accent);color:#04121f;border:none;border-radius:9px;width:44px;height:44px;font-size:22px;cursor:pointer;align-items:center;justify-content:center}
+.brand{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff;margin:4px 6px}
+.brand small{display:block;font-family:var(--sans);font-size:11.5px;font-weight:400;color:var(--muted);margin-top:3px}
+#nav a{display:block;padding:7px 10px;border-radius:7px;color:var(--muted);font-size:13.5px;border-left:2px solid transparent}
+#nav a:hover{background:var(--bg3);color:var(--ink);text-decoration:none}
+#nav a.active{background:#22304a;color:#fff;border-left-color:var(--accent)}
+#nav .tagmini{font-size:10px;color:var(--muted);float:right}
+h1{font-family:var(--serif);font-size:28px;margin:0 0 6px;color:#fff}
+h2{font-family:var(--serif);font-size:22px;margin:8px 0 6px;color:#fff;scroll-margin-top:20px}
+h3{font-size:16px;margin:16px 0 6px;color:var(--accent2)}
+.sub{color:var(--muted);font-size:14.5px;margin:0 0 18px}
+section{border-top:1px solid var(--line);padding-top:24px;margin-top:26px}
+.enun{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:13px 16px;margin:12px 0}
+.enun .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700;margin-bottom:4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:20px;margin-left:8px;text-transform:uppercase;vertical-align:middle}
+.t-easy{background:#15301f;color:#9ff0bd;border:1px solid #2c6}
+.t-med{background:#2e2a16;color:var(--warn);border:1px solid #6a5a20}
+.t-hard{background:#331a1f;color:#ff9ec0;border:1px solid #7e2f48}
+.formula{font-family:var(--mono);background:#0c1218;border-left:3px solid var(--formula);color:var(--formula);padding:11px 14px;border-radius:8px;margin:10px 0;overflow-x:auto;font-size:14.5px;white-space:pre-wrap}
+code,.mono{font-family:var(--mono)}
+code{background:#0c1218;padding:1px 6px;border-radius:5px;color:#cfe;font-size:.92em}
+details{background:var(--bg2);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;align-items:center;gap:10px;user-select:none}
+summary::-webkit-details-marker{display:none}
+summary .arw{transition:transform .2s;color:var(--accent);font-size:13px}
+details[open] summary .arw{transform:rotate(90deg)}
+summary:hover{background:var(--bg3)}
+.dbody{padding:4px 16px 16px;border-top:1px solid var(--line)}
+.steps{counter-reset:s;padding-left:0;list-style:none;margin:8px 0}
+.steps li{counter-increment:s;position:relative;padding:7px 0 7px 38px;border-bottom:1px dashed var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:counter(s);position:absolute;left:0;top:7px;background:var(--accent);color:#04121f;width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;font-family:var(--mono)}
+.ans{background:#15211c;border:1px solid #2c7;border-left:4px solid var(--accent2);border-radius:10px;padding:11px 15px;margin:12px 0;font-size:15px}
+.ans b{color:#bff5cf}
+.tip{background:#241f15;border:1px solid #4a3d20;border-radius:10px;padding:11px 14px;margin:10px 0;font-size:14px}
+.tip b{color:var(--warn)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:var(--bg3);color:#fff;font-size:12px;text-transform:uppercase}
+tr:nth-child(even) td{background:#141b23}
+.muted{color:var(--muted)}
+figure{margin:14px 0;text-align:center}
+.figrow{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.figrow figure{margin:6px}
+svg.g{background:#0b1117;border:1px solid var(--line);border-radius:10px}
+figcaption{color:var(--muted);font-size:12.5px;margin-top:6px}
+.vx{fill:#0b1117;stroke:#e6edf3;stroke-width:2}
+.vx.h{fill:#6ea8fe;stroke:#cfe3ff}
+.vx.d3{fill:#7ee0c0;stroke:#cfe3ff}
+.eg{stroke:#7e93a8;stroke-width:2;fill:none}
+.lbl{fill:#cdd9e5;font-family:var(--mono);font-size:12px}
+.lbl2{fill:#9aa7b4;font-family:var(--mono);font-size:10px}
+hr{border:none;border-top:1px solid var(--line);margin:20px 0}
+.hidden{display:none!important}
+mark{background:#5b4a16;color:#ffe9b0;border-radius:3px;padding:0 2px}
+.warnbox{background:#2a1a12;border:1px solid #6e3a20;border-radius:10px;padding:11px 14px;margin:12px 0;font-size:14px}
+</style>
+</head>
+<body>
+<button id="hamb" aria-label="menu">☰</button>
+<div class="wrap">
+<aside id="sidebar">
+  <div class="brand">Lista 1 — Resolução
+    <small>MCCC010-23 · Matemática Discreta II · Prof. Renzo G. Gómez</small>
+  </div>
+  <nav id="nav">
+    <a href="#como">Como usar</a>
+    <a href="#e1">E1 · Isomorfismo <span class="tagmini">médio</span></a>
+    <a href="#e2">E2 · Graus no complemento <span class="tagmini">fácil</span></a>
+    <a href="#e3">E3 · Contar |V| <span class="tagmini">médio</span></a>
+    <a href="#e4">E4 · Auto-compl. mod 4 <span class="tagmini">médio</span></a>
+    <a href="#e5">E5 · Grau 30 em ordem 60 <span class="tagmini">difícil</span></a>
+    <a href="#e6">E6 · Torneio <span class="tagmini">médio</span></a>
+    <a href="#e7">E7 · Todos mesmo grau <span class="tagmini">difícil</span></a>
+    <a href="#respostas">✅ Respostas (resumo)</a>
+  </nav>
+</aside>
+
+<main id="main">
+<h1>Resolução da Lista 1</h1>
+<p class="sub">Sete exercícios (E1–E7) resolvidos no nível <b>essencial</b>: a ideia central + os passos principais. Cada resolução está <b>escondida</b> — tente sozinho primeiro e só então clique em "Ver resolução". A teoria de apoio está no <a href="../guias/guia-teoria-semanas1-4.html">Guia de Teoria (Semanas 1–4)</a>.</p>
+
+<section id="como" style="border-top:none">
+<div class="tip"><b>Estratégia para a P1:</b> em isomorfismo, sempre comece pelos invariantes (|V|, |E|, sequência de graus). Em contagem, use o <b>aperto de mãos</b> (Σd=2|E|) e <span class="mono">|E(Kₙ)|=n(n−1)/2</span>. Em "mostre que…", procure o argumento curto: paridade, casa dos pombos, ou caminho/ciclo mais longo.</div>
+</section>
+
+<!-- E1 -->
+<section id="e1">
+<h2>E1 · Os grafos são isomorfos? <span class="tag t-med">médio</span></h2>
+<div class="enun"><div class="lab">Enunciado</div>(a) Determine se <span class="mono">G₁ ≅ G₂</span>. &nbsp; (b) Determine se <span class="mono">H₁ ≅ H₂</span>.</div>
+
+<h3>(a) G₁ e G₂</h3>
+<div class="figrow">
+<figure>
+<svg class="g" viewBox="0 0 270 250" width="250">
+ <!-- square -->
+ <line class="eg" x1="40" y1="40" x2="220" y2="40"/><line class="eg" x1="40" y1="40" x2="40" y2="210"/>
+ <line class="eg" x1="40" y1="210" x2="220" y2="210"/><line class="eg" x1="220" y1="40" x2="220" y2="210"/>
+ <!-- 6:M2 to 1 and 4 -->
+ <line class="eg" x1="130" y1="125" x2="40" y2="40"/><line class="eg" x1="130" y1="125" x2="220" y2="210"/>
+ <!-- 5:M1 to 2,3 -->
+ <line class="eg" x1="95" y1="125" x2="220" y2="40"/><line class="eg" x1="95" y1="125" x2="40" y2="210"/>
+ <!-- 7:M3 to 2,3 -->
+ <line class="eg" x1="175" y1="125" x2="220" y2="40"/><line class="eg" x1="175" y1="125" x2="40" y2="210"/>
+ <circle class="vx d3" cx="40" cy="40" r="9"/><text class="lbl" x="20" y="34">1</text><text class="lbl2" x="14" y="58">g3</text>
+ <circle class="vx h" cx="220" cy="40" r="9"/><text class="lbl" x="230" y="34">2</text><text class="lbl2" x="228" y="58">g4</text>
+ <circle class="vx h" cx="40" cy="210" r="9"/><text class="lbl" x="20" y="232">3</text><text class="lbl2" x="14" y="200">g4</text>
+ <circle class="vx d3" cx="220" cy="210" r="9"/><text class="lbl" x="230" y="232">4</text><text class="lbl2" x="228" y="200">g3</text>
+ <circle class="vx" cx="95" cy="125" r="8"/><text class="lbl" x="86" y="151">5</text>
+ <circle class="vx" cx="130" cy="113" r="8"/><text class="lbl" x="123" y="103">6</text>
+ <circle class="vx" cx="175" cy="125" r="8"/><text class="lbl" x="168" y="151">7</text>
+</svg>
+<figcaption>G₁ — azul = grau 4, verde = grau 3</figcaption>
+</figure>
+<figure>
+<svg class="g" viewBox="0 0 270 250" width="250">
+ <line class="eg" x1="40" y1="40" x2="220" y2="40"/><line class="eg" x1="40" y1="40" x2="40" y2="210"/>
+ <line class="eg" x1="40" y1="210" x2="220" y2="210"/><line class="eg" x1="220" y1="40" x2="220" y2="210"/>
+ <line class="eg" x1="40" y1="40" x2="120" y2="85"/><line class="eg" x1="40" y1="40" x2="120" y2="165"/>
+ <line class="eg" x1="120" y1="85" x2="120" y2="125"/><line class="eg" x1="120" y1="125" x2="120" y2="165"/>
+ <line class="eg" x1="120" y1="85" x2="220" y2="210"/><line class="eg" x1="120" y1="165" x2="220" y2="210"/>
+ <circle class="vx h" cx="40" cy="40" r="9"/><text class="lbl" x="22" y="34">a</text><text class="lbl2" x="14" y="58">g4</text>
+ <circle class="vx" cx="220" cy="40" r="9"/><text class="lbl" x="230" y="34">b</text><text class="lbl2" x="228" y="58">g2</text>
+ <circle class="vx" cx="40" cy="210" r="9"/><text class="lbl" x="22" y="232">c</text><text class="lbl2" x="14" y="200">g2</text>
+ <circle class="vx h" cx="220" cy="210" r="9"/><text class="lbl" x="230" y="232">d</text><text class="lbl2" x="228" y="200">g4</text>
+ <circle class="vx d3" cx="120" cy="85" r="8"/><text class="lbl" x="132" y="84">Ma</text><text class="lbl2" x="132" y="98">g3</text>
+ <circle class="vx" cx="120" cy="125" r="7"/><text class="lbl" x="132" y="128">Mb</text>
+ <circle class="vx d3" cx="120" cy="165" r="8"/><text class="lbl" x="132" y="168">Mc</text><text class="lbl2" x="132" y="182">g3</text>
+</svg>
+<figcaption>G₂ — mesma legenda</figcaption>
+</figure>
+</div>
+<details><summary><span class="arw">▶</span> Ver resolução (a)</summary>
+<div class="dbody">
+<ol class="steps">
+<li><b>Invariantes batem:</b> ambos têm <span class="mono">|V|=7</span>, <span class="mono">|E|=10</span> e a mesma <b>sequência de graus</b> <span class="mono">(4,4,3,3,2,2,2)</span>. Então ainda <u>pode</u> haver isomorfismo — precisamos olhar a estrutura.</li>
+<li><b>Estrutura comum:</b> em cada grafo os dois vértices de <b>grau 4</b> não são adjacentes entre si e têm os mesmos 4 vizinhos: os dois de grau 3 e dois de grau 2. Os dois de grau 3 têm ainda um vizinho de grau 2 em comum. (Ou seja, ambos são <span class="mono">K₂,₄</span> + um vértice ligado aos dois de grau 2 que viram grau 3.)</li>
+<li><b>Bijeção explícita</b> <span class="mono">φ: G₁ → G₂</span>:
+<table>
+<tr><th>G₁</th><th>papel</th><th>→ G₂</th></tr>
+<tr><td class="mono">2</td><td>hub (g4)</td><td class="mono">a</td></tr>
+<tr><td class="mono">3</td><td>hub (g4)</td><td class="mono">d</td></tr>
+<tr><td class="mono">1</td><td>g3</td><td class="mono">Ma</td></tr>
+<tr><td class="mono">4</td><td>g3</td><td class="mono">Mc</td></tr>
+<tr><td class="mono">6</td><td>g2 (liga os dois g3)</td><td class="mono">Mb</td></tr>
+<tr><td class="mono">5</td><td>g2 (liga os dois hubs)</td><td class="mono">b</td></tr>
+<tr><td class="mono">7</td><td>g2 (liga os dois hubs)</td><td class="mono">c</td></tr>
+</table></li>
+<li><b>Confere as 10 arestas:</b> 1-2→Ma-a, 1-3→Ma-d, 3-4→d-Mc, 2-4→a-Mc, 5-2→b-a, 5-3→b-d, 7-2→c-a, 7-3→c-d, 6-1→Mb-Ma, 6-4→Mb-Mc. Todas viram arestas de G₂. ✔</li>
+</ol>
+<div class="ans"><b>(a) Resposta: SIM, G₁ ≅ G₂</b> (são isomorfos), pela bijeção acima.</div>
+</div></details>
+
+<h3>(b) H₁ e H₂</h3>
+<div class="figrow">
+<figure>
+<svg class="g" viewBox="0 0 470 240" width="300">
+ <line class="eg" x1="230" y1="120" x2="140" y2="70"/><line class="eg" x1="230" y1="120" x2="140" y2="170"/>
+ <line class="eg" x1="230" y1="120" x2="320" y2="70"/><line class="eg" x1="230" y1="120" x2="320" y2="170"/>
+ <line class="eg" x1="140" y1="70" x2="60" y2="40"/><line class="eg" x1="140" y1="70" x2="60" y2="95"/>
+ <line class="eg" x1="140" y1="170" x2="60" y2="150"/><line class="eg" x1="140" y1="170" x2="60" y2="205"/>
+ <line class="eg" x1="320" y1="170" x2="380" y2="150"/><line class="eg" x1="320" y1="170" x2="380" y2="205"/>
+ <line class="eg" x1="320" y1="70" x2="300" y2="22"/><line class="eg" x1="320" y1="70" x2="365" y2="105"/><line class="eg" x1="320" y1="70" x2="395" y2="55"/>
+ <line class="eg" x1="395" y1="55" x2="385" y2="14"/><line class="eg" x1="395" y1="55" x2="455" y2="55"/>
+ <circle class="vx h" cx="230" cy="120" r="8"/>
+ <circle class="vx d3" cx="140" cy="70" r="7"/><circle class="vx d3" cx="140" cy="170" r="7"/>
+ <circle class="vx d3" cx="320" cy="170" r="7"/><circle class="vx h" cx="320" cy="70" r="8"/><circle class="vx d3" cx="395" cy="55" r="7"/>
+ <circle class="vx" cx="60" cy="40" r="6"/><circle class="vx" cx="60" cy="95" r="6"/>
+ <circle class="vx" cx="60" cy="150" r="6"/><circle class="vx" cx="60" cy="205" r="6"/>
+ <circle class="vx" cx="380" cy="150" r="6"/><circle class="vx" cx="380" cy="205" r="6"/>
+ <circle class="vx" cx="300" cy="22" r="6"/><circle class="vx" cx="365" cy="105" r="6"/>
+ <circle class="vx" cx="385" cy="14" r="6"/><circle class="vx" cx="455" cy="55" r="6"/>
+</svg>
+<figcaption>H₁ — <b>16 vértices</b>, 15 arestas. Dois de grau 4 (azul).</figcaption>
+</figure>
+<figure>
+<svg class="g" viewBox="0 0 480 285" width="300">
+ <line class="eg" x1="220" y1="140" x2="150" y2="80"/><line class="eg" x1="220" y1="140" x2="140" y2="200"/>
+ <line class="eg" x1="220" y1="140" x2="300" y2="80"/><line class="eg" x1="220" y1="140" x2="300" y2="200"/>
+ <line class="eg" x1="140" y1="200" x2="62" y2="180"/><line class="eg" x1="140" y1="200" x2="62" y2="235"/>
+ <line class="eg" x1="300" y1="80" x2="280" y2="28"/><line class="eg" x1="300" y1="80" x2="360" y2="112"/><line class="eg" x1="300" y1="80" x2="372" y2="60"/>
+ <line class="eg" x1="372" y1="60" x2="358" y2="16"/><line class="eg" x1="372" y1="60" x2="452" y2="60"/>
+ <line class="eg" x1="300" y1="200" x2="372" y2="172"/><line class="eg" x1="300" y1="200" x2="288" y2="255"/><line class="eg" x1="300" y1="200" x2="372" y2="232"/>
+ <line class="eg" x1="372" y1="232" x2="360" y2="278"/><line class="eg" x1="372" y1="232" x2="455" y2="232"/>
+ <circle class="vx h" cx="220" cy="140" r="8"/>
+ <circle class="vx" cx="150" cy="80" r="6"/>
+ <circle class="vx d3" cx="140" cy="200" r="7"/>
+ <circle class="vx h" cx="300" cy="80" r="8"/><circle class="vx d3" cx="372" cy="60" r="7"/>
+ <circle class="vx h" cx="300" cy="200" r="8"/><circle class="vx d3" cx="372" cy="232" r="7"/>
+ <circle class="vx" cx="62" cy="180" r="6"/><circle class="vx" cx="62" cy="235" r="6"/>
+ <circle class="vx" cx="280" cy="28" r="6"/><circle class="vx" cx="360" cy="112" r="6"/>
+ <circle class="vx" cx="358" cy="16" r="6"/><circle class="vx" cx="452" cy="60" r="6"/>
+ <circle class="vx" cx="372" cy="172" r="6"/><circle class="vx" cx="288" cy="255" r="6"/>
+ <circle class="vx" cx="360" cy="278" r="6"/><circle class="vx" cx="455" cy="232" r="6"/>
+</svg>
+<figcaption>H₂ — <b>17 vértices</b>, 16 arestas. Três de grau 4 (azul).</figcaption>
+</figure>
+</div>
+<details><summary><span class="arw">▶</span> Ver resolução (b)</summary>
+<div class="dbody">
+<ol class="steps">
+<li>Os dois são <b>árvores</b> (conexas, sem ciclos). Primeiro invariante: <b>conte os vértices</b>.</li>
+<li><b>H₁ tem 16 vértices</b> (logo 15 arestas). Graus: dois vértices de grau 4, quatro de grau 3, dez folhas → <span class="mono">(4,4,3,3,3,3,1×10)</span>.</li>
+<li><b>H₂ tem 17 vértices</b> (logo 16 arestas). Graus: três de grau 4, três de grau 3, onze folhas → <span class="mono">(4,4,4,3,3,3,1×11)</span>.</li>
+<li>Como <span class="mono">|V(H₁)| = 16 ≠ 17 = |V(H₂)|</span>, não pode existir bijeção entre os vértices. (Mesmo se o nº batesse, as sequências de graus já são diferentes.)</li>
+</ol>
+<div class="ans"><b>(b) Resposta: NÃO, H₁ ≇ H₂.</b> Têm números de vértices diferentes (16 vs 17).</div>
+<div class="tip"><b>Lição:</b> sempre cheque <span class="mono">|V|</span> e <span class="mono">|E|</span> <u>antes</u> de qualquer coisa — é o teste mais barato e às vezes já encerra a questão.</div>
+</div></details>
+</section>
+
+<!-- E2 -->
+<section id="e2">
+<h2>E2 · Vértices de grau ímpar no complemento <span class="tag t-easy">fácil</span></h2>
+<div class="enun"><div class="lab">Enunciado</div><span class="mono">G</span> é simples com <span class="mono">n ≥ 3</span> vértices e tem exatamente <span class="mono">n−1</span> vértices de grau ímpar. Quantos vértices de grau ímpar (em função de <span class="mono">n</span>) tem o complemento <span class="mono">Ḡ</span>? Justifique.</div>
+<details><summary><span class="arw">▶</span> Ver resolução</summary>
+<div class="dbody">
+<ol class="steps">
+<li>O nº de vértices de grau ímpar é sempre <b>par</b> (corolário do aperto de mãos). Como aqui é <span class="mono">n−1</span>, então <span class="mono">n−1</span> é par, ou seja <b><span class="mono">n</span> é ímpar</b>.</li>
+<li>No complemento, <span class="mono">d_Ḡ(v) = (n−1) − d_G(v)</span>. Como <span class="mono">n−1</span> é <b>par</b>, <span class="mono">d_Ḡ(v)</span> tem a <b>mesma paridade</b> de <span class="mono">d_G(v)</span>.</li>
+<li>Logo um vértice é de grau ímpar em <span class="mono">Ḡ</span> exatamente quando é ímpar em <span class="mono">G</span> — são os <b>mesmos</b> vértices.</li>
+</ol>
+<div class="ans"><b>Resposta: <span class="mono">n − 1</span></b> vértices de grau ímpar em <span class="mono">Ḡ</span> (e necessariamente <span class="mono">n</span> é ímpar).</div>
+</div></details>
+</section>
+
+<!-- E3 -->
+<section id="e3">
+<h2>E3 · Determinar |V| <span class="tag t-med">médio</span></h2>
+<div class="enun"><div class="lab">Enunciado</div><span class="mono">G=(V,E)</span> com <span class="mono">|E|=96</span>. Existem <span class="mono">u,v</span> com <span class="mono">(n−1)/2 ≤ deg(u) ≤ n−2</span> e <span class="mono">(n−1)/2 ≤ deg(v) ≤ n−2</span>. Ao remover <span class="mono">u</span> e <span class="mono">v</span> obtém-se um grafo <b>completo</b>. Determine <span class="mono">|V|</span>.</div>
+<details><summary><span class="arw">▶</span> Ver resolução</summary>
+<div class="dbody">
+<ol class="steps">
+<li>Seja <span class="mono">n=|V|</span>. Remover <span class="mono">u,v</span> dá <span class="mono">K_{n−2}</span>, com <span class="mono">C(n−2,2)=(n−2)(n−3)/2</span> arestas.</li>
+<li>Contando o total: <span class="mono">96 = (n−2)(n−3)/2 + deg(u) + deg(v) − [uv é aresta]</span>. Chame <span class="mono">S = deg(u)+deg(v)</span>.</li>
+<li>Restrições de grau: <span class="mono">n−1 ≤ S ≤ 2n−4</span>.</li>
+<li>Teste <span class="mono">n</span>: <br>• <span class="mono">n=14</span>: K₁₂ tem 66; precisaria <span class="mono">S≈30</span>, mas máx é <span class="mono">24</span>. ✗ <br>• <span class="mono">n=16</span>: K₁₄ tem 91; precisaria <span class="mono">S≈5</span>, mas mín é <span class="mono">15</span>. ✗ <br>• <span class="mono">n=15</span>: K₁₃ tem 78; precisa <span class="mono">S=18</span> (ou 19), e o intervalo é <span class="mono">[14,26]</span>. ✔</li>
+<li>Confirma com construção: <span class="mono">K₁₃</span> (78 arestas) + <span class="mono">u</span> ligado a 9 deles + <span class="mono">v</span> ligado a 9, sem aresta <span class="mono">uv</span>: <span class="mono">78+9+9 = 96</span>. ✔ (graus 9 ∈ [7,13]).</li>
+</ol>
+<div class="ans"><b>Resposta: <span class="mono">|V| = 15</span>.</b></div>
+</div></details>
+</section>
+
+<!-- E4 -->
+<section id="e4">
+<h2>E4 · Auto-complementar ⟹ n ≡ 0 ou 1 (mod 4) <span class="tag t-med">médio</span></h2>
+<div class="enun"><div class="lab">Enunciado</div>Um grafo é <b>auto-complementar</b> se é simples e isomorfo ao seu complemento. Mostre que, se <span class="mono">G</span> é auto-complementar de ordem <span class="mono">n</span>, então <span class="mono">n ≡ 0 (mod 4)</span> ou <span class="mono">n ≡ 1 (mod 4)</span>.</div>
+<details><summary><span class="arw">▶</span> Ver resolução</summary>
+<div class="dbody">
+<ol class="steps">
+<li>Se <span class="mono">G ≅ Ḡ</span> então têm o mesmo nº de arestas: <span class="mono">|E(G)| = |E(Ḡ)|</span>.</li>
+<li>Mas <span class="mono">|E(G)| + |E(Ḡ)| = C(n,2) = n(n−1)/2</span> (todas as arestas possíveis). Logo cada um vale a metade:
+<div class="formula">|E(G)| = n(n−1)/4</div></li>
+<li>Isso precisa ser <b>inteiro</b>, então <span class="mono">4 | n(n−1)</span>.</li>
+<li><span class="mono">n</span> e <span class="mono">n−1</span> são consecutivos (um é par, o outro ímpar). O fator 4 só pode entrar no par. Logo <span class="mono">4 | n</span> (isto é, <span class="mono">n≡0</span>) ou <span class="mono">4 | (n−1)</span> (isto é, <span class="mono">n≡1</span>). ∎</li>
+</ol>
+<div class="ans"><b>Conclusão:</b> só existe grafo auto-complementar quando <b><span class="mono">n ≡ 0</span> ou <span class="mono">n ≡ 1 (mod 4)</span></b>.</div>
+</div></details>
+</section>
+
+<!-- E5 -->
+<section id="e5">
+<h2>E5 · Ordem 60 com exatamente um vértice de grau 30? <span class="tag t-hard">difícil</span></h2>
+<div class="enun"><div class="lab">Enunciado</div>É possível que um grafo auto-complementar de ordem 60 tenha exatamente um vértice de grau 30? Justifique.</div>
+<details><summary><span class="arw">▶</span> Ver resolução</summary>
+<div class="dbody">
+<ol class="steps">
+<li><span class="mono">n=60 ≡ 0 (mod 4)</span>, então a condição do E4 está satisfeita — o impedimento não vem daí.</li>
+<li>Seja <span class="mono">φ: G → Ḡ</span> o isomorfismo. Ele satisfaz <span class="mono">d(φ(x)) = (n−1) − d(x) = 59 − d(x)</span> (preserva grau no complemento).</li>
+<li>Se há <b>um único</b> vértice <span class="mono">u</span> de grau 30, então <span class="mono">φ(u)</span> tem grau <span class="mono">59−30 = 29</span>; e como <span class="mono">u</span> é o único de grau 30, <span class="mono">φ(</span>desse de grau 29<span class="mono">) = u</span>. Ou seja, <span class="mono">φ</span> <b>troca</b> <span class="mono">u</span> com o único vértice <span class="mono">w</span> de grau 29: <span class="mono">φ(u)=w, φ(w)=u</span> (um 2-ciclo).</li>
+<li>Mas um isomorfismo para o <b>complemento</b> não pode ter 2-ciclo: se <span class="mono">φ(u)=w</span> e <span class="mono">φ(w)=u</span>, então para o par <span class="mono">uw</span> valeria
+<div class="formula">uw ∈ E(G)  ⟺  φ(u)φ(w) = uw ∈ E(Ḡ)  ⟺  uw ∉ E(G)</div>
+um absurdo (a aresta seria e não seria, ao mesmo tempo).</li>
+<li>Contradição ⟹ não existe tal grafo. ∎</li>
+</ol>
+<div class="ans"><b>Resposta: NÃO é possível.</b> O único vértice de grau 30 forçaria um 2-ciclo no isomorfismo com o complemento, o que é impossível.</div>
+<div class="tip"><b>Visão geral:</b> nesse tipo de grafo o isomorfismo <span class="mono">φ</span> emparelha grau <span class="mono">d</span> com grau <span class="mono">59−d</span>. Vértices de grau 30 e 29 andam sempre <u>em par</u> — então o nº de vértices de grau 30 é par; nunca exatamente 1.</div>
+</div></details>
+</section>
+
+<!-- E6 -->
+<section id="e6">
+<h2>E6 · Torneio de futebol <span class="tag t-med">médio</span></h2>
+<div class="enun"><div class="lab">Enunciado</div>Torneio em que cada time joga contra todos uma vez. Vitória = 2 pts, empate = 1, derrota = 0. O 1º colocado fez 7, o 2º fez 5, o 3º fez 3. Quantos pontos fez o <b>último</b> colocado?</div>
+<details><summary><span class="arw">▶</span> Ver resolução</summary>
+<div class="dbody">
+<ol class="steps">
+<li>Em cada jogo são distribuídos exatamente <b>2 pontos</b> (2+0 ou 1+1). Com <span class="mono">k</span> times há <span class="mono">C(k,2)</span> jogos, logo o <b>total de pontos é <span class="mono">k(k−1)</span></b>. (É o "aperto de mãos" dos pontos.)</li>
+<li>Quantos times? <br>• <span class="mono">k=4</span>: o 1º teria no máximo <span class="mono">2·3=6 &lt; 7</span>. Impossível. <br>• <span class="mono">k≥6</span>: total ≥ 30; tirando 15 do top-3, sobram ≥15 para times que valem ≤3 cada — não fecha. <br>• <span class="mono">k=5</span>: total <span class="mono">= 20</span>. ✔</li>
+<li>Com 5 times: <span class="mono">7+5+3 = 15</span>, sobram <span class="mono">20−15 = 5</span> para os dois últimos, cada um ≤ 3 (≤ 3º colocado). A única opção inteira é <span class="mono">3</span> e <span class="mono">2</span>.</li>
+<li>Existe de fato (placar viável <span class="mono">7,5,3,3,2</span>), então o último fez <b>2</b>.</li>
+</ol>
+<div class="ans"><b>Resposta: 2 pontos</b> (o torneio tem 5 times).</div>
+</div></details>
+</section>
+
+<!-- E7 -->
+<section id="e7">
+<h2>E7 · Todos têm o mesmo nº de conhecidos <span class="tag t-hard">difícil</span></h2>
+<div class="enun"><div class="lab">Enunciado</div>Num grupo, todo par que <b>se conhece</b> não tem conhecidos em comum; todo par que <b>não se conhece</b> tem exatamente <b>dois</b> conhecidos em comum. Mostre que todos têm o mesmo nº de conhecidos.</div>
+<details><summary><span class="arw">▶</span> Ver resolução</summary>
+<div class="dbody">
+<p class="muted">Modelo: grafo <span class="mono">G</span>, vértices = pessoas, arestas = "se conhecem". Hipótese: vizinhos têm <b>0</b> vizinhos comuns (sem triângulos); não-vizinhos têm <b>2</b>. Queremos: <span class="mono">G</span> é regular.</p>
+<ol class="steps">
+<li><b>Pares adjacentes têm o mesmo grau.</b> Sejam <span class="mono">u~v</span>. Todo vizinho <span class="mono">w</span> de <span class="mono">u</span> (com <span class="mono">w≠v</span>) <b>não</b> é vizinho de <span class="mono">v</span> (senão <span class="mono">u,v</span> teriam o vizinho comum <span class="mono">w</span> — proibido).</li>
+<li>Então <span class="mono">w</span> e <span class="mono">v</span> são não-adjacentes ⟹ têm exatamente 2 conhecidos comuns; um deles é <span class="mono">u</span>. Chame o outro de <span class="mono">g(w)</span> — é um vizinho de <span class="mono">v</span>.</li>
+<li><b><span class="mono">g</span> é injetora:</b> se <span class="mono">g(w₁)=g(w₂)=z</span>, então <span class="mono">u</span> e <span class="mono">z</span> teriam pelo menos 3 vizinhos comuns (<span class="mono">v, w₁, w₂</span>) — impossível (não-adjacentes têm só 2; e <span class="mono">u~z</span> daria triângulo).</li>
+<li>Logo <span class="mono">|N(u)∖{v}| ≤ |N(v)∖{u}|</span>, isto é <span class="mono">d(u) ≤ d(v)</span>. Por simetria <span class="mono">d(v) ≤ d(u)</span>, então <span class="mono">d(u)=d(v)</span>.</li>
+<li><b>Pares não-adjacentes também:</b> dois não-vizinhos têm um conhecido comum <span class="mono">z</span> (são 2, então ≥1); por (4), <span class="mono">d(u)=d(z)=d(v)</span>. Assim todos os graus coincidem.</li>
+</ol>
+<div class="ans"><b>Conclusão:</b> <span class="mono">G</span> é <b>regular</b> — todas as pessoas têm o mesmo número de conhecidos. ∎</div>
+<div class="tip"><b>Nome disso:</b> um grafo com esses dois "números de interseção" constantes é um <b>grafo fortemente regular</b>; o que mostramos é que ele é necessariamente regular.</div>
+</div></details>
+</section>
+
+<!-- respostas -->
+<section id="respostas">
+<h2>✅ Respostas (resumo)</h2>
+<table>
+<tr><th>Ex.</th><th>Resposta</th></tr>
+<tr><td class="mono">E1(a)</td><td>SIM — G₁ ≅ G₂ (bijeção explícita; ambos têm graus 4,4,3,3,2,2,2)</td></tr>
+<tr><td class="mono">E1(b)</td><td>NÃO — H₁ (16 vértices) e H₂ (17 vértices) têm ordens diferentes</td></tr>
+<tr><td class="mono">E2</td><td><b>n−1</b> vértices de grau ímpar em Ḡ (e n é ímpar)</td></tr>
+<tr><td class="mono">E3</td><td><b>|V| = 15</b></td></tr>
+<tr><td class="mono">E4</td><td>|E(G)| = n(n−1)/4 inteiro ⟹ n ≡ 0 ou 1 (mod 4)</td></tr>
+<tr><td class="mono">E5</td><td>NÃO — forçaria um 2-ciclo no isomorfismo com o complemento</td></tr>
+<tr><td class="mono">E6</td><td><b>2 pontos</b> (5 times)</td></tr>
+<tr><td class="mono">E7</td><td>O grafo é regular — todos com o mesmo grau</td></tr>
+</table>
+<hr>
+<p class="muted">Conferido em 06/06/2026. Diagramas de E1 redesenhados a partir da Figura 1 da lista. Em caso de dúvida num enunciado, confira o PDF original em <code>listas/lista1-md2.pdf</code>. Bons estudos! Revisões espaçadas sugeridas: <b>1, 3 e 7 dias</b> a partir de hoje, mirando a <b>P1 (29/06)</b>.</p>
+</section>
+
+</main>
+</div>
+<script>
+const hamb=document.getElementById('hamb'),sb=document.getElementById('sidebar');
+hamb.onclick=()=>sb.classList.toggle('open');
+document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>sb.classList.remove('open'));
+const links=[...document.querySelectorAll('#nav a')],map={};
+links.forEach(a=>map[a.getAttribute('href').slice(1)]=a);
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=map[e.target.id];if(a)a.classList.add('active');}});},{rootMargin:'-15% 0px -75% 0px'});
+document.querySelectorAll('section').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDO · Guia 2 — Métodos de Substituição (P1): F(ax+by+c), Homogêneas, Bernoulli, Riccati</title>
+
+<!-- MathJax -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true
+    },
+    chtml: { scale: 1.0 },
+    options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+  };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0e1419; --bg-elev:#151c24; --card:#1a2330; --card-2:#202c3a;
+  --border:#2a3a4d; --border-soft:#223040;
+  --text:#e7eef5; --dim:#9db0c2; --faint:#6f8398;
+  --accent:#6ea8fe; --accent-2:#7ee0c8; --accent-3:#c9a4ff;
+  --ok:#8ce99a; --warn:#ffd166; --danger:#ff8a8a;
+  --formula-bg:#11202b; --formula-bd:#2f7d6b;
+  --r:14px; --shadow:0 10px 30px rgba(0,0,0,.35);
+  --maxw:880px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:radial-gradient(1200px 600px at 80% -10%, #16222e 0%, var(--bg) 55%) fixed;
+  color:var(--text); font-family:'DM Sans',system-ui,sans-serif; line-height:1.65;
+  font-size:16.5px;
+}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+
+.layout{display:grid; grid-template-columns:300px 1fr; min-height:100vh}
+.sidebar{
+  position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:linear-gradient(180deg,var(--bg-elev),#10171e);
+  border-right:1px solid var(--border-soft); padding:22px 16px 60px;
+}
+.sidebar::-webkit-scrollbar{width:8px} .sidebar::-webkit-scrollbar-thumb{background:#26323f;border-radius:8px}
+.brand{display:flex; gap:11px; align-items:center; margin-bottom:6px}
+.brand .dot{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent-3),var(--accent));
+  display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:600;color:#06121a;font-size:13px}
+.brand b{font-family:'Fraunces';font-size:18px;font-weight:600;letter-spacing:.2px}
+.brand small{display:block;color:var(--faint);font-size:11.5px;letter-spacing:.4px;text-transform:uppercase}
+
+.search{margin:16px 0 10px; position:relative}
+.search input{width:100%; padding:10px 12px 10px 34px; border-radius:10px; border:1px solid var(--border);
+  background:#0d141b; color:var(--text); font-size:14px; font-family:inherit}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(110,168,254,.15)}
+.search svg{position:absolute; left:10px; top:11px; opacity:.55}
+.search .count{position:absolute; right:10px; top:10px; font-size:11px; color:var(--faint)}
+
+.guidelink{display:block;margin:4px 0 0;padding:9px 11px;border:1px solid var(--border-soft);border-radius:9px;
+  background:#121b24;color:var(--dim);font-size:12.5px}
+.guidelink:hover{text-decoration:none;border-color:var(--accent);color:var(--text)}
+.guidelink b{color:var(--accent-2);font-size:11px;text-transform:uppercase;letter-spacing:.4px;display:block}
+
+nav.toc{margin-top:10px}
+nav.toc .group{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);margin:18px 0 6px 8px}
+nav.toc a{display:block; color:var(--dim); padding:7px 10px; border-radius:8px; font-size:14px;border-left:2px solid transparent}
+nav.toc a:hover{background:#172029;color:var(--text);text-decoration:none}
+nav.toc a.active{background:#13202c;color:#fff;border-left-color:var(--accent)}
+nav.toc a.sub{padding-left:24px;font-size:13px;color:var(--faint)}
+nav.toc a.sub.active{color:#fff}
+
+main{padding:34px clamp(18px,5vw,64px) 120px; max-width:calc(var(--maxw) + 128px); margin:0 auto; width:100%}
+section{scroll-margin-top:70px; margin-bottom:46px}
+h1{font-family:'Fraunces';font-weight:600;font-size:clamp(26px,4vw,38px);line-height:1.15;margin:.2em 0 .3em}
+h2{font-family:'Fraunces';font-weight:600;font-size:clamp(21px,3vw,27px);margin:1.4em 0 .5em;
+  padding-bottom:.3em;border-bottom:1px solid var(--border-soft)}
+h3{font-family:'Fraunces';font-weight:600;font-size:19px;margin:1.5em 0 .4em;color:#eaf2fb}
+h4{font-size:15px;margin:1.2em 0 .3em;color:var(--accent-2);letter-spacing:.2px}
+p{margin:.55em 0}
+strong{color:#fff}
+.lead{color:var(--dim);font-size:17px}
+
+.hero{background:linear-gradient(135deg,#1d2433,#141d27); border:1px solid var(--border);
+  border-radius:var(--r); padding:26px 28px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-40% 60% auto auto;width:380px;height:380px;
+  background:radial-gradient(circle,rgba(201,164,255,.12),transparent 60%)}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:#0e1a23;border:1px solid var(--border);
+  border-radius:999px;padding:6px 13px;font-size:13px;color:var(--dim)}
+.pill b{color:#fff}
+.pill.exam{background:linear-gradient(135deg,#3a2630,#2a1d24);border-color:#5a3a44;color:#ffd9df}
+.pill.exam b{color:#fff}
+.countdown{font-family:'JetBrains Mono';color:var(--warn)}
+
+.grid{display:grid;gap:14px}
+.grid.two{grid-template-columns:1fr 1fr}
+.grid.four{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--border-soft);border-radius:12px;padding:16px 18px}
+.card h4{margin-top:0}
+.card.k{text-align:center}
+.card.k .sub{font-family:'JetBrains Mono';color:var(--accent-2);font-size:13px;margin-top:6px}
+
+.callout{border-radius:12px;padding:14px 16px 14px 18px;margin:16px 0;border:1px solid var(--border);
+  border-left-width:4px;background:var(--card)}
+.callout .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:4px}
+.callout.note{border-left-color:var(--accent)} .callout.note .lab{color:var(--accent)}
+.callout.tip{border-left-color:var(--ok)} .callout.tip .lab{color:var(--ok)}
+.callout.warn{border-left-color:var(--warn)} .callout.warn .lab{color:var(--warn)}
+.callout.danger{border-left-color:var(--danger)} .callout.danger .lab{color:var(--danger)}
+.callout.proof{border-left-color:var(--accent-3);background:#191428} .callout.proof .lab{color:var(--accent-3)}
+
+.fml{background:var(--formula-bg);border:1px solid var(--border-soft);border-left:4px solid var(--formula-bd);
+  border-radius:10px;padding:12px 16px;margin:14px 0;overflow-x:auto}
+.fml.center{text-align:center}
+
+.tablewrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border-soft);vertical-align:top}
+th{color:var(--accent-2);font-weight:600;background:#121b24}
+tr:hover td{background:#141d27}
+.tag{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;white-space:nowrap}
+.tag.lin{background:#13322a;color:#8ce9c0}
+.tag.nlin{background:#3a2230;color:#ffb3c6}
+.tag.extra{background:#2a2140;color:#d3b8ff}
+
+details.ex,details.fy{border:1px solid var(--border);border-radius:12px;margin:14px 0;background:var(--card);overflow:hidden}
+details.ex>summary,details.fy>summary{cursor:pointer;list-style:none;padding:13px 16px;display:flex;align-items:center;gap:10px;
+  font-weight:600;user-select:none}
+details>summary::-webkit-details-marker{display:none}
+summary .chev{transition:transform .25s;color:var(--accent);flex:none}
+details[open]>summary .chev{transform:rotate(90deg)}
+details.ex>summary{background:#16212c;border-bottom:1px solid transparent}
+details.ex[open]>summary{border-bottom-color:var(--border-soft)}
+summary .extag{margin-left:auto;font-size:11px;color:var(--faint);font-weight:500}
+.ex .body,.fy .body{padding:6px 18px 18px}
+.step{display:flex;gap:12px;margin:10px 0;align-items:flex-start}
+.step .n{flex:none;width:25px;height:25px;border-radius:50%;background:#143040;color:var(--accent-2);
+  display:grid;place-items:center;font-size:13px;font-weight:700;font-family:'JetBrains Mono';margin-top:2px}
+
+details.fy>summary{background:#1b1730}
+details.fy{border-color:#3a2f55}
+.fy .prompt{font-size:15px;color:#eadcff;margin:6px 0 10px}
+.fy textarea{width:100%;min-height:90px;background:#0d141b;border:1px solid var(--border);border-radius:10px;
+  color:var(--text);padding:10px 12px;font-family:inherit;font-size:14.5px;resize:vertical}
+.fy textarea:focus{outline:none;border-color:var(--accent-3)}
+.fy .rubric{margin-top:12px}
+
+kbd{font-family:'JetBrains Mono';background:#0d141b;border:1px solid var(--border);border-bottom-width:2px;
+  border-radius:6px;padding:1px 6px;font-size:12.5px}
+mark{background:#5b4a16;color:#fff;border-radius:3px;padding:0 2px}
+.muted{color:var(--faint)}
+ul.clean{margin:.4em 0;padding-left:1.2em} ul.clean li{margin:.3em 0}
+
+.topbar{display:none}
+@media(max-width:880px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:fixed;z-index:50;width:300px;left:-320px;transition:left .25s;box-shadow:var(--shadow)}
+  .sidebar.open{left:0}
+  .topbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:40;
+    background:rgba(14,20,25,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border-soft);padding:10px 14px}
+  .topbar b{font-family:'Fraunces';font-size:16px}
+  .hamb{background:#16212c;border:1px solid var(--border);color:var(--text);border-radius:9px;
+    width:40px;height:38px;font-size:18px;cursor:pointer}
+  .grid.two,.grid.four{grid-template-columns:1fr}
+  main{padding-top:18px}
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;display:none}
+  .backdrop.show{display:block}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="hamb" id="hamb" aria-label="Menu">☰</button>
+  <b>EDO · Guia 2 — Substituições</b>
+</div>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="dot">v=</div>
+      <div><b>EDO — Guia 2</b><small>Substituições · P1</small></div>
+    </div>
+
+    <a class="guidelink" href="guia-edo-p1-fundamentos.html"><b>← Guia 1</b>Fundamentos · Separáveis · Lineares 1ª ordem</a>
+
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar no guia…" autocomplete="off">
+      <span class="count" id="count"></span>
+    </div>
+
+    <nav class="toc" id="toc">
+      <div class="group">Começo</div>
+      <a href="#intro">Visão geral &amp; como usar</a>
+      <a href="#quando">Quando usar cada substituição</a>
+
+      <div class="group">1 · y′ = F(ax+by+c)</div>
+      <a href="#tipo1">Substituição v = ax+by+c</a>
+
+      <div class="group">2 · Homogêneas</div>
+      <a href="#homog">Equações homogêneas (v = y/x)</a>
+
+      <div class="group">3 · Bernoulli</div>
+      <a href="#bernoulli">Bernoulli (v = y¹⁻ⁿ)</a>
+
+      <div class="group">4 · Riccati ✦ extra</div>
+      <a href="#riccati">Riccati (y = y₁ + 1/z)</a>
+
+      <div class="group">Fechamento</div>
+      <a href="#erros">Erros comuns</a>
+      <a href="#resto-p1">O que ainda falta na P1</a>
+    </nav>
+  </aside>
+
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section id="intro">
+      <div class="hero">
+        <h1 style="margin-top:0">Métodos de Substituição</h1>
+        <p class="lead">Guia 2 (Aula 4) — quando a EDO de 1ª ordem <strong>não é separável nem linear</strong>, uma troca de variável esperta a transforma numa que você já sabe resolver. Quatro tipos: <strong>\(F(ax+by+c)\)</strong>, <strong>homogêneas</strong>, <strong>Bernoulli</strong> e <strong>Riccati</strong>.</p>
+        <div class="meta">
+          <span class="pill">BCN0405-15 · <b>Aula 4</b></span>
+          <span class="pill">Prof. Edson Arrázola</span>
+          <span class="pill exam">📌 P1: <b>30/06/2026</b> · <span class="countdown" id="cd">—</span></span>
+        </div>
+      </div>
+
+      <div class="callout note" style="margin-top:20px">
+        <div class="lab">Como usar este guia</div>
+        Cada método tem a <strong>dedução de por que a substituição funciona</strong>, uma receita e <strong>exemplos resolvidos passo a passo</strong> (do slide e da Lista 1, já conferidos). Ao fim de cada método, um <strong>bloco Feynman</strong>: explique com suas palavras — cole a resposta aqui no chat que eu corrijo. Pré-requisito: separáveis e fator integrante do <a href="guia-edo-p1-fundamentos.html">Guia 1</a>.
+      </div>
+    </section>
+
+    <!-- ===================== QUANDO USAR ===================== -->
+    <section id="quando">
+      <h2>Quando usar cada substituição</h2>
+      <p>A ideia comum: <strong>trocar \(y\) por uma nova variável \(v\)</strong> de modo que a equação vire <em>separável</em> ou <em>linear</em>. O segredo é reconhecer o formato. Use esta tabela como bússola.</p>
+      <div class="grid four">
+        <div class="card k"><h4>F(ax+by+c)</h4><div class="sub">v = ax+by+c</div><p class="muted" style="font-size:13px">vira separável</p></div>
+        <div class="card k"><h4>Homogênea</h4><div class="sub">v = y/x</div><p class="muted" style="font-size:13px">vira separável</p></div>
+        <div class="card k"><h4>Bernoulli</h4><div class="sub">v = y¹⁻ⁿ</div><p class="muted" style="font-size:13px">vira linear</p></div>
+        <div class="card k"><h4>Riccati ✦</h4><div class="sub">y = y₁ + 1/z</div><p class="muted" style="font-size:13px">vira linear</p></div>
+      </div>
+      <div class="callout warn">
+        <div class="lab">1º passo é sempre reconhecer</div>
+        Antes de substituir, cheque a ordem: já é <strong>separável</strong>? já é <strong>linear</strong>? Se sim, resolva pelo Guia 1. Só parta para substituição quando <em>nenhum</em> dos dois funcionar.
+      </div>
+    </section>
+
+    <!-- ===================== 1. F(ax+by+c) ===================== -->
+    <section id="tipo1">
+      <h2>1 · Equações \(y'=F(ax+by+c)\)</h2>
+      <p>Quando o lado direito depende de \(x\) e \(y\) <strong>só através da combinação linear</strong> \(ax+by+c\) (com \(b\neq 0\)), a troca \(v=ax+by+c\) deixa a equação separável.</p>
+      <div class="fml center">\[ \frac{dy}{dx}=F(ax+by+c),\qquad v=ax+by+c. \]</div>
+
+      <div class="callout proof">
+        <div class="lab">Dedução — por que vira separável</div>
+        <div class="step"><div class="n">1</div><div>Defina \(v=ax+by+c\) e derive: \(v'=a+b\,y'\Rightarrow y'=\dfrac{v'-a}{b}\).</div></div>
+        <div class="step"><div class="n">2</div><div>Substitua em \(y'=F(v)\): \(\dfrac{v'-a}{b}=F(v)\).</div></div>
+        <div class="step"><div class="n">3</div><div>Isole \(v'\): \(\boxed{\,v'=b\,F(v)+a\,}\) — separável em \(v\) e \(x\): \(\dfrac{dv}{b\,F(v)+a}=dx\).</div></div>
+        <div class="step"><div class="n">4</div><div>Integre, ache \(v(x)\) e <strong>volte</strong> com \(y=\dfrac{v-ax-c}{b}\).</div></div>
+      </div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo — \(y'=(x+y+3)^2\) (com PVI) <span class="extag">Aula 4</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Aqui \(a=b=1,\ c=3,\ F(v)=v^2\). Seja \(v=x+y+3\Rightarrow v'=1+y'\Rightarrow y'=v'-1\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(v'-1=v^2\Rightarrow v'=v^2+1\Rightarrow \dfrac{dv}{v^2+1}=dx\).</div></div>
+          <div class="step"><div class="n">3</div><div>Integre: \(\arctan(v)=x+c\Rightarrow \arctan(x+y+3)=x+c\) (implícita).</div></div>
+          <div class="step"><div class="n">4</div><div>Explícita: \(y=\tan(x+c)-x-3\).</div></div>
+          <div class="step"><div class="n">5</div><div>PVI \(y(0)=-3\): \(v(0)=0\Rightarrow\arctan 0=0+c\Rightarrow c=0\). Logo \(y=\tan x-x-3\), com domínio \(\big(-\tfrac{\pi}{2},\tfrac{\pi}{2}\big)\) (onde \(\tan\) é contínua em torno de \(0\)).</div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — \(F(ax+by+c)\)</summary>
+        <div class="body">
+          <p class="prompt">Como você <strong>reconhece</strong> que uma EDO é desse tipo, e por que \(v=ax+by+c\) a torna separável?</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>Reconhece quando \(x\) e \(y\) aparecem <strong>só</strong> dentro do mesmo bloco \(ax+by+c\).</li>
+                <li>Derivar \(v\) troca \(y'\) por \(v'\); como tudo vira função de \(v\), as variáveis separam.</li>
+                <li>Não esqueça o \(+a\) ao montar \(v'=bF(v)+a\), e volte para \(y\) no fim.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== 2. HOMOGÊNEAS ===================== -->
+    <section id="homog">
+      <h2>2 · Equações homogêneas \((v=y/x)\)</h2>
+      <p>Uma EDO de 1ª ordem é <strong>homogênea</strong> quando o lado direito depende apenas do quociente \(y/x\):</p>
+      <div class="fml center">\[ \frac{dy}{dx}=F\!\left(\frac{y}{x}\right). \]</div>
+      <div class="callout danger">
+        <div class="lab">Não confunda os dois "homogênea"</div>
+        Aqui <strong>homogênea</strong> = lado direito é função de \(y/x\). É <em>diferente</em> de "EDO linear homogênea" (aquela com \(g(x)=0\), que veremos na 2ª ordem). Mesmo nome, conceitos distintos.
+      </div>
+      <p class="muted">Teste rápido: se trocar \((x,y)\to(tx,ty)\) e o lado direito <strong>não mudar</strong>, é homogênea (grau 0). O 1º passo é sempre escrever na forma \(F(y/x)\) — se não der, não é homogênea.</p>
+
+      <div class="callout proof">
+        <div class="lab">Dedução — por que vira separável</div>
+        <div class="step"><div class="n">1</div><div>Seja \(v=\dfrac{y}{x}\Rightarrow y=v\,x\). Derivando (regra do produto): \(y'=v+x\,v'\).</div></div>
+        <div class="step"><div class="n">2</div><div>Substitua em \(y'=F(v)\): \(v+x\,v'=F(v)\).</div></div>
+        <div class="step"><div class="n">3</div><div>Isole: \(\boxed{\,x\,v'=F(v)-v\,}\Rightarrow \dfrac{dv}{F(v)-v}=\dfrac{dx}{x}\) — separável.</div></div>
+        <div class="step"><div class="n">4</div><div>Integre, ache \(v(x)\) e volte com \(y=v\,x\).</div></div>
+      </div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 1 (com PVI) — \(xy\,y'=x^2+y^2\) <span class="extag">Aula 4</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Divida por \(xy\): \(y'=\dfrac{x^2+y^2}{xy}=\dfrac{x}{y}+\dfrac{y}{x}=\dfrac{1}{v}+v\). É homogênea.</div></div>
+          <div class="step"><div class="n">2</div><div>Com \(y'=v+xv'\): \(v+xv'=\dfrac{1}{v}+v\Rightarrow xv'=\dfrac{1}{v}\).</div></div>
+          <div class="step"><div class="n">3</div><div>Separe e integre: \(v\,dv=\dfrac{dx}{x}\Rightarrow \dfrac{v^2}{2}=\ln|x|+c_0\Rightarrow v^2=\ln x^2+c_1\).</div></div>
+          <div class="step"><div class="n">4</div><div>Volte (\(v=y/x\)): \(\dfrac{y^2}{x^2}=\ln x^2+c_1\Rightarrow y^2=x^2\big(\ln x^2+c_1\big)\).</div></div>
+          <div class="step"><div class="n">5</div><div>PVI \(y(1)=-2\): \(4=1\cdot(0+c_1)\Rightarrow c_1=4\). Como \(y(1)\lt 0\): \(\boxed{y=-\sqrt{x^2(\ln x^2+4)}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 2 — \(x\,dy-(x+y)\,dx=0\) <span class="extag">Aula 4</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Reescreva: \(x\,y'=x+y\Rightarrow y'=1+\dfrac{y}{x}=1+v\). Homogênea.</div></div>
+          <div class="step"><div class="n">2</div><div>\(v+xv'=1+v\Rightarrow xv'=1\Rightarrow dv=\dfrac{dx}{x}\).</div></div>
+          <div class="step"><div class="n">3</div><div>Integre: \(v=\ln|x|+c\).</div></div>
+          <div class="step"><div class="n">4</div><div>Volte: \(\boxed{y=x\big(\ln|x|+c\big)}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 3 — \(y'=\dfrac{y-x}{x}\) <span class="extag">Lista 1, ex. 5(g)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>\(y'=\dfrac{y}{x}-1=v-1\). Homogênea.</div></div>
+          <div class="step"><div class="n">2</div><div>\(v+xv'=v-1\Rightarrow xv'=-1\Rightarrow dv=-\dfrac{dx}{x}\).</div></div>
+          <div class="step"><div class="n">3</div><div>Integre: \(v=-\ln|x|+c\).</div></div>
+          <div class="step"><div class="n">4</div><div>Volte: \(\boxed{y=x\big(c-\ln x\big)}\).</div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — Homogêneas</summary>
+        <div class="body">
+          <p class="prompt">Deduza por que \(v=y/x\) transforma uma equação homogênea em separável. (Dica: o pulo do gato está em \(y=vx\).)</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>De \(y=vx\) sai \(y'=v+xv'\) (regra do produto) — esse termo \(xv'\) é o que permite separar.</li>
+                <li>Como o lado direito já é \(F(v)\), tudo fica em \(v\) e \(x\): \(xv'=F(v)-v\).</li>
+                <li>1º passo é escrever na forma \(F(y/x)\); senão, não é homogênea.</li>
+              </ul>
+              <p class="muted"><strong>Lacuna comum:</strong> confundir com "linear homogênea" (\(g=0\)); esquecer de voltar de \(v\) para \(y\).</p>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== 3. BERNOULLI ===================== -->
+    <section id="bernoulli">
+      <h2>3 · Equação de Bernoulli \((v=y^{1-n})\)</h2>
+      <p>É uma equação "quase linear", estragada por uma potência \(y^n\):</p>
+      <div class="fml center">\[ y'+p(x)\,y=q(x)\,y^{n},\qquad n\neq 0,1. \]</div>
+      <p>Ela <strong>não é linear</strong> (por causa do \(y^n\)), mas a troca \(v=y^{1-n}\) a lineariza.</p>
+      <div class="callout tip">
+        <div class="lab">Casos de borda</div>
+        Se \(n=0\): já é linear (\(y'+py=q\)). Se \(n=1\): vira separável (\(y'+(p-q)y=0\)). Por isso a definição exige \(n\neq 0,1\).
+      </div>
+
+      <div class="callout proof">
+        <div class="lab">Dedução — por que vira linear</div>
+        <div class="step"><div class="n">1</div><div>Divida tudo por \(y^n\) (multiplique por \(y^{-n}\)): \(y^{-n}y'+p\,y^{1-n}=q\).</div></div>
+        <div class="step"><div class="n">2</div><div>Seja \(v=y^{1-n}\). Então \(v'=(1-n)\,y^{-n}y'\Rightarrow y^{-n}y'=\dfrac{v'}{1-n}\).</div></div>
+        <div class="step"><div class="n">3</div><div>Substitua: \(\dfrac{v'}{1-n}+p\,v=q\Rightarrow \boxed{\,v'+(1-n)p\,v=(1-n)q\,}\) — linear em \(v\)!</div></div>
+        <div class="step"><div class="n">4</div><div>Resolva pelo <a href="guia-edo-p1-fundamentos.html#fator">fator integrante</a> (Guia 1) e volte com \(y=v^{1/(1-n)}\).</div></div>
+      </div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 1 — \(y'-\dfrac{y}{x}=-\dfrac{y^2}{x},\ x\gt 0\) <span class="extag">Aula 4</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Forma Bernoulli com \(p=-\tfrac1x,\ q=-\tfrac1x,\ n=2\). Multiplique por \(y^{-2}\): \(y^{-2}y'-\tfrac1x y^{-1}=-\tfrac1x\).</div></div>
+          <div class="step"><div class="n">2</div><div>Seja \(v=y^{-1}\Rightarrow v'=-y^{-2}y'\), ou seja \(y^{-2}y'=-v'\). Substituindo: \(-v'-\tfrac1x v=-\tfrac1x\).</div></div>
+          <div class="step"><div class="n">3</div><div>Multiplique por \(-1\): \(v'+\tfrac1x v=\tfrac1x\) (linear). Fator integrante \(\mu=e^{\int dx/x}=x\).</div></div>
+          <div class="step"><div class="n">4</div><div>\(\tfrac{d}{dx}(xv)=x\cdot\tfrac1x=1\Rightarrow xv=x+c\Rightarrow v=\dfrac{x+c}{x}\).</div></div>
+          <div class="step"><div class="n">5</div><div>Volte (\(v=1/y\)): \(\boxed{y=\dfrac{x}{x+c}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo 2 — \(xy\,y'=x^2+y^2\) por Bernoulli <span class="extag">Aula 4</span></summary>
+        <div class="body">
+          <p class="muted">A mesma do exemplo homogêneo 1 — aqui resolvida como Bernoulli, para mostrar que caminhos diferentes dão a mesma resposta.</p>
+          <div class="step"><div class="n">1</div><div>Reescreva: \(y'-\dfrac1x y=x\,y^{-1}\). Bernoulli com \(p=-\tfrac1x,\ q=x,\ n=-1\).</div></div>
+          <div class="step"><div class="n">2</div><div>Multiplique por \(y\): \(y\,y'-\tfrac1x y^2=x\). Seja \(v=y^2\Rightarrow v'=2yy'\Rightarrow yy'=\tfrac{v'}{2}\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(\tfrac{v'}{2}-\tfrac1x v=x\Rightarrow v'-\tfrac2x v=2x\) (linear). \(\mu=e^{\int -2/x\,dx}=x^{-2}\).</div></div>
+          <div class="step"><div class="n">4</div><div>\(\tfrac{d}{dx}(x^{-2}v)=2x\cdot x^{-2}=\tfrac2x\Rightarrow x^{-2}v=2\ln|x|+c\Rightarrow v=x^2(\ln x^2+c)\).</div></div>
+          <div class="step"><div class="n">5</div><div>Volte (\(v=y^2\)): \(\boxed{y^2=x^2(\ln x^2+c)}\) — idêntico ao da seção homogênea. ✓</div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — Bernoulli</summary>
+        <div class="body">
+          <p class="prompt">Por que dividir por \(y^n\) e usar \(v=y^{1-n}\) lineariza a equação? O que acontece se \(n=0\) ou \(n=1\)?</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>Dividir por \(y^n\) faz aparecer exatamente \(y^{1-n}\) e \(y^{-n}y'\), que é \(\tfrac{1}{1-n}\,(y^{1-n})'\).</li>
+                <li>Logo \(v=y^{1-n}\) transforma tudo numa linear em \(v\).</li>
+                <li>\(n=0\): já linear. \(n=1\): separável. Por isso \(n\neq 0,1\).</li>
+              </ul>
+              <p class="muted"><strong>Lacunas comuns:</strong> errar o sinal de \(v'=(1-n)y^{-n}y'\); esquecer de voltar \(y=v^{1/(1-n)}\).</p>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== 4. RICCATI ===================== -->
+    <section id="riccati">
+      <h2>4 · Equação de Riccati <span class="tag extra">✦ tópico extra</span></h2>
+      <p>No slide da Aula 4, Riccati aparece marcada com \(*\) (sem desenvolvimento). Como a <strong>Lista 1 (ex. 12)</strong> cobre o método completo, incluí aqui — é o tópico extra que dá para abordar. A equação é:</p>
+      <div class="fml center">\[ y'+p(t)\,y+q(t)\,y^{2}=f(t),\qquad q(t)\neq 0. \]</div>
+      <p>Tem \(y^2\) ⇒ <strong>não-linear</strong>. A diferença crucial para Bernoulli: Riccati só se resolve <strong>se já conhecemos uma solução particular</strong> \(y_1(t)\). Com ela, a troca \(y=y_1+\dfrac{1}{z}\) reduz tudo a uma <strong>linear</strong> em \(z\).</p>
+
+      <div class="callout proof">
+        <div class="lab">Dedução — a troca \(y=y_1+1/z\) lineariza</div>
+        <div class="step"><div class="n">1</div><div>\(y_1\) resolve a equação: \(y_1'+p\,y_1+q\,y_1^2=f\).</div></div>
+        <div class="step"><div class="n">2</div><div>Ponha \(y=y_1+\dfrac1z\Rightarrow y'=y_1'-\dfrac{z'}{z^2}\). Substitua na equação e expanda \(\big(y_1+\tfrac1z\big)^2=y_1^2+\tfrac{2y_1}{z}+\tfrac1{z^2}\).</div></div>
+        <div class="step"><div class="n">3</div><div>Os termos com \(y_1\) somam \(\,y_1'+p y_1+q y_1^2=f\,\) e cancelam o \(f\). Sobra: \(-\dfrac{z'}{z^2}+\dfrac{p}{z}+\dfrac{2q y_1}{z}+\dfrac{q}{z^2}=0\).</div></div>
+        <div class="step"><div class="n">4</div><div>Multiplique por \(-z^2\): \(\boxed{\,z'-\big(p+2q\,y_1\big)\,z=q\,}\) — linear de 1ª ordem em \(z\)!</div></div>
+      </div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo — \(y'+y^2-(1+2e^{t})y+e^{2t}=0,\ y_1=e^{t}\) <span class="extag">Lista 1, ex. 12(c.3)</span></summary>
+        <div class="body">
+          <div class="step"><div class="n">1</div><div>Confira que \(y_1=e^{t}\) resolve: \(y_1'=e^t\) e \(e^t+e^{2t}-(1+2e^t)e^t+e^{2t}=0\) ✓.</div></div>
+          <div class="step"><div class="n">2</div><div>Identifique a forma \(y'+p\,y+q\,y^2=f\): \(p=-(1+2e^t),\ q=1,\ f=-e^{2t}\).</div></div>
+          <div class="step"><div class="n">3</div><div>Use \(z'-(p+2q\,y_1)z=q\): \(p+2q y_1=-(1+2e^t)+2e^t=-1\). Logo \(z'+z=1\) (linear!).</div></div>
+          <div class="step"><div class="n">4</div><div>Resolva: \(\mu=e^{t}\), \(\tfrac{d}{dt}(e^t z)=e^t\Rightarrow e^t z=e^t+c\Rightarrow z=1+c\,e^{-t}\).</div></div>
+          <div class="step"><div class="n">5</div><div>Volte (\(y=y_1+1/z\)): \(\boxed{y=e^{t}+\dfrac{1}{1+c\,e^{-t}}}\).</div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — Riccati</summary>
+        <div class="body">
+          <p class="prompt">Qual a diferença essencial entre Bernoulli e Riccati? Por que Riccati precisa de uma solução particular \(y_1\)?</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>Bernoulli se resolve "sozinha" com \(v=y^{1-n}\). Riccati tem o termo \(y^2\) <strong>e</strong> termo livre \(f(t)\) — sem um \(y_1\) conhecido, a troca não fecha.</li>
+                <li>Conhecer \(y_1\) é o que cancela o \(f\) e os termos quadráticos, deixando uma linear em \(z\).</li>
+                <li>Resultado-chave: \(z'-(p+2qy_1)z=q\).</li>
+              </ul>
+              <p class="muted"><strong>Lacuna comum:</strong> tentar Riccati sem \(y_1\); esquecer de inverter \(y=y_1+1/z\) no fim.</p>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== ERROS ===================== -->
+    <section id="erros">
+      <h2>Erros comuns nas substituições</h2>
+      <div class="grid two">
+        <div class="callout danger" style="margin:0"><div class="lab">Não reconhecer o tipo</div>Antes de substituir, descarte separável e linear. Substituição é o "plano B".</div>
+        <div class="callout danger" style="margin:0"><div class="lab">"Homogênea" ambígua</div>Aqui = \(F(y/x)\). Não é a "linear homogênea" (\(g=0\)) da 2ª ordem.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Sinais em Bernoulli</div>\(v'=(1-n)y^{-n}y'\): cuidado com o sinal de \(1-n\) (ex.: \(n=2\Rightarrow\) fator \(-1\)).</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Riccati sem \(y_1\)</div>Sem uma solução particular conhecida, a troca não lineariza. Procure-a no enunciado.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Esquecer o \(+a\)</div>Em \(v=ax+by+c\), o passo dá \(v'=bF(v)+a\) — o \(+a\) some fácil.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Não voltar para \(y\)</div>Resolver em \(v\) ou \(z\) e parar. Sempre desfaça a substituição.</div>
+      </div>
+    </section>
+
+    <!-- ===================== RESTO DA P1 ===================== -->
+    <section id="resto-p1">
+      <h2>O que ainda falta na P1</h2>
+      <p>Com o Guia 1 (fundamentos, separáveis, lineares) + este Guia 2 (substituições), você fecha boa parte da 1ª ordem. Pelo cronograma, ainda restam para a P1 (30/06) — presentes nas <strong>Listas 1 e 2</strong>:</p>
+      <ul class="clean">
+        <li><strong>Campo de direções</strong> e <strong>equações autônomas</strong>: pontos críticos e estabilidade (estável/instável).</li>
+        <li><strong>Modelagem:</strong> decaimento radioativo, resfriamento de Newton, misturas em tanques, dinâmica populacional (Gompertz, Von Bertalanffy), circuitos RC.</li>
+        <li><strong>Teorema de Existência e Unicidade:</strong> onde \(f\) e \(\partial f/\partial y\) são contínuas → solução única.</li>
+      </ul>
+      <div class="callout tip">
+        <div class="lab">Próximo guia</div>
+        Quando esses tópicos forem dados (ou se quiser adiantar), peça: <em>"faz o Guia 3 de EDO — autônomas, modelagem e TEU"</em> que eu monto no mesmo formato, com exemplos da Lista 2.
+      </div>
+    </section>
+
+    <p class="muted" style="text-align:center;margin-top:50px;font-size:13px">
+      Guia 2 para Enzo · BCN0405-15 EDO · base: slide Aula 4 + Lista 1 · foco Prova 1 (30/06/2026) · exemplos conferidos simbolicamente
+    </p>
+  </main>
+</div>
+
+<script>
+// ---------- countdown to P1 ----------
+(function(){
+  var exam=new Date(2026,5,30); // 30/06/2026
+  var today=new Date(); today.setHours(0,0,0,0);
+  var days=Math.round((exam-today)/86400000);
+  var el=document.getElementById('cd');
+  if(el) el.textContent = days>0 ? ('faltam '+days+' dias') : (days===0?'é hoje!':'já passou');
+})();
+
+// ---------- mobile sidebar ----------
+var sb=document.getElementById('sidebar'), bd=document.getElementById('backdrop'), hb=document.getElementById('hamb');
+function closeSb(){sb.classList.remove('open');bd.classList.remove('show');}
+if(hb){hb.addEventListener('click',function(){sb.classList.toggle('open');bd.classList.toggle('show');});}
+if(bd){bd.addEventListener('click',closeSb);}
+document.querySelectorAll('nav.toc a').forEach(function(a){a.addEventListener('click',closeSb);});
+
+// ---------- scroll spy ----------
+var links=Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+var map={}; links.forEach(function(a){var id=a.getAttribute('href').slice(1); map[id]=a;});
+var spy=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('active');});
+      var id=e.target.id; if(map[id]) map[id].classList.add('active');
+    }
+  });
+},{rootMargin:'-15% 0px -75% 0px',threshold:0});
+document.querySelectorAll('main section').forEach(function(s){spy.observe(s);});
+
+// ---------- search (highlight + open details) ----------
+var q=document.getElementById('q'), count=document.getElementById('count'), main=document.querySelector('main');
+var openedBySearch=[];
+function clearMarks(){
+  main.querySelectorAll('mark[data-s]').forEach(function(m){
+    var t=document.createTextNode(m.textContent); m.parentNode.replaceChild(t,m);
+  });
+  main.normalize();
+  openedBySearch.forEach(function(d){d.open=false;}); openedBySearch=[];
+}
+function doSearch(term){
+  clearMarks();
+  if(!term||term.length<2){count.textContent='';return;}
+  var rx=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  var walker=document.createTreeWalker(main,NodeFilter.SHOW_TEXT,{
+    acceptNode:function(n){
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p=n.parentNode;
+      if(p.closest('mjx-container, script, style, textarea, .search, mark')) return NodeFilter.FILTER_REJECT;
+      return rx.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }
+  });
+  var nodes=[],n; while(n=walker.nextNode()){nodes.push(n);}
+  var hits=0, first=null;
+  nodes.forEach(function(node){
+    var frag=document.createDocumentFragment(), last=0, s=node.nodeValue; rx.lastIndex=0; var m;
+    while(m=rx.exec(s)){
+      if(m.index>last) frag.appendChild(document.createTextNode(s.slice(last,m.index)));
+      var mk=document.createElement('mark'); mk.setAttribute('data-s','1'); mk.textContent=m[0];
+      frag.appendChild(mk); last=m.index+m[0].length; hits++; if(!first) first=mk;
+      if(m[0].length===0) rx.lastIndex++;
+    }
+    if(last<s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  });
+  main.querySelectorAll('mark[data-s]').forEach(function(mk){
+    var d=mk.closest('details');
+    while(d){ if(!d.open){d.open=true; openedBySearch.push(d);} d=d.parentElement?d.parentElement.closest('details'):null; }
+  });
+  count.textContent=hits?hits+' result.':'0';
+  if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+}
+var t; if(q){q.addEventListener('input',function(){clearTimeout(t); t=setTimeout(function(){doSearch(q.value.trim());},220);});}
+</script>
+</body>
+</html>
