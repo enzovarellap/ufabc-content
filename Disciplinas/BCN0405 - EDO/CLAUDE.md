@@ -44,6 +44,7 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
 ## Guias gerados em `guias/`
 - **`guia-edo-p1-fundamentos.html`** (07/06/2026) — Guia 1, **aprofundado**: fundamentos/classificação, separáveis e lineares de 1ª ordem (com dedução do fator integrante). Exemplos das Listas 0/1 + Feynman.
 - **`guia-edo-p1-substituicoes.html`** (17/06/2026) — Guia 2, **aprofundado** (Aula 4): métodos de substituição — `y'=F(ax+by+c)`, homogêneas, Bernoulli e **Riccati** (tópico extra, da Lista 1 ex.12). Exemplos do slide + Lista 1, conferidos simbolicamente. Tem link cruzado com o Guia 1.
+- **`guia-edo-p1-modelagem-autonomas-teu.html`** (27/06/2026) — Guia 3, **fecha a P1**: campo de direções/isóclinas, **equações autônomas** (reta de fase, equilíbrios, estabilidade atrator/repulsor/semiestável via sinal de `f(y)` e `f'(y₀)`), **modelagem de 1ª ordem** (exponencial + meia-vida, resfriamento de Newton, crescimento limitado/aprendizado/difusão, **Gompertz**, misturas em tanque) e **TEU** (Picard–Lindelöf, hipóteses de continuidade de `f` e `∂f/∂y`, falha de unicidade em `y'=y^{1/3}`, intervalo de validade). Exemplos resolvidos da Lista 2 (incl. Gompertz ex.8 com `r=0,71`, `K=80,5·10⁶`), conferidos no sympy. Math pré-renderizado em SVG (MathJax). Quiz + Feynman + cola.
 
 Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matéria difícil).
 
@@ -58,6 +59,7 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
 - [x] Datas-chave preenchidas
 - [x] Guia 1 gerado — fundamentos, separáveis, lineares 1ª ordem (07/06/2026)
 - [x] Guia 2 gerado — métodos de substituição + Riccati (17/06/2026)
-- [ ] Guia 3: campo de direções, autônomas/estabilidade, modelagem, TEU (fecha a P1)
+- [x] Guia 3 gerado/auditado — campo de direções, autônomas/estabilidade, modelagem (incl. Gompertz) e TEU (fecha a P1) — `guias/guia-edo-p1-modelagem-autonomas-teu.html` (27/06/2026, conferido no sympy)
 - [x] Resoluções passo a passo das listas recomendadas — `listas/resolucao-lista0.html` e `listas/resolucao-lista1.html` (17/06/2026, conferidas no sympy)
+- [x] Resolução passo a passo da **Lista 2** (P1) — `listas/resolucao-lista2.html` (27/06/2026): 13 exercícios — modelagem (bactérias, Césio-137, aprendizado, Newton, misturas em tanque, publicidade, RC, Gompertz, Von Bertalanffy), equações autônomas/estabilidade e TEU. Todas as contas conferidas no sympy; MathJax; mesmo tema das Listas 0/1.
 - [ ] Guia da P2: 2ª ordem (coef. constantes, Euler-Cauchy), variação de parâmetros, vibrações

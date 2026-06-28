@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemática Discreta II — Grafos Avançados (Semanas 5–9 · P2)</title>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --bg:#0f1419; --bg2:#161c24; --bg3:#1d252f; --panel:#1a222c;
+  --ink:#e6edf3; --muted:#9aa7b4; --line:#2a3441;
+  --accent:#6ea8fe; --accent2:#7ee0c0; --warn:#ffcf6e; --bonus:#c8a2ff; --bad:#ff8b8b;
+  --formula:#ffe9b0;
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+  --serif:'Georgia','Times New Roman',serif;
+  --sans:'Inter','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* layout */
+.wrap{display:flex;min-height:100vh}
+#sidebar{width:300px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--line);
+  position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 14px}
+#main{flex:1;min-width:0;padding:32px 40px 120px;max-width:980px;margin:0 auto}
+@media(max-width:880px){
+  #sidebar{position:fixed;left:-320px;z-index:50;transition:left .25s;box-shadow:0 0 40px #000a}
+  #sidebar.open{left:0}
+  #main{padding:70px 18px 120px}
+  #hamb{display:flex!important}
+}
+#hamb{display:none;position:fixed;top:12px;left:12px;z-index:60;background:var(--accent);color:#04121f;
+  border:none;border-radius:9px;width:44px;height:44px;font-size:22px;cursor:pointer;align-items:center;justify-content:center}
+
+/* sidebar */
+.brand{font-family:var(--serif);font-size:18px;font-weight:700;color:#fff;margin:4px 6px 2px}
+.brand small{display:block;font-family:var(--sans);font-size:11.5px;font-weight:400;color:var(--muted);margin-top:3px}
+#search{width:100%;margin:12px 0;padding:10px 12px;background:var(--bg3);border:1px solid var(--line);
+  border-radius:9px;color:var(--ink);font-size:14px}
+#search::placeholder{color:var(--muted)}
+.navgroup{margin:6px 0}
+.navgroup>span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 6px 4px}
+#nav a{display:block;padding:6px 10px;border-radius:7px;color:var(--muted);font-size:13.5px;border-left:2px solid transparent}
+#nav a:hover{background:var(--bg3);color:var(--ink);text-decoration:none}
+#nav a.active{background:#22304a;color:#fff;border-left-color:var(--accent)}
+
+/* headings */
+h1{font-family:var(--serif);font-size:30px;line-height:1.2;margin:0 0 6px;color:#fff}
+h2{font-family:var(--serif);font-size:23px;margin:8px 0 10px;color:#fff;scroll-margin-top:20px}
+h3{font-size:17px;margin:20px 0 6px;color:var(--accent2)}
+.sub{color:var(--muted);font-size:14.5px;margin:0 0 18px}
+section{border-top:1px solid var(--line);padding-top:26px;margin-top:30px}
+section:first-of-type{border-top:none}
+
+/* tags */
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:20px;
+  vertical-align:middle;margin-left:8px;text-transform:uppercase}
+.t-prova{background:#3a2230;color:#ff9ec0;border:1px solid #6e2f48}
+.t-ess{background:#23323f;color:#8fd0ff;border:1px solid #2f5f7e}
+.t-bonus{background:#2b2440;color:var(--bonus);border:1px solid #4a3a73}
+
+/* boxes */
+.def{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:10px;padding:14px 16px;margin:14px 0}
+.def .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700;margin-bottom:4px}
+.thm{background:#15211c;border:1px solid #244;border-left:4px solid var(--accent2);border-radius:10px;padding:14px 16px;margin:14px 0}
+.thm .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);font-weight:700;margin-bottom:4px}
+.proof{background:#13191f;border:1px solid var(--line);border-left:4px solid var(--bonus);border-radius:10px;padding:12px 15px;margin:12px 0;font-size:14.5px}
+.proof .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--bonus);font-weight:700;margin-bottom:4px}
+.tip{background:#241f15;border:1px solid #4a3d20;border-radius:10px;padding:12px 15px;margin:12px 0;font-size:14.5px}
+.tip b{color:var(--warn)}
+.formula{font-family:var(--mono);background:#0c1218;border-left:3px solid var(--formula);color:var(--formula);
+  padding:11px 14px;border-radius:8px;margin:10px 0;overflow-x:auto;font-size:15px;white-space:pre-wrap}
+code{font-family:var(--mono);background:#0c1218;padding:1px 6px;border-radius:5px;color:#cfe;font-size:.92em}
+.mono{font-family:var(--mono)}
+
+/* collapsible */
+details{background:var(--bg2);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+details[open]{box-shadow:0 4px 18px #0004}
+summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;align-items:center;gap:10px;user-select:none}
+summary::-webkit-details-marker{display:none}
+summary .arw{transition:transform .2s;color:var(--accent);font-size:13px}
+details[open] summary .arw{transform:rotate(90deg)}
+summary:hover{background:var(--bg3)}
+.dbody{padding:0 16px 16px;border-top:1px solid var(--line)}
+.dbody.ex{border-top-color:#2f5f7e}
+.steps{counter-reset:s;padding-left:0;list-style:none;margin:8px 0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 36px;border-bottom:1px dashed var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:counter(s);position:absolute;left:0;top:6px;background:var(--accent);color:#04121f;
+  width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;font-family:var(--mono)}
+
+/* tables */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--bg3);color:#fff;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
+tr:nth-child(even) td{background:#141b23}
+.muted{color:var(--muted)}
+
+/* svg figures */
+figure{margin:16px 0;text-align:center}
+figure svg{background:#0b1117;border:1px solid var(--line);border-radius:10px;max-width:100%}
+figcaption{color:var(--muted);font-size:13px;margin-top:6px}
+.vx{fill:#0b1117;stroke:#e6edf3;stroke-width:2}
+.vx.h{fill:#6ea8fe;stroke:#cfe3ff}
+.vx.r{fill:#ff8b8b;stroke:#ffd2d2}
+.vx.g{fill:#7ee0c0;stroke:#d2fff0}
+.vx.y{fill:#ffcf6e;stroke:#fff0cf}
+.eg{stroke:#7e93a8;stroke-width:2;fill:none}
+.eg.m{stroke:#7ee0c0;stroke-width:4}
+.eg.a{stroke:#ffcf6e;stroke-width:3;stroke-dasharray:6 4}
+.lbl{fill:#cdd9e5;font-family:var(--mono);font-size:13px}
+
+/* quiz */
+.quiz{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0}
+.q{margin:14px 0;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+.q:last-child{border-bottom:none}
+.q .qq{font-weight:600;margin-bottom:8px}
+.opt{display:block;width:100%;text-align:left;background:var(--bg3);border:1px solid var(--line);color:var(--ink);
+  padding:9px 12px;border-radius:8px;margin:5px 0;cursor:pointer;font-size:14px}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:#16301f;border-color:#2c7;color:#bff5cf}
+.opt.wrong{background:#311a1f;border-color:#a44;color:#ffc4c4}
+.fb{font-size:13.5px;margin-top:6px;color:var(--muted);display:none}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--bg3);border:1px solid var(--line);border-radius:10px;min-height:120px;cursor:pointer;
+  perspective:1000px}
+.card .inner{position:relative;width:100%;height:100%;min-height:120px;transition:transform .5s;transform-style:preserve-3d}
+.card.flip .inner{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;padding:14px;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:10px}
+.card .f{font-weight:600}
+.card .b{transform:rotateY(180deg);background:#15211c;color:#bff5cf;font-size:13.5px}
+textarea{width:100%;min-height:90px;background:var(--bg3);border:1px solid var(--line);border-radius:9px;
+  color:var(--ink);padding:11px;font-family:var(--sans);font-size:14px;resize:vertical}
+
+.pill{display:inline-block;background:var(--bg3);border:1px solid var(--line);border-radius:20px;padding:3px 11px;font-size:12.5px;margin:3px 4px 3px 0;color:var(--muted)}
+.kbd{font-family:var(--mono);background:#0c1218;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-size:.85em}
+mark{background:#5b4a16;color:#ffe9b0;border-radius:3px;padding:0 2px}
+hr{border:none;border-top:1px solid var(--line);margin:22px 0}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<button id="hamb" aria-label="menu">☰</button>
+<div class="wrap">
+<aside id="sidebar">
+  <div class="brand">Matemática Discreta II
+    <small>MCCC010-23 · Prof. Renzo G. Gómez · Grafos Avançados (Semanas 5–9 · P2)</small>
+  </div>
+  <input id="search" type="search" placeholder="🔎 buscar (Euler, Dirac, Hall, Vizing…)">
+  <nav id="nav">
+    <div class="navgroup"><span>Começo</span>
+      <a href="#visao">0 · Visão geral & mapa da P2</a>
+    </div>
+    <div class="navgroup"><span>Eulerianos</span>
+      <a href="#euler">1 · Grafos eulerianos (Euler)</a>
+      <a href="#fleury">2 · Algoritmo de Fleury</a>
+    </div>
+    <div class="navgroup"><span>Hamiltonianos</span>
+      <a href="#hamilton">3 · Grafos hamiltonianos</a>
+      <a href="#dirac-ore">4 · Dirac & Ore</a>
+    </div>
+    <div class="navgroup"><span>Emparelhamentos</span>
+      <a href="#matching">5 · Emparelhamentos & Berge</a>
+      <a href="#hall">6 · Hall (bipartidos)</a>
+      <a href="#konig">7 · König (bipartidos)</a>
+    </div>
+    <div class="navgroup"><span>Coloração</span>
+      <a href="#cor-aresta">8 · Coloração de arestas (Vizing)</a>
+      <a href="#cor-vertice">9 · Coloração de vértices (Brooks)</a>
+    </div>
+    <div class="navgroup"><span>Fechar</span>
+      <a href="#cola">10 · Cola: teoremas-chave</a>
+      <a href="#erros">11 · Erros comuns & dicas</a>
+      <a href="#quiz">12 · Quiz relâmpago</a>
+      <a href="#flash">13 · Flashcards</a>
+      <a href="#feynman">14 · Feynman (sua vez)</a>
+    </div>
+  </nav>
+</aside>
+
+<main id="main">
+<h1>Grafos avançados — do zero à P2</h1>
+<p class="sub">Bloco das <b>Semanas 5–9</b> (aulas 6–7 + complemento de Bondy &amp; Murty / Diestel) que cai na <b>Prova 2 — 10/08/2026</b>. Feito para ensinar do zero: leia o resumo, abra os exemplos resolvidos, faça o quiz e, no fim, explique com suas palavras. Sempre que vir <span class="tag t-prova">caia na prova</span> dê atenção redobrada.</p>
+
+<!-- 0 -->
+<section id="visao">
+<h2>0 · Visão geral &amp; mapa da P2</h2>
+<p>Na P1 você montou o vocabulário de grafos. Agora a matéria pergunta coisas mais ambiciosas sobre <b>como percorrer</b> e <b>como organizar</b> um grafo. São quatro grandes temas, cada um com um teorema-estrela:</p>
+<table>
+<tr><th>Tema</th><th>Pergunta central</th><th>Teorema-estrela</th></tr>
+<tr><td><b>Eulerianos</b></td><td>Dá pra passar por <b>todas as arestas</b> uma vez só?</td><td>Euler (graus pares) + Fleury</td></tr>
+<tr><td><b>Hamiltonianos</b></td><td>Dá pra passar por <b>todos os vértices</b> uma vez só?</td><td>Dirac, Ore (condições suficientes)</td></tr>
+<tr><td><b>Emparelhamentos</b></td><td>Dá pra parear vértices sem reusar ninguém?</td><td>Berge, Hall, König</td></tr>
+<tr><td><b>Coloração</b></td><td>Quantas cores p/ separar arestas/vértices em conflito?</td><td>Vizing (arestas), Brooks (vértices)</td></tr>
+</table>
+<div class="tip"><b>Como a P2 costuma cobrar:</b> (1) decidir se um grafo é euleriano/hamiltoniano e justificar; (2) aplicar Dirac/Ore (são <i>suficientes</i>, não necessárias — cuidado!); (3) achar emparelhamento máximo via caminho aumentante; (4) usar Hall p/ provar que existe emparelhamento que satura um lado; (5) calcular \(\chi'(G)\) e \(\chi(G)\) e citar Vizing/Brooks como cotas.</div>
+<p><b>Atalho mental que vale ouro:</b> Euler é sobre <b>arestas</b> e tem caracterização <i>exata e fácil</i> (graus pares). Hamilton é sobre <b>vértices</b> e <b>não tem</b> caracterização simples — por isso só temos condições suficientes (Dirac, Ore).</p>
+<p><b>Roteiro de estudo (≈ um fim de semana):</b></p>
+<div>
+  <span class="pill">1. Seções 1–2 (Euler + Fleury)</span>
+  <span class="pill">2. Seções 3–4 (Hamilton, Dirac, Ore)</span>
+  <span class="pill">3. Seções 5–7 (emparelhamentos)</span>
+  <span class="pill">4. Seções 8–9 (coloração)</span>
+  <span class="pill">5. Quiz + Flashcards + Feynman</span>
+</div>
+</section>
+
+<!-- 1 EULER -->
+<section id="euler">
+<h2>1 · Grafos eulerianos <span class="tag t-prova">caia na prova</span></h2>
+<p>A história começa com as <b>Pontes de Königsberg</b> (1736): a cidade tinha 4 regiões de terra ligadas por 7 pontes. Pergunta: existe um passeio que cruza <b>cada ponte exatamente uma vez</b> e volta ao começo? Euler modelou as regiões como <b>vértices</b> e as pontes como <b>arestas</b> (um multigrafo) e provou que <i>não</i> existe.</p>
+<div class="def"><div class="lab">Trilha euleriana</div>
+Uma <b>trilha euleriana</b> é uma trilha (passeio que não repete arestas) que usa <b>todas</b> as arestas do grafo. Ela é <b>fechada</b> se começa e termina no mesmo vértice. Um grafo é <b>euleriano</b> se possui uma trilha euleriana fechada (= um <b>circuito euleriano</b>).</div>
+
+<div class="thm"><div class="lab">Teorema de Euler</div>
+Um grafo conexo é <b>euleriano</b> \(\iff\) <b>todo vértice tem grau par</b>.</div>
+<div class="proof"><div class="lab">Ideia da prova</div>
+(\(\Rightarrow\)) Se há um circuito euleriano, cada vez que ele <i>entra</i> num vértice por uma aresta, ele tem de <i>sair</i> por outra. As arestas em cada vértice se emparelham, logo cada grau é par.<br><br>
+(\(\Leftarrow\), por contraexemplo mínimo) Suponha que existam grafos conexos com todos os graus pares mas não-eulerianos; tome \(G\) com o <b>menor número de arestas</b>. Como \(\delta(G)\ge 2\), \(G\) contém um circuito; seja \(T\) uma trilha fechada de comprimento máximo. Se \(T\) não usa todas as arestas, então \(G'=G-E(T)\) tem arestas, e algum componente \(G^\ast\) de \(G'\) tem todos os graus pares e <i>menos</i> arestas que \(G\) — logo \(G^\ast\) é euleriano (minimalidade). Como \(G\) é conexo, \(T\) e o circuito de \(G^\ast\) compartilham um vértice; <b>concatená-los</b> dá uma trilha fechada maior que \(T\), contradição.</div>
+
+<div class="thm"><div class="lab">Corolário (trilha aberta)</div>
+Um grafo conexo tem uma <b>trilha euleriana</b> (não necessariamente fechada) \(\iff\) tem <b>no máximo dois vértices de grau ímpar</b>. Se houver dois ímpares, a trilha <b>começa em um e termina no outro</b>.</div>
+<div class="proof"><div class="lab">Ideia</div>
+Se \(G\) tem exatamente dois vértices ímpares \(u,v\), adicione a aresta \(uv\): agora todos os graus são pares, então existe circuito euleriano. Remover \(uv\) desse circuito abre a trilha, deixando \(u\) e \(v\) como pontas.</div>
+<div class="tip"><b>Königsberg:</b> as 4 regiões têm graus \(3,3,3,5\) — <b>quatro</b> vértices ímpares. Como são mais que 2, não há nem trilha euleriana aberta. Por isso o passeio é impossível.</div>
+
+<figure>
+<svg viewBox="0 0 360 180" width="380">
+  <!-- multigrafo de Königsberg: A centro, B baixo, C cima, D direita -->
+  <path class="eg" d="M120 90 Q150 55 200 50"/>
+  <path class="eg" d="M120 90 Q150 75 200 50"/>
+  <path class="eg" d="M120 90 Q150 105 200 130"/>
+  <path class="eg" d="M120 90 Q150 125 200 130"/>
+  <line class="eg" x1="120" y1="90" x2="290" y2="90"/>
+  <line class="eg" x1="200" y1="50" x2="290" y2="90"/>
+  <line class="eg" x1="200" y1="130" x2="290" y2="90"/>
+  <circle class="vx r" cx="120" cy="90" r="11"/><text class="lbl" x="100" y="95">A·5</text>
+  <circle class="vx r" cx="200" cy="50" r="11"/><text class="lbl" x="190" y="40">C·3</text>
+  <circle class="vx r" cx="200" cy="130" r="11"/><text class="lbl" x="190" y="155">B·3</text>
+  <circle class="vx r" cx="290" cy="90" r="11"/><text class="lbl" x="306" y="95">D·3</text>
+</svg>
+<figcaption>Königsberg como multigrafo. Graus \(5,3,3,3\) (todos próximos do nº de pontes): <b>4 vértices ímpares</b> ⟹ não-euleriano.</figcaption>
+</figure>
+
+<details><summary><span class="arw">▶</span> Exemplo resolvido — este grafo é euleriano?</summary>
+<div class="dbody ex">
+<p>Considere \(C_5\) (ciclo de 5 vértices) com uma "diagonal" extra ligando dois vértices. Os graus são, digamos, \(2,2,2,3,3\).</p>
+<ul class="steps">
+<li>Confira conexidade: sim, é conexo.</li>
+<li>Liste os graus: \(2,2,2,3,3\). Há <b>dois</b> vértices ímpares.</li>
+<li>Mais que 0 ímpares ⟹ <b>não</b> é euleriano (não há circuito fechado).</li>
+<li>Mas são <b>exatamente 2</b> ímpares ⟹ existe trilha euleriana <b>aberta</b>, começando em um ímpar e terminando no outro.</li>
+</ul>
+<p><b>Resposta:</b> não-euleriano, porém percorrível por uma trilha aberta entre os dois vértices de grau 3.</p>
+</div></details>
+</section>
+
+<!-- 2 FLEURY -->
+<section id="fleury">
+<h2>2 · Algoritmo de Fleury <span class="tag t-ess">essencial</span></h2>
+<p>Saber que a trilha <i>existe</i> (Euler) é uma coisa; <b>construí-la</b> é outra. O algoritmo de Fleury constrói uma trilha euleriana num grafo conexo com no máximo dois vértices ímpares. A regra de ouro: <b>nunca atravesse uma ponte se houver outra opção.</b></p>
+<div class="def"><div class="lab">Ponte (aresta de corte)</div>
+Uma aresta \(a\) é uma <b>ponte</b> se removê-la <b>aumenta</b> o número de componentes: \(c(G-a)>c(G)\). Atravessar uma ponte cedo demais "ilha" parte do grafo e te deixa sem como voltar para buscar as arestas que ficaram.</div>
+
+<div class="formula">ALGORITMO DE FLEURY
+Entrada: G conexo com ≤ 2 vértices de grau ímpar.
+1. Se houver vértices ímpares, comece num deles (v0); senão, em qualquer vértice.
+2. Estando em v_k, escolha uma aresta ainda não usada incidente a v_k,
+   dando PREFERÊNCIA a uma que NÃO seja ponte (no grafo das arestas restantes).
+   Só use uma ponte se for a única opção. Apague a aresta usada e ande.
+3. Repita até não sobrar nenhuma aresta. A sequência percorrida é a trilha euleriana.</div>
+
+<div class="thm"><div class="lab">Por que funciona</div>
+Indução em \(|V(G)|\). Se a trilha construída \(T\) não fosse euleriana, sobraria um conjunto \(X\) de vértices com arestas restantes. A <b>última</b> aresta de \(T\) que cruza o corte \([X,\,V\setminus X]\) teria sido escolhida como ponte mesmo com aresta não-ponte disponível em \(x\) — contradiz a regra de prioridade. Logo \(T\) usa todas as arestas.</div>
+
+<details><summary><span class="arw">▶</span> Exemplo resolvido — Fleury passo a passo</summary>
+<div class="dbody ex">
+<p>Grafo: triângulo \(\{a,b,c\}\) com um "rabo" \(c\!-\!d\). Graus: \(a:2,\ b:2,\ c:3,\ d:1\). Dois ímpares (\(c,d\)) ⟹ trilha aberta de \(d\) a \(c\) (ou \(c\) a \(d\)).</p>
+<ul class="steps">
+<li>Comece num ímpar: \(d\). A única aresta é \(d\!-\!c\) (é ponte, mas é a única) ⟹ vá para \(c\).</li>
+<li>Em \(c\): restam \(c\!-\!a\) e \(c\!-\!b\). Nenhuma é ponte agora (o triângulo segura tudo conexo). Pegue \(c\!-\!a\).</li>
+<li>Em \(a\): só resta \(a\!-\!b\) ⟹ vá para \(b\).</li>
+<li>Em \(b\): só resta \(b\!-\!c\) ⟹ vá para \(c\). Acabaram as arestas.</li>
+</ul>
+<p><b>Trilha:</b> \(d \to c \to a \to b \to c\). Usa as 4 arestas exatamente uma vez. ✔</p>
+<p class="muted">Note o erro a evitar: se em \(d\) o grafo tivesse outra saída, não poderíamos ter começado cruzando a ponte \(d\!-\!c\). Aqui era a única, então tudo bem.</p>
+</div></details>
+<div class="tip"><b>Conexo:</b> o <b>Problema Chinês do Carteiro</b> (achar passeio fechado que cobre toda aresta com menor comprimento, repetindo o mínimo de arestas) generaliza Euler: se o grafo já é euleriano, a resposta é a própria trilha euleriana.</div>
+</section>
+
+<!-- 3 HAMILTON -->
+<section id="hamilton">
+<h2>3 · Grafos hamiltonianos <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">Caminho/ciclo hamiltoniano</div>
+Um <b>caminho hamiltoniano</b> visita <b>todos os vértices exatamente uma vez</b>. Um <b>ciclo hamiltoniano</b> faz o mesmo e fecha no início. Um grafo é <b>hamiltoniano</b> se tem um ciclo hamiltoniano.</div>
+<div class="tip"><b>O contraste que cai na prova:</b> Euler fala de <b>arestas</b> e tem teste fácil (graus pares). Hamilton fala de <b>vértices</b> e <b>não existe</b> caracterização simples conhecida — decidir se um grafo é hamiltoniano é, em geral, <b>NP-completo</b>. Por isso só temos <b>condições suficientes</b>.</p></div>
+
+<figure>
+<svg viewBox="0 0 360 170" width="380">
+  <!-- esquerda: K4 hamiltoniano; direita: estrela K1,3 não-hamiltoniana -->
+  <polygon points="50,30 120,30 120,120 50,120" class="eg" fill="none"/>
+  <line class="eg" x1="50" y1="30" x2="120" y2="120"/>
+  <line class="eg" x1="120" y1="30" x2="50" y2="120"/>
+  <circle class="vx g" cx="50" cy="30" r="9"/><circle class="vx g" cx="120" cy="30" r="9"/>
+  <circle class="vx g" cx="50" cy="120" r="9"/><circle class="vx g" cx="120" cy="120" r="9"/>
+  <text class="lbl" x="62" y="150">K₄: hamiltoniano</text>
+  <line class="eg" x1="280" y1="75" x2="230" y2="35"/>
+  <line class="eg" x1="280" y1="75" x2="330" y2="35"/>
+  <line class="eg" x1="280" y1="75" x2="280" y2="130"/>
+  <circle class="vx r" cx="280" cy="75" r="9"/>
+  <circle class="vx" cx="230" cy="35" r="9"/><circle class="vx" cx="330" cy="35" r="9"/><circle class="vx" cx="280" cy="130" r="9"/>
+  <text class="lbl" x="232" y="155">K₁,₃: NÃO</text>
+</svg>
+<figcaption>\(K_4\) tem ciclo hamiltoniano. A estrela \(K_{1,3}\) não: o centro precisaria ser visitado 3 vezes para alcançar as 3 folhas.</figcaption>
+</figure>
+</section>
+
+<!-- 4 DIRAC ORE -->
+<section id="dirac-ore">
+<h2>4 · Condições de Dirac e Ore <span class="tag t-prova">caia na prova</span></h2>
+<p>Estas duas dão um "carimbo de garantia": se o grafo é <b>denso o bastante</b>, ele <b>tem</b> ciclo hamiltoniano. Valem para \(n\ge 3\).</p>
+
+<div class="thm"><div class="lab">Teorema de Dirac (1952)</div>
+Seja \(G\) um grafo simples com \(n\ge 3\) vértices. Se \(\delta(G)\ge \dfrac{n}{2}\) (todo vértice tem grau \(\ge n/2\)), então \(G\) é <b>hamiltoniano</b>.</div>
+
+<div class="thm"><div class="lab">Teorema de Ore (1960)</div>
+Seja \(G\) simples com \(n\ge 3\). Se para <b>todo par de vértices não-adjacentes</b> \(u,v\) vale \(d(u)+d(v)\ge n\), então \(G\) é <b>hamiltoniano</b>.</div>
+
+<div class="tip"><b>Ore generaliza Dirac:</b> se todo grau é \(\ge n/2\), então qualquer par dá \(d(u)+d(v)\ge n/2+n/2=n\). Logo Dirac \(\Rightarrow\) Ore. Na prova, <b>tente Dirac primeiro</b> (mais rápido de checar); se falhar por pouco, tente Ore.</div>
+
+<div class="proof"><div class="lab">Ideia da prova (Ore, por extremalidade)</div>
+Suponha \(G\) satisfaz Ore mas não é hamiltoniano; adicione arestas até ficar <b>maximal não-hamiltoniano</b> (mais uma aresta criaria um ciclo hamiltoniano). Então existe um <b>caminho hamiltoniano</b> \(v_1 v_2 \cdots v_n\). As pontas \(v_1,v_n\) não são adjacentes. A condição \(d(v_1)+d(v_n)\ge n\) força (princípio da casa dos pombos) a existência de um índice \(i\) com \(v_1 v_{i+1}\in E\) <b>e</b> \(v_n v_i\in E\). Isso permite "religar" o caminho num <b>ciclo hamiltoniano</b> \(v_1 v_2\cdots v_i v_n v_{n-1}\cdots v_{i+1} v_1\), contradizendo a hipótese.</div>
+
+<div class="tip"><b>⚠️ Cuidado conceitual:</b> Dirac e Ore são <b>suficientes, não necessárias</b>. O ciclo \(C_n\) (\(n\) grande) é hamiltoniano com \(\delta=2 < n/2\) — falha em Dirac mas <b>é</b> hamiltoniano. Então "não satisfaz Dirac" <b>não</b> permite concluir "não é hamiltoniano".</div>
+
+<details><summary><span class="arw">▶</span> Exemplo resolvido — aplicar Dirac/Ore</summary>
+<div class="dbody ex">
+<p><b>(a)</b> \(G\) tem \(n=6\) vértices e todo vértice tem grau \(\ge 3\). É hamiltoniano?</p>
+<ul class="steps">
+<li>\(n/2 = 6/2 = 3\).</li>
+<li>\(\delta(G)\ge 3 = n/2\) ⟹ <b>Dirac se aplica</b>.</li>
+<li><b>Sim</b>, \(G\) é hamiltoniano. ✔</li>
+</ul>
+<p><b>(b)</b> \(n=5\); dois vértices \(u,v\) não-adjacentes têm \(d(u)=2,\ d(v)=2\). Dirac/Ore garantem algo?</p>
+<ul class="steps">
+<li>Ore exige \(d(u)+d(v)\ge n=5\); aqui \(2+2=4 < 5\) ⟹ Ore <b>não</b> se aplica.</li>
+<li>Dirac exige \(\delta\ge 2.5\), i.e. \(\ge 3\); como há grau 2, <b>não</b> se aplica.</li>
+<li>Conclusão: <b>nada se conclui</b>. Pode ou não ser hamiltoniano — é preciso analisar o grafo concreto.</li>
+</ul>
+</div></details>
+</section>
+
+<!-- 5 MATCHING + BERGE -->
+<section id="matching">
+<h2>5 · Emparelhamentos &amp; Teorema de Berge <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">Emparelhamento (matching)</div>
+Um <b>emparelhamento</b> \(M\subseteq E\) é um conjunto de arestas <b>sem vértices em comum</b> (duas a duas disjuntas). Um vértice em alguma aresta de \(M\) é <b>saturado</b> (coberto); senão é <b>livre</b>. \(M\) é <b>máximo</b> se nenhum emparelhamento tem mais arestas. \(M\) é <b>perfeito</b> se satura <b>todos</b> os vértices (então \(|M|=n/2\), e \(n\) é par).</div>
+
+<div class="def"><div class="lab">Caminho aumentante (augmenting path)</div>
+Dado \(M\), um <b>caminho \(M\)-alternante</b> alterna arestas fora de \(M\) e em \(M\). Ele é <b>aumentante</b> se, além disso, <b>começa e termina em vértices livres</b>. Trocando dentro dele as arestas de \(M\) por fora de \(M\) (e vice-versa), você ganha <b>+1</b> aresta no emparelhamento.</div>
+
+<div class="thm"><div class="lab">Teorema de Berge (1957)</div>
+Um emparelhamento \(M\) é <b>máximo</b> \(\iff\) <b>não existe caminho \(M\)-aumentante</b>.</div>
+<div class="proof"><div class="lab">Ideia da prova</div>
+(\(\Rightarrow\)) Se houvesse um caminho aumentante, a troca daria \(M'\) com \(|M'|=|M|+1\) — então \(M\) não era máximo. (\(\Leftarrow\)) Se \(M\) não é máximo, tome \(M^\ast\) maior e olhe \(M\triangle M^\ast\) (diferença simétrica). Cada componente dessa união é um caminho ou ciclo <b>alternante</b>; como \(|M^\ast|>|M|\), algum componente tem mais arestas de \(M^\ast\) — esse é um <b>caminho \(M\)-aumentante</b>.</div>
+
+<figure>
+<svg viewBox="0 0 380 150" width="400">
+  <!-- caminho v1-v2-v3-v4: M = {v2v3}; aumentante v1..v4 -->
+  <line class="eg a" x1="40" y1="75" x2="130" y2="75"/>
+  <line class="eg m" x1="130" y1="75" x2="240" y2="75"/>
+  <line class="eg a" x1="240" y1="75" x2="330" y2="75"/>
+  <circle class="vx" cx="40" cy="75" r="10"/><text class="lbl" x="28" y="55">livre</text>
+  <circle class="vx h" cx="130" cy="75" r="10"/>
+  <circle class="vx h" cx="240" cy="75" r="10"/>
+  <circle class="vx" cx="330" cy="75" r="10"/><text class="lbl" x="318" y="55">livre</text>
+  <text class="lbl" x="170" y="60">∈ M</text>
+</svg>
+<figcaption>Caminho aumentante: pontas <b>livres</b>, aresta verde \(\in M\), arestas tracejadas \(\notin M\). Trocar dá um \(M\) com 2 arestas no lugar de 1.</figcaption>
+</figure>
+
+<div class="tip"><b>Receita de emparelhamento máximo:</b> comece com qualquer \(M\) (até o vazio). Repita: procure um caminho aumentante e faça a troca (\(+1\) aresta). Quando não houver mais (Berge), \(M\) é máximo.</div>
+</section>
+
+<!-- 6 HALL -->
+<section id="hall">
+<h2>6 · Teorema de Hall (bipartidos) <span class="tag t-prova">caia na prova</span></h2>
+<p>Em grafos <b>bipartidos</b> \(G=(X\cup Y,E)\), a pergunta clássica é: existe um emparelhamento que <b>satura todo o lado \(X\)</b>? (Pense: \(X\) = pretendentes, \(Y\) = pares possíveis; queremos casar todos de \(X\).) Hall dá a condição exata.</p>
+<div class="thm"><div class="lab">Teorema de Hall (1935) — "condição do casamento"</div>
+Em \(G=(X\cup Y,E)\) bipartido, existe um emparelhamento que <b>satura \(X\)</b> \(\iff\) para <b>todo</b> subconjunto \(S\subseteq X\):
+\[ |N(S)| \ge |S| \]
+ou seja, todo grupo de \(k\) vértices de \(X\) tem juntos pelo menos \(k\) vizinhos em \(Y\).</div>
+<div class="proof"><div class="lab">Ideia da prova</div>
+(\(\Rightarrow\)) Se \(X\) é saturado, os parceiros de um \(S\) já são \(|S|\) vértices distintos em \(N(S)\), logo \(|N(S)|\ge|S|\). (\(\Leftarrow\)) Por contradição/aumentantes: se \(X\) não pode ser saturado, há um vértice livre \(x\in X\); o conjunto \(S\) de vértices de \(X\) alcançáveis por caminhos alternantes a partir de \(x\) viola \(|N(S)|\ge|S|\) (sobra \(x\) sem par), contradizendo Hall.</div>
+<div class="tip"><b>Como usar a condição:</b> para <b>provar que existe</b> emparelhamento, verifique \(|N(S)|\ge|S|\) para todo \(S\). Para <b>provar que NÃO existe</b>, basta <b>exibir um \(S\) ruim</b> (um gargalo): \(k\) vértices de \(X\) com menos de \(k\) vizinhos.</div>
+<div class="thm"><div class="lab">Corolário (bipartido \(k\)-regular)</div>
+Todo grafo bipartido \(k\)-regular (\(k\ge 1\)) tem um <b>emparelhamento perfeito</b> (e suas arestas se decompõem em \(k\) emparelhamentos perfeitos).</div>
+
+<details><summary><span class="arw">▶</span> Exemplo resolvido — Hall na prática</summary>
+<div class="dbody ex">
+<p>\(X=\{a,b,c\}\), \(Y=\{1,2,3\}\). Arestas: \(a\!-\!1,\ a\!-\!2,\ b\!-\!1,\ b\!-\!2,\ c\!-\!1,\ c\!-\!2\). Existe emparelhamento que satura \(X\)?</p>
+<ul class="steps">
+<li>Pegue \(S=\{a,b,c\}\): seus vizinhos são \(N(S)=\{1,2\}\).</li>
+<li>\(|N(S)|=2 < 3=|S|\). Condição de Hall <b>falha</b>.</li>
+<li><b>Não existe</b> emparelhamento saturando \(X\): três vértices disputam só dois parceiros (gargalo). ✔</li>
+</ul>
+<p>Se acrescentarmos \(c\!-\!3\), aí \(N(\{a,b,c\})=\{1,2,3\}\), Hall vale para todo \(S\), e existe emparelhamento perfeito, ex.: \(\{a\!-\!1,\ b\!-\!2,\ c\!-\!3\}\).</p>
+</div></details>
+</section>
+
+<!-- 7 KONIG -->
+<section id="konig">
+<h2>7 · Teorema de König (bipartidos) <span class="tag t-ess">essencial</span></h2>
+<div class="def"><div class="lab">Cobertura por vértices (vertex cover)</div>
+Uma <b>cobertura por vértices</b> é um conjunto \(C\subseteq V\) que <b>toca toda aresta</b> (toda aresta tem ao menos uma ponta em \(C\)). Denote por \(\tau(G)\) o tamanho da menor cobertura e por \(\nu(G)\) o tamanho do maior emparelhamento.</div>
+<div class="tip">Em <b>qualquer</b> grafo vale \(\nu(G)\le \tau(G)\): cada aresta de um emparelhamento precisa de um vértice distinto na cobertura. König diz que em bipartidos a igualdade vale.</div>
+<div class="thm"><div class="lab">Teorema de König (1931)</div>
+Em todo grafo <b>bipartido</b>:
+\[ \nu(G) = \tau(G) \]
+o <b>tamanho do emparelhamento máximo</b> é igual ao <b>tamanho da cobertura mínima por vértices</b>.</div>
+<div class="proof"><div class="lab">Ideia da prova</div>
+\(\le\) é sempre verdade. Para \(\ge\): tome um emparelhamento máximo \(M\). Construa uma cobertura com exatamente \(|M|\) vértices escolhendo, de cada aresta de \(M\), a ponta "certa" (guiado por caminhos alternantes a partir dos vértices livres de \(X\)). A ausência de caminhos aumentantes (Berge) garante que essa escolha cobre todas as arestas. É a <b>versão para grafos</b> da dualidade min–max (König–Egerváry).</div>
+<div class="tip"><b>Para que serve na prova:</b> König transforma "achar emparelhamento máximo" num problema de cobertura (e vice-versa). Se você exibe um emparelhamento de tamanho \(t\) <b>e</b> uma cobertura de tamanho \(t\), provou que ambos são ótimos de uma vez.</div>
+
+<details><summary><span class="arw">▶</span> Exemplo resolvido — König</summary>
+<div class="dbody ex">
+<p>Bipartido \(X=\{a,b\},\ Y=\{1,2,3\}\), arestas \(a\!-\!1,a\!-\!2,b\!-\!2,b\!-\!3\).</p>
+<ul class="steps">
+<li>Emparelhamento máximo: \(\{a\!-\!1,\ b\!-\!2\}\) (ou \(\{a\!-\!2,b\!-\!3\}\)). Tamanho \(\nu=2\).</li>
+<li>Cobertura mínima: \(\{a,b\}\) toca todas as arestas. Tamanho \(\tau=2\).</li>
+<li>Confere König: \(\nu=\tau=2\). ✔ E ambos são ótimos simultaneamente.</li>
+</ul>
+</div></details>
+</section>
+
+<!-- 8 EDGE COLORING -->
+<section id="cor-aresta">
+<h2>8 · Coloração de arestas — Vizing <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">Índice cromático \(\chi'(G)\)</div>
+Uma <b>coloração própria de arestas</b> pinta cada aresta de modo que <b>arestas que compartilham um vértice tenham cores diferentes</b>. O <b>índice cromático</b> \(\chi'(G)\) é o menor número de cores que basta. Como as \(\Delta(G)\) arestas de um vértice de grau máximo já precisam de cores distintas, sempre \(\chi'(G)\ge \Delta(G)\).</div>
+<div class="thm"><div class="lab">Teorema de Vizing (1964)</div>
+Para todo grafo simples \(G\):
+\[ \Delta(G) \;\le\; \chi'(G) \;\le\; \Delta(G)+1 \]
+Isto é, o índice cromático é <b>sempre</b> \(\Delta\) ou \(\Delta+1\) — só duas possibilidades! Grafos com \(\chi'=\Delta\) são <b>classe 1</b>; com \(\chi'=\Delta+1\), <b>classe 2</b>.</div>
+<div class="proof"><div class="lab">Ideia da prova</div>
+A cota inferior é imediata. A superior se prova por <b>recoloração</b>: colore-se aresta por aresta; quando uma aresta \(uv\) não tem cor livre comum, usa-se um <b>leque de Vizing</b> (Vizing fan) e a troca ao longo de um <b>caminho de Kempe</b> (que alterna duas cores) para liberar uma cor sem nunca passar de \(\Delta+1\).</div>
+<div class="tip"><b>Casos que caem direto na prova:</b><br>
+• <b>Bipartido</b> (Teorema de König p/ arestas): \(\chi'(G)=\Delta(G)\) sempre (classe 1).<br>
+• <b>Ciclo \(C_n\):</b> \(\Delta=2\); \(\chi'=2\) se \(n\) é par, \(\chi'=3\) se \(n\) é ímpar (classe 2).<br>
+• <b>Completo \(K_n\):</b> \(\chi'=n-1\) se \(n\) par; \(\chi'=n\) se \(n\) ímpar (\(\ge 3\)).</div>
+
+<figure>
+<svg viewBox="0 0 360 150" width="380">
+  <!-- C5 com 3 cores nas arestas -->
+  <polygon points="180,25 240,70 215,140 145,140 120,70" fill="none" stroke="none"/>
+  <line x1="180" y1="25" x2="240" y2="70" stroke="#6ea8fe" stroke-width="4"/>
+  <line x1="240" y1="70" x2="215" y2="140" stroke="#7ee0c0" stroke-width="4"/>
+  <line x1="215" y1="140" x2="145" y2="140" stroke="#6ea8fe" stroke-width="4"/>
+  <line x1="145" y1="140" x2="120" y2="70" stroke="#7ee0c0" stroke-width="4"/>
+  <line x1="120" y1="70" x2="180" y2="25" stroke="#ffcf6e" stroke-width="4"/>
+  <circle class="vx" cx="180" cy="25" r="8"/><circle class="vx" cx="240" cy="70" r="8"/>
+  <circle class="vx" cx="215" cy="140" r="8"/><circle class="vx" cx="145" cy="140" r="8"/>
+  <circle class="vx" cx="120" cy="70" r="8"/>
+</svg>
+<figcaption>\(C_5\) (ciclo ímpar): \(\Delta=2\), mas precisa de <b>3 cores</b> nas arestas ⟹ \(\chi'=\Delta+1\) (classe 2).</figcaption>
+</figure>
+
+<details><summary><span class="arw">▶</span> Exemplo resolvido — \(\chi'\) do \(K_4\)</summary>
+<div class="dbody ex">
+<ul class="steps">
+<li>\(K_4\): cada vértice tem grau \(\Delta=3\). Por Vizing, \(\chi'\in\{3,4\}\).</li>
+<li>\(K_4\) tem 6 arestas e \(n=4\) é par ⟹ \(\chi'=n-1=3\) (classe 1).</li>
+<li>Concretamente: as 3 cores correspondem aos 3 emparelhamentos perfeitos de \(K_4\) (1-fatorização). ✔</li>
+</ul>
+</div></details>
+</section>
+
+<!-- 9 VERTEX COLORING -->
+<section id="cor-vertice">
+<h2>9 · Coloração de vértices — Brooks <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">Número cromático \(\chi(G)\)</div>
+Uma <b>coloração própria de vértices</b> pinta cada vértice de modo que <b>vértices adjacentes tenham cores diferentes</b>. O <b>número cromático</b> \(\chi(G)\) é o menor número de cores possível. Aplicação clássica: escalonar provas/horários sem conflito.</div>
+<div class="formula">COTAS BÁSICAS (decore!)
+χ(G) ≥ ω(G)         (ω = tamanho da maior clique; cada clique precisa de cores distintas)
+χ(G) ≤ Δ(G) + 1     (guloso: cada vértice tem ≤ Δ vizinhos já coloridos)
+χ(G) = 1  ⟺  G sem arestas
+χ(G) ≤ 2  ⟺  G bipartido  ⟺  G sem ciclo ímpar</div>
+<div class="thm"><div class="lab">Teorema de Brooks (1941)</div>
+Seja \(G\) <b>conexo</b>. Então \(\chi(G)\le \Delta(G)\), <b>exceto</b> em dois casos em que se precisa de \(\Delta+1\):<br>
+&nbsp;&nbsp;(i) \(G\) é um <b>grafo completo \(K_n\)</b> (aí \(\chi=n=\Delta+1\)); ou<br>
+&nbsp;&nbsp;(ii) \(G\) é um <b>ciclo ímpar</b> (aí \(\chi=3=\Delta+1\)).</div>
+<div class="proof"><div class="lab">Ideia da prova</div>
+Brooks refina a cota gulosa \(\chi\le\Delta+1\): mostra-se que, fora dos dois casos extremos, sempre é possível <b>ordenar</b> os vértices (ou recolorir via caminhos de Kempe) de forma que o último vértice a colorir tenha um vizinho de cor repetida — economizando a \((\Delta+1)\)-ésima cor.</div>
+<div class="tip"><b>⚠️ As exceções importam:</b> \(K_n\) tem \(\Delta=n-1\) e \(\chi=n\); ciclo ímpar tem \(\Delta=2\) e \(\chi=3\). Em <b>todos</b> os outros grafos conexos, \(\Delta\) cores bastam.</div>
+
+<details><summary><span class="arw">▶</span> Exemplo resolvido — \(\chi\) com Brooks</summary>
+<div class="dbody ex">
+<p><b>(a)</b> Grafo de Petersen: conexo, 3-regular, não é \(K_n\) nem ciclo ímpar ⟹ Brooks dá \(\chi\le 3\). Como tem arestas e contém ciclo ímpar (não é bipartido), \(\chi\ge 3\). Logo \(\chi=3\). ✔</p>
+<p><b>(b)</b> \(K_5\): é completo ⟹ exceção de Brooks ⟹ \(\chi=5=\Delta+1\). (Aqui Brooks <i>não</i> rebaixa para \(\Delta=4\).)</p>
+<p><b>(c)</b> \(C_7\) (ciclo de 7): ciclo ímpar ⟹ \(\chi=3\), não 2.</p>
+</div></details>
+<div class="tip"><b>Não confunda:</b> \(\chi\) (vértices) ≠ \(\chi'\) (arestas). Vizing limita \(\chi'\) entre \(\Delta\) e \(\Delta+1\). Brooks limita \(\chi\) em \(\Delta\) (salvo \(K_n\) e ciclo ímpar). São teoremas-irmãos, mas de objetos diferentes.</div>
+</section>
+
+<!-- 10 COLA -->
+<section id="cola">
+<h2>10 · Cola: teoremas-chave <span class="tag t-ess">essencial</span></h2>
+<table>
+<tr><th>Tema</th><th>Resultado</th><th>Em uma linha</th></tr>
+<tr><td>Euler</td><td>Conexo euleriano \(\iff\) todo grau par</td><td>circuito fecha ⟺ pares; trilha aberta ⟺ ≤ 2 ímpares</td></tr>
+<tr><td>Fleury</td><td>Constrói a trilha</td><td>nunca cruze uma ponte se houver outra opção</td></tr>
+<tr><td>Hamilton</td><td>Sem caracterização simples</td><td>visita todos os <b>vértices</b>; decidir é NP-completo</td></tr>
+<tr><td>Dirac</td><td>\(\delta(G)\ge n/2 \Rightarrow\) hamiltoniano</td><td>suficiente, não necessária (\(n\ge 3\))</td></tr>
+<tr><td>Ore</td><td>\(u\not\sim v \Rightarrow d(u)+d(v)\ge n\)</td><td>generaliza Dirac; suficiente</td></tr>
+<tr><td>Berge</td><td>\(M\) máximo \(\iff\) sem caminho aumentante</td><td>ache caminho aumentante ⟹ \(+1\)</td></tr>
+<tr><td>Hall</td><td>satura \(X\) \(\iff |N(S)|\ge|S|\ \forall S\subseteq X\)</td><td>bipartido; gargalo \(=\) \(S\) ruim</td></tr>
+<tr><td>König</td><td>\(\nu(G)=\tau(G)\)</td><td>bipartido: emparelhamento máx \(=\) cobertura mín</td></tr>
+<tr><td>Vizing</td><td>\(\Delta \le \chi'(G)\le \Delta+1\)</td><td>arestas: só classe 1 ou 2</td></tr>
+<tr><td>Brooks</td><td>\(\chi(G)\le\Delta\) (salvo \(K_n\), ciclo ímpar)</td><td>vértices; exceções dão \(\Delta+1\)</td></tr>
+</table>
+<div class="formula">VALORES QUE SALVAM EM PROVA
+χ'(K_n) = n−1 (n par),  n (n ímpar ≥3)        χ(K_n) = n
+χ'(C_n) = 2 (n par),    3 (n ímpar)            χ(C_n) = 2 (n par),  3 (n ímpar)
+χ'(bipartido) = Δ        (König p/ arestas)     χ(bipartido) ≤ 2
+emparelhamento perfeito ⟹ n par e |M| = n/2</div>
+</section>
+
+<!-- 11 ERROS -->
+<section id="erros">
+<h2>11 · Erros comuns &amp; dicas</h2>
+<div class="cards">
+  <div class="card"><div class="inner"><div class="f">Confundir Euler com Hamilton</div><div class="b">Euler = arestas (graus pares). Hamilton = vértices (sem teste fácil).</div></div></div>
+  <div class="card"><div class="inner"><div class="f">Usar Dirac na direção errada</div><div class="b">É suficiente: falhar em Dirac NÃO prova "não-hamiltoniano".</div></div></div>
+  <div class="card"><div class="inner"><div class="f">Caminho aumentante começando saturado</div><div class="b">Ele tem de começar E terminar em vértices LIVRES.</div></div></div>
+  <div class="card"><div class="inner"><div class="f">Hall: testar só um S</div><div class="b">P/ existir, vale ∀S. P/ negar, basta UM S com |N(S)|&lt;|S|.</div></div></div>
+  <div class="card"><div class="inner"><div class="f">König em grafo não-bipartido</div><div class="b">ν=τ só vale em bipartidos. Em geral só ν ≤ τ.</div></div></div>
+  <div class="card"><div class="inner"><div class="f">Esquecer exceções de Brooks</div><div class="b">K_n e ciclo ímpar precisam de Δ+1 cores, não Δ.</div></div></div>
+  <div class="card"><div class="inner"><div class="f">Misturar χ e χ'</div><div class="b">χ = vértices (Brooks). χ' = arestas (Vizing). Objetos diferentes.</div></div></div>
+  <div class="card"><div class="inner"><div class="f">Fleury cruzando ponte cedo</div><div class="b">Ponte só em último caso, senão "ilha" arestas restantes.</div></div></div>
+</div>
+</section>
+
+<!-- 12 QUIZ -->
+<section id="quiz">
+<h2>12 · Quiz relâmpago</h2>
+<div class="quiz" id="quizbox"></div>
+</section>
+
+<!-- 13 FLASHCARDS -->
+<section id="flash">
+<h2>13 · Flashcards</h2>
+<p class="sub">Clique para virar. Tente responder antes de olhar.</p>
+<div class="cards" id="cardbox"></div>
+</section>
+
+<!-- 14 FEYNMAN -->
+<section id="feynman">
+<h2>14 · Feynman — sua vez de ensinar</h2>
+<p>Você só sabe de verdade quando consegue explicar simples. Responda <b>com suas palavras</b> (sem olhar acima); depois compare com a resposta-modelo.</p>
+
+<div style="margin:14px 0">
+<p><b>1.</b> Por que "todos os graus pares" é exatamente a condição para um grafo conexo ser euleriano? (dê a intuição de entrar/sair).</p>
+<textarea placeholder="Escreva aqui…"></textarea>
+<details><summary><span class="arw">▶</span> resposta-modelo</summary><div class="dbody">Num circuito euleriano, cada visita a um vértice usa uma aresta para entrar e outra para sair: as arestas em cada vértice se emparelham, então o grau é par. Reciprocamente, com todos os graus pares dá pra ir colando circuitos até cobrir tudo (prova do contraexemplo mínimo). Se há 2 vértices ímpares, a trilha vira aberta entre eles.</div></details>
+</div>
+
+<div style="margin:14px 0">
+<p><b>2.</b> Qual a diferença entre Dirac e Ore, e por que "suficiente, não necessária" muda como você usa na prova?</p>
+<textarea placeholder="Escreva aqui…"></textarea>
+<details><summary><span class="arw">▶</span> resposta-modelo</summary><div class="dbody">Dirac: todo grau \(\ge n/2\). Ore (mais geral): todo par não-adjacente tem soma de graus \(\ge n\). Dirac ⟹ Ore. Por serem suficientes, se valem você <i>garante</i> ciclo hamiltoniano; mas se NÃO valem, nada se conclui — o grafo pode ainda ser hamiltoniano (ex.: \(C_n\)).</div></details>
+</div>
+
+<div style="margin:14px 0">
+<p><b>3.</b> Explique o Teorema de Berge usando a ideia de caminho aumentante. Como ele vira um algoritmo?</p>
+<textarea placeholder="Escreva aqui…"></textarea>
+<details><summary><span class="arw">▶</span> resposta-modelo</summary><div class="dbody">\(M\) é máximo ⟺ não há caminho aumentante (alternante entre pontas livres). Se existe um, trocar as arestas dentro dele dá \(+1\). Algoritmo: parta de \(M\) qualquer, procure aumentantes e troque até não achar mais — aí \(M\) é máximo.</div></details>
+</div>
+
+<div style="margin:14px 0">
+<p><b>4.</b> Hall e König são "duas faces da mesma moeda" em bipartidos. Conecte os dois.</p>
+<textarea placeholder="Escreva aqui…"></textarea>
+<details><summary><span class="arw">▶</span> resposta-modelo</summary><div class="dbody">Hall diz quando dá pra saturar \(X\) (\(|N(S)|\ge|S|\ \forall S\)). König diz que o emparelhamento máximo \(=\) cobertura mínima por vértices (\(\nu=\tau\)). Ambos vêm da teoria de caminhos aumentantes/min–max; um "gargalo" de Hall corresponde a uma cobertura pequena de König.</div></details>
+</div>
+
+<div style="margin:14px 0">
+<p><b>5.</b> Compare Vizing e Brooks: o que cada um limita, e quais são as exceções?</p>
+<textarea placeholder="Escreva aqui…"></textarea>
+<details><summary><span class="arw">▶</span> resposta-modelo</summary><div class="dbody">Vizing (arestas): \(\Delta\le\chi'\le\Delta+1\), sempre — só duas classes. Brooks (vértices): \(\chi\le\Delta\) para grafos conexos, com exceções \(K_n\) e ciclo ímpar (que pedem \(\Delta+1\)). \(\chi\) é sobre vértices adjacentes; \(\chi'\) sobre arestas que se tocam.</div></details>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+// hamburger
+const hamb=document.getElementById('hamb'), sb=document.getElementById('sidebar');
+hamb.onclick=()=>sb.classList.toggle('open');
+document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>sb.classList.remove('open'));
+
+// scroll spy
+const links=[...document.querySelectorAll('#nav a')];
+const map={}; links.forEach(a=>map[a.getAttribute('href').slice(1)]=a);
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.remove('active'));
+    const a=map[e.target.id]; if(a)a.classList.add('active'); }});
+},{rootMargin:'-15% 0px -75% 0px'});
+document.querySelectorAll('section').forEach(s=>obs.observe(s));
+
+// search
+const search=document.getElementById('search');
+search.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();
+  document.querySelectorAll('#main mark').forEach(m=>{const p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize();});
+  document.querySelectorAll('#main section').forEach(sec=>{
+    if(!q){sec.classList.remove('hidden');return;}
+    const hit=sec.textContent.toLowerCase().includes(q);
+    sec.classList.toggle('hidden',!hit);
+    if(hit){
+      sec.querySelectorAll('details').forEach(d=>{ if(d.textContent.toLowerCase().includes(q)) d.open=true; });
+    }
+  });
+  links.forEach(a=>{const id=a.getAttribute('href').slice(1);const s=document.getElementById(id);
+    a.style.display=(s&&s.classList.contains('hidden'))?'none':'block';});
+});
+
+// quiz
+const quiz=[
+ {q:"Um grafo conexo tem graus 2,2,4,4,3,3. Ele é euleriano?",
+  o:["Sim, é euleriano","Não, mas tem trilha euleriana aberta","Não, nem trilha aberta","Falta saber se é simples"],c:1,
+  fb:"Há dois vértices ímpares (os dois 3). Euleriano exige TODOS pares; com exatamente 2 ímpares há trilha ABERTA entre eles."},
+ {q:"No algoritmo de Fleury, a regra principal é:",
+  o:["sempre começar num vértice par","nunca cruzar uma ponte se houver outra aresta disponível","cruzar pontes primeiro","escolher sempre o vértice de maior grau"],c:1,
+  fb:"Pontes por último: cruzá-las cedo isola arestas que ficariam sem como ser alcançadas."},
+ {q:"G tem n=8 vértices e δ(G)=4. O que Dirac garante?",
+  o:["Nada, 4<8","É euleriano","É hamiltoniano, pois 4 ≥ n/2","É bipartido"],c:2,
+  fb:"n/2 = 4 e δ=4 ≥ n/2, então Dirac se aplica: G é hamiltoniano."},
+ {q:"M não é máximo. Pelo Teorema de Berge, então existe…",
+  o:["um ciclo hamiltoniano","um caminho M-aumentante","uma ponte","uma cobertura mínima"],c:1,
+  fb:"Berge: M máximo ⟺ sem caminho aumentante. Se não é máximo, há um aumentante (troque p/ +1)."},
+ {q:"Bipartido com X={a,b,c} e N({a,b,c})={1,2}. Satura X?",
+  o:["Sim","Não: |N(S)|=2<3=|S| viola Hall","Depende de König","Só se for regular"],c:1,
+  fb:"S={a,b,c} é um gargalo: 3 vértices com só 2 vizinhos. Hall falha ⟹ não satura X."},
+ {q:"Em um grafo bipartido, o emparelhamento máximo ν vale 5. Pelo Teorema de König, a cobertura mínima por vértices τ é:",
+  o:["≥ 10","= 5","≤ 2","indeterminado"],c:1,
+  fb:"König: em bipartidos ν = τ. Logo τ = 5."},
+ {q:"G simples tem Δ(G)=4. Pelo Teorema de Vizing, χ'(G) é:",
+  o:["exatamente 4","4 ou 5","entre 1 e 4","sempre 5"],c:1,
+  fb:"Vizing: Δ ≤ χ' ≤ Δ+1. Logo χ' ∈ {4,5} (classe 1 ou 2)."},
+ {q:"Brooks dá χ(G) ≤ Δ(G), EXCETO quando G é:",
+  o:["bipartido ou árvore","completo K_n ou ciclo ímpar","euleriano ou hamiltoniano","regular"],c:1,
+  fb:"As duas exceções de Brooks são K_n e ciclo ímpar — aí χ = Δ+1."},
+ {q:"Qual é χ'(C_5) (índice cromático do ciclo de 5)?",
+  o:["1","2","3","5"],c:2,
+  fb:"C_5 é ciclo ímpar: Δ=2 mas χ'=3 (classe 2). Pares dariam χ'=2."},
+ {q:"Por que K_{1,3} (estrela) NÃO é hamiltoniano?",
+  o:["tem grau ímpar","o centro teria de ser visitado 3 vezes","não é conexo","Δ é grande demais"],c:1,
+  fb:"Um ciclo hamiltoniano visitaria cada vértice uma vez; para tocar as 3 folhas seria preciso passar 3 vezes pelo centro."}
+];
+const qb=document.getElementById('quizbox');
+quiz.forEach((item,i)=>{
+  const d=document.createElement('div');d.className='q';
+  d.innerHTML=`<div class="qq">${i+1}. ${item.q}</div>`;
+  item.o.forEach((op,j)=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=op;
+    b.onclick=()=>{
+      if(d.dataset.done)return; d.dataset.done=1;
+      [...d.querySelectorAll('.opt')].forEach((x,k)=>{if(k===item.c)x.classList.add('right');});
+      if(j!==item.c)b.classList.add('wrong');
+      d.querySelector('.fb').style.display='block';
+    };
+    d.appendChild(b);
+  });
+  const fb=document.createElement('div');fb.className='fb';fb.textContent='💡 '+item.fb;d.appendChild(fb);
+  qb.appendChild(d);
+});
+
+// flashcards
+const cards=[
+ ["Euleriano (conexo) ⟺","todo vértice tem grau PAR"],
+ ["Trilha euleriana aberta ⟺","no máximo 2 vértices de grau ímpar"],
+ ["Regra de Fleury","não cruze uma ponte se houver outra opção"],
+ ["Hamiltoniano = ?","ciclo que visita todos os VÉRTICES uma vez"],
+ ["Dirac","δ(G) ≥ n/2 ⟹ hamiltoniano (suficiente)"],
+ ["Ore","u≁v ⟹ d(u)+d(v) ≥ n ⟹ hamiltoniano"],
+ ["Berge","M máximo ⟺ sem caminho aumentante"],
+ ["caminho aumentante","alternante entre duas pontas LIVRES"],
+ ["Hall (satura X) ⟺","|N(S)| ≥ |S| para todo S ⊆ X"],
+ ["König (bipartido)","ν(G) = τ(G) (empar. máx = cobertura mín)"],
+ ["Vizing","Δ ≤ χ'(G) ≤ Δ+1"],
+ ["Brooks","χ(G) ≤ Δ, salvo K_n e ciclo ímpar (Δ+1)"],
+ ["χ(bipartido)","≤ 2 (⟺ sem ciclo ímpar)"],
+ ["χ vs χ'","χ = vértices (Brooks); χ' = arestas (Vizing)"]
+];
+const cb=document.getElementById('cardbox');
+cards.forEach(([f,b])=>{
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML=`<div class="inner"><div class="f">${f}</div><div class="b">${b}</div></div>`;
+  c.onclick=()=>c.classList.toggle('flip');
+  cb.appendChild(c);
+});
+</script>
+</body>
+</html>

@@ -38,6 +38,8 @@
   .grp-t{color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-size:.66rem;min-width:52px;font-weight:600}
   .grp a{font-size:.82rem}
   .empty{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:11px}
+  .loading{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:11px}
+  .err{color:var(--warn);font-size:.8rem;border-top:1px solid var(--line);padding-top:11px}
   table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
   th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:.9rem}
   th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
@@ -52,6 +54,9 @@
   .foot{color:var(--muted);font-size:.8rem;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
   .pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:.78rem;font-weight:600}
   .pill.live{background:rgba(126,231,135,.15);color:var(--accent2)}
+  .btn{cursor:pointer;background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+    padding:5px 12px;border-radius:99px;font-size:.8rem;font-weight:600}
+  .btn:hover{border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -76,7 +81,13 @@
   </div>
 
   <section>
-    <h2>Disciplinas</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <h2 style="margin:0">Disciplinas</h2>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="sub" id="apimsg"></span>
+        <button class="btn" id="refresh" title="Recarregar a lista de arquivos do GitHub">↻ Atualizar arquivos</button>
+      </div>
+    </div>
     <div class="grid" id="cards"></div>
   </section>
 
@@ -101,11 +112,14 @@
   </section>
 
   <div class="foot">
-    Painel gerado automaticamente. Fonte do calendário: Pró-Reitoria de Graduação da UFABC.
-    Os cards linkam direto para cada arquivo (guias HTML, listas e materiais PDF) — sem depender de listagem de pasta.
+    Painel <b>dinâmico</b>: a lista de guias, listas e materiais é lida ao vivo do repositório
+    <code>enzovarellap/ufabc-content</code> via API do GitHub. Basta dar <i>push</i> de um arquivo novo
+    em <code>Disciplinas/&lt;matéria&gt;/{guias,listas,material}/</code> que ele aparece aqui — sem editar o painel.
+    Fonte do calendário: Pró-Reitoria de Graduação da UFABC.
   </div>
 
 <script>
+  /* ===== barra de progresso / semana ===== */
   const START=new Date(2026,4,25), END=new Date(2026,7,24), today=new Date();
   const pct=Math.max(0,Math.min(100,Math.round((today-START)/(END-START)*100)));
   document.getElementById('barfill').style.width=pct+'%';
@@ -115,52 +129,108 @@
   if(today<START){document.getElementById('status').textContent='● Ainda não começou';}
   if(today>END){document.getElementById('status').textContent='● Quadrimestre encerrado';}
 
-  // Cada item é [rótulo, caminho-relativo-à-pasta-da-disciplina] -> link direto pro arquivo real.
-  // build-site.py troca "../Disciplinas/" por "Disciplinas/" ao publicar.
-  const disc=[
-    {code:'BCN0405-15',name:'Introdução às Equações Diferenciais Ordinárias',c:'#4da3ff',tpi:'4-0-4',horas:['Ter 21–23','Sex 19–21'],
-     dir:'../Disciplinas/BCN0405 - EDO',
-     guias:[['★ Guia 0 — Cálculo base','guias/guia-edo-p0-calculo-base.html'],['★ Guia 1 — Fundamentos · Separáveis · Lineares','guias/guia-edo-p1-fundamentos.html'],['★ Guia 2 — Substituições · Bernoulli · Riccati','guias/guia-edo-p1-substituicoes.html'],['★ Guia 3 — Modelagem · Autônomas · TEU','guias/guia-edo-p1-modelagem-autonomas-teu.html']],
-     listas:[['Lista 0','listas/lista0.pdf'],['★ Lista 0 resolvida','listas/resolucao-lista0.html'],['Lista 1','listas/lista1 (1).pdf'],['★ Lista 1 resolvida','listas/resolucao-lista1.html'],['Lista 2','listas/lista2 (1).pdf'],['★ Lista 2 resolvida','listas/resolucao-lista2.html']],
-     material:[['Aula 1','material/aula1.pdf'],['Aula 2','material/aula2.pdf'],['Aula 3','material/aula3.pdf'],['Aula 4','material/aula4.pdf'],['Plano de ensino','material/plano de ensino.pdf']]},
-    {code:'ESTO017-17',name:'Métodos Experimentais em Engenharia',c:'#7ee787',tpi:'2-2-4',horas:['Ter 19–21','Qui 21–23'],
-     dir:'../Disciplinas/ESTO017 - Metodos Experimentais',
-     guias:[],listas:[],
-     material:[['Cronograma 2º quad. 2026 (DOCX)','material/ESTO017-17 cronograma 2quad2026.docx']]},
-    {code:'ESMA001-23',name:'Soluções para Desafios em Engenharia',c:'#ffb454',tpi:'0-2-5',horas:['Qui 19–21'],
-     dir:'../Disciplinas/ESMA001 - Solucoes Desafios Eng',
-     guias:[],listas:[],
-     material:[['Material 18/05','material/ESMA001-23N_260518.pdf'],['Plano de ensino','material/plano_de_ensino_ESMA001-23_Noturno_26.2A1 (1).pdf']]},
-    {code:'NHLQ002-22',name:'Práticas de Ensino de Química I',c:'#d2a8ff',tpi:'0-3-4',horas:['Sex 21–23','Qua 19–21 (quinz.)'],
-     dir:'../Disciplinas/NHLQ002 - Praticas Ensino Quimica I',
-     guias:[['★ Guia Seminário — Ácidos & Bases','guias/guia-seminario-concepcoes-alternativas-acidos-bases.html']],
-     listas:[],
-     material:[['Aula 1','material/Aula 1.pdf'],['Aula 2','material/Aula 2.pdf'],['Mortimer 1996','material/Mortimer 1996.pdf'],['Plano — PEQ I','material/Plano - PEQ I.pdf'],['Seminário 1 — Ácidos/Bases','material/SEMINARIO_1_ÁCIDOS_BASES.pdf']]},
-    {code:'MCCC010-23',name:'Matemática Discreta II',c:'#ff6b6b',tpi:'4-0-4',horas:['Seg 19–21','Qua 21–23'],
-     dir:'../Disciplinas/MCCC010 - Matematica Discreta II',
-     guias:[['★ Guia Teoria — Sem. 1–4','guias/guia-teoria-semanas1-4.html'],['★ Guia Grafos avançados — P2','guias/guia-grafos-avancados-p2.html'],['★ Lista 1 resolvida','listas/resolucao-lista1.html']],
-     listas:[['Lista 1 (enunciado)','listas/lista1-md2.pdf']],
-     material:[['Intro','material/intro.pdf'],['Aula 1','material/aula1.pdf'],['Aula 2','material/aula2.pdf'],['Aula 3','material/aula3.pdf'],['Aula 3.2','material/aula3.2.pdf'],['Aula 4','material/aula4.pdf'],['Plano de ensino','material/plano-ensino-md2.pdf']]},
-    {code:'ESTA020-17',name:'Modelagem e Controle',c:'#56d4dd',tpi:'2-0-5',horas:['Seg 21–23'],
-     dir:'../Disciplinas/ESTA020 - Modelagem e Controle',
-     guias:[],listas:[],material:[]},
-  ];
-  const fileLinks=(dir,arr)=>arr.map(it=>`<a href="${encodeURI(dir+'/'+it[1])}">${it[0]}</a>`).join('');
-  document.getElementById('cards').innerHTML=disc.map(d=>{
-    const guias=(d.guias&&d.guias.length)?`<div class="links-guias">${fileLinks(d.dir,d.guias)}</div>`:'';
-    const blocks=[];
-    if(d.listas&&d.listas.length) blocks.push(`<div class="grp"><span class="grp-t">Listas</span>${fileLinks(d.dir,d.listas)}</div>`);
-    if(d.material&&d.material.length) blocks.push(`<div class="grp"><span class="grp-t">Material</span>${fileLinks(d.dir,d.material)}</div>`);
-    const files=blocks.length?`<div class="files">${blocks.join('')}</div>`:'';
-    const empty=(!d.guias.length&&!blocks.length)?`<div class="empty">Sem material publicado ainda.</div>`:'';
-    return `<div class="card" style="--c:${d.c}">
-      <div class="code">${d.code} · TPI ${d.tpi}</div>
-      <h3>${d.name}</h3>
-      <div class="chips">${d.horas.map(h=>`<span class="chip">${h}</span>`).join('')}</div>
-      ${guias}${files}${empty}
-    </div>`;
-  }).join('');
+  /* ===== CONFIG do repositório ===== */
+  const OWNER='enzovarellap', REPO='ufabc-content', BRANCH='main';
+  // Base para abrir os arquivos: a própria pasta onde este index.html está servido (Pages).
+  const SITE_BASE = location.href.replace(/[^/]*$/,'');
+  const CACHE_TTL = 10*60*1000; // 10 min
 
+  // Metadados fixos das disciplinas (estáveis). Os ARQUIVOS são buscados ao vivo.
+  const disc=[
+    {code:'BCN0405-15',name:'Introdução às Equações Diferenciais Ordinárias',c:'#4da3ff',tpi:'4-0-4',horas:['Ter 21–23','Sex 19–21'],dir:'Disciplinas/BCN0405 - EDO'},
+    {code:'MCCC010-23',name:'Matemática Discreta II',c:'#ff6b6b',tpi:'4-0-4',horas:['Seg 19–21','Qua 21–23'],dir:'Disciplinas/MCCC010 - Matematica Discreta II'},
+    {code:'ESTO017-17',name:'Métodos Experimentais em Engenharia',c:'#7ee787',tpi:'2-2-4',horas:['Ter 19–21','Qui 21–23'],dir:'Disciplinas/ESTO017 - Metodos Experimentais'},
+    {code:'ESMA001-23',name:'Soluções para Desafios em Engenharia',c:'#ffb454',tpi:'0-2-5',horas:['Qui 19–21'],dir:'Disciplinas/ESMA001 - Solucoes Desafios Eng'},
+    {code:'NHLQ002-22',name:'Práticas de Ensino de Química I',c:'#d2a8ff',tpi:'0-3-4',horas:['Sex 21–23','Qua 19–21 (quinz.)'],dir:'Disciplinas/NHLQ002 - Praticas Ensino Quimica I'},
+    {code:'ESTA020-17',name:'Modelagem e Controle',c:'#56d4dd',tpi:'2-0-5',horas:['Seg 21–23'],dir:'Disciplinas/ESTA020 - Modelagem e Controle'},
+  ];
+
+  /* ===== helpers ===== */
+  const encPath = p => p.split('/').map(encodeURIComponent).join('/');
+  const fileURL = path => SITE_BASE + encPath(path);            // abre via Pages (HTML renderiza, PDF abre no navegador)
+  const apiURL  = path => `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encPath(path)}?ref=${BRANCH}`;
+
+  // Nome amigável a partir do filename
+  function pretty(name){
+    const dot=name.lastIndexOf('.'); const base=dot>0?name.slice(0,dot):name;
+    let s=base.replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
+    s=s.replace(/\bedo\b/ig,'EDO').replace(/\bmd2\b/ig,'MD II').replace(/\bp(\d)\b/ig,(m,d)=>'P'+d).replace(/\bteu\b/ig,'TEU');
+    return s.charAt(0).toUpperCase()+s.slice(1);
+  }
+  const ext = n => { const d=n.lastIndexOf('.'); return d>0?n.slice(d+1).toLowerCase():''; };
+  const isResol = n => /resolu[cç]/i.test(n);
+  const isGuide = n => /guia/i.test(n);
+
+  // fetch com cache (localStorage) + tolerância a rate limit
+  async function listFolder(path){
+    const key='gh:'+path;
+    let cached=null;
+    try{ const raw=localStorage.getItem(key); if(raw){const o=JSON.parse(raw); if(Date.now()-o.t<CACHE_TTL) return o.d; cached=o.d;} }catch(e){}
+    try{
+      const r=await fetch(apiURL(path),{headers:{'Accept':'application/vnd.github+json'}});
+      if(r.status===404) { try{localStorage.setItem(key,JSON.stringify({t:Date.now(),d:[]}));}catch(e){} return []; }
+      if(r.status===403){ window.__rate=true; return cached||[]; } // rate limit: usa cache se houver
+      if(!r.ok) return cached||[];
+      const arr=await r.json();
+      const files=(Array.isArray(arr)?arr:[]).filter(x=>x.type==='file').map(x=>({name:x.name,path:x.path}));
+      try{localStorage.setItem(key,JSON.stringify({t:Date.now(),d:files}));}catch(e){}
+      return files;
+    }catch(e){ return cached||[]; }
+  }
+
+  function linkList(files){
+    return files.map(f=>{
+      const star=(isGuide(f.name)||isResol(f.name))?'★ ':'';
+      return `<a href="${fileURL(f.path)}" target="_blank" rel="noopener">${star}${pretty(f.name)}</a>`;
+    }).join('');
+  }
+
+  async function buildCard(d){
+    const el=document.getElementById('card-'+d.code);
+    const [guias,listas,material]=await Promise.all([
+      listFolder(d.dir+'/guias'),
+      listFolder(d.dir+'/listas'),
+      listFolder(d.dir+'/material'),
+    ]);
+    // guias HTML em destaque (inclui resoluções, que ficam em listas/ — então separo por pasta):
+    const guiasBlock = guias.length?`<div class="links-guias">${linkList(guias)}</div>`:'';
+    const blocks=[];
+    if(listas.length)   blocks.push(`<div class="grp"><span class="grp-t">Listas</span>${linkList(listas)}</div>`);
+    if(material.length) blocks.push(`<div class="grp"><span class="grp-t">Material</span>${linkList(material)}</div>`);
+    const filesBlock = blocks.length?`<div class="files">${blocks.join('')}</div>`:'';
+    const inner = (guias.length||blocks.length)
+        ? guiasBlock+filesBlock
+        : `<div class="empty">Sem material publicado ainda.</div>`;
+    el.querySelector('.card-body').innerHTML=inner;
+  }
+
+  function renderShell(){
+    document.getElementById('cards').innerHTML=disc.map(d=>`
+      <div class="card" id="card-${d.code}" style="--c:${d.c}">
+        <div class="code">${d.code} · TPI ${d.tpi}</div>
+        <h3>${d.name}</h3>
+        <div class="chips">${d.horas.map(h=>`<span class="chip">${h}</span>`).join('')}</div>
+        <div class="card-body"><div class="loading">Carregando arquivos…</div></div>
+      </div>`).join('');
+  }
+
+  async function loadAll(){
+    window.__rate=false;
+    document.getElementById('apimsg').textContent='';
+    renderShell();
+    await Promise.all(disc.map(buildCard));
+    if(window.__rate){
+      document.getElementById('apimsg').innerHTML='<span style="color:var(--warn)">Limite da API do GitHub atingido — mostrando do cache. Tente de novo em alguns minutos.</span>';
+    }
+  }
+  document.getElementById('refresh').addEventListener('click',()=>{
+    // limpa cache e recarrega
+    Object.keys(localStorage).forEach(k=>{ if(k.startsWith('gh:')) localStorage.removeItem(k); });
+    loadAll();
+  });
+  loadAll();
+
+  /* ===== grade de horários ===== */
   const grade=[
     ['Segunda','Matemática Discreta II','Modelagem e Controle'],
     ['Terça','Métodos Experimentais','EDO'],
@@ -176,6 +246,7 @@
       <td class="${r[2]?'cell-fill':''}">${r[2]||'—'}</td></tr>`;
   }).join('');
 
+  /* ===== datas-chave ===== */
   const cal=[
     ['03–04/06','Reajuste de matrículas (2026.2)',new Date(2026,5,4)],
     ['05/07','Fim do trancamento sem justificativa',new Date(2026,6,5)],
@@ -192,6 +263,7 @@
     return `<li class="${cls}"><span class="d">${e[0]}</span><span>${e[1]}</span></li>`;
   }).join('');
 
+  /* ===== provas ===== */
   const provas=[
     [new Date(2026,5,15),'15/06','Modelagem e Controle','Prova 1'],
     [new Date(2026,5,29),'29/06','Matemática Discreta II','Prova 1 (P1) — Sem. 1–4'],

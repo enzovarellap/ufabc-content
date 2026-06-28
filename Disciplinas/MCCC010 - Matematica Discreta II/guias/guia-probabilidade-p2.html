@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemática Discreta II — Probabilidade Discreta & Método Probabilístico (P2)</title>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --bg:#0f1419; --bg2:#161c24; --bg3:#1d252f; --panel:#1a222c;
+  --ink:#e6edf3; --muted:#9aa7b4; --line:#2a3441;
+  --accent:#6ea8fe; --accent2:#7ee0c0; --warn:#ffcf6e; --bonus:#c8a2ff; --bad:#ff8b8b;
+  --formula:#ffe9b0;
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+  --serif:'Georgia','Times New Roman',serif;
+  --sans:'Inter','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* layout */
+.wrap{display:flex;min-height:100vh}
+#sidebar{width:310px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--line);
+  position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 14px}
+#main{flex:1;min-width:0;padding:32px 40px 120px;max-width:1000px;margin:0 auto}
+@media(max-width:900px){
+  #sidebar{position:fixed;left:-330px;z-index:50;transition:left .25s;box-shadow:0 0 40px #000a}
+  #sidebar.open{left:0}
+  #main{padding:70px 18px 120px}
+  #hamb{display:flex!important}
+}
+#hamb{display:none;position:fixed;top:12px;left:12px;z-index:60;background:var(--accent);color:#04121f;
+  border:none;border-radius:9px;width:44px;height:44px;font-size:22px;cursor:pointer;align-items:center;justify-content:center}
+
+/* sidebar */
+.brand{font-family:var(--serif);font-size:18px;font-weight:700;color:#fff;margin:4px 6px 2px}
+.brand small{display:block;font-family:var(--sans);font-size:11.5px;font-weight:400;color:var(--muted);margin-top:3px}
+#search{width:100%;margin:12px 0;padding:10px 12px;background:var(--bg3);border:1px solid var(--line);
+  border-radius:9px;color:var(--ink);font-size:14px}
+#search::placeholder{color:var(--muted)}
+.navgroup{margin:6px 0}
+.navgroup>span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 6px 4px}
+#nav a{display:block;padding:6px 10px;border-radius:7px;color:var(--muted);font-size:13.5px;border-left:2px solid transparent}
+#nav a:hover{background:var(--bg3);color:var(--ink);text-decoration:none}
+#nav a.active{background:#22304a;color:#fff;border-left-color:var(--accent)}
+
+/* headings */
+h1{font-family:var(--serif);font-size:30px;line-height:1.2;margin:0 0 6px;color:#fff}
+h2{font-family:var(--serif);font-size:23px;margin:8px 0 10px;color:#fff;scroll-margin-top:20px}
+h3{font-size:17px;margin:20px 0 6px;color:var(--accent2)}
+.sub{color:var(--muted);font-size:14.5px;margin:0 0 18px}
+section{border-top:1px solid var(--line);padding-top:26px;margin-top:30px}
+section:first-of-type{border-top:none}
+
+/* tags */
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:20px;
+  vertical-align:middle;margin-left:8px;text-transform:uppercase}
+.t-prova{background:#3a2230;color:#ff9ec0;border:1px solid #6e2f48}
+.t-ess{background:#23323f;color:#8fd0ff;border:1px solid #2f5f7e}
+.t-bonus{background:#2b2440;color:var(--bonus);border:1px solid #4a3a73}
+
+/* boxes */
+.def{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:10px;padding:14px 16px;margin:14px 0}
+.def .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700;margin-bottom:4px}
+.thm{background:#15211c;border:1px solid #244;border-left:4px solid var(--accent2);border-radius:10px;padding:14px 16px;margin:14px 0}
+.thm .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);font-weight:700;margin-bottom:4px}
+.tip{background:#241f15;border:1px solid #4a3d20;border-radius:10px;padding:12px 15px;margin:12px 0;font-size:14.5px}
+.tip b{color:var(--warn)}
+.intu{background:#1a1726;border:1px solid #3a2f54;border-left:4px solid var(--bonus);border-radius:10px;padding:12px 15px;margin:12px 0;font-size:14.5px}
+.intu .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--bonus);font-weight:700;margin-bottom:4px}
+.formula{font-family:var(--mono);background:#0c1218;border-left:3px solid var(--formula);color:var(--formula);
+  padding:11px 14px;border-radius:8px;margin:10px 0;overflow-x:auto;font-size:15px}
+code{font-family:var(--mono);background:#0c1218;padding:1px 6px;border-radius:5px;color:#cfe;font-size:.92em}
+.mono{font-family:var(--mono)}
+
+/* collapsible */
+details{background:var(--bg2);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+details[open]{box-shadow:0 4px 18px #0004}
+summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;align-items:center;gap:10px;user-select:none}
+summary::-webkit-details-marker{display:none}
+summary .arw{transition:transform .2s;color:var(--accent);font-size:13px}
+details[open] summary .arw{transform:rotate(90deg)}
+summary:hover{background:var(--bg3)}
+.dbody{padding:4px 16px 16px;border-top:1px solid var(--line)}
+.dbody.ex{border-top-color:#2f5f7e}
+.steps{counter-reset:s;padding-left:0;list-style:none;margin:8px 0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 36px;border-bottom:1px dashed var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{content:counter(s);position:absolute;left:0;top:6px;background:var(--accent);color:#04121f;
+  width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;font-family:var(--mono)}
+
+/* tables */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg3);color:#fff;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
+tr:nth-child(even) td{background:#141b23}
+.muted{color:var(--muted)}
+
+/* svg figures */
+figure{margin:16px 0;text-align:center}
+figure svg{background:#0b1117;border:1px solid var(--line);border-radius:10px;max-width:100%}
+figcaption{color:var(--muted);font-size:13px;margin-top:6px}
+
+/* quiz */
+.quiz{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0}
+.q{margin:14px 0;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+.q:last-child{border-bottom:none}
+.q .qq{font-weight:600;margin-bottom:8px}
+.opt{display:block;width:100%;text-align:left;background:var(--bg3);border:1px solid var(--line);color:var(--ink);
+  padding:9px 12px;border-radius:8px;margin:5px 0;cursor:pointer;font-size:14px}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:#16301f;border-color:#2c7;color:#bff5cf}
+.opt.wrong{background:#311a1f;border-color:#a44;color:#ffc4c4}
+.fb{font-size:13.5px;margin-top:6px;color:var(--muted);display:none}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--bg3);border:1px solid var(--line);border-radius:10px;min-height:130px;cursor:pointer;perspective:1000px}
+.card .inner{position:relative;width:100%;height:100%;min-height:130px;transition:transform .5s;transform-style:preserve-3d}
+.card.flip .inner{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;padding:14px;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:10px}
+.card .f{font-weight:600}
+.card .b{transform:rotateY(180deg);background:#15211c;color:#bff5cf;font-size:13.5px}
+textarea{width:100%;min-height:90px;background:var(--bg3);border:1px solid var(--line);border-radius:9px;
+  color:var(--ink);padding:11px;font-family:var(--sans);font-size:14px;resize:vertical}
+
+.pill{display:inline-block;background:var(--bg3);border:1px solid var(--line);border-radius:20px;padding:3px 11px;font-size:12.5px;margin:3px 4px 3px 0;color:var(--muted)}
+mark{background:#5b4a16;color:#ffe9b0;border-radius:3px;padding:0 2px}
+hr{border:none;border-top:1px solid var(--line);margin:22px 0}
+.hidden{display:none!important}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.cols2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button id="hamb" aria-label="menu">☰</button>
+<div class="wrap">
+<aside id="sidebar">
+  <div class="brand">Matemática Discreta II
+    <small>MCCC010-23 · Prof. Renzo G. Gómez · Probabilidade & Método Probabilístico (P2)</small>
+  </div>
+  <input id="search" type="search" placeholder="🔎 buscar (Markov, Chebyshev, Ramsey…)">
+  <nav id="nav">
+    <div class="navgroup"><span>Começo</span>
+      <a href="#visao">0 · Visão geral & mapa da P2</a>
+    </div>
+    <div class="navgroup"><span>Fundamentos</span>
+      <a href="#espaco">1 · Espaço de probabilidade discreto</a>
+      <a href="#va">2 · Variáveis aleatórias</a>
+      <a href="#esp">3 · Esperança & linearidade</a>
+      <a href="#indic">4 · Variáveis indicadoras</a>
+      <a href="#var">5 · Variância & covariância</a>
+    </div>
+    <div class="navgroup"><span>Desigualdades</span>
+      <a href="#jensen">6 · Jensen</a>
+      <a href="#markov">7 · Markov</a>
+      <a href="#chebyshev">8 · Chebyshev</a>
+    </div>
+    <div class="navgroup"><span>O método probabilístico</span>
+      <a href="#gnp">9 · Modelo Erdős–Rényi G(n,p)</a>
+      <a href="#primeiro">10 · Método do 1º momento</a>
+      <a href="#ramsey">11 · Cota de Ramsey R(k,k)</a>
+      <a href="#segundo">12 · Método do 2º momento</a>
+      <a href="#alteracao">13 · Método da alteração</a>
+      <a href="#concentracao">14 · Concentração (ideia)</a>
+      <a href="#girth">15 · Cintura & número cromático grandes</a>
+    </div>
+    <div class="navgroup"><span>Fechar</span>
+      <a href="#cola">16 · Cola: fórmulas-chave</a>
+      <a href="#erros">17 · Erros comuns & dicas</a>
+      <a href="#quiz">18 · Quiz relâmpago</a>
+      <a href="#flash">19 · Flashcards</a>
+      <a href="#feynman">20 · Feynman (sua vez)</a>
+    </div>
+  </nav>
+</aside>
+
+<main id="main">
+<h1>Probabilidade Discreta & o Método Probabilístico</h1>
+<p class="sub">Bloco final de Matemática Discreta II (Semanas ~9–11) que cai na <b>Prova 2 — 10/08/2026</b>. Ainda não há slides desta parte: este guia <b>ensina do zero</b> a partir das referências padrão (Alon &amp; Spencer, <i>The Probabilistic Method</i>; Mitzenmacher &amp; Upfal, <i>Probability and Computing</i>). Leia o resumo, abra os exemplos numéricos, faça o quiz e no fim explique com suas palavras. Onde vir <span class="tag t-prova">caia na prova</span>, atenção redobrada.</p>
+
+<!-- 0 -->
+<section id="visao">
+<h2>0 · Visão geral &amp; mapa da P2 <span class="tag t-ess">leia primeiro</span></h2>
+<p>A grande sacada deste bloco: usar <b>aleatoriedade para provar que objetos existem</b>. A lógica é a do <b>método probabilístico</b> de Paul Erdős:</p>
+<div class="intu"><div class="lab">A grande ideia</div>
+Para mostrar que existe um objeto com certa propriedade, construa um objeto <b>aleatório</b> e mostre que ele tem essa propriedade <b>com probabilidade positiva</b>. Se \(P(\text{bom})>0\), então pelo menos um objeto bom <b>tem</b> que existir — mesmo sem exibir nenhum! É uma prova de existência <b>não construtiva</b>.</p>
+<p>Para fazer isso você precisa de quatro ferramentas, nesta ordem:</p>
+<div>
+  <span class="pill">1. Esperança \(E[X]\) + linearidade</span>
+  <span class="pill">2. Indicadoras (contar = somar 0/1)</span>
+  <span class="pill">3. Markov / Chebyshev (controlar caudas)</span>
+  <span class="pill">4. G(n,p) (sortear um grafo)</span>
+</div>
+<p style="margin-top:12px">Com elas, montamos três <b>métodos</b>: <b>1º momento</b> (se a média é pequena, existe um caso com valor 0), <b>2º momento</b> (se a média é grande e a variância pequena, o valor quase nunca é 0) e <b>alteração</b> (sorteie, depois conserte os poucos defeitos).</p>
+<table>
+<tr><th>Você quer mostrar que…</th><th>Use</th><th>Critério</th></tr>
+<tr><td>existe objeto <b>sem</b> certa estrutura ruim</td><td>1º momento</td><td>\(E[X]<1\Rightarrow\) existe ponto com \(X=0\)</td></tr>
+<tr><td>quase todo objeto <b>tem</b> a estrutura</td><td>2º momento</td><td>\(E[X]\to\infty\) e \(\mathrm{Var}(X)=o(E[X]^2)\Rightarrow X>0\) q.c.</td></tr>
+<tr><td>existe objeto bom <b>após pequeno conserto</b></td><td>alteração</td><td>sorteie; remova os \(E[\text{defeitos}]\) pontos ruins</td></tr>
+</table>
+<p class="muted"><b>Roteiro (≈ um fim de semana):</b> Seções 1–5 (probabilidade + esperança) → 6–8 (as 3 desigualdades) → 9–11 (G(n,p), 1º momento, Ramsey) → 12–15 (2º momento, alteração, cintura/cromático) → Quiz + Flashcards.</p>
+</section>
+
+<!-- 1 -->
+<section id="espaco">
+<h2>1 · Espaço de probabilidade discreto</h2>
+<p>Tudo aqui vive num <b>espaço finito (ou enumerável)</b>. Não precisa de teoria da medida: é só contagem com pesos.</p>
+<div class="def"><div class="lab">Definição</div>
+Um <b>espaço de probabilidade discreto</b> é um par \((\Omega,P)\): um conjunto enumerável \(\Omega\) de <b>resultados</b> (o <i>espaço amostral</i>) e uma função \(P:\Omega\to[0,1]\) com \(\sum_{\omega\in\Omega}P(\omega)=1\). Um <b>evento</b> é um subconjunto \(A\subseteq\Omega\), e \(P(A)=\sum_{\omega\in A}P(\omega)\).</p>
+<div class="formula">P(∅)=0,  P(Ω)=1,  P(Aᶜ)=1−P(A)
+P(A∪B)=P(A)+P(B)−P(A∩B)
+União (cota): P(A₁∪…∪Aₙ) ≤ Σ P(Aᵢ)   ← "union bound", usadíssima</div>
+<div class="intu"><div class="lab">Por que a cota da união importa tanto</div>
+No método probabilístico, "ruim" costuma ser "<b>alguma</b> coisa ruim acontece". A cota da união transforma isso em uma <b>soma</b> de probabilidades pequenas. Se cada coisa ruim é improvável e há poucas delas, a soma fica \(<1\) e sobra probabilidade positiva de <b>nada</b> ruim acontecer.</p>
+<div class="def"><div class="lab">Espaço uniforme</div>
+Se \(\Omega\) é finito e todos os resultados têm o mesmo peso, \(P(A)=\dfrac{|A|}{|\Omega|}\). Probabilidade vira <b>contagem</b>.</div>
+<div class="def"><div class="lab">Independência</div>
+Eventos \(A,B\) são <b>independentes</b> se \(P(A\cap B)=P(A)\,P(B)\). Variáveis \(X,Y\) são independentes se \(P(X=x,\,Y=y)=P(X=x)\,P(Y=y)\) para todo \(x,y\).</div>
+</section>
+
+<!-- 2 -->
+<section id="va">
+<h2>2 · Variáveis aleatórias <span class="tag t-ess">essencial</span></h2>
+<div class="def"><div class="lab">Definição</div>
+Uma <b>variável aleatória</b> (v.a.) \(X\) é uma função \(X:\Omega\to\mathbb{R}\). Ela atribui um número a cada resultado. Eventos como \(\{X=a\}\) ou \(\{X\ge a\}\) são subconjuntos de \(\Omega\), então têm probabilidade.</div>
+<p>Duas distribuições aparecem o tempo todo:</p>
+<table>
+<tr><th>Distribuição</th><th>Quando surge</th><th>\(P(X=k)\)</th><th>\(E[X]\)</th><th>\(\mathrm{Var}(X)\)</th></tr>
+<tr><td><b>Bernoulli</b>\((p)\)</td><td>1 moeda / 1 indicador</td><td>\(p\) se \(k=1\); \(1-p\) se \(k=0\)</td><td>\(p\)</td><td>\(p(1-p)\)</td></tr>
+<tr><td><b>Binomial</b>\((n,p)\)</td><td>soma de \(n\) Bernoulli indep.</td><td>\(\binom{n}{k}p^k(1-p)^{n-k}\)</td><td>\(np\)</td><td>\(np(1-p)\)</td></tr>
+</table>
+<div class="intu"><div class="lab">Mentalidade</div>
+Pense em \(X\) como um "<b>número que ainda não foi sorteado</b>". \(E[X]\) é a sua média sobre todos os sorteios; \(\mathrm{Var}(X)\) é o quanto ele balança em torno dessa média.</div>
+</section>
+
+<!-- 3 -->
+<section id="esp">
+<h2>3 · Esperança &amp; linearidade <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">Esperança (valor esperado)</div>
+\[E[X]=\sum_{\omega\in\Omega}X(\omega)\,P(\omega)=\sum_{a}a\cdot P(X=a).\]
+É a <b>média ponderada</b> dos valores de \(X\), com pesos = probabilidades.</div>
+<div class="thm"><div class="lab">Linearidade da esperança — a ferramenta nº 1</div>
+Para <b>quaisquer</b> v.a. \(X,Y\) e constantes \(a,b\):
+\[E[aX+bY]=a\,E[X]+b\,E[Y].\]
+<b>Vale mesmo que \(X\) e \(Y\) sejam dependentes!</b> Não exige independência.</div>
+<div class="intu"><div class="lab">Por que isso é mágico</div>
+Calcular a distribuição de uma soma \(X=X_1+\dots+X_n\) costuma ser horrível (precisa de convoluções, correlações…). Mas a <b>média</b> da soma é só a soma das médias — sempre. Então, para achar \(E[X]\), quebramos \(X\) em pedacinhos simples e somamos as médias deles. É o coração da próxima seção.</div>
+<details><summary><span class="arw">▶</span> Exemplo numérico · pontos fixos de uma permutação (conferido no sympy)</summary>
+<div class="dbody ex">
+<p>Embaralhe \(n\) cartas numeradas. \(X=\) número de cartas que ficam na posição original (pontos fixos). Quanto vale \(E[X]\)?</p>
+<ul class="steps">
+<li>Escreva \(X=\sum_{i=1}^n X_i\), com \(X_i=1\) se a carta \(i\) ficou no lugar, senão \(0\) (indicadora — Seção 4).</li>
+<li>\(E[X_i]=P(\text{carta }i\text{ no lugar})=\dfrac{1}{n}\) (qualquer posição é igualmente provável).</li>
+<li>Por linearidade: \(E[X]=\sum_{i=1}^n \dfrac1n = n\cdot\dfrac1n = \mathbf{1}\), <b>para todo \(n\)</b>.</li>
+</ul>
+<p>Verificado por força bruta no sympy para \(n=3,4,5,10\): a média de pontos fixos deu exatamente \(1\) em todos. Repare que <b>nunca</b> precisamos da distribuição exata de \(X\) (que é complicada) — só das médias dos pedaços.</p>
+</div></details>
+</section>
+
+<!-- 4 -->
+<section id="indic">
+<h2>4 · Variáveis indicadoras <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">Indicadora de um evento \(A\)</div>
+\[\mathbf{1}_A=\begin{cases}1,&\text{se }A\text{ ocorre}\\ 0,&\text{caso contrário.}\end{cases}\qquad E[\mathbf{1}_A]=P(A).\]
+A esperança de uma indicadora é <b>a própria probabilidade</b> do evento. Esse é o elo entre "contar" e "calcular probabilidade".</div>
+<div class="thm"><div class="lab">Receita "contar = somar indicadoras"</div>
+Para contar quantos objetos (de uma coleção) têm uma propriedade, escreva
+\[X=\sum_{i} \mathbf{1}_{A_i}\quad\Rightarrow\quad E[X]=\sum_i P(A_i).\]
+Esta dupla — <b>indicadoras + linearidade</b> — resolve praticamente toda conta de "número esperado de…".</div>
+<details><summary><span class="arw">▶</span> Exemplo · número esperado de arestas em \(G(n,p)\)</summary>
+<div class="dbody ex">
+<p>Sorteie um grafo com \(n\) vértices onde cada um dos \(\binom n2\) pares vira aresta, independentemente, com probabilidade \(p\) (isso é o modelo da Seção 9). Quantas arestas em média?</p>
+<ul class="steps">
+<li>Para cada par \(e\), seja \(X_e=\mathbf{1}[e\text{ é aresta}]\), com \(E[X_e]=p\).</li>
+<li>\(X=\sum_e X_e\) (número total de arestas).</li>
+<li>\(E[X]=\binom n2\,p\). Ex.: \(n=10,\;p=\tfrac12\Rightarrow E[X]=45\cdot\tfrac12=22{,}5\) arestas.</li>
+</ul>
+</div></details>
+<div class="tip"><b>Atalho de prova:</b> quando o enunciado diz "número esperado de [triângulos / pontos fixos / colisões / vitórias / pares…]", reflexo automático: <b>defina uma indicadora por objeto e some</b>.</div>
+</section>
+
+<!-- 5 -->
+<section id="var">
+<h2>5 · Variância &amp; covariância</h2>
+<div class="def"><div class="lab">Variância e desvio-padrão</div>
+\[\mathrm{Var}(X)=E\big[(X-E[X])^2\big]=E[X^2]-\big(E[X]\big)^2,\qquad \sigma_X=\sqrt{\mathrm{Var}(X)}.\]
+Mede o "espalhamento" típico de \(X\) em torno da média.</div>
+<div class="def"><div class="lab">Covariância</div>
+\(\mathrm{Cov}(X,Y)=E[XY]-E[X]\,E[Y]\). Se \(X,Y\) são <b>independentes</b>, \(\mathrm{Cov}(X,Y)=0\).</div>
+<div class="thm"><div class="lab">Variância de uma soma</div>
+\[\mathrm{Var}\Big(\sum_i X_i\Big)=\sum_i \mathrm{Var}(X_i)+\sum_{i\ne j}\mathrm{Cov}(X_i,X_j).\]
+Se as \(X_i\) forem <b>independentes</b> (ou só 2 a 2 não-correlacionadas), os termos de covariância somem e \(\mathrm{Var}(\sum X_i)=\sum \mathrm{Var}(X_i)\).</div>
+<div class="intu"><div class="lab">Cuidado: variância NÃO é linear</div>
+Diferente da esperança, a variância da soma só é a soma das variâncias quando <b>não há correlação</b>. No 2º momento (Seção 12) é justamente o cálculo das <b>covariâncias</b> que dá trabalho.</div>
+<details><summary><span class="arw">▶</span> Exemplo numérico · dado honesto (conferido no sympy)</summary>
+<div class="dbody ex">
+<p>\(X=\) resultado de um dado de 6 faces. \(E[X]=\frac{1+2+\dots+6}{6}=\frac{21}{6}=3{,}5\); \(E[X^2]=\frac{1+4+9+16+25+36}{6}=\frac{91}{6}\).</p>
+<p>\(\mathrm{Var}(X)=\frac{91}{6}-\left(\frac{7}{2}\right)^2=\frac{91}{6}-\frac{49}{4}=\frac{35}{12}\approx 2{,}9167.\) (sympy confirma \(2{,}9167\).)</p>
+</div></details>
+</section>
+
+<!-- 6 -->
+<section id="jensen">
+<h2>6 · Desigualdade de Jensen</h2>
+<div class="thm"><div class="lab">Jensen</div>
+Se \(\varphi\) é uma função <b>convexa</b> (curva pra cima, \(\varphi''\ge 0\)), então
+\[\varphi\big(E[X]\big)\le E\big[\varphi(X)\big].\]
+Se \(\varphi\) for <b>côncava</b> (curva pra baixo), a desigualdade inverte: \(\varphi(E[X])\ge E[\varphi(X)]\).</div>
+<div class="intu"><div class="lab">Imagem mental</div>
+"A média da função é maior que a função da média" para convexas. Como \(x\mapsto x^2\) é convexa, Jensen dá \(E[X^2]\ge (E[X])^2\) — exatamente o que garante \(\mathrm{Var}(X)=E[X^2]-(E[X])^2\ge 0\). A variância é sempre \(\ge 0\) <b>por causa de Jensen</b>.</div>
+<div class="formula">Convexa: φ(E[X]) ≤ E[φ(X)]      (ex.: x², eˣ, |x|)
+Côncava: φ(E[X]) ≥ E[φ(X)]      (ex.: log x, √x)</div>
+<div class="tip"><b>Caso clássico:</b> \(\varphi(x)=x^2\Rightarrow (E[X])^2\le E[X^2]\). Confere no dado da Seção 5: \((3{,}5)^2=12{,}25\le \tfrac{91}{6}\approx 15{,}17\). ✔</div>
+</section>
+
+<!-- 7 -->
+<section id="markov">
+<h2>7 · Desigualdade de Markov <span class="tag t-prova">caia na prova</span></h2>
+<div class="thm"><div class="lab">Markov</div>
+Se \(X\ge 0\) e \(a>0\), então
+\[P(X\ge a)\le \frac{E[X]}{a}.\]
+Só precisa que \(X\) seja <b>não-negativa</b> e da <b>média</b> — nada mais.</div>
+<div class="intu"><div class="lab">Intuição</div>
+Se a renda média de uma cidade é R$ 3000, no máximo \(1/3\) das pessoas pode ganhar \(\ge\) R$ 9000 — senão a média já estouraria. Markov é grosseiro (usa só a média), mas é a base de tudo: Chebyshev e os limites de concentração saem todos aplicando Markov a \(X^2\), \(e^{tX}\), etc.</div>
+<details><summary><span class="arw">▶</span> Demonstração (1 linha)</summary>
+<div class="dbody ex">
+<p>Como \(X\ge 0\): \(\;E[X]\ge E[X\cdot\mathbf{1}_{X\ge a}]\ge E[a\cdot\mathbf{1}_{X\ge a}]=a\,P(X\ge a)\). Divida por \(a\). ∎</p>
+</div></details>
+<details><summary><span class="arw">▶</span> Exemplo numérico · 100 moedas (conferido no sympy)</summary>
+<div class="dbody ex">
+<p>\(X=\) nº de caras em 100 lançamentos justos. \(E[X]=50\). Cota de Markov para \(P(X\ge 75)\):</p>
+<p>\[P(X\ge 75)\le \frac{E[X]}{75}=\frac{50}{75}=\frac{2}{3}\approx 0{,}667.\]</p>
+<p>O valor <b>real</b> é \(P(X\ge75)\approx 2{,}8\times10^{-7}\). Markov acerta a direção mas é <b>muito frouxa</b> — só conhece a média. (Chebyshev, a seguir, aperta bastante usando também a variância.)</p>
+</div></details>
+<div class="tip"><b>Uso no método do 1º momento:</b> tome \(a=1\) com \(X\) inteira \(\ge 0\): \(P(X\ge1)\le E[X]\). Se \(E[X]<1\), então \(P(X\ge1)<1\), logo \(P(X=0)>0\). É essa linha que prova existência (Seção 10).</div>
+</section>
+
+<!-- 8 -->
+<section id="chebyshev">
+<h2>8 · Desigualdade de Chebyshev <span class="tag t-prova">caia na prova</span></h2>
+<div class="thm"><div class="lab">Chebyshev</div>
+Para qualquer \(t>0\):
+\[P\big(|X-E[X]|\ge t\big)\le \frac{\mathrm{Var}(X)}{t^2}.\]
+Equivalente, em desvios-padrão: \(P(|X-\mu|\ge k\sigma)\le \dfrac{1}{k^2}\).</div>
+<div class="intu"><div class="lab">Intuição</div>
+Markov controla a cauda com a média; Chebyshev controla o <b>desvio em torno da média</b> com a variância. Quanto menor \(\mathrm{Var}(X)\), mais \(X\) gruda perto de \(E[X]\). É a chave do <b>2º momento</b>: se a média é grande e a variância é pequena, \(X\) raramente cai a 0.</div>
+<details><summary><span class="arw">▶</span> Demonstração (Markov em \((X-\mu)^2\))</summary>
+<div class="dbody ex">
+<p>Seja \(Y=(X-\mu)^2\ge 0\), com \(E[Y]=\mathrm{Var}(X)\). Markov com \(a=t^2\):
+\(P(|X-\mu|\ge t)=P(Y\ge t^2)\le \dfrac{E[Y]}{t^2}=\dfrac{\mathrm{Var}(X)}{t^2}.\) ∎</p>
+</div></details>
+<details><summary><span class="arw">▶</span> Exemplo numérico · 100 moedas, de novo (conferido no sympy)</summary>
+<div class="dbody ex">
+<p>\(X\sim\) Binomial\((100,\tfrac12)\): \(\mu=50\), \(\mathrm{Var}(X)=100\cdot\tfrac12\cdot\tfrac12=25\), \(\sigma=5\).</p>
+<p>Cota de Chebyshev para \(P(|X-50|\ge 10)=P(X\le 40\text{ ou }X\ge 60)\):</p>
+<p>\[P(|X-50|\ge 10)\le \frac{25}{10^2}=\frac{25}{100}=0{,}25.\]</p>
+<p>Valor <b>real</b>: \(\approx 0{,}057\). Compare com Markov da seção anterior (cota \(0{,}667\)): Chebyshev é <b>bem mais apertada</b> porque usa a variância, não só a média.</p>
+</div></details>
+</section>
+
+<!-- 9 -->
+<section id="gnp">
+<h2>9 · Modelo Erdős–Rényi \(G(n,p)\) <span class="tag t-ess">essencial</span></h2>
+<div class="def"><div class="lab">Definição</div>
+\(G(n,p)\) é um <b>grafo aleatório</b> com \(n\) vértices fixos. Cada um dos \(\binom n2\) pares de vértices vira uma aresta de forma <b>independente</b>, com probabilidade \(p\) (e não-aresta com prob. \(1-p\)).</div>
+<div class="formula">P(grafo específico G com m arestas) = pᵐ (1−p)^(C(n,2)−m)
+nº esperado de arestas = C(n,2)·p
+grau esperado de um vértice = (n−1)·p</div>
+<div class="intu"><div class="lab">Por que sortear um grafo?</div>
+Queremos provar "<b>existe um grafo com a propriedade X</b>". Em vez de construir um na unha, criamos um \(G(n,p)\) e calculamos \(P(\text{tem X})\). Se essa probabilidade for \(>0\), tal grafo existe. \(G(n,p)\) é a "urna" de onde tiramos grafos aleatórios.</div>
+<table>
+<tr><th>Objeto</th><th>Probabilidade de aparecer (em \(G(n,p)\))</th></tr>
+<tr><td>uma aresta específica</td><td>\(p\)</td></tr>
+<tr><td>um triângulo específico (3 vértices fixos)</td><td>\(p^3\) (precisa das 3 arestas)</td></tr>
+<tr><td>uma \(K_k\) específica (k vértices fixos)</td><td>\(p^{\binom k2}\) (todas as \(\binom k2\) arestas)</td></tr>
+<tr><td>um conjunto de \(k\) vértices ser <b>independente</b></td><td>\((1-p)^{\binom k2}\) (nenhuma aresta)</td></tr>
+</table>
+<details><summary><span class="arw">▶</span> Exemplo · limiar para triângulos (conferido no sympy)</summary>
+<div class="dbody ex">
+<p>\(X=\) número de triângulos em \(G(n,p)\). Por indicadoras: \(E[X]=\binom n3 p^3\).</p>
+<p>Tome \(p=\dfrac{c}{n}\) (grau médio \(\approx c\)). Então
+\(E[X]=\binom n3\Big(\dfrac cn\Big)^3 \xrightarrow{n\to\infty}\dfrac{c^3}{6}\) (limite confirmado no sympy).</p>
+<p>Ou seja, \(p=1/n\) é o <b>limiar</b>: abaixo dele triângulos somem, acima eles pipocam. Limiares assim são o pão-com-manteiga da teoria de grafos aleatórios.</p>
+</div></details>
+</section>
+
+<!-- 10 -->
+<section id="primeiro">
+<h2>10 · Método do primeiro momento <span class="tag t-prova">caia na prova</span></h2>
+<div class="thm"><div class="lab">Princípio do 1º momento</div>
+Seja \(X\ge 0\) inteira (tipicamente: \(X=\) número de estruturas ruins). Então:
+\[E[X]<1\;\Longrightarrow\; P(X=0)>0\;\Longrightarrow\; \text{existe um ponto do espaço com }X=0.\]</div>
+<div class="intu"><div class="lab">A lógica, em palavras</div>
+\(X\) é um inteiro \(\ge 0\). Se a <b>média</b> de um inteiro não-negativo é menor que 1, é impossível que ele seja \(\ge 1\) em todos os casos (senão a média seria \(\ge 1\)). Logo <b>existe pelo menos um caso</b> com \(X=0\) — isto é, sem nenhuma estrutura ruim. Formalmente: \(P(X\ge1)\le E[X]<1\) (Markov), então \(P(X=0)=1-P(X\ge1)>0\).</div>
+<div class="tip"><b>Variante "média ≤ algo":</b> também vale \(P(X\le E[X])>0\) e \(P(X\ge E[X])>0\) — sempre existe um ponto no qual \(X\) é \(\le\) (ou \(\ge\)) a sua média. Usadíssimo para garantir "existe um objeto pelo menos tão bom quanto a média".</div>
+<details><summary><span class="arw">▶</span> Aquecimento · corte grande (max-cut) por 1º momento</summary>
+<div class="dbody ex">
+<p>Todo grafo com \(m\) arestas tem um corte (partição \(V=S\cup\bar S\)) com pelo menos \(m/2\) arestas atravessando.</p>
+<ul class="steps">
+<li>Jogue cada vértice em \(S\) ou \(\bar S\) por uma moeda justa, independente.</li>
+<li>Para a aresta \(e\), \(P(e\text{ atravessa})=\tfrac12\) (as duas pontas em lados diferentes).</li>
+<li>\(X=\) nº de arestas no corte \(\Rightarrow E[X]=\sum_e \tfrac12 = m/2\).</li>
+<li>Como existe ponto com \(X\ge E[X]\), existe um corte com \(\ge m/2\) arestas. ∎</li>
+</ul>
+</div></details>
+</section>
+
+<!-- 11 -->
+<section id="ramsey">
+<h2>11 · Aplicação estrela: cota de Ramsey \(R(k,k)\ge 2^{k/2}\) <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">Número de Ramsey</div>
+\(R(k,k)\) é o menor \(n\) tal que <b>toda</b> 2-coloração das arestas de \(K_n\) (cada aresta vermelha ou azul) contém um \(K_k\) <b>monocromático</b> (todo vermelho ou todo azul). A pergunta de Erdős (1947): <b>quão grande pode ser \(n\) sem forçar um \(K_k\) monocromático?</b></div>
+<div class="thm"><div class="lab">Erdős (1947) — primeiro momento</div>
+Para \(k\ge 3\): \[R(k,k)\;>\;\lfloor 2^{k/2}\rfloor,\qquad\text{ou seja}\qquad R(k,k)\ge 2^{k/2}\ \text{(grosso modo).}\]</div>
+<details><summary><span class="arw">▶</span> A prova completa (conferida no sympy) — vale a pena entender de cor</summary>
+<div class="dbody ex">
+<p><b>Objetivo:</b> achar uma coloração de \(K_n\) <b>sem</b> \(K_k\) monocromático. Existe \(\Rightarrow R(k,k)>n\).</p>
+<ul class="steps">
+<li><b>Sorteie a coloração:</b> pinte cada aresta de \(K_n\) de vermelho ou azul por moeda justa, independente.</li>
+<li><b>Conte os defeitos.</b> Para cada conjunto \(S\) de \(k\) vértices, \(A_S=\) "\(S\) é monocromático". As \(\binom k2\) arestas precisam ter a mesma cor: \(P(A_S)=2\cdot 2^{-\binom k2}=2^{\,1-\binom k2}\).</li>
+<li><b>1º momento.</b> \(X=\sum_{|S|=k}\mathbf{1}_{A_S}\). Por linearidade:
+\[E[X]=\binom nk\,2^{\,1-\binom k2}.\]</li>
+<li><b>Escolha \(n=\lfloor 2^{k/2}\rfloor\).</b> Conta (feita no sympy): isso dá \(E[X]<1\) para todo \(k\ge3\). Ex.: \(k=4,\,n=4\Rightarrow E[X]=\tfrac{1}{32}\approx0{,}031\); \(k=5,\,n=5\Rightarrow E[X]\approx0{,}0020\); \(k=10,\,n=32\Rightarrow E[X]\approx3{,}7\times10^{-6}\).</li>
+<li><b>Conclua.</b> \(E[X]<1\Rightarrow P(X=0)>0\Rightarrow\) existe uma coloração com <b>zero</b> \(K_k\) monocromáticos. Logo \(R(k,k)>n=\lfloor 2^{k/2}\rfloor\). ∎</li>
+</ul>
+<p class="muted">Repare na beleza: provamos que existe uma coloração "boa" sem exibir <b>nenhuma</b>. Até hoje não se conhece construção explícita tão boa quanto esta prova probabilística de uma linha.</p>
+</div></details>
+<div class="tip"><b>O que decorar para a prova:</b> (1) \(P(\text{um }K_k\text{ vira monocromático})=2^{1-\binom k2}\); (2) \(E[X]=\binom nk\,2^{1-\binom k2}\); (3) se \(E[X]<1\) existe coloração sem \(K_k\) mono. A escolha \(n\approx 2^{k/2}\) é o que faz \(E[X]<1\).</div>
+</section>
+
+<!-- 12 -->
+<section id="segundo">
+<h2>12 · Método do segundo momento <span class="tag t-prova">caia na prova</span></h2>
+<p>O 1º momento mostra que algo <b>pode não</b> existir (\(E[X]\) pequeno ⟹ existe \(X=0\)). O 2º momento mostra o oposto: que algo <b>quase certamente existe</b>.</p>
+<div class="thm"><div class="lab">Princípio do 2º momento (via Chebyshev)</div>
+Seja \(X\ge 0\). Se \(E[X]>0\), então
+\[P(X=0)\le \frac{\mathrm{Var}(X)}{\big(E[X]\big)^2}.\]
+Logo, se \(E[X]\to\infty\) e \(\mathrm{Var}(X)=o\big(E[X]^2\big)\), então \(P(X=0)\to 0\): <b>X é positivo quase certamente</b>.</div>
+<details><summary><span class="arw">▶</span> De onde vem (Chebyshev com \(t=E[X]\))</summary>
+<div class="dbody ex">
+<p>Se \(X=0\), então \(|X-E[X]|=E[X]\). Por Chebyshev com \(t=E[X]\):
+\(P(X=0)\le P(|X-E[X]|\ge E[X])\le \dfrac{\mathrm{Var}(X)}{E[X]^2}.\) ∎</p>
+</div></details>
+<div class="intu"><div class="lab">A diferença entre os dois métodos</div>
+<b>1º momento</b> = "a média é pequena, então tem que existir um caso em zero". <b>2º momento</b> = "a média é grande <b>e</b> o valor não balança muito (variância pequena), então ele dificilmente seria zero". O preço do 2º momento é ter que calcular a <b>variância</b> — e aí entram as covariâncias entre as indicadoras.</div>
+<table>
+<tr><th></th><th>1º momento</th><th>2º momento</th></tr>
+<tr><td>Prova que…</td><td>\(\exists\) ponto com \(X=0\)</td><td>\(X>0\) quase certamente</td></tr>
+<tr><td>Precisa de…</td><td>só \(E[X]\)</td><td>\(E[X]\) e \(\mathrm{Var}(X)\)</td></tr>
+<tr><td>Gatilho</td><td>\(E[X]<1\)</td><td>\(\mathrm{Var}(X)=o(E[X]^2)\)</td></tr>
+</table>
+<div class="tip"><b>Onde aparece:</b> mostrar que, acima do limiar \(p=c/n\) com \(c>1\), \(G(n,p)\) tem triângulos (ou qualquer subgrafo fixo) <b>com probabilidade tendendo a 1</b>. Calcula-se \(E[X]\) (cresce) e \(\mathrm{Var}(X)\) (cresce mais devagar) e aplica-se o princípio acima.</div>
+</section>
+
+<!-- 13 -->
+<section id="alteracao">
+<h2>13 · Método da alteração <span class="tag t-prova">caia na prova</span></h2>
+<div class="intu"><div class="lab">A ideia em uma frase</div>
+<b>Sorteie um objeto que é "quase bom", depois conserte os poucos defeitos na mão.</b> Em vez de exigir 0 defeitos de cara, aceitamos um objeto com <b>poucos</b> defeitos esperados e os removemos um a um — o que ainda deixa um objeto grande/bom.</div>
+<div class="thm"><div class="lab">Esquema geral</div>
+1. Sorteie uma estrutura aleatória. 2. Seja \(D=\) nº de defeitos; calcule \(E[D]\). 3. Remova um objeto por defeito. 4. Sobra uma estrutura sem defeitos, de tamanho \(\ge\,(\text{tamanho inicial})-E[D]\) <b>em pelo menos um sorteio</b> (1º momento sobre tamanho − defeitos).</div>
+<details><summary><span class="arw">▶</span> Exemplo · Ramsey via alteração (conferido no sympy)</summary>
+<div class="dbody ex">
+<p>Colora \(K_n\) ao acaso. \(X=\) nº de \(K_k\) monocromáticos, \(E[X]=\binom nk 2^{1-\binom k2}\). <b>Conserto:</b> de cada \(K_k\) mono, apague 1 vértice. Sobram \(\ge n-E[X]\) vértices sem nenhum \(K_k\) mono.</p>
+<p>Maximizando \(n-E[X]\) em \(n\) obtém-se uma cota \(R(k,k)\gtrsim \tfrac{k}{e}\,2^{k/2}\) — <b>melhor por um fator linear</b> que a prova direta de 1º momento. (Para \(k=3\), o sympy dá ótimo em \(n=4\), sobrando \(\approx 3\) vértices "limpos".)</p>
+</div></details>
+<div class="tip"><b>1º momento vs. alteração:</b> 1º momento exige \(E[\text{defeitos}]<1\) (perfeição de cara). Alteração só pede \(E[\text{defeitos}]\) <b>pequeno comparado ao tamanho</b> — bem mais flexível, e quase sempre dá uma cota melhor.</div>
+</section>
+
+<!-- 14 -->
+<section id="concentracao">
+<h2>14 · Concentração (ideia) <span class="tag t-bonus">cultura</span></h2>
+<div class="intu"><div class="lab">O que é concentração</div>
+Uma v.a. está <b>concentrada</b> quando fica <b>quase sempre coladinha</b> na sua média — a probabilidade de desviar muito cai <b>exponencialmente</b>, não só como \(1/t^2\) (Chebyshev). Para somas de variáveis independentes limitadas, é o que dizem os <b>limites de Chernoff/Hoeffding</b>.</div>
+<div class="thm"><div class="lab">Chernoff (forma típica, soma de Bernoulli indep.)</div>
+Se \(X=\sum X_i\) com \(X_i\) Bernoulli independentes e \(\mu=E[X]\), então para \(0<\delta<1\):
+\[P\big(|X-\mu|\ge \delta\mu\big)\le 2\,e^{-\mu\delta^2/3}.\]
+A cauda decai <b>exponencialmente</b> em \(\mu\) — incomparavelmente mais forte que Chebyshev.</div>
+<table>
+<tr><th>Desigualdade</th><th>Usa</th><th>Força da cauda</th></tr>
+<tr><td>Markov</td><td>média</td><td>fraca (\(\sim 1/a\))</td></tr>
+<tr><td>Chebyshev</td><td>média + variância</td><td>média (\(\sim 1/t^2\))</td></tr>
+<tr><td>Chernoff/Hoeffding</td><td>independência + limitação</td><td>forte (\(\sim e^{-\,t^2}\))</td></tr>
+</table>
+<div class="tip"><b>Para a P2:</b> a ementa pede a <b>ideia</b> de concentração — saiba dizer que é "desvio exponencialmente improvável da média" e que Chernoff é a versão forte de Markov/Chebyshev. A conta detalhada de Chernoff raramente é cobrada num primeiro curso.</div>
+</section>
+
+<!-- 15 -->
+<section id="girth">
+<h2>15 · Aplicação · grafos com cintura E número cromático grandes <span class="tag t-prova">caia na prova</span></h2>
+<div class="def"><div class="lab">O paradoxo que o teorema resolve</div>
+<b>Cintura</b> \(g(G)\) = comprimento do menor ciclo. <b>Número cromático</b> \(\chi(G)\) = mínimo de cores para colorir os vértices sem dois vizinhos iguais. Intuitivamente, "cintura grande" significa <b>localmente parecido com uma árvore</b> (sem ciclos curtos) — e árvores precisam de só 2 cores. Seria de esperar que cintura grande forçasse \(\chi\) pequeno.</div>
+<div class="thm"><div class="lab">Erdős (1959) — alteração</div>
+Para todo \(g\) e \(k\), existe um grafo \(G\) com <b>cintura</b> \(g(G)>g\) <b>e</b> número cromático \(\chi(G)>k\) ao mesmo tempo. Ou seja: <b>não há ciclos curtos, mas ainda assim é difícil de colorir</b> — a dificuldade de coloração é uma propriedade <b>global</b>, não local.</div>
+<details><summary><span class="arw">▶</span> Esqueleto da prova (alteração — entenda a estratégia)</summary>
+<div class="dbody ex">
+<ul class="steps">
+<li><b>Sorteie</b> \(G\sim G(n,p)\) com \(p=n^{\theta-1}\), escolhendo \(0<\theta<\tfrac1g\) (arestas raras, mas não raras demais).</li>
+<li><b>Poucos ciclos curtos.</b> O nº esperado de ciclos de comprimento \(\le g\) é \(o(n)\) — pela escolha de \(\theta\). Por Markov, com prob. \(\ge \tfrac12\), há \(< n/2\) deles.</li>
+<li><b>Conserto (alteração):</b> apague 1 vértice de cada ciclo curto. Restam \(\ge n/2\) vértices e o grafo passa a ter <b>cintura \(>g\)</b>.</li>
+<li><b>\(\chi\) grande.</b> Mostra-se que o nº de independência \(\alpha(G)\) é pequeno (\(\lesssim \tfrac{n}{p}\log n\)), com prob. alta. Como \(\chi\ge \dfrac{|V|}{\alpha(G)}\), isso força \(\chi>k\).</li>
+<li><b>Junte:</b> com prob. positiva valem as duas coisas no grafo consertado. Logo tal grafo existe. ∎</li>
+</ul>
+<p class="muted">A moral: <b>alteração</b> brilha aqui porque exigir "0 ciclos curtos" de um só sorteio seria difícil — mas tê-los poucos e <b>apagá-los</b> é fácil, e quase não estraga \(\chi\).</p>
+</div></details>
+<div class="tip"><b>Decore a mensagem:</b> cintura grande (sem ciclos curtos = "localmente uma árvore") <b>não</b> impede número cromático grande. A prova combina G(n,p) + 1º momento (poucos ciclos) + alteração (apagá-los) + cota \(\chi\ge n/\alpha\).</div>
+</section>
+
+<!-- 16 -->
+<section id="cola">
+<h2>16 · Cola — fórmulas-chave <span class="tag t-ess">imprima isto</span></h2>
+<table>
+<tr><th>Conceito</th><th>Fórmula</th></tr>
+<tr><td>Esperança</td><td>\(E[X]=\sum_a a\,P(X=a)\)</td></tr>
+<tr><td><b>Linearidade</b> (sem precisar de indep.)</td><td>\(E[aX+bY]=aE[X]+bE[Y]\)</td></tr>
+<tr><td>Indicadora</td><td>\(E[\mathbf{1}_A]=P(A)\); contar \(=\sum\mathbf{1}\)</td></tr>
+<tr><td>Variância</td><td>\(\mathrm{Var}(X)=E[X^2]-(E[X])^2\)</td></tr>
+<tr><td>Var. da soma (indep.)</td><td>\(\mathrm{Var}(\sum X_i)=\sum\mathrm{Var}(X_i)\)</td></tr>
+<tr><td><b>Jensen</b> (convexa)</td><td>\(\varphi(E[X])\le E[\varphi(X)]\)</td></tr>
+<tr><td><b>Markov</b> (\(X\ge0,a>0\))</td><td>\(P(X\ge a)\le \dfrac{E[X]}{a}\)</td></tr>
+<tr><td><b>Chebyshev</b></td><td>\(P(|X-\mu|\ge t)\le \dfrac{\mathrm{Var}(X)}{t^2}\)</td></tr>
+<tr><td>Union bound</td><td>\(P(\cup A_i)\le \sum P(A_i)\)</td></tr>
+<tr><td><b>1º momento</b></td><td>\(E[X]<1\Rightarrow P(X=0)>0\)</td></tr>
+<tr><td><b>2º momento</b></td><td>\(P(X=0)\le \dfrac{\mathrm{Var}(X)}{(E[X])^2}\)</td></tr>
+<tr><td>\(G(n,p)\): arestas</td><td>\(E[\#E]=\binom n2 p\)</td></tr>
+<tr><td>\(G(n,p)\): triângulos</td><td>\(E[\#\triangle]=\binom n3 p^3\)</td></tr>
+<tr><td>\(K_k\) mono em \(K_n\)</td><td>\(P=2^{1-\binom k2}\); \(E[X]=\binom nk 2^{1-\binom k2}\)</td></tr>
+<tr><td><b>Ramsey (1º momento)</b></td><td>\(R(k,k)>\lfloor 2^{k/2}\rfloor\)</td></tr>
+<tr><td>\(\chi\) vs. independência</td><td>\(\chi(G)\ge \dfrac{|V|}{\alpha(G)}\)</td></tr>
+</table>
+</section>
+
+<!-- 17 -->
+<section id="erros">
+<h2>17 · Erros comuns &amp; dicas</h2>
+<div class="cols2">
+<div class="tip"><b>"Linearidade só vale para independentes."</b> ❌ Falso. \(E[X+Y]=E[X]+E[Y]\) <b>sempre</b>. É a <b>variância</b> da soma que precisa de independência.</div>
+<div class="tip"><b>Confundir Markov e Chebyshev.</b> Markov: \(X\ge0\), usa só a média, cauda \(\ge a\). Chebyshev: usa a <b>variância</b>, desvio em torno da média \(|X-\mu|\ge t\).</div>
+<div class="tip"><b>Esquecer \(X\ge 0\) em Markov.</b> Markov <b>exige</b> v.a. não-negativa. Sem isso, a cota não vale.</div>
+<div class="tip"><b>1º vs. 2º momento trocados.</b> \(E[X]<1\) prova que <b>existe</b> \(X=0\). Para mostrar \(X>0\) quase sempre, é a <b>variância pequena</b> (2º momento).</div>
+<div class="tip"><b>Jensen no sentido errado.</b> Convexa: \(\varphi(E[X])\le E[\varphi(X)]\). Côncava (log, √) <b>inverte</b>.</div>
+<div class="tip"><b>"Prova probabilística exibe o objeto."</b> ❌ Normalmente <b>não</b>! Ela só garante existência (\(P>0\)). É não-construtiva — esse é o ponto.</div>
+</div>
+</section>
+
+<!-- 18 -->
+<section id="quiz">
+<h2>18 · Quiz relâmpago</h2>
+<p class="sub">Clique na alternativa. Verde = certa.</p>
+<div class="quiz" id="quizbox"></div>
+</section>
+
+<!-- 19 -->
+<section id="flash">
+<h2>19 · Flashcards — clique para virar</h2>
+<div class="cards" id="cardbox"></div>
+</section>
+
+<!-- 20 -->
+<section id="feynman">
+<h2>20 · Técnica Feynman — agora é você quem ensina</h2>
+<p class="sub">Explique como se fosse para um colega que sabe contagem mas nunca viu probabilidade. Se travar, a lacuna mostra o que revisar. (O texto fica só no seu navegador.)</p>
+<p><b>1.</b> Explique a <b>linearidade da esperança</b> e por que ela vale mesmo para variáveis dependentes. Use o exemplo dos pontos fixos.</p>
+<textarea placeholder="Com suas palavras…"></textarea>
+<p><b>2.</b> Qual a diferença entre <b>Markov</b> e <b>Chebyshev</b>? O que cada uma usa, e por que Chebyshev costuma dar cota mais apertada?</p>
+<textarea placeholder="Com suas palavras…"></textarea>
+<p><b>3.</b> Descreva a prova de \(R(k,k)\ge 2^{k/2}\): o que é \(X\), por que \(P(K_k\text{ mono})=2^{1-\binom k2}\), e por que \(E[X]<1\) garante a existência da coloração.</p>
+<textarea placeholder="Com suas palavras…"></textarea>
+<p><b>4.</b> Qual a diferença entre <b>método do 1º momento</b> e <b>método da alteração</b>? Por que a alteração costuma dar cota melhor?</p>
+<textarea placeholder="Com suas palavras…"></textarea>
+<hr>
+<p class="muted">➡️ Próximo passo: revise junto o <b><a href="guia-grafos-avancados-p2.html">guia de grafos avançados (P2)</a></b> — coloração e \(\chi(G)\) reaparecem aqui na Seção 15. Revisões espaçadas recomendadas: <b>1, 3 e 7 dias</b> após hoje, mirando a P2 de 10/08.</p>
+</section>
+
+</main>
+</div>
+
+<script>
+// hamburger
+const hamb=document.getElementById('hamb'), sb=document.getElementById('sidebar');
+hamb.onclick=()=>sb.classList.toggle('open');
+document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>sb.classList.remove('open'));
+
+// scroll spy
+const links=[...document.querySelectorAll('#nav a')];
+const map={}; links.forEach(a=>map[a.getAttribute('href').slice(1)]=a);
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.remove('active'));
+    const a=map[e.target.id]; if(a)a.classList.add('active'); }});
+},{rootMargin:'-15% 0px -75% 0px'});
+document.querySelectorAll('section').forEach(s=>obs.observe(s));
+
+// search
+const search=document.getElementById('search');
+search.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();
+  document.querySelectorAll('#main section').forEach(sec=>{
+    if(!q){sec.classList.remove('hidden');return;}
+    const hit=sec.textContent.toLowerCase().includes(q);
+    sec.classList.toggle('hidden',!hit);
+    if(hit){ sec.querySelectorAll('details').forEach(d=>{ if(d.textContent.toLowerCase().includes(q)) d.open=true; }); }
+  });
+  links.forEach(a=>{const id=a.getAttribute('href').slice(1);const s=document.getElementById(id);
+    a.style.display=(s&&s.classList.contains('hidden'))?'none':'block';});
+});
+
+// quiz
+const quiz=[
+ {q:"Vale E[X+Y]=E[X]+E[Y] quando X e Y são dependentes?",
+  o:["Não, precisa de independência","Sim, sempre vale","Só se ambas forem ≥ 0","Só para indicadoras"],c:1,
+  fb:"Linearidade da esperança NÃO exige independência — vale sempre. Quem precisa de independência é a variância da soma."},
+ {q:"X ≥ 0 com E[X] = 4. O que diz Markov sobre P(X ≥ 20)?",
+  o:["≤ 0,2","≤ 5","= 0,2 exato","≤ 1/4"],c:0,
+  fb:"Markov: P(X≥a) ≤ E[X]/a = 4/20 = 0,2."},
+ {q:"Para provar 'existe coloração SEM K_k monocromático', qual método?",
+  o:["2º momento","Chernoff","1º momento: E[X]<1 ⇒ P(X=0)>0","Jensen"],c:2,
+  fb:"X = nº de K_k monocromáticos. Se E[X]<1, então P(X=0)>0, logo existe uma coloração boa."},
+ {q:"P(um conjunto fixo de k vértices virar K_k mono em K_n colorido ao acaso) =",
+  o:["2^{-k}","2^{1-C(k,2)}","C(n,k)·2^{-k}","p^{C(k,2)}"],c:1,
+  fb:"São C(k,2) arestas, todas da mesma cor (2 cores): 2·2^{-C(k,2)} = 2^{1-C(k,2)}."},
+ {q:"Para mostrar que X > 0 QUASE CERTAMENTE, o gatilho é:",
+  o:["E[X] < 1","E[X] → ∞ e Var(X) = o(E[X]²)","X é convexa","P(A∪B) ≤ P(A)+P(B)"],c:1,
+  fb:"É o 2º momento: P(X=0) ≤ Var(X)/E[X]². Média grande + variância relativamente pequena ⇒ X>0 q.c."},
+ {q:"Qual desigualdade dá cauda que decai EXPONENCIALMENTE?",
+  o:["Markov","Chebyshev","Jensen","Chernoff/Hoeffding"],c:3,
+  fb:"Chernoff/Hoeffding (somas de v.a. independentes limitadas) dão decaimento ~e^{-t²}, bem mais forte que 1/t² de Chebyshev."},
+ {q:"O método da ALTERAÇÃO consiste em:",
+  o:["Calcular só a média","Sortear algo quase bom e remover os poucos defeitos","Aplicar Jensen duas vezes","Maximizar a variância"],c:1,
+  fb:"Sorteie um objeto com poucos defeitos esperados, depois apague um ponto por defeito. Sobra um objeto bom e grande."},
+ {q:"Uma prova pelo método probabilístico, em geral:",
+  o:["exibe explicitamente o objeto","só garante que o objeto existe (P>0)","só vale para grafos completos","precisa de Jensen"],c:1,
+  fb:"É não-construtiva: mostra que P(bom)>0, logo o objeto existe — sem necessariamente exibi-lo."}
+];
+const qb=document.getElementById('quizbox');
+quiz.forEach((item,i)=>{
+  const d=document.createElement('div');d.className='q';
+  d.innerHTML=`<div class="qq">${i+1}. ${item.q}</div>`;
+  item.o.forEach((op,j)=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=op;
+    b.onclick=()=>{
+      if(d.dataset.done)return; d.dataset.done=1;
+      [...d.querySelectorAll('.opt')].forEach((x,k)=>{if(k===item.c)x.classList.add('right');});
+      if(j!==item.c)b.classList.add('wrong');
+      d.querySelector('.fb').style.display='block';
+    };
+    d.appendChild(b);
+  });
+  const fb=document.createElement('div');fb.className='fb';fb.textContent='💡 '+item.fb;d.appendChild(fb);
+  qb.appendChild(d);
+});
+
+// flashcards
+const cards=[
+ ["Linearidade da esperança","E[aX+bY]=aE[X]+bE[Y]  — SEMPRE (mesmo dependentes)"],
+ ["E de uma indicadora","E[1_A] = P(A)  → contar = somar indicadoras"],
+ ["Markov","X≥0, a>0:  P(X≥a) ≤ E[X]/a"],
+ ["Chebyshev","P(|X−μ|≥t) ≤ Var(X)/t²"],
+ ["Jensen (convexa)","φ(E[X]) ≤ E[φ(X)]  (côncava inverte)"],
+ ["Variância","Var(X)=E[X²]−(E[X])²  (≥0 por Jensen)"],
+ ["Método do 1º momento","E[X]<1 ⇒ P(X=0)>0 ⇒ existe ponto sem estrutura ruim"],
+ ["Método do 2º momento","P(X=0) ≤ Var(X)/E[X]²  ⇒ X>0 q.c. se Var=o(E[X]²)"],
+ ["Método da alteração","sorteie quase-bom, remova os E[defeitos] pontos ruins"],
+ ["G(n,p): arestas / triângulos","E[#arestas]=C(n,2)p ;  E[#△]=C(n,3)p³"],
+ ["P(K_k monocromático)","2^{1−C(k,2)}"],
+ ["Cota de Ramsey (1º momento)","R(k,k) > ⌊2^{k/2}⌋"],
+ ["Concentração / Chernoff","desvio da média cai exponencialmente (~e^{−t²})"],
+ ["χ via independência","χ(G) ≥ |V| / α(G)"]
+];
+const cb=document.getElementById('cardbox');
+cards.forEach(([f,b])=>{
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML=`<div class="inner"><div class="f">${f}</div><div class="b">${b}</div></div>`;
+  c.onclick=()=>c.classList.toggle('flip');
+  cb.appendChild(c);
+});
+</script>
+</body>
+</html>

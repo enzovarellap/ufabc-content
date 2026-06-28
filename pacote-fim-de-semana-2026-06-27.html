@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pacote de Fim de Semana — P1 EDO + P1 Discreta II (27–28/06)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<script>
+window.MathJax = { tex: {inlineMath: [['\\(','\\)']], displayMath: [['$$','$$']]}, svg:{fontCache:'global'} };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+<style>
+:root{
+  --bg:#0f1115; --bg2:#161a21; --bg3:#1d222c; --line:#2a313d;
+  --txt:#e6e9ef; --muted:#9aa4b2; --accent:#7aa2ff; --accent2:#5be3b0;
+  --warn:#ffb454; --danger:#ff6b6b; --ok:#5be3b0; --chip:#243044;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6}
+h1,h2,h3{font-family:'Fraunces',serif;line-height:1.2;margin:0 0 .4em}
+code,.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--accent)}
+.layout{display:flex;min-height:100vh}
+/* Sidebar */
+.sidebar{width:260px;flex:0 0 260px;background:var(--bg2);border-right:1px solid var(--line);padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+.sidebar h2{font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sidebar a{display:block;color:var(--txt);text-decoration:none;padding:7px 10px;border-radius:8px;font-size:.92rem;margin:2px 0}
+.sidebar a:hover{background:var(--bg3)}
+.sidebar a.active{background:var(--chip);color:var(--accent)}
+.search{width:100%;padding:9px 11px;margin-bottom:12px;background:var(--bg3);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:inherit}
+/* Content */
+.content{flex:1;max-width:880px;margin:0 auto;padding:34px 28px 120px}
+section{margin-bottom:46px;scroll-margin-top:20px}
+.kicker{color:var(--accent);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.lead{color:var(--muted);font-size:1.02rem}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+.grid{display:grid;gap:14px}
+.grid2{grid-template-columns:1fr 1fr}
+@media(max-width:780px){.grid2{grid-template-columns:1fr}}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:999px;margin-right:6px;letter-spacing:.03em}
+.t-prova{background:rgba(255,107,107,.16);color:var(--danger)}
+.t-ess{background:rgba(123,162,255,.16);color:var(--accent)}
+.t-gap{background:rgba(255,180,84,.16);color:var(--warn)}
+.t-ok{background:rgba(91,227,176,.16);color:var(--ok)}
+.formula{background:var(--bg3);border-left:3px solid var(--accent);border-radius:8px;padding:10px 14px;margin:10px 0;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg3);color:var(--muted);font-weight:600}
+details{background:var(--bg3);border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
+details>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;align-items:center;gap:10px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--accent);transition:transform .2s}
+details[open]>summary::before{transform:rotate(90deg)}
+details .body{padding:0 16px 14px}
+.hero{background:linear-gradient(135deg,#1a2030,#141821);border:1px solid var(--line);border-radius:18px;padding:26px 26px 22px;margin-bottom:30px}
+.countdown{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
+.cd{background:var(--bg3);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:150px}
+.cd b{font-size:1.5rem;font-family:'Fraunces',serif;display:block}
+.cd.edo b{color:var(--danger)}.cd.disc b{color:var(--accent)}
+.plan-row{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.plan-row:last-child{border:none}
+.plan-time{flex:0 0 90px;font-family:'JetBrains Mono',monospace;color:var(--accent2);font-weight:600}
+.chk{list-style:none;padding:0;margin:8px 0}
+.chk li{padding:7px 0 7px 30px;position:relative;cursor:pointer;border-bottom:1px solid var(--line)}
+.chk li:before{content:"";position:absolute;left:0;top:9px;width:18px;height:18px;border:2px solid var(--muted);border-radius:5px}
+.chk li.done{color:var(--muted);text-decoration:line-through}
+.chk li.done:before{background:var(--ok);border-color:var(--ok);content:"✓";color:#0f1115;font-weight:700;text-align:center;line-height:14px;font-size:13px}
+.callout{border-radius:12px;padding:14px 16px;margin:12px 0;border:1px solid}
+.c-danger{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.3)}
+.c-warn{background:rgba(255,180,84,.08);border-color:rgba(255,180,84,.3)}
+.c-tip{background:rgba(91,227,176,.08);border-color:rgba(91,227,176,.3)}
+.quiz q{display:block}
+.quiz .q{font-weight:600;margin:14px 0 6px}
+.feyn{background:var(--bg3);border:1px dashed var(--accent);border-radius:10px;padding:14px 16px;margin:10px 0}
+.menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:50;background:var(--bg3);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:8px 12px;font-size:1.1rem}
+@media(max-width:780px){
+  .sidebar{position:fixed;left:-280px;z-index:40;transition:left .25s}
+  .sidebar.open{left:0}
+  .menu-btn{display:block}
+  .content{padding-top:60px}
+}
+mark{background:var(--warn);color:#0f1115;padding:0 2px;border-radius:3px}
+</style>
+</head>
+<body>
+<button class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<div class="layout">
+<nav class="sidebar">
+  <input class="search" id="search" placeholder="Buscar… (ex: autônoma, árvore)">
+  <h2>Navegação</h2>
+  <a href="#topo">⏱ Visão geral & contagem</a>
+  <a href="#plano">📅 Plano de ~5h</a>
+  <a href="#edo">🔴 EDO — P1 (30/06)</a>
+  <a href="#edo-gap">↳ Lacuna: campo, autônomas, modelagem, TEU</a>
+  <a href="#edo-recall">↳ Recall EDO</a>
+  <a href="#disc">🔵 Discreta II — P1 (29/06)</a>
+  <a href="#disc-recall">↳ Recall Discreta</a>
+  <a href="#feynman">🗣 Bloco Feynman</a>
+  <a href="#vespera">✅ Véspera</a>
+</nav>
+
+<main class="content">
+<section id="topo">
+  <div class="hero">
+    <div class="kicker">Pacote de fim de semana · gerado 27/06/2026</div>
+    <h1>Reta final: 2 provas em 2 dias</h1>
+    <p class="lead">Plano enxuto de ~5h (sáb + dom) calibrado para <b>passar com tranquilidade</b>. Prioridade total nas duas matérias mais difíceis. Você já tem os guias de teoria — aqui o foco é <b>fechar a lacuna da EDO</b>, fazer <b>recall ativo</b> e <b>ensinar (Feynman)</b>.</p>
+    <div class="countdown">
+      <div class="cd disc"><span class="kicker">Discreta II — P1</span><b id="cd-disc">—</b>seg 29/06 · Semanas 1–4 · 50%</div>
+      <div class="cd edo"><span class="kicker">EDO — P1</span><b id="cd-edo">—</b>ter 30/06 · 50% · <mark>exige P1 ≥ 4,5</mark></div>
+    </div>
+  </div>
+  <div class="callout c-danger">
+    <b>Por que EDO vem primeiro na prática:</b> a aprovação na EDO exige <b>P1 ≥ 4,5 E P2 ≥ 4,5</b> separadamente — não dá pra compensar uma prova ruim com a outra. Já em Discreta a média é simples (P1·0,5 + P2·0,5). Então um tropeço na P1 de EDO é mais caro. Invista o pico de energia nela.
+  </div>
+</section>
+
+<section id="plano">
+  <h2>📅 Plano de ~5h</h2>
+  <p class="lead">Ajuste os horários ao seu dia; o que importa é a <b>ordem</b> e os blocos curtos com exercícios.</p>
+
+  <div class="card">
+    <h3 style="color:var(--accent2)">Sábado (27/06) — ~3h · foco EDO</h3>
+    <div class="plan-row"><div class="plan-time">50 min</div><div><b>EDO — lacuna 1: campo de direções + autônomas/estabilidade.</b> Ler a seção <a href="#edo-gap">EDO P1 — lacuna</a> abaixo. É o que <u>não</u> está nos seus guias e cai na prova.</div></div>
+    <div class="plan-row"><div class="plan-time">40 min</div><div><b>EDO — lacuna 2: modelagem + TEU.</b> Mesmos exemplos abaixo. Refaça a reta de fase da logística sem olhar.</div></div>
+    <div class="plan-row"><div class="plan-time">10 min</div><div>☕ Pausa.</div></div>
+    <div class="plan-row"><div class="plan-time">50 min</div><div><b>EDO — exercícios.</b> Refaça da <code>resolucao-lista1.html</code> 2–3 separáveis, 1 linear (fator integrante), 1 Bernoulli — <u>sem ver a resolução primeiro</u>.</div></div>
+    <div class="plan-row"><div class="plan-time">20 min</div><div><b>Recall EDO</b> (seção <a href="#edo-recall">abaixo</a>) + 1 explicação Feynman gravada/escrita.</div></div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--accent)">Domingo (28/06) — ~2h · Discreta + revisão final EDO</h3>
+    <div class="plan-row"><div class="plan-time">45 min</div><div><b>Discreta — revisão ativa.</b> Abra <code>guia-teoria-semanas1-4.html</code>; em vez de reler, responda o <a href="#disc-recall">Recall Discreta</a> e só consulte o guia onde travar.</div></div>
+    <div class="plan-row"><div class="plan-time">35 min</div><div><b>Discreta — exercícios.</b> Refaça E2, E4, E5, E6 da <code>resolucao-lista1.html</code> de memória; confira o gabarito.</div></div>
+    <div class="plan-row"><div class="plan-time">25 min</div><div><b>EDO — varredura rápida.</b> Releia só a "cola" de métodos: como reconhecer cada tipo de EDO de 1ª ordem em 5 segundos (tabela <a href="#edo">abaixo</a>).</div></div>
+    <div class="plan-row"><div class="plan-time">15 min</div><div><b>Feynman final</b>: explique "estável vs. instável" e "quando a solução é única (TEU)" em voz alta.</div></div>
+  </div>
+  <div class="callout c-tip"><b>Regra de ouro do recall:</b> tente responder <u>antes</u> de abrir o guia. O esforço de lembrar é o que fixa — reler é a ilusão de saber.</div>
+</section>
+
+<!-- ===================== EDO ===================== -->
+<section id="edo">
+  <h2>🔴 EDO — P1 (terça 30/06)</h2>
+  <p class="lead">O que cai (Aulas 1–4 + Listas 0–2): EDOs de 1ª ordem e análise qualitativa. Seus guias já cobrem fundamentos, separáveis, lineares e substituições. <span class="tag t-gap">LACUNA</span> falta o bloco qualitativo/modelagem/TEU — está aqui embaixo.</p>
+
+  <h3>Cola — reconhecer o tipo em 5 segundos</h3>
+  <table>
+    <tr><th>Forma</th><th>Tipo</th><th>Método</th></tr>
+    <tr><td>\(\dfrac{dy}{dx}=g(x)h(y)\)</td><td>Separável</td><td>Separa e integra: \(\int \frac{dy}{h(y)}=\int g(x)\,dx\)</td></tr>
+    <tr><td>\(y'+P(x)y=Q(x)\)</td><td>Linear 1ª ordem</td><td>Fator integrante \(\mu=e^{\int P\,dx}\); \((\mu y)'=\mu Q\)</td></tr>
+    <tr><td>\(M\,dx+N\,dy=0,\ M_y=N_x\)</td><td>Exata</td><td>Achar \(F\) com \(F_x=M,\ F_y=N\)</td></tr>
+    <tr><td>\(y'=f(y/x)\)</td><td>Homogênea</td><td>Substituir \(v=y/x\)</td></tr>
+    <tr><td>\(y'+P(x)y=Q(x)y^{n}\)</td><td>Bernoulli</td><td>\(v=y^{1-n}\) → vira linear</td></tr>
+    <tr><td>\(y'=f(y)\) (sem \(x\))</td><td>Autônoma</td><td>Reta de fase / equilíbrios (seção lacuna)</td></tr>
+  </table>
+  <div class="callout c-tip"><b>Estratégia de prova:</b> antes de resolver, classifique. 80% dos erros vêm de aplicar o método errado. Escreva o tipo ao lado de cada questão.</div>
+</section>
+
+<section id="edo-gap">
+  <h2><span class="tag t-gap">LACUNA P1</span> Campo de direções · Autônomas · Modelagem · TEU</h2>
+  <p class="lead">Esse bloco só aparece nas listas (não nos slides), mas cai na P1. Estude com atenção — é onde você tem menos material pronto.</p>
+
+  <h3>1. Campo de direções (isóclinas)</h3>
+  <div class="card">
+    <p>Para \(y'=f(x,y)\): em cada ponto \((x,y)\) desenhe um tracinho com inclinação \(f(x,y)\). As soluções são curvas <b>tangentes</b> ao campo — dá pra ver o comportamento <b>sem resolver</b>.</p>
+    <div class="formula"><b>Isóclina</b>: curva onde a inclinação é constante \(=c\), ou seja \(f(x,y)=c\). Ao longo dela todos os tracinhos têm a mesma inclinação \(c\).</div>
+    <details><summary>Exemplo resolvido — \(y'=x+y\)</summary>
+    <div class="body">
+    <p>Isóclinas: \(x+y=c\) → retas de inclinação \(-1\). Sobre a reta \(x+y=c\), todos os segmentos têm inclinação \(c\).</p>
+    <ul><li>Em \(x+y=0\): segmentos horizontais (inclinação 0).</li>
+    <li>Em \(x+y=1\): segmentos com inclinação 1, etc.</li></ul>
+    <p>Conclusão qualitativa: soluções crescem onde \(y>-x\) e decrescem onde \(y<-x\). A reta \(y=-x-1\) é, ela própria, solução (verifique: \(y'=-1=x+y\)).</p>
+    </div></details>
+  </div>
+
+  <h3>2. Equações autônomas \(y'=f(y)\) e estabilidade <span class="tag t-prova">CAI NA PROVA</span></h3>
+  <div class="card">
+    <p><b>Pontos de equilíbrio (críticos):</b> valores \(y^*\) com \(f(y^*)=0\). Cada um dá uma <b>solução constante</b> \(y(t)=y^*\).</p>
+    <p><b>Reta de fase:</b> estude o <b>sinal de \(f(y)\)</b> entre os equilíbrios:</p>
+    <ul>
+      <li>\(f(y)>0\) → \(y\) <b>cresce</b> (seta pra cima/direita).</li>
+      <li>\(f(y)<0\) → \(y\) <b>decresce</b> (seta pra baixo/esquerda).</li>
+    </ul>
+    <div class="formula"><b>Teste da derivada (classificação):</b><br>
+    \(f'(y^*)<0\) → <b>assintoticamente estável</b> (atrator) ·
+    \(f'(y^*)>0\) → <b>instável</b> (repulsor) ·
+    \(f'(y^*)=0\) → inconclusivo: olhe o sinal de \(f\) dos dois lados (pode ser <b>semi-estável</b>).</div>
+    <div class="callout c-warn"><b>Fatos que caem:</b> soluções são <b>monótonas</b> entre equilíbrios e <b>nunca cruzam</b> um equilíbrio (consequência da unicidade). As curvas-solução são translações horizontais umas das outras.</div>
+    <details><summary>Exemplo resolvido — logística \(\dfrac{dP}{dt}=rP\left(1-\dfrac{P}{K}\right),\ r,K>0\)</summary>
+    <div class="body">
+    <p>Equilíbrios: \(f(P)=0 \Rightarrow P=0\) e \(P=K\).</p>
+    <p>Sinal de \(f\): para \(0<P<K\), \(f>0\) (cresce); para \(P>K\), \(f<0\) (decresce); para \(P<0\), \(f<0\).</p>
+    <p>Classificação por \(f'(P)=r\left(1-\tfrac{2P}{K}\right)\): \(f'(0)=r>0\) → \(P=0\) <b>instável</b>; \(f'(K)=-r<0\) → \(P=K\) <b>estável</b> (capacidade de suporte).</p>
+    <p>Solução fechada (se pedirem): \(P(t)=\dfrac{K}{1+Ae^{-rt}}\), com \(A=\dfrac{K-P_0}{P_0}\).</p>
+    </div></details>
+    <details><summary>Exemplo de semi-estável — \(y'=y^2\)</summary>
+    <div class="body"><p>Único equilíbrio \(y^*=0\), e \(f'(0)=0\) (inconclusivo). Sinal de \(f=y^2\ge0\) dos dois lados → \(y\) cresce acima e abaixo de 0. Logo \(y=0\) é <b>semi-estável</b> (atrai por baixo, repele por cima).</p></div></details>
+  </div>
+
+  <h3>3. Modelagem clássica</h3>
+  <div class="grid grid2">
+    <div class="card"><b>Crescimento/decaimento</b><div class="formula">\(\dfrac{dy}{dt}=ky \Rightarrow y=y_0e^{kt}\)</div>Meia-vida: \(t_{1/2}=\dfrac{\ln 2}{|k|}\) (decaimento, \(k<0\)).</div>
+    <div class="card"><b>Resfriamento de Newton</b><div class="formula">\(\dfrac{dT}{dt}=k(T-T_m)\)<br>\(T(t)=T_m+(T_0-T_m)e^{kt},\ k<0\)</div>\(T_m\) = temperatura do ambiente (equilíbrio estável).</div>
+    <div class="card"><b>Misturas (tanque)</b><div class="formula">\(\dfrac{dA}{dt}=\underbrace{R_e c_e}_{\text{entra}}-\underbrace{R_s\dfrac{A}{V(t)}}_{\text{sai}}\)</div>\(A\)=qtd de soluto; \(V(t)=V_0+(R_e-R_s)t\). É <b>linear de 1ª ordem</b>.</div>
+    <div class="card"><b>Logística</b><div class="formula">\(\dfrac{dP}{dt}=rP\left(1-\dfrac{P}{K}\right)\)</div>Autônoma; equilíbrios 0 (instável) e \(K\) (estável). Ver exemplo acima.</div>
+  </div>
+  <details><summary>Exemplo resolvido — mistura (tanque)</summary>
+  <div class="body">
+  <p>Tanque com 100 L de água pura. Entra salmoura a 2 L/min com 3 g/L; sai a 2 L/min (volume constante \(V=100\)). Achar \(A(t)\).</p>
+  <p>\(\dfrac{dA}{dt}=2\cdot3-2\cdot\dfrac{A}{100}=6-\dfrac{A}{50}\). Linear: \(A'+\tfrac{1}{50}A=6\). Fator \(\mu=e^{t/50}\).</p>
+  <p>\((\mu A)'=6e^{t/50}\Rightarrow \mu A=300e^{t/50}+C\Rightarrow A=300+Ce^{-t/50}\). Com \(A(0)=0\): \(C=-300\).</p>
+  <p>\(\boxed{A(t)=300\left(1-e^{-t/50}\right)}\) g. Equilíbrio \(A\to300\) g (= 3 g/L · 100 L). ✓ faz sentido.</p>
+  </div></details>
+
+  <h3>4. Teorema de Existência e Unicidade (TEU / Picard) <span class="tag t-prova">CAI NA PROVA</span></h3>
+  <div class="card">
+    <p>Para o PVI \(y'=f(x,y),\ y(x_0)=y_0\):</p>
+    <div class="formula"><b>Se</b> \(f\) <b>e</b> \(\dfrac{\partial f}{\partial y}\) são contínuas num retângulo \(R\) contendo \((x_0,y_0)\), <b>então</b> existe um intervalo em torno de \(x_0\) onde a solução <b>existe e é única</b>.</div>
+    <ul>
+      <li><b>Existência</b> sozinha exige só \(f\) contínua.</li>
+      <li><b>Unicidade</b> exige também \(\partial f/\partial y\) contínua (condição de Lipschitz).</li>
+      <li>É um teorema <b>local</b> (garante num intervalo, não em toda a reta).</li>
+    </ul>
+    <div class="callout c-warn"><b>Contraexemplo clássico (decore!):</b> \(y'=y^{1/3},\ y(0)=0\). Aqui \(\partial f/\partial y=\tfrac{1}{3}y^{-2/3}\) <b>não é contínua</b> em \(y=0\) → a unicidade falha: \(y\equiv0\) e \(y=\left(\tfrac{2}{3}x\right)^{3/2}\) são ambas soluções.</div>
+    <details><summary>Como responder uma questão de TEU</summary>
+    <div class="body"><ol>
+    <li>Escreva \(f(x,y)\) e calcule \(\partial f/\partial y\).</li>
+    <li>Diga onde ambas são contínuas (cuidado com denominadores zerando, raízes de número negativo, \(y\) elevado a expoente fracionário).</li>
+    <li>Se o ponto inicial está numa região onde ambas são contínuas → "existe solução única". Caso contrário → "o teorema não garante unicidade" (não afirme que não existe — só que o teorema não garante).</li>
+    </ol></div></details>
+  </div>
+</section>
+
+<section id="edo-recall">
+  <h3>↳ Recall EDO (responda antes de conferir)</h3>
+  <div class="card quiz">
+    <div class="q">1. Como reconheço uma Bernoulli e qual substituição uso?</div>
+    <details><summary>Resposta</summary><div class="body">\(y'+P(x)y=Q(x)y^n\) com \(n\neq0,1\). Substituo \(v=y^{1-n}\), que transforma em linear.</div></details>
+    <div class="q">2. Na logística, quais são os equilíbrios e quem é estável?</div>
+    <details><summary>Resposta</summary><div class="body">\(P=0\) (instável, \(f'(0)=r>0\)) e \(P=K\) (estável, \(f'(K)=-r<0\)).</div></details>
+    <div class="q">3. Qual condição garante unicidade no PVI?</div>
+    <details><summary>Resposta</summary><div class="body">\(f\) e \(\partial f/\partial y\) contínuas numa vizinhança de \((x_0,y_0)\).</div></details>
+    <div class="q">4. Duas soluções de uma autônoma podem se cruzar? E cruzar um equilíbrio?</div>
+    <details><summary>Resposta</summary><div class="body">Não (unicidade). Em particular, nunca cruzam uma solução de equilíbrio; ficam monótonas entre eles.</div></details>
+    <div class="q">5. Fator integrante de \(y'+\frac{2}{x}y=x\)?</div>
+    <details><summary>Resposta</summary><div class="body">\(\mu=e^{\int 2/x\,dx}=e^{2\ln x}=x^2\). Então \((x^2y)'=x^3\Rightarrow y=\frac{x^2}{4}+\frac{C}{x^2}\).</div></details>
+  </div>
+</section>
+
+<!-- ===================== DISCRETA ===================== -->
+<section id="disc">
+  <h2>🔵 Matemática Discreta II — P1 (segunda 29/06)</h2>
+  <p class="lead">Semanas 1–4: teoria dos grafos básica + árvores. <span class="tag t-ok">JÁ TEM GUIA</span> — aqui é só recall e a cola dos teoremas. Abra <code>guia-teoria-semanas1-4.html</code> só quando travar.</p>
+
+  <h3>Cola de teoremas (Semanas 1–4)</h3>
+  <table>
+    <tr><th>Tema</th><th>Resultado-chave</th></tr>
+    <tr><td>Aperto de mãos</td><td>\(\sum_{v}\deg(v)=2|E|\) → nº de vértices de grau ímpar é <b>par</b>.</td></tr>
+    <tr><td>Isomorfismo</td><td>Mesmos invariantes: \(|V|\), \(|E|\), sequência de graus, nº de componentes, ciclos. Difere em 1 → <b>não</b> isomorfo.</td></tr>
+    <tr><td>Passeio ⟹ caminho</td><td>Se há passeio de \(u\) a \(v\), há caminho de \(u\) a \(v\).</td></tr>
+    <tr><td>Grau mínimo</td><td>\(\delta(G)\ge2 \Rightarrow\) existe caminho de comprimento \(\ge\delta\) e ciclo de comprimento \(\ge\delta+1\).</td></tr>
+    <tr><td>Cintura × diâmetro</td><td>\(g\le 2\,\mathrm{diam}+1\).</td></tr>
+    <tr><td>Bipartido</td><td>\(G\) bipartido \(\iff\) <b>não tem ciclo ímpar</b>.</td></tr>
+    <tr><td>Teorema de Mantel</td><td>Máx. de arestas sem triângulo: \(\left\lfloor n^2/4\right\rfloor\). Subgrafo bipartido tem \(\ge|E|/2\) arestas.</td></tr>
+    <tr><td>Árvore</td><td>\(|E|=n-1\); conexa e acíclica; caminho único entre 2 vértices; toda aresta é ponte; \(\ge2\) folhas (se \(n\ge2\)).</td></tr>
+    <tr><td>Festa de 6 (Ramsey)</td><td>\(R(3,3)\le6\): em 6 pessoas, há 3 mútuos conhecidos ou 3 mútuos estranhos.</td></tr>
+  </table>
+  <div class="callout c-tip"><b>Truque de prova:</b> para "são isomorfos?", primeiro compare \(|V|,|E|\) e a sequência de graus. Se baterem, tente exibir a bijeção; se não baterem, já provou que <b>não</b> são.</div>
+</section>
+
+<section id="disc-recall">
+  <h3>↳ Recall Discreta (responda antes de conferir)</h3>
+  <div class="card quiz">
+    <div class="q">1. Por que o nº de vértices de grau ímpar é sempre par?</div>
+    <details><summary>Resposta</summary><div class="body">\(\sum\deg=2|E|\) é par; a soma dos graus pares é par, logo a soma dos ímpares também é par → eles vêm em quantidade par.</div></details>
+    <div class="q">2. Caracterize "árvore" de 3 formas.</div>
+    <details><summary>Resposta</summary><div class="body">(i) conexa e acíclica; (ii) conexa com \(|E|=n-1\); (iii) existe caminho único entre quaisquer dois vértices. (Também: acíclica maximal / conexa minimal.)</div></details>
+    <div class="q">3. Como provar que um grafo NÃO é bipartido?</div>
+    <details><summary>Resposta</summary><div class="body">Exibir um ciclo de comprimento ímpar.</div></details>
+    <div class="q">4. Quantas arestas no máximo um grafo com \(n\) vértices e sem triângulos pode ter?</div>
+    <details><summary>Resposta</summary><div class="body">\(\lfloor n^2/4\rfloor\) (Mantel), atingido pelo bipartido completo balanceado \(K_{\lceil n/2\rceil,\lfloor n/2\rfloor}\).</div></details>
+    <div class="q">5. \(G\) tem \(|V|=15\) e é uma árvore. Quantas arestas?</div>
+    <details><summary>Resposta</summary><div class="body">\(n-1=14\).</div></details>
+  </div>
+  <div class="callout c-tip">Depois do recall, refaça E2, E4, E5, E6 da sua <code>resolucao-lista1.html</code> e confira com o gabarito do CLAUDE.md da matéria.</div>
+</section>
+
+<!-- ===================== FEYNMAN ===================== -->
+<section id="feynman">
+  <h2>🗣 Bloco Feynman</h2>
+  <p class="lead">Explique em voz alta (ou escreva) como se ensinasse alguém. Onde travar = lacuna real. Peça pro Claude corrigir sua explicação.</p>
+  <div class="feyn"><b>EDO:</b> "Explique a diferença entre um equilíbrio estável e instável usando a logística, sem fórmulas — só com a ideia de população crescendo/diminuindo."</div>
+  <div class="feyn"><b>EDO:</b> "Por que \(y'=y^{1/3}\) com \(y(0)=0\) tem mais de uma solução, mas \(y'=y\) com \(y(0)=1\) tem só uma?"</div>
+  <div class="feyn"><b>Discreta:</b> "Explique por que todo grafo bipartido não pode ter um triângulo — partindo da definição de bipartido."</div>
+  <div class="feyn"><b>Discreta:</b> "Por que uma árvore com \(n\) vértices tem exatamente \(n-1\) arestas? Conte o argumento de adicionar vértices um a um."</div>
+</section>
+
+<section id="vespera">
+  <h2>✅ Checklist de véspera</h2>
+  <ul class="chk" id="checklist">
+    <li data-k="v1">Material de prova separado (caneta, documento, calculadora se permitida)</li>
+    <li data-k="v2">EDO: sei classificar os 6 tipos de 1ª ordem de cara</li>
+    <li data-k="v3">EDO: sei montar reta de fase e classificar equilíbrio (f′)</li>
+    <li data-k="v4">EDO: sei enunciar o TEU e dar o contraexemplo \(y'=y^{1/3}\)</li>
+    <li data-k="v5">EDO: refiz ≥4 exercícios de memória</li>
+    <li data-k="v6">Discreta: cola de teoremas na ponta da língua</li>
+    <li data-k="v7">Discreta: refiz E2/E4/E5/E6</li>
+    <li data-k="v8">Dormir bem antes de cada prova (prioridade real)</li>
+  </ul>
+  <div class="callout c-tip">Marcar aqui salva no seu navegador. Bom estudo — você está mirando aprovação tranquila, então foque no essencial e não se cobre perfeição.</div>
+</section>
+</main>
+</div>
+
+<script>
+// Countdown
+function fmt(ms){if(ms<=0)return"agora";const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5);return d+"d "+h+"h";}
+function tick(){const now=new Date();
+  document.getElementById('cd-disc').textContent=fmt(new Date(2026,5,29,19,0)-now);
+  document.getElementById('cd-edo').textContent=fmt(new Date(2026,5,30,21,0)-now);}
+tick();setInterval(tick,60000);
+
+// Checklist persistence
+const cl=document.getElementById('checklist');
+cl.querySelectorAll('li').forEach(li=>{
+  const k='wk-'+li.dataset.k;
+  if(localStorage.getItem(k)==='1')li.classList.add('done');
+  li.addEventListener('click',()=>{li.classList.toggle('done');localStorage.setItem(k,li.classList.contains('done')?'1':'0');});
+});
+
+// Scroll spy
+const links=[...document.querySelectorAll('.sidebar a')];
+const map=links.map(a=>({a,el:document.querySelector(a.getAttribute('href'))})).filter(x=>x.el);
+function spy(){let cur=map[0];for(const m of map){if(m.el.getBoundingClientRect().top<120)cur=m;}
+  links.forEach(a=>a.classList.remove('active'));if(cur)cur.a.classList.add('active');}
+window.addEventListener('scroll',spy);spy();
+
+// Search
+const search=document.getElementById('search');
+search.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();
+  document.querySelectorAll('.content section').forEach(s=>{
+    const hit=!q||s.textContent.toLowerCase().includes(q);
+    s.style.display=hit?'':'none';
+  });
+});
+// close mobile menu on link click
+document.querySelectorAll('.sidebar a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.sidebar').classList.remove('open')));
+</script>
+</body>
+</html>

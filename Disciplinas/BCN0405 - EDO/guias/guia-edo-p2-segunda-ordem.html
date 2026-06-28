@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDO · Guia de Estudo — Prova 2 (Lineares de 2ª ordem)</title>
+
+<!-- MathJax -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true
+    },
+    chtml: { scale: 1.0 },
+    options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+  };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0e1419; --bg-elev:#151c24; --card:#1a2330; --card-2:#202c3a;
+  --border:#2a3a4d; --border-soft:#223040;
+  --text:#e7eef5; --dim:#9db0c2; --faint:#6f8398;
+  --accent:#6ea8fe; --accent-2:#7ee0c8; --accent-3:#c9a4ff;
+  --ok:#8ce99a; --warn:#ffd166; --danger:#ff8a8a;
+  --formula-bg:#11202b; --formula-bd:#2f7d6b;
+  --r:14px; --shadow:0 10px 30px rgba(0,0,0,.35);
+  --maxw:880px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:radial-gradient(1200px 600px at 80% -10%, #16222e 0%, var(--bg) 55%) fixed;
+  color:var(--text); font-family:'DM Sans',system-ui,sans-serif; line-height:1.65;
+  font-size:16.5px;
+}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* layout */
+.layout{display:grid; grid-template-columns:300px 1fr; min-height:100vh}
+.sidebar{
+  position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:linear-gradient(180deg,var(--bg-elev),#10171e);
+  border-right:1px solid var(--border-soft); padding:22px 16px 60px;
+}
+.sidebar::-webkit-scrollbar{width:8px} .sidebar::-webkit-scrollbar-thumb{background:#26323f;border-radius:8px}
+.brand{display:flex; gap:11px; align-items:center; margin-bottom:6px}
+.brand .dot{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:600;color:#06121a;font-size:13px}
+.brand b{font-family:'Fraunces';font-size:18px;font-weight:600;letter-spacing:.2px}
+.brand small{display:block;color:var(--faint);font-size:11.5px;letter-spacing:.4px;text-transform:uppercase}
+
+.search{margin:16px 0 10px; position:relative}
+.search input{width:100%; padding:10px 12px 10px 34px; border-radius:10px; border:1px solid var(--border);
+  background:#0d141b; color:var(--text); font-size:14px; font-family:inherit}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(110,168,254,.15)}
+.search svg{position:absolute; left:10px; top:11px; opacity:.55}
+.search .count{position:absolute; right:10px; top:10px; font-size:11px; color:var(--faint)}
+
+nav.toc{margin-top:10px}
+nav.toc .group{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);
+  margin:18px 0 6px 8px}
+nav.toc a{display:block; color:var(--dim); padding:7px 10px; border-radius:8px; font-size:14px;
+  border-left:2px solid transparent}
+nav.toc a:hover{background:#172029;color:var(--text);text-decoration:none}
+nav.toc a.active{background:#13202c;color:#fff;border-left-color:var(--accent)}
+nav.toc a.sub{padding-left:24px;font-size:13px;color:var(--faint)}
+nav.toc a.sub.active{color:#fff}
+
+/* main */
+main{padding:34px clamp(18px,5vw,64px) 120px; max-width:calc(var(--maxw) + 128px); margin:0 auto; width:100%}
+section{scroll-margin-top:70px; margin-bottom:46px}
+h1{font-family:'Fraunces';font-weight:600;font-size:clamp(26px,4vw,38px);line-height:1.15;margin:.2em 0 .3em}
+h2{font-family:'Fraunces';font-weight:600;font-size:clamp(21px,3vw,27px);margin:1.4em 0 .5em;
+  padding-bottom:.3em;border-bottom:1px solid var(--border-soft)}
+h3{font-family:'Fraunces';font-weight:600;font-size:19px;margin:1.5em 0 .4em;color:#eaf2fb}
+h4{font-size:15px;margin:1.2em 0 .3em;color:var(--accent-2);letter-spacing:.2px}
+p{margin:.55em 0}
+strong{color:#fff}
+.lead{color:var(--dim);font-size:17px}
+
+/* hero */
+.hero{background:linear-gradient(135deg,#172534,#141d27); border:1px solid var(--border);
+  border-radius:var(--r); padding:26px 28px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-40% 60% auto auto;width:380px;height:380px;
+  background:radial-gradient(circle,rgba(126,224,200,.12),transparent 60%)}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:#0e1a23;border:1px solid var(--border);
+  border-radius:999px;padding:6px 13px;font-size:13px;color:var(--dim)}
+.pill b{color:#fff}
+.pill.exam{background:linear-gradient(135deg,#3a2630,#2a1d24);border-color:#5a3a44;color:#ffd9df}
+.pill.exam b{color:#fff}
+.countdown{font-family:'JetBrains Mono';color:var(--warn)}
+
+/* cards / callouts */
+.grid{display:grid;gap:14px}
+.grid.two{grid-template-columns:1fr 1fr}
+.grid.three{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);border:1px solid var(--border-soft);border-radius:12px;padding:16px 18px}
+.card h4{margin-top:0}
+
+.callout{border-radius:12px;padding:14px 16px 14px 18px;margin:16px 0;border:1px solid var(--border);
+  border-left-width:4px;background:var(--card)}
+.callout .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:4px}
+.callout.note{border-left-color:var(--accent)} .callout.note .lab{color:var(--accent)}
+.callout.tip{border-left-color:var(--ok)} .callout.tip .lab{color:var(--ok)}
+.callout.warn{border-left-color:var(--warn)} .callout.warn .lab{color:var(--warn)}
+.callout.danger{border-left-color:var(--danger)} .callout.danger .lab{color:var(--danger)}
+.callout.proof{border-left-color:var(--accent-3);background:#191428} .callout.proof .lab{color:var(--accent-3)}
+
+/* formula block */
+.fml{background:var(--formula-bg);border:1px solid var(--border-soft);border-left:4px solid var(--formula-bd);
+  border-radius:10px;padding:12px 16px;margin:14px 0;overflow-x:auto}
+.fml.center{text-align:center}
+
+/* recipe box */
+.recipe{background:#0f1d28;border:1px solid var(--border);border-radius:12px;padding:4px 18px 12px;margin:16px 0}
+.recipe .rh{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--accent-2);font-weight:700;margin:14px 0 4px}
+.recipe ol{margin:.4em 0;padding-left:1.3em} .recipe ol li{margin:.4em 0}
+
+/* tables */
+.tablewrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border-soft);vertical-align:top}
+th{color:var(--accent-2);font-weight:600;background:#121b24;position:sticky;top:0}
+tr:hover td{background:#141d27}
+.tag{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;white-space:nowrap}
+.tag.real{background:#13322a;color:#8ce9c0}
+.tag.rep{background:#33301a;color:#ffe08a}
+.tag.cmplx{background:#2a2240;color:#cdb4ff}
+
+/* details: worked examples + feynman + quiz */
+details.ex,details.fy{border:1px solid var(--border);border-radius:12px;margin:14px 0;background:var(--card);overflow:hidden}
+details.ex>summary,details.fy>summary{cursor:pointer;list-style:none;padding:13px 16px;display:flex;align-items:center;gap:10px;
+  font-weight:600;user-select:none}
+details>summary::-webkit-details-marker{display:none}
+summary .chev{transition:transform .25s;color:var(--accent);flex:none}
+details[open]>summary .chev{transform:rotate(90deg)}
+details.ex>summary{background:#16212c;border-bottom:1px solid transparent}
+details.ex[open]>summary{border-bottom-color:var(--border-soft)}
+summary .extag{margin-left:auto;font-size:11px;color:var(--faint);font-weight:500}
+.ex .body,.fy .body{padding:6px 18px 18px}
+.step{display:flex;gap:12px;margin:10px 0;align-items:flex-start}
+.step .n{flex:none;width:25px;height:25px;border-radius:50%;background:#143040;color:var(--accent-2);
+  display:grid;place-items:center;font-size:13px;font-weight:700;font-family:'JetBrains Mono';margin-top:2px}
+
+details.fy>summary{background:#1b1730}
+details.fy{border-color:#3a2f55}
+.fy .prompt{font-size:15px;color:#eadcff;margin:6px 0 10px}
+.fy textarea{width:100%;min-height:90px;background:#0d141b;border:1px solid var(--border);border-radius:10px;
+  color:var(--text);padding:10px 12px;font-family:inherit;font-size:14.5px;resize:vertical}
+.fy textarea:focus{outline:none;border-color:var(--accent-3)}
+.fy .rubric{margin-top:12px}
+
+/* quiz */
+.quiz{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:16px 0}
+.quiz .qq{font-weight:600;margin-bottom:8px}
+.quiz .opt{display:block;padding:9px 12px;margin:6px 0;border:1px solid var(--border-soft);border-radius:9px;
+  cursor:pointer;background:#0f1822;transition:.15s}
+.quiz .opt:hover{border-color:var(--accent)}
+.quiz .opt.correct{border-color:var(--ok);background:#13251b}
+.quiz .opt.wrong{border-color:var(--danger);background:#2a1819}
+.quiz .fb{margin-top:8px;font-size:14px;color:var(--dim);display:none}
+.quiz .fb.show{display:block}
+
+/* flashcards */
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:14px 0}
+.fc{perspective:1000px;height:130px;cursor:pointer}
+.fc-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fc.flip .fc-inner{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;border:1px solid var(--border);
+  padding:14px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:14.5px}
+.fc-front{background:#16212c;color:#eaf2fb;font-weight:600}
+.fc-back{background:#11202b;color:var(--dim);transform:rotateY(180deg);font-size:13.5px}
+
+kbd{font-family:'JetBrains Mono';background:#0d141b;border:1px solid var(--border);border-bottom-width:2px;
+  border-radius:6px;padding:1px 6px;font-size:12.5px}
+mark{background:#5b4a16;color:#fff;border-radius:3px;padding:0 2px}
+.muted{color:var(--faint)}
+ul.clean{margin:.4em 0;padding-left:1.2em} ul.clean li{margin:.3em 0}
+
+/* mobile */
+.topbar{display:none}
+@media(max-width:880px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:fixed;z-index:50;width:300px;left:-320px;transition:left .25s;box-shadow:var(--shadow)}
+  .sidebar.open{left:0}
+  .topbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:40;
+    background:rgba(14,20,25,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border-soft);
+    padding:10px 14px}
+  .topbar b{font-family:'Fraunces';font-size:16px}
+  .hamb{background:#16212c;border:1px solid var(--border);color:var(--text);border-radius:9px;
+    width:40px;height:38px;font-size:18px;cursor:pointer}
+  .grid.two,.grid.three{grid-template-columns:1fr}
+  main{padding-top:18px}
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;display:none}
+  .backdrop.show{display:block}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="hamb" id="hamb" aria-label="Menu">☰</button>
+  <b>EDO · Guia P2</b>
+</div>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="dot">y''</div>
+      <div><b>EDO — Guia P2</b><small>BCN0405 · 2ª ordem</small></div>
+    </div>
+
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar no guia…" autocomplete="off">
+      <span class="count" id="count"></span>
+    </div>
+
+    <nav class="toc" id="toc">
+      <div class="group">Começo</div>
+      <a href="#intro">Visão geral &amp; como usar</a>
+      <a href="#mapa">Mapa da P2 &amp; o fio condutor</a>
+
+      <div class="group">1 · Teoria</div>
+      <a href="#teoria">EDO linear de 2ª ordem</a>
+      <a href="#superposicao" class="sub">Superposição &amp; estrutura</a>
+      <a href="#wronskiano" class="sub">Wronskiano &amp; indep. linear</a>
+
+      <div class="group">2 · Resolver a homogênea</div>
+      <a href="#reducao">Redução de ordem</a>
+      <a href="#coef-const">Coeficientes constantes</a>
+      <a href="#raizes" class="sub">3 casos das raízes</a>
+      <a href="#euler">Euler-Cauchy</a>
+
+      <div class="group">3 · A solução particular</div>
+      <a href="#indeterminados">Coeficientes a determinar</a>
+      <a href="#variacao">Variação de parâmetros</a>
+
+      <div class="group">4 · Aplicação</div>
+      <a href="#vibracoes">Vibrações massa-mola</a>
+      <a href="#livre" class="sub">Livre &amp; amortecido</a>
+      <a href="#forcado" class="sub">Forçado &amp; ressonância</a>
+
+      <div class="group">Fixar</div>
+      <a href="#quiz">Quiz relâmpago</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#erros">Erros comuns</a>
+      <a href="#cola">Cola final</a>
+    </nav>
+  </aside>
+
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section id="intro">
+      <div class="hero">
+        <h1 style="margin-top:0">EDO lineares de 2ª ordem</h1>
+        <p class="lead">Guia <strong>do zero</strong> de todo o bloco da <strong>Prova 2</strong>: estrutura da solução, Wronskiano, redução de ordem, coeficientes constantes, Euler-Cauchy, coeficientes a determinar, variação de parâmetros e vibrações mecânicas.</p>
+        <div class="meta">
+          <span class="pill">BCN0405-15 · <b>Prof. Edson Arrázola</b></span>
+          <span class="pill">Turma NA1 · noturno</span>
+          <span class="pill exam">📌 P2: <b>07/08/2026</b> · <span class="countdown" id="cd">—</span></span>
+        </div>
+      </div>
+
+      <div class="callout note" style="margin-top:20px">
+        <div class="lab">Como usar este guia</div>
+        Ainda <strong>não há slides</strong> de 2ª ordem — então este guia <strong>ensina do zero</strong> (base: Zill e Boyce-DiPrima), sem pressupor a aula. Leia a teoria, <strong>abra um exemplo resolvido</strong> e refaça sozinho. Cada método tem uma <strong>receita curta</strong>. No fim há <strong>quiz</strong>, <strong>flashcards</strong>, blocos <strong>Feynman</strong> e uma <strong>cola</strong>. Todas as soluções foram conferidas no <kbd>sympy.dsolve</kbd>.
+      </div>
+    </section>
+
+    <!-- ===================== MAPA ===================== -->
+    <section id="mapa">
+      <h2>Mapa da P2 &amp; o fio condutor</h2>
+      <p>Toda a P2 gira em torno de uma única equação: a <strong>linear de 2ª ordem</strong>. A estratégia tem sempre <strong>duas partes</strong>:</p>
+      <div class="fml center">\[ \underbrace{y=\,}_{\text{geral}}\ \underbrace{y_h}_{\text{homogênea}}\;+\;\underbrace{y_p}_{\text{particular}} \]</div>
+      <p>Primeiro acha-se \(y_h\) (resolve a equação <em>sem</em> o termo livre \(g(x)\)); depois, se houver \(g(x)\neq0\), acha-se <strong>uma</strong> \(y_p\). Tudo o que cai na P2 é uma técnica para uma dessas duas metades.</p>
+      <div class="grid two">
+        <div class="card">
+          <h4 style="color:var(--ok)">Para a homogênea \(y_h\)</h4>
+          <ul class="clean">
+            <li><strong>Redução de ordem</strong> — se já sei uma solução \(y_1\).</li>
+            <li><strong>Coeficientes constantes</strong> — equação característica (3 casos de raízes).</li>
+            <li><strong>Euler-Cauchy</strong> — coeficientes \(a_k x^k\), testa \(y=x^m\).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--warn)">Para a particular \(y_p\)</h4>
+          <ul class="clean">
+            <li><strong>Coeficientes a determinar</strong> — \(g(x)\) é polinômio / exp / seno-cosseno.</li>
+            <li><strong>Variação de parâmetros</strong> — funciona para <em>qualquer</em> \(g(x)\).</li>
+          </ul>
+          <p class="muted" style="margin:.4em 0 0">Aplicação: <strong>vibrações massa-mola</strong> juntam as duas metades.</p>
+        </div>
+      </div>
+      <div class="callout tip"><div class="lab">Ordem de estudo sugerida</div>Teoria (Wronskiano) → coef. constantes (o coração da prova) → Euler-Cauchy → coef. a determinar → variação de parâmetros → vibrações. Redução de ordem pode ficar por último, é a mais rara.</div>
+    </section>
+
+    <!-- ===================== 1 · TEORIA ===================== -->
+    <section id="teoria">
+      <h2>1 · EDO linear de 2ª ordem: o que é</h2>
+      <p>A forma <strong>geral</strong> é</p>
+      <div class="fml center">\[ a_2(x)\,y''+a_1(x)\,y'+a_0(x)\,y=g(x). \]</div>
+      <p>Dividindo por \(a_2(x)\) (onde \(a_2\neq0\)) chega-se à <strong>forma padrão</strong>, que usaremos sempre:</p>
+      <div class="fml center">\[ y''+p(x)\,y'+q(x)\,y=f(x). \]</div>
+      <ul class="clean">
+        <li>Se \(f(x)\equiv 0\) → equação <strong>homogênea</strong>: \(y''+p y'+q y=0\).</li>
+        <li>Se \(f(x)\neq 0\) → equação <strong>não-homogênea</strong> (tem o termo "forçante" \(f\)).</li>
+      </ul>
+      <div class="callout note"><div class="lab">Por que "linear"</div>\(y\), \(y'\) e \(y''\) aparecem só na potência 1, não multiplicados entre si e não dentro de funções não-lineares. \(p,q,f\) podem depender de \(x\) à vontade — isso <strong>não</strong> tira a linearidade. Já \(y\,y''\), \((y')^2\) ou \(\sin y\) seriam não-lineares.</div>
+
+      <h3 id="superposicao">1.1 · Princípio da superposição &amp; estrutura da solução</h3>
+      <p>Para a <strong>homogênea</strong> vale o resultado central: se \(y_1\) e \(y_2\) são soluções, então <strong>qualquer combinação linear</strong> \(c_1y_1+c_2y_2\) também é solução. Isso é a <em>superposição</em>.</p>
+      <div class="callout proof"><div class="lab">Por quê (1 linha)</div>O operador \(L[y]=y''+py'+qy\) é <strong>linear</strong>: \(L[c_1y_1+c_2y_2]=c_1L[y_1]+c_2L[y_2]=c_1\cdot0+c_2\cdot0=0\). Logo a combinação também resolve.</div>
+      <p>A teoria garante que a solução geral da homogênea de 2ª ordem precisa de <strong>exatamente 2 soluções</strong> que sejam <strong>linearmente independentes (LI)</strong>. Esse par \(\{y_1,y_2\}\) chama-se <strong>conjunto fundamental de soluções</strong>, e</p>
+      <div class="fml center">\[ y_h=c_1y_1+c_2y_2 \qquad (\{y_1,y_2\}\ \text{LI}). \]</div>
+      <p>Para a não-homogênea, soma-se uma particular qualquer:</p>
+      <div class="fml center">\[ y=\underbrace{c_1y_1+c_2y_2}_{y_h}+\,y_p. \]</div>
+
+      <h3 id="wronskiano">1.2 · Independência linear e o Wronskiano</h3>
+      <p>Duas funções são <strong>LI</strong> se nenhuma é múltipla constante da outra (ex.: \(e^{2x}\) e \(e^{3x}\) são LI; \(e^{2x}\) e \(5e^{2x}\) são LD). O teste prático é o <strong>Wronskiano</strong>:</p>
+      <div class="fml center">\[ W(y_1,y_2)(x)=\begin{vmatrix} y_1 & y_2\\ y_1' & y_2' \end{vmatrix}=y_1y_2'-y_2y_1'. \]</div>
+      <div class="callout note"><div class="lab">Critério</div>Se \(y_1,y_2\) são soluções da mesma EDO homogênea num intervalo \(I\), então elas são <strong>LI em \(I\)</strong> se e somente se \(W\neq0\) em algum ponto de \(I\). (Pelo teorema de Abel, para soluções de uma EDO o \(W\) ou é sempre zero ou nunca zero em \(I\).)</div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo resolvido — testar LI com o Wronskiano <span class="extag">teoria</span></summary>
+        <div class="body">
+          <p>Mostre que \(y_1=e^{2x}\) e \(y_2=e^{3x}\) formam um conjunto fundamental.</p>
+          <div class="step"><div class="n">1</div><div>Derivadas: \(y_1'=2e^{2x}\), \(y_2'=3e^{3x}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(W=y_1y_2'-y_2y_1'=e^{2x}\cdot3e^{3x}-e^{3x}\cdot2e^{2x}=3e^{5x}-2e^{5x}=e^{5x}.\)</div></div>
+          <div class="step"><div class="n">3</div><div>\(W=e^{5x}\neq0\) para todo \(x\) → são <strong>LI</strong> → conjunto fundamental. A solução geral é \(y=c_1e^{2x}+c_2e^{3x}\). <span class="muted">(É exatamente a homogênea do exemplo de coeficientes constantes adiante.)</span></div></div>
+        </div>
+      </details>
+
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — superposição &amp; Wronskiano</summary>
+        <div class="body">
+          <p class="prompt">Explique com suas palavras: por que a homogênea de 2ª ordem precisa de <strong>2</strong> soluções LI, e <strong>para que serve</strong> o Wronskiano?</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>A ordem 2 traz <strong>2 constantes</strong> \(c_1,c_2\) (uma por integração) → preciso de 2 "blocos" independentes para cobri-las.</li>
+                <li>"Independentes" = uma não é múltipla da outra; senão \(c_1y_1+c_2y_2\) colapsa numa só constante e não cobre todos os PVIs.</li>
+                <li>O Wronskiano é o <strong>teste mecânico</strong> de independência: \(W\neq0\) confirma que \(\{y_1,y_2\}\) é conjunto fundamental.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== REDUÇÃO DE ORDEM ===================== -->
+    <section id="reducao">
+      <h2>2 · Redução de ordem</h2>
+      <p>Serve quando <strong>já conheço uma solução \(y_1\)</strong> da homogênea \(y''+py'+qy=0\) e quero a segunda solução LI, \(y_2\). Procura-se \(y_2=u(x)\,y_1(x)\); a substituição derruba a equação para 1ª ordem em \(u'\).</p>
+      <div class="recipe">
+        <div class="rh">Receita</div>
+        <ol>
+          <li>Ponha em <strong>forma padrão</strong> \(y''+p(x)y'+q(x)y=0\) (identifique \(p\)).</li>
+          <li>Aplique a <strong>fórmula pronta</strong>:</li>
+        </ol>
+        <div class="fml center">\[ y_2=y_1\!\int\frac{e^{-\int p\,dx}}{y_1^{\,2}}\,dx. \]</div>
+        <ol start="3"><li>Solução geral: \(y=c_1y_1+c_2y_2\).</li></ol>
+      </div>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo resolvido — redução de ordem <span class="extag">conferido no sympy</span></summary>
+        <div class="body">
+          <p>Sabendo que \(y_1=x^2\) resolve \(x^2y''-3xy'+4y=0\) (\(x&gt;0\)), ache \(y_2\).</p>
+          <div class="step"><div class="n">1</div><div>Forma padrão (÷\(x^2\)): \(y''-\dfrac{3}{x}y'+\dfrac{4}{x^2}y=0\) → \(p=-\dfrac{3}{x}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\int p\,dx=-3\ln x\Rightarrow e^{-\int p\,dx}=e^{3\ln x}=x^3.\)</div></div>
+          <div class="step"><div class="n">3</div><div>\(y_2=x^2\displaystyle\int\frac{x^3}{(x^2)^2}\,dx=x^2\int\frac{x^3}{x^4}\,dx=x^2\int\frac{dx}{x}=x^2\ln x.\)</div></div>
+          <div class="step"><div class="n">4</div><div>Geral: \(y=c_1x^2+c_2x^2\ln x=x^2(c_1+c_2\ln x)\). <span class="muted">✓ bate com <kbd>dsolve</kbd> e com Euler-Cauchy (raiz dupla).</span></div></div>
+        </div>
+      </details>
+      <div class="callout tip"><div class="lab">Atalho</div>Se \(p\) some na forma padrão (\(p=0\)), a fórmula vira simplesmente \(y_2=y_1\int \frac{dx}{y_1^2}\).</div>
+    </section>
+
+    <!-- ===================== COEFICIENTES CONSTANTES ===================== -->
+    <section id="coef-const">
+      <h2>3 · Coeficientes constantes — o coração da P2</h2>
+      <p>Quando \(a,b,c\) são <strong>números</strong>:</p>
+      <div class="fml center">\[ a\,y''+b\,y'+c\,y=0. \]</div>
+      <p>Testa-se \(y=e^{rx}\). Como \(y'=re^{rx}\) e \(y''=r^2e^{rx}\), substituindo e cancelando \(e^{rx}\neq0\):</p>
+      <div class="fml center">\[ ar^2+br+c=0 \qquad(\textbf{equação característica}). \]</div>
+      <p>As raízes \(r_1,r_2\) decidem tudo. São <strong>três casos</strong>, conforme o discriminante \(\Delta=b^2-4ac\):</p>
+
+      <h3 id="raizes">Os 3 casos das raízes</h3>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Caso (\(\Delta\))</th><th>Raízes</th><th>Solução geral \(y_h\)</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag real">\(\Delta&gt;0\)</span> reais distintas</td><td>\(r_1\neq r_2\) reais</td><td>\(c_1e^{r_1x}+c_2e^{r_2x}\)</td></tr>
+          <tr><td><span class="tag rep">\(\Delta=0\)</span> repetida</td><td>\(r_1=r_2=r\)</td><td>\((c_1+c_2x)\,e^{rx}\)</td></tr>
+          <tr><td><span class="tag cmplx">\(\Delta&lt;0\)</span> complexas</td><td>\(r=\alpha\pm\beta i\)</td><td>\(e^{\alpha x}\big(c_1\cos\beta x+c_2\sin\beta x\big)\)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout note"><div class="lab">De onde sai o caso complexo</div>Com \(r=\alpha\pm\beta i\), a fórmula de Euler \(e^{i\beta x}=\cos\beta x+i\sin\beta x\) transforma as exponenciais complexas em \(e^{\alpha x}\cos\beta x\) e \(e^{\alpha x}\sin\beta x\). O \(\alpha\) (parte real) vira a <strong>exponencial</strong>; o \(\beta\) (parte imaginária) vira a <strong>frequência</strong> do seno/cosseno.</div>
+      <div class="callout warn"><div class="lab">Por que aparece o \(x\) no caso repetido</div>Com raiz dupla só temos <strong>um</strong> \(e^{rx}\); falta a segunda solução LI. A redução de ordem aplicada a \(y_1=e^{rx}\) entrega exatamente \(y_2=x\,e^{rx}\) — por isso o fator \(x\).</div>
+
+      <details class="ex">
+        <summary><span class="chev">▶</span> Ex. A — raízes reais distintas <span class="extag">conferido no sympy</span></summary>
+        <div class="body">
+          <p>Resolva \(y''-5y'+6y=0\).</p>
+          <div class="step"><div class="n">1</div><div>Característica: \(r^2-5r+6=0\Rightarrow(r-2)(r-3)=0\Rightarrow r=2,3\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\Delta&gt;0\), reais distintas → \(\boxed{y=c_1e^{2x}+c_2e^{3x}}\). <span class="muted">✓ <kbd>dsolve</kbd></span></div></div>
+        </div>
+      </details>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Ex. B — raiz repetida <span class="extag">conferido no sympy</span></summary>
+        <div class="body">
+          <p>Resolva \(y''+6y'+9y=0\).</p>
+          <div class="step"><div class="n">1</div><div>\(r^2+6r+9=(r+3)^2=0\Rightarrow r=-3\) (dupla).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\Delta=0\) → \(\boxed{y=(c_1+c_2x)e^{-3x}}\). <span class="muted">✓ <kbd>dsolve</kbd></span></div></div>
+        </div>
+      </details>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Ex. C — raízes complexas <span class="extag">conferido no sympy</span></summary>
+        <div class="body">
+          <p>Resolva \(y''+4y'+13y=0\).</p>
+          <div class="step"><div class="n">1</div><div>\(r=\dfrac{-4\pm\sqrt{16-52}}{2}=\dfrac{-4\pm\sqrt{-36}}{2}=-2\pm3i\Rightarrow\alpha=-2,\ \beta=3\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(\Delta&lt;0\) → \(\boxed{y=e^{-2x}\big(c_1\cos3x+c_2\sin3x\big)}\). <span class="muted">✓ <kbd>dsolve</kbd></span></div></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== EULER-CAUCHY ===================== -->
+    <section id="euler">
+      <h2>4 · Equação de Euler-Cauchy</h2>
+      <p>É a equação com <strong>coeficientes \(a_kx^k\)</strong> (potência de \(x\) casando com a ordem da derivada):</p>
+      <div class="fml center">\[ a\,x^2y''+b\,x\,y'+c\,y=0 \qquad(x&gt;0). \]</div>
+      <p>Aqui testa-se \(y=x^m\). Como \(y'=mx^{m-1}\) e \(y''=m(m-1)x^{m-2}\), os \(x\) se cancelam e sobra a <strong>equação auxiliar</strong>:</p>
+      <div class="fml center">\[ a\,m(m-1)+b\,m+c=0 \;\Longleftrightarrow\; a\,m^2+(b-a)m+c=0. \]</div>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Raízes \(m\)</th><th>Solução geral</th></tr></thead>
+        <tbody>
+          <tr><td>reais distintas \(m_1\neq m_2\)</td><td>\(c_1x^{m_1}+c_2x^{m_2}\)</td></tr>
+          <tr><td>repetida \(m_1=m_2=m\)</td><td>\(x^{m}(c_1+c_2\ln x)\)</td></tr>
+          <tr><td>complexas \(m=\alpha\pm\beta i\)</td><td>\(x^{\alpha}\big(c_1\cos(\beta\ln x)+c_2\sin(\beta\ln x)\big)\)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout tip"><div class="lab">Paralelo útil</div>Euler-Cauchy é a "versão com \(\ln x\)" da de coeficientes constantes: \(e^{rx}\to x^m\), \(x\to\ln x\). A troca \(x=e^t\) transforma uma na outra.</div>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo resolvido — raiz dupla <span class="extag">conferido no sympy</span></summary>
+        <div class="body">
+          <p>Resolva \(x^2y''-3xy'+4y=0\) (\(x&gt;0\)).</p>
+          <div class="step"><div class="n">1</div><div>Aqui \(a=1,b=-3,c=4\). Auxiliar: \(m(m-1)-3m+4=m^2-4m+4=0\).</div></div>
+          <div class="step"><div class="n">2</div><div>\((m-2)^2=0\Rightarrow m=2\) (dupla).</div></div>
+          <div class="step"><div class="n">3</div><div>\(\boxed{y=x^2(c_1+c_2\ln x)}\). <span class="muted">✓ <kbd>dsolve</kbd> — e idêntico ao que a redução de ordem deu lá em cima.</span></div></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== COEFICIENTES A DETERMINAR ===================== -->
+    <section id="indeterminados">
+      <h2>5 · Coeficientes a determinar (indeterminados)</h2>
+      <p>Acha \(y_p\) da <strong>não-homogênea</strong> \(ay''+by'+cy=g(x)\) quando \(g\) é de um tipo "que se repete ao derivar": <strong>polinômio</strong>, <strong>exponencial</strong>, <strong>seno/cosseno</strong> ou produtos/somas deles. A ideia: <em>chutar</em> uma \(y_p\) com a mesma "cara" de \(g\), com coeficientes a descobrir.</p>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Termo em \(g(x)\)</th><th>Chute para \(y_p\)</th></tr></thead>
+        <tbody>
+          <tr><td>polinômio grau \(n\)</td><td>\(A_nx^n+\cdots+A_1x+A_0\)</td></tr>
+          <tr><td>\(e^{kx}\)</td><td>\(Ae^{kx}\)</td></tr>
+          <tr><td>\(\cos kx\) ou \(\sin kx\)</td><td>\(A\cos kx+B\sin kx\)</td></tr>
+          <tr><td>produto (ex.: \(x e^{kx}\))</td><td>produto dos chutes \((Ax+B)e^{kx}\)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="recipe">
+        <div class="rh">Receita</div>
+        <ol>
+          <li>Ache \(y_h\) (equação característica).</li>
+          <li>Monte o <strong>chute</strong> \(y_p\) pela tabela.</li>
+          <li><strong>Regra da duplicação:</strong> se algum termo do chute já está em \(y_h\), <strong>multiplique o chute por \(x\)</strong> (por \(x^2\) se ainda colidir).</li>
+          <li>Substitua \(y_p,y_p',y_p''\) na EDO e <strong>iguale coeficientes</strong> para achar as constantes.</li>
+          <li>Resposta: \(y=y_h+y_p\).</li>
+        </ol>
+      </div>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo resolvido — \(g\) polinomial <span class="extag">conferido no sympy</span></summary>
+        <div class="body">
+          <p>Resolva \(y''-3y'+2y=4x^2\).</p>
+          <div class="step"><div class="n">1</div><div>Homogênea: \(r^2-3r+2=(r-1)(r-2)=0\Rightarrow y_h=c_1e^{x}+c_2e^{2x}\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(g=4x^2\) (grau 2) e nenhum polinômio está em \(y_h\) → chute \(y_p=Ax^2+Bx+C\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(y_p'=2Ax+B,\ y_p''=2A\). Substitui: \(2A-3(2Ax+B)+2(Ax^2+Bx+C)=4x^2\).</div></div>
+          <div class="step"><div class="n">4</div><div>Agrupa: \(2Ax^2+(-6A+2B)x+(2A-3B+2C)=4x^2\). Iguala: \(2A=4\Rightarrow A=2\); \(-6A+2B=0\Rightarrow B=6\); \(2A-3B+2C=0\Rightarrow 4-18+2C=0\Rightarrow C=7\).</div></div>
+          <div class="step"><div class="n">5</div><div>\(\boxed{y=c_1e^{x}+c_2e^{2x}+2x^2+6x+7}\). <span class="muted">✓ <kbd>dsolve</kbd></span></div></div>
+        </div>
+      </details>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Ex. — quando a duplicação ataca <span class="extag">atenção</span></summary>
+        <div class="body">
+          <p>Em \(y''+y=\cos x\): a homogênea é \(y_h=c_1\cos x+c_2\sin x\). O chute natural \(A\cos x+B\sin x\) <strong>já está</strong> em \(y_h\) → multiplique por \(x\): \(y_p=x(A\cos x+B\sin x)\). Resolvendo dá \(y_p=\frac{x}{2}\sin x\) (a amplitude cresce com \(x\) → <strong>ressonância</strong>). <span class="muted">✓ <kbd>dsolve</kbd></span></p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== VARIAÇÃO DE PARÂMETROS ===================== -->
+    <section id="variacao">
+      <h2>6 · Variação de parâmetros</h2>
+      <p>O método <strong>universal</strong> para \(y_p\): funciona para <em>qualquer</em> \(f(x)\) (inclusive \(\tan x,\ \sec x,\ \ln x\), onde os coeficientes a determinar <strong>não</strong> servem). Parte de \(y_h=c_1y_1+c_2y_2\) e deixa os "parâmetros" variarem: \(y_p=u_1y_1+u_2y_2\).</p>
+      <div class="recipe">
+        <div class="rh">Receita (forma padrão \(y''+py'+qy=f\))</div>
+        <ol>
+          <li>Ache \(y_1,y_2\) (conjunto fundamental da homogênea) e o Wronskiano \(W=y_1y_2'-y_2y_1'\).</li>
+          <li>Calcule
+            <div class="fml center" style="margin:8px 0">\[ u_1'=-\frac{y_2\,f}{W},\qquad u_2'=\frac{y_1\,f}{W}. \]</div>
+          </li>
+          <li><strong>Integre</strong> para obter \(u_1,u_2\) (sem \(+C\) — as constantes já estão em \(y_h\)).</li>
+          <li>\(y_p=u_1y_1+u_2y_2\) e \(\;y=y_h+y_p\).</li>
+        </ol>
+      </div>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo resolvido — \(f(x)=\sec x\) <span class="extag">conferido no sympy</span></summary>
+        <div class="body">
+          <p>Resolva \(y''+y=\sec x\). <span class="muted">(Coef. a determinar falham aqui: \(\sec x\) não tem chute finito.)</span></p>
+          <div class="step"><div class="n">1</div><div>Homogênea: \(r^2+1=0\Rightarrow r=\pm i\Rightarrow y_1=\cos x,\ y_2=\sin x\). Já está em forma padrão (\(p=0\)), \(f=\sec x\).</div></div>
+          <div class="step"><div class="n">2</div><div>\(W=\cos x\cdot\cos x-\sin x\cdot(-\sin x)=\cos^2x+\sin^2x=1.\)</div></div>
+          <div class="step"><div class="n">3</div><div>\(u_1'=-\dfrac{\sin x\sec x}{1}=-\tan x\Rightarrow u_1=\ln(\cos x).\)</div></div>
+          <div class="step"><div class="n">4</div><div>\(u_2'=\dfrac{\cos x\sec x}{1}=1\Rightarrow u_2=x.\)</div></div>
+          <div class="step"><div class="n">5</div><div>\(y_p=u_1y_1+u_2y_2=\cos x\,\ln(\cos x)+x\sin x.\)</div></div>
+          <div class="step"><div class="n">6</div><div>\(\boxed{y=c_1\cos x+c_2\sin x+\cos x\,\ln(\cos x)+x\sin x}\). <span class="muted">✓ <kbd>dsolve</kbd></span></div></div>
+        </div>
+      </details>
+      <div class="callout tip"><div class="lab">Qual método usar para \(y_p\)?</div>Se \(f\) é polinômio / \(e^{kx}\) / seno-cosseno → <strong>coeficientes a determinar</strong> (mais rápido). Se \(f\) é <strong>qualquer outra coisa</strong> (\(\sec,\tan,\ln,1/x\)…) → <strong>variação de parâmetros</strong>.</div>
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — particular</summary>
+        <div class="body">
+          <p class="prompt">Explique: qual a diferença de "alma" entre <strong>coeficientes a determinar</strong> e <strong>variação de parâmetros</strong>? Por que um é limitado e o outro não?</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>Coef. a determinar = <strong>chute educado</strong>: só funciona com \(g\) cujo "formato" se fecha ao derivar (polinômio, exp, seno/cosseno).</li>
+                <li>Variação = constrói \(y_p\) <strong>a partir</strong> da homogênea via integrais, então aceita qualquer \(f\) — o preço é integrar (às vezes feio).</li>
+                <li>Mencionar a <strong>regra da duplicação</strong> (multiplicar por \(x\)) e o papel do <strong>Wronskiano</strong> nas fórmulas de \(u_1',u_2'\).</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== VIBRAÇÕES ===================== -->
+    <section id="vibracoes">
+      <h2>7 · Aplicação: vibrações mecânicas (massa-mola)</h2>
+      <p>A grande aplicação física da P2. Massa \(m\) presa a uma mola (constante \(k\)), com amortecimento \(c\) e força externa \(F(t)\). A 2ª lei de Newton dá a EDO linear de 2ª ordem:</p>
+      <div class="fml center">\[ m\,x''+c\,x'+k\,x=F(t). \]</div>
+      <p>Aqui \(x(t)\) é o deslocamento. Cada termo é uma força: <strong>inércia</strong> \(mx''\), <strong>atrito/amortecedor</strong> \(cx'\), <strong>mola</strong> \(kx\) (Hooke), <strong>forçante</strong> \(F(t)\).</p>
+
+      <h3 id="livre">7.1 · Movimento livre (\(F=0\))</h3>
+      <h4>Livre não amortecido (\(c=0\))</h4>
+      <div class="fml center">\[ mx''+kx=0\ \Rightarrow\ x''+\omega_0^2x=0,\quad \omega_0=\sqrt{k/m}. \]</div>
+      <p>Raízes \(\pm i\omega_0\) → \(x=c_1\cos\omega_0t+c_2\sin\omega_0t=A\cos(\omega_0t-\phi)\): oscilação pura (<strong>movimento harmônico simples</strong>), frequência natural \(\omega_0\), amplitude constante.</p>
+      <h4>Livre amortecido (\(c&gt;0\))</h4>
+      <p>Característica \(mr^2+cr+k=0\). O <strong>discriminante \(c^2-4mk\)</strong> dá os três regimes:</p>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Regime</th><th>Condição</th><th>Comportamento</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Superamortecido</strong></td><td>\(c^2-4mk&gt;0\)</td><td>2 raízes reais negativas → volta ao equilíbrio <strong>sem oscilar</strong> (lento).</td></tr>
+          <tr><td><strong>Criticamente amortecido</strong></td><td>\(c^2-4mk=0\)</td><td>raiz dupla \(r=-c/2m\) → retorno mais rápido <strong>sem oscilar</strong>; \(x=(c_1+c_2t)e^{rt}\).</td></tr>
+          <tr><td><strong>Subamortecido</strong></td><td>\(c^2-4mk&lt;0\)</td><td>raízes complexas → <strong>oscila com amplitude decaindo</strong> \(e^{-(c/2m)t}\).</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout note"><div class="lab">Como reconhecer na prova</div>É o mesmo "3 casos das raízes" da Seção 3, agora com nomes físicos: \(\Delta&gt;0\)=super, \(\Delta=0\)=crítico, \(\Delta&lt;0\)=sub. Em todos, \(x\to0\) (o atrito dissipa energia).</div>
+
+      <h3 id="forcado">7.2 · Movimento forçado &amp; ressonância</h3>
+      <p>Com força periódica \(F(t)=F_0\cos\omega t\), a solução é \(x=x_h+x_p\). O \(x_h\) (livre amortecido) decai → é o <strong>transiente</strong>; o \(x_p\) sobrevive → é o <strong>estado estacionário</strong> (mesma frequência \(\omega\) da força).</p>
+      <div class="callout warn"><div class="lab">Ressonância</div>Sem amortecimento (\(c=0\)), se a frequência da força <strong>iguala a natural</strong> (\(\omega=\omega_0\)), o termo forçante "duplica" a homogênea → pela regra da duplicação \(x_p\) ganha um fator \(t\): a amplitude <strong>cresce sem limite</strong> (\(\sim t\)). É a ressonância pura. Foi exatamente o que vimos em \(y''+y=\cos x\to y_p=\frac{t}{2}\sin t\).</div>
+      <details class="ex">
+        <summary><span class="chev">▶</span> Exemplo resolvido — livre amortecido, qual regime? <span class="extag">aplicação</span></summary>
+        <div class="body">
+          <p>\(m=1,\ c=4,\ k=3\): classifique e resolva \(x''+4x'+3x=0\).</p>
+          <div class="step"><div class="n">1</div><div>\(c^2-4mk=16-12=4&gt;0\) → <strong>superamortecido</strong>.</div></div>
+          <div class="step"><div class="n">2</div><div>\(r^2+4r+3=(r+1)(r+3)=0\Rightarrow r=-1,-3\).</div></div>
+          <div class="step"><div class="n">3</div><div>\(\boxed{x=c_1e^{-t}+c_2e^{-3t}}\): decai a 0 sem oscilar. <span class="muted">✓ mesmo padrão do <kbd>dsolve</kbd> de raízes reais distintas.</span></div></div>
+        </div>
+      </details>
+      <details class="fy">
+        <summary><span class="chev">▶</span> 🧠 Bloco Feynman — vibrações</summary>
+        <div class="body">
+          <p class="prompt">Conecte: por que "criticamente amortecido" usa a mesma matemática da "raiz repetida"? E por que ressonância é a "regra da duplicação" disfarçada?</p>
+          <textarea placeholder="Escreva com suas palavras…"></textarea>
+          <details class="ex rubric">
+            <summary><span class="chev">▶</span> Ver roteiro de correção</summary>
+            <div class="body">
+              <ul class="clean">
+                <li>Crítico = \(\Delta=0\) = raiz dupla → \(x=(c_1+c_2t)e^{rt}\); o \(t\) é o mesmo da Seção 3.</li>
+                <li>Ressonância = a forçante \(\cos\omega_0 t\) já é solução da homogênea → duplicação → \(x_p\sim t\), amplitude explode.</li>
+                <li>Tudo é a <strong>mesma máquina</strong> (equação característica + duplicação), só com roupagem física.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== QUIZ ===================== -->
+    <section id="quiz">
+      <h2>Quiz relâmpago</h2>
+      <p class="muted">Clique na alternativa. Verde = certa.</p>
+
+      <div class="quiz" data-correct="b">
+        <div class="qq">1. A solução geral de \(y''+6y'+9y=0\) é:</div>
+        <div class="opt" data-k="a">\(c_1e^{3x}+c_2e^{-3x}\)</div>
+        <div class="opt" data-k="b">\((c_1+c_2x)e^{-3x}\)</div>
+        <div class="opt" data-k="c">\(e^{-3x}(c_1\cos x+c_2\sin x)\)</div>
+        <div class="fb">\(\Delta=0\) (raiz dupla \(r=-3\)) → aparece o fator \(x\): \((c_1+c_2x)e^{-3x}\).</div>
+      </div>
+
+      <div class="quiz" data-correct="c">
+        <div class="qq">2. Para \(y''+4y'+13y=0\), as raízes são \(-2\pm3i\). A solução é:</div>
+        <div class="opt" data-k="a">\(c_1e^{-2x}+c_2e^{3x}\)</div>
+        <div class="opt" data-k="b">\((c_1+c_2x)e^{-2x}\)</div>
+        <div class="opt" data-k="c">\(e^{-2x}(c_1\cos3x+c_2\sin3x)\)</div>
+        <div class="fb">Parte real \(\alpha=-2\) vira a exponencial; parte imaginária \(\beta=3\) vira a frequência do seno/cosseno.</div>
+      </div>
+
+      <div class="quiz" data-correct="a">
+        <div class="qq">3. Para achar \(y_p\) de \(y''+y=\tan x\), o método indicado é:</div>
+        <div class="opt" data-k="a">Variação de parâmetros</div>
+        <div class="opt" data-k="b">Coeficientes a determinar</div>
+        <div class="opt" data-k="c">Redução de ordem</div>
+        <div class="fb">\(\tan x\) não tem "chute" finito → coeficientes a determinar falham. Variação de parâmetros aceita qualquer \(f\).</div>
+      </div>
+
+      <div class="quiz" data-correct="b">
+        <div class="qq">4. Num sistema massa-mola, \(c^2-4mk=0\) corresponde a:</div>
+        <div class="opt" data-k="a">Subamortecido (oscila decaindo)</div>
+        <div class="opt" data-k="b">Criticamente amortecido (retorno rápido sem oscilar)</div>
+        <div class="opt" data-k="c">Ressonância</div>
+        <div class="fb">\(\Delta=0\) = raiz dupla = amortecimento crítico: volta ao equilíbrio o mais rápido possível sem oscilar.</div>
+      </div>
+
+      <div class="quiz" data-correct="c">
+        <div class="qq">5. O Wronskiano \(W(y_1,y_2)\neq0\) num intervalo garante que:</div>
+        <div class="opt" data-k="a">\(y_1\) é múltipla de \(y_2\)</div>
+        <div class="opt" data-k="b">a EDO é não-homogênea</div>
+        <div class="opt" data-k="c">\(\{y_1,y_2\}\) é LI → conjunto fundamental</div>
+        <div class="fb">\(W\neq0\) ⇔ independência linear ⇔ a combinação \(c_1y_1+c_2y_2\) cobre toda a solução geral.</div>
+      </div>
+    </section>
+
+    <!-- ===================== FLASHCARDS ===================== -->
+    <section id="flash">
+      <h2>Flashcards</h2>
+      <p class="muted">Clique para virar.</p>
+      <div class="fc-grid">
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Equação característica de \(ay''+by'+cy=0\)</div>
+          <div class="fc-face fc-back">\(ar^2+br+c=0\). As raízes \(r\) decidem os 3 casos.</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Raízes reais distintas \(r_1,r_2\)</div>
+          <div class="fc-face fc-back">\(y=c_1e^{r_1x}+c_2e^{r_2x}\)</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Raiz repetida \(r\)</div>
+          <div class="fc-face fc-back">\(y=(c_1+c_2x)e^{rx}\) — fator \(x\)!</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Raízes complexas \(\alpha\pm\beta i\)</div>
+          <div class="fc-face fc-back">\(y=e^{\alpha x}(c_1\cos\beta x+c_2\sin\beta x)\)</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Euler-Cauchy: o que testar?</div>
+          <div class="fc-face fc-back">\(y=x^m\) em \(ax^2y''+bxy'+cy=0\); auxiliar \(am(m-1)+bm+c=0\).</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Wronskiano</div>
+          <div class="fc-face fc-back">\(W=y_1y_2'-y_2y_1'\). \(W\neq0\Rightarrow\) LI.</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Redução de ordem (\(y_1\) conhecida)</div>
+          <div class="fc-face fc-back">\(y_2=y_1\int\frac{e^{-\int p\,dx}}{y_1^2}\,dx\)</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Variação de parâmetros</div>
+          <div class="fc-face fc-back">\(u_1'=-\frac{y_2f}{W},\ u_2'=\frac{y_1f}{W}\); \(y_p=u_1y_1+u_2y_2\).</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Regra da duplicação</div>
+          <div class="fc-face fc-back">Se o chute de \(y_p\) já está em \(y_h\), multiplique por \(x\) (ou \(x^2\)).</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Massa-mola: regimes</div>
+          <div class="fc-face fc-back">\(c^2-4mk\): \(&gt;0\) super, \(=0\) crítico, \(&lt;0\) sub (oscila decaindo).</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Frequência natural</div>
+          <div class="fc-face fc-back">\(\omega_0=\sqrt{k/m}\) (caso livre não amortecido).</div>
+        </div></div>
+        <div class="fc"><div class="fc-inner">
+          <div class="fc-face fc-front">Ressonância</div>
+          <div class="fc-face fc-back">\(\omega=\omega_0\) e \(c=0\): amplitude cresce \(\sim t\) (duplicação).</div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ===================== ERROS COMUNS ===================== -->
+    <section id="erros">
+      <h2>Erros comuns na P2</h2>
+      <div class="grid two">
+        <div class="callout danger" style="margin:0"><div class="lab">Esquecer o \(x\) na raiz dupla</div>\(\Delta=0\) dá \((c_1+c_2x)e^{rx}\), não \(c_1e^{rx}+c_2e^{rx}\) (que é uma constante só).</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Ignorar a duplicação</div>Se o chute de \(y_p\) já está em \(y_h\), <strong>multiplique por \(x\)</strong> antes de igualar coeficientes.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Forma padrão na variação</div>As fórmulas de \(u_1',u_2'\) usam \(f\) <strong>com coeficiente 1 em \(y''\)</strong>. Divida por \(a_2\) antes.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">\(+C\) nas integrais de \(u_1,u_2\)</div>Não some \(+C\): as constantes já vivem em \(y_h\). Pôr \(+C\) duplica termos.</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Euler-Cauchy: \(\ln x\), não \(x\)</div>Raiz dupla → \(x^m(c_1+c_2\ln x)\); complexa → \(\cos(\beta\ln x)\). É \(\ln x\), não \(x\).</div>
+        <div class="callout danger" style="margin:0"><div class="lab">Trocar \(\alpha\) e \(\beta\)</div>Em \(\alpha\pm\beta i\): a parte <strong>real</strong> \(\alpha\) é a exponencial; a <strong>imaginária</strong> \(\beta\) é a frequência.</div>
+      </div>
+    </section>
+
+    <!-- ===================== COLA ===================== -->
+    <section id="cola">
+      <h2>Cola final (1 página)</h2>
+      <div class="grid two">
+        <div class="card">
+          <h4>Homogênea — coef. constantes</h4>
+          <p style="margin:.3em 0">\(ar^2+br+c=0\):</p>
+          <ul class="clean">
+            <li>\(\Delta&gt;0\): \(c_1e^{r_1x}+c_2e^{r_2x}\)</li>
+            <li>\(\Delta=0\): \((c_1+c_2x)e^{rx}\)</li>
+            <li>\(\Delta&lt;0\): \(e^{\alpha x}(c_1\cos\beta x+c_2\sin\beta x)\)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Euler-Cauchy \(ax^2y''+bxy'+cy=0\)</h4>
+          <p style="margin:.3em 0">\(am(m-1)+bm+c=0\):</p>
+          <ul class="clean">
+            <li>distintas: \(c_1x^{m_1}+c_2x^{m_2}\)</li>
+            <li>dupla: \(x^m(c_1+c_2\ln x)\)</li>
+            <li>complexas: \(x^\alpha(c_1\cos(\beta\ln x)+c_2\sin(\beta\ln x))\)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Particular \(y_p\)</h4>
+          <ul class="clean">
+            <li><strong>Coef. a determinar:</strong> \(g=\) poli/exp/sen-cos → chute + duplicação por \(x\).</li>
+            <li><strong>Variação:</strong> \(u_1'=-\frac{y_2f}{W},\ u_2'=\frac{y_1f}{W}\), integra, \(y_p=u_1y_1+u_2y_2\).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Vibrações \(mx''+cx'+kx=F\)</h4>
+          <ul class="clean">
+            <li>\(\omega_0=\sqrt{k/m}\); livre não amortecido = MHS.</li>
+            <li>\(c^2-4mk\): \(&gt;0\) super, \(=0\) crítico, \(&lt;0\) sub.</li>
+            <li>\(\omega=\omega_0,\ c=0\) → ressonância (\(\sim t\)).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Ferramentas</h4>
+          <ul class="clean">
+            <li>\(W=y_1y_2'-y_2y_1'\); \(W\neq0\Rightarrow\) LI.</li>
+            <li>Redução: \(y_2=y_1\int\frac{e^{-\int p\,dx}}{y_1^2}dx\).</li>
+            <li>Sempre: \(y=y_h+y_p\).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Checklist de prova</h4>
+          <ul class="clean">
+            <li>Forma padrão antes de tudo.</li>
+            <li>Raiz dupla → fator \(x\) (ou \(\ln x\) em Euler).</li>
+            <li>Chute colide com \(y_h\)? × \(x\).</li>
+            <li>Conferir: substituiu \(y_p\) de volta?</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="muted" style="text-align:center;margin-top:40px;font-size:13px">
+        Guia gerado para Enzo · BCN0405-15 EDO · base: Zill + Boyce-DiPrima (sem slides de 2ª ordem ainda) · foco Prova 2 (07/08/2026) · soluções conferidas no sympy.dsolve
+      </p>
+    </section>
+  </main>
+</div>
+
+<script>
+// ---------- countdown to P2 ----------
+(function(){
+  var exam=new Date(2026,7,7); // 07/08/2026
+  var today=new Date(); today.setHours(0,0,0,0);
+  var days=Math.round((exam-today)/86400000);
+  var el=document.getElementById('cd');
+  if(el) el.textContent = days>0 ? ('faltam '+days+' dias') : (days===0?'é hoje!':'já passou');
+})();
+
+// ---------- mobile sidebar ----------
+var sb=document.getElementById('sidebar'), bd=document.getElementById('backdrop'), hb=document.getElementById('hamb');
+function closeSb(){sb.classList.remove('open');bd.classList.remove('show');}
+if(hb){hb.addEventListener('click',function(){sb.classList.toggle('open');bd.classList.toggle('show');});}
+if(bd){bd.addEventListener('click',closeSb);}
+document.querySelectorAll('nav.toc a').forEach(function(a){a.addEventListener('click',closeSb);});
+
+// ---------- scroll spy ----------
+var links=Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+var map={}; links.forEach(function(a){var id=a.getAttribute('href').slice(1); map[id]=a;});
+var spy=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('active');});
+      var id=e.target.id; if(map[id]) map[id].classList.add('active');
+    }
+  });
+},{rootMargin:'-15% 0px -75% 0px',threshold:0});
+document.querySelectorAll('main section, main h3[id]').forEach(function(s){spy.observe(s);});
+
+// ---------- quiz ----------
+document.querySelectorAll('.quiz').forEach(function(qz){
+  var correct=qz.getAttribute('data-correct');
+  var fb=qz.querySelector('.fb');
+  qz.querySelectorAll('.opt').forEach(function(opt){
+    opt.addEventListener('click',function(){
+      qz.querySelectorAll('.opt').forEach(function(o){o.classList.remove('correct','wrong');});
+      if(opt.getAttribute('data-k')===correct){opt.classList.add('correct');}
+      else{opt.classList.add('wrong'); qz.querySelector('.opt[data-k="'+correct+'"]').classList.add('correct');}
+      fb.classList.add('show');
+      if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([fb]);
+    });
+  });
+});
+
+// ---------- flashcards ----------
+document.querySelectorAll('.fc').forEach(function(c){
+  c.addEventListener('click',function(){c.classList.toggle('flip');});
+});
+
+// ---------- search (highlight + open details) ----------
+var q=document.getElementById('q'), count=document.getElementById('count'), main=document.querySelector('main');
+var openedBySearch=[];
+function clearMarks(){
+  main.querySelectorAll('mark[data-s]').forEach(function(m){
+    var t=document.createTextNode(m.textContent); m.parentNode.replaceChild(t,m);
+  });
+  main.normalize();
+  openedBySearch.forEach(function(d){d.open=false;}); openedBySearch=[];
+}
+function doSearch(term){
+  clearMarks();
+  if(!term||term.length<2){count.textContent='';return;}
+  var rx=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  var walker=document.createTreeWalker(main,NodeFilter.SHOW_TEXT,{
+    acceptNode:function(n){
+      if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p=n.parentNode;
+      if(p.closest('mjx-container, script, style, textarea, .search, mark')) return NodeFilter.FILTER_REJECT;
+      return rx.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }
+  });
+  var nodes=[],n; while(n=walker.nextNode()){nodes.push(n);}
+  var hits=0, first=null;
+  nodes.forEach(function(node){
+    var frag=document.createDocumentFragment(), last=0, s=node.nodeValue; rx.lastIndex=0; var m;
+    while(m=rx.exec(s)){
+      if(m.index>last) frag.appendChild(document.createTextNode(s.slice(last,m.index)));
+      var mk=document.createElement('mark'); mk.setAttribute('data-s','1'); mk.textContent=m[0];
+      frag.appendChild(mk); last=m.index+m[0].length; hits++; if(!first) first=mk;
+      if(m[0].length===0) rx.lastIndex++;
+    }
+    if(last<s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  });
+  // open any details containing a hit
+  main.querySelectorAll('mark[data-s]').forEach(function(mk){
+    var d=mk.closest('details'); if(d&&!d.open){d.open=true; openedBySearch.push(d);}
+  });
+  count.textContent = hits ? (hits+' resultado'+(hits>1?'s':'')) : 'nada';
+  if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+}
+if(q){
+  var t=null;
+  q.addEventListener('input',function(){clearTimeout(t); t=setTimeout(function(){doSearch(q.value.trim());},180);});
+}
+</script>
+</body>
+</html>
