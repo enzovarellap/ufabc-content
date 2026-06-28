@@ -1,37 +1,48 @@
 # Publicação no GitHub Pages (dashboard dinâmico)
 
 O painel `index.html` (na raiz) é servido pelo **GitHub Pages** e lista guias, listas e
-materiais **lendo o repositório ao vivo** pela API do GitHub. Não precisa rebuild nem editar
-o painel: deu `push` num arquivo dentro de `Disciplinas/<matéria>/{guias,listas,material}/`,
-ele aparece no painel.
+materiais lendo um arquivo **`manifest.json`** (índice gerado automaticamente). Não precisa
+rebuild nem editar o painel: deu `push` num arquivo dentro de
+`Disciplinas/<matéria>/{guias,listas,material}/`, ele aparece no painel.
 
 - **Repositório:** https://github.com/enzovarellap/ufabc-content (público)
 - **URL do painel:** https://enzovarellap.github.io/ufabc-content/
 
-## Como ligar o Pages (uma vez só)
-1. No GitHub, abra o repositório → **Settings** → **Pages**.
-2. Em **Build and deployment → Source**, escolha **Deploy from a branch**.
-3. Em **Branch**, selecione **`main`** e a pasta **`/ (root)`**. Clique **Save**.
-4. Aguarde ~1 min. O Pages publica em `https://enzovarellap.github.io/ufabc-content/`.
+## Como funciona (arquitetura)
+1. `index.html` faz **uma** leitura de `manifest.json` e monta os cards.
+   (Se o manifest faltar, cai para a API do GitHub como plano B.)
+2. `scripts/gen_manifest.py` gera o `manifest.json` a partir de `git ls-files`
+   (lista tudo que está versionado, em `Disciplinas/*/{guias,listas,material}`).
+3. O workflow `.github/workflows/build-manifest.yml` roda esse script **a cada push na main**
+   e recommita o `manifest.json` se a lista mudou (com `paths-ignore: manifest.json` para
+   não entrar em laço). Resultado: o índice se mantém sozinho.
 
-> O arquivo `.nojekyll` (na raiz) garante que o Pages sirva TODOS os arquivos como estão
-> (inclusive pastas que começam com `_`, como `_dashboard/`), sem processamento Jekyll.
+> Por que não chamar a API do GitHub direto do navegador? Ela tem limite de **60 req/h** sem
+> login e falha no primeiro carregamento — foi o que deixou as disciplinas vazias. O manifest
+> resolve com **uma** leitura, sem limite.
 
-## Como funciona o "dinâmico"
-- O painel chama `https://api.github.com/repos/enzovarellap/ufabc-content/contents/<pasta>`
-  para cada disciplina e monta os links automaticamente.
-- Os arquivos abrem pela própria URL do Pages (HTML renderiza com MathJax; PDF abre no navegador).
-- Há cache de 10 min no navegador + botão **↻ Atualizar arquivos** para forçar releitura.
-- A API sem login permite ~60 chamadas/hora — suficiente para uso pessoal. Como o repo é
-  **público**, não precisa de token.
+## Ligar o Pages (uma vez só) — já feito
+Settings → Pages → Source **Deploy from a branch** → Branch **main** / **/(root)** → Save.
+O arquivo `.nojekyll` na raiz garante que tudo (inclusive pastas com `_`) seja servido como está.
+
+## ⚠️ Permissão do GitHub Actions (uma vez só)
+Para o workflow conseguir recommitar o `manifest.json`:
+Settings → **Actions** → **General** → **Workflow permissions** →
+marcar **“Read and write permissions”** → Save.
+(Se não marcar, o painel ainda funciona com o `manifest.json` versionado; só não se
+atualiza sozinho nos próximos pushes.)
 
 ## Fluxo ao criar um guia novo
 1. Salve o arquivo em `Disciplinas/<matéria>/guias/` (ou `listas/`).
-2. `git add` + `commit` + `push` para `main`.
-3. Pronto — o painel mostra o novo arquivo sozinho (clique em ↻ se o cache ainda não expirou).
+2. `commit` + `push` para `main`.
+3. A Action regenera o `manifest.json`; o painel mostra o arquivo novo (clique em ↻ se precisar).
+
+## Regenerar o manifest manualmente (opcional)
+```
+python scripts/gen_manifest.py
+```
 
 ## Privacidade
-O repositório e o Pages são **públicos**: qualquer pessoa com o link vê os arquivos,
-incluindo os PDFs de material. Se algum dia quiser fechar, dá para tornar o repo privado
-(o Pages grátis deixa de funcionar — aí volta a publicação privada via Cloudflare descrita
-em `COMO-PUBLICAR.md`).
+Repositório e Pages são **públicos**: qualquer pessoa com o link vê os arquivos. Para fechar,
+torne o repo privado (o Pages grátis deixa de funcionar — volta à publicação privada via
+Cloudflare descrita em `COMO-PUBLICAR.md`).

@@ -1,0 +1,79 @@
+{
+ "disciplines": {
+  "Disciplinas/BCN0405 - EDO": {
+   "guias": [
+    "guia-edo-p0-calculo-base.html",
+    "guia-edo-p1-fundamentos.html",
+    "guia-edo-p1-modelagem-autonomas-teu.html",
+    "guia-edo-p1-substituicoes.html",
+    "guia-edo-p2-segunda-ordem.html"
+   ],
+   "listas": [
+    "Exercicios Recomendados .txt",
+    "lista0.pdf",
+    "lista1 (1).pdf",
+    "lista2 (1).pdf",
+    "resolucao-lista0.html",
+    "resolucao-lista1.html",
+    "resolucao-lista2.html"
+   ],
+   "material": [
+    "aula1.pdf",
+    "aula2.pdf",
+    "aula3.pdf",
+    "aula4.pdf",
+    "aula5.pdf",
+    "plano de ensino.pdf"
+   ]
+  },
+  "Disciplinas/ESMA001 - Solucoes Desafios Eng": {
+   "guias": [],
+   "listas": [],
+   "material": [
+    "ESMA001-23N_260518.pdf",
+    "plano_de_ensino_ESMA001-23_Noturno_26.2A1 (1).pdf"
+   ]
+  },
+  "Disciplinas/ESTO017 - Metodos Experimentais": {
+   "guias": [],
+   "listas": [],
+   "material": [
+    "ESTO017-17 cronograma 2quad2026.docx"
+   ]
+  },
+  "Disciplinas/MCCC010 - Matematica Discreta II": {
+   "guias": [
+    "guia-grafos-avancados-p2.html",
+    "guia-probabilidade-p2.html",
+    "guia-teoria-semanas1-4.html"
+   ],
+   "listas": [
+    "lista1-md2.pdf",
+    "resolucao-lista1.html"
+   ],
+   "material": [
+    "aula1.pdf",
+    "aula2.pdf",
+    "aula3.2.pdf",
+    "aula3.pdf",
+    "aula4e5.pdf",
+    "aula6e7.pdf",
+    "intro.pdf",
+    "plano-ensino-md2.pdf"
+   ]
+  },
+  "Disciplinas/NHLQ002 - Praticas Ensino Quimica I": {
+   "guias": [
+    "guia-seminario-concepcoes-alternativas-acidos-bases.html",
+    "opcoes-experimentos-acido-base.pdf"
+   ],
+   "listas": [],
+   "material": [
+    "Aula 1.pdf",
+    "Aula 2.pdf",
+    "Mortimer 1996.pdf",
+    "Plano - PEQ I.pdf"
+   ]
+  }
+ }
+}

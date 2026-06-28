@@ -39,7 +39,6 @@
   .grp a{font-size:.82rem}
   .empty{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:11px}
   .loading{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:11px}
-  .err{color:var(--warn);font-size:.8rem;border-top:1px solid var(--line);padding-top:11px}
   table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
   th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:.9rem}
   th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
@@ -85,7 +84,7 @@
       <h2 style="margin:0">Disciplinas</h2>
       <div style="display:flex;align-items:center;gap:10px">
         <span class="sub" id="apimsg"></span>
-        <button class="btn" id="refresh" title="Recarregar a lista de arquivos do GitHub">↻ Atualizar arquivos</button>
+        <button class="btn" id="refresh" title="Recarregar a lista de arquivos">↻ Atualizar</button>
       </div>
     </div>
     <div class="grid" id="cards"></div>
@@ -112,9 +111,9 @@
   </section>
 
   <div class="foot">
-    Painel <b>dinâmico</b>: a lista de guias, listas e materiais é lida ao vivo do repositório
-    <code>enzovarellap/ufabc-content</code> via API do GitHub. Basta dar <i>push</i> de um arquivo novo
-    em <code>Disciplinas/&lt;matéria&gt;/{guias,listas,material}/</code> que ele aparece aqui — sem editar o painel.
+    Painel <b>dinâmico</b>: a lista de guias, listas e materiais vem de <code>manifest.json</code>,
+    regenerado automaticamente a cada <i>push</i> (GitHub Actions). Basta subir um arquivo novo em
+    <code>Disciplinas/&lt;matéria&gt;/{guias,listas,material}/</code> que ele aparece aqui — sem editar o painel.
     Fonte do calendário: Pró-Reitoria de Graduação da UFABC.
   </div>
 
@@ -129,13 +128,10 @@
   if(today<START){document.getElementById('status').textContent='● Ainda não começou';}
   if(today>END){document.getElementById('status').textContent='● Quadrimestre encerrado';}
 
-  /* ===== CONFIG do repositório ===== */
+  /* ===== CONFIG ===== */
   const OWNER='enzovarellap', REPO='ufabc-content', BRANCH='main';
-  // Base para abrir os arquivos: a própria pasta onde este index.html está servido (Pages).
-  const SITE_BASE = location.href.replace(/[^/]*$/,'');
-  const CACHE_TTL = 10*60*1000; // 10 min
+  const SITE_BASE = location.href.replace(/[#?].*$/,'').replace(/[^/]*$/,''); // pasta do index.html servido
 
-  // Metadados fixos das disciplinas (estáveis). Os ARQUIVOS são buscados ao vivo.
   const disc=[
     {code:'BCN0405-15',name:'Introdução às Equações Diferenciais Ordinárias',c:'#4da3ff',tpi:'4-0-4',horas:['Ter 21–23','Sex 19–21'],dir:'Disciplinas/BCN0405 - EDO'},
     {code:'MCCC010-23',name:'Matemática Discreta II',c:'#ff6b6b',tpi:'4-0-4',horas:['Seg 19–21','Qua 21–23'],dir:'Disciplinas/MCCC010 - Matematica Discreta II'},
@@ -147,61 +143,40 @@
 
   /* ===== helpers ===== */
   const encPath = p => p.split('/').map(encodeURIComponent).join('/');
-  const fileURL = path => SITE_BASE + encPath(path);            // abre via Pages (HTML renderiza, PDF abre no navegador)
+  const fileURL = path => SITE_BASE + encPath(path);
   const apiURL  = path => `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encPath(path)}?ref=${BRANCH}`;
-
-  // Nome amigável a partir do filename
+  const ext = n => { const d=n.lastIndexOf('.'); return d>0?n.slice(d+1).toLowerCase():''; };
+  const isResol = n => /resolu[cç]/i.test(n);
+  const isGuide = n => /guia/i.test(n);
   function pretty(name){
     const dot=name.lastIndexOf('.'); const base=dot>0?name.slice(0,dot):name;
     let s=base.replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
     s=s.replace(/\bedo\b/ig,'EDO').replace(/\bmd2\b/ig,'MD II').replace(/\bp(\d)\b/ig,(m,d)=>'P'+d).replace(/\bteu\b/ig,'TEU');
     return s.charAt(0).toUpperCase()+s.slice(1);
   }
-  const ext = n => { const d=n.lastIndexOf('.'); return d>0?n.slice(d+1).toLowerCase():''; };
-  const isResol = n => /resolu[cç]/i.test(n);
-  const isGuide = n => /guia/i.test(n);
-
-  // fetch com cache (localStorage) + tolerância a rate limit
-  async function listFolder(path){
-    const key='gh:'+path;
-    let cached=null;
-    try{ const raw=localStorage.getItem(key); if(raw){const o=JSON.parse(raw); if(Date.now()-o.t<CACHE_TTL) return o.d; cached=o.d;} }catch(e){}
-    try{
-      const r=await fetch(apiURL(path),{headers:{'Accept':'application/vnd.github+json'}});
-      if(r.status===404) { try{localStorage.setItem(key,JSON.stringify({t:Date.now(),d:[]}));}catch(e){} return []; }
-      if(r.status===403){ window.__rate=true; return cached||[]; } // rate limit: usa cache se houver
-      if(!r.ok) return cached||[];
-      const arr=await r.json();
-      const files=(Array.isArray(arr)?arr:[]).filter(x=>x.type==='file').map(x=>({name:x.name,path:x.path}));
-      try{localStorage.setItem(key,JSON.stringify({t:Date.now(),d:files}));}catch(e){}
-      return files;
-    }catch(e){ return cached||[]; }
-  }
-
-  function linkList(files){
-    return files.map(f=>{
-      const star=(isGuide(f.name)||isResol(f.name))?'★ ':'';
-      return `<a href="${fileURL(f.path)}" target="_blank" rel="noopener">${star}${pretty(f.name)}</a>`;
+  function linkList(dir, sub, names){
+    return (names||[]).map(n=>{
+      const star=(isGuide(n)||isResol(n))?'★ ':'';
+      return `<a href="${fileURL(dir+'/'+sub+'/'+n)}" target="_blank" rel="noopener">${star}${pretty(n)}</a>`;
     }).join('');
   }
 
-  async function buildCard(d){
-    const el=document.getElementById('card-'+d.code);
-    const [guias,listas,material]=await Promise.all([
-      listFolder(d.dir+'/guias'),
-      listFolder(d.dir+'/listas'),
-      listFolder(d.dir+'/material'),
-    ]);
-    // guias HTML em destaque (inclui resoluções, que ficam em listas/ — então separo por pasta):
-    const guiasBlock = guias.length?`<div class="links-guias">${linkList(guias)}</div>`:'';
-    const blocks=[];
-    if(listas.length)   blocks.push(`<div class="grp"><span class="grp-t">Listas</span>${linkList(listas)}</div>`);
-    if(material.length) blocks.push(`<div class="grp"><span class="grp-t">Material</span>${linkList(material)}</div>`);
-    const filesBlock = blocks.length?`<div class="files">${blocks.join('')}</div>`:'';
-    const inner = (guias.length||blocks.length)
-        ? guiasBlock+filesBlock
-        : `<div class="empty">Sem material publicado ainda.</div>`;
-    el.querySelector('.card-body').innerHTML=inner;
+  /* ===== dados: manifest.json (primário) com fallback à API do GitHub ===== */
+  let MANIFEST=null;
+  async function loadManifest(){
+    try{
+      const r=await fetch(SITE_BASE+'manifest.json?ts='+Date.now(),{cache:'no-cache'});
+      if(r.ok){ MANIFEST=await r.json(); return true; }
+    }catch(e){}
+    return false;
+  }
+  async function apiList(path){
+    try{
+      const r=await fetch(apiURL(path));
+      if(!r.ok) return [];
+      const arr=await r.json();
+      return (Array.isArray(arr)?arr:[]).filter(x=>x.type==='file').map(x=>x.name);
+    }catch(e){ return []; }
   }
 
   function renderShell(){
@@ -210,24 +185,33 @@
         <div class="code">${d.code} · TPI ${d.tpi}</div>
         <h3>${d.name}</h3>
         <div class="chips">${d.horas.map(h=>`<span class="chip">${h}</span>`).join('')}</div>
-        <div class="card-body"><div class="loading">Carregando arquivos…</div></div>
+        <div class="card-body"><div class="loading">Carregando…</div></div>
       </div>`).join('');
   }
-
+  async function buildCard(d){
+    const el=document.getElementById('card-'+d.code); if(!el) return;
+    let g=[],l=[],m=[];
+    if(MANIFEST){
+      const e=(MANIFEST.disciplines||{})[d.dir];
+      if(e){ g=e.guias||[]; l=e.listas||[]; m=e.material||[]; }
+    } else {
+      [g,l,m]=await Promise.all([apiList(d.dir+'/guias'),apiList(d.dir+'/listas'),apiList(d.dir+'/material')]);
+    }
+    const guiasBlock = g.length?`<div class="links-guias">${linkList(d.dir,'guias',g)}</div>`:'';
+    const blocks=[];
+    if(l.length)   blocks.push(`<div class="grp"><span class="grp-t">Listas</span>${linkList(d.dir,'listas',l)}</div>`);
+    if(m.length)   blocks.push(`<div class="grp"><span class="grp-t">Material</span>${linkList(d.dir,'material',m)}</div>`);
+    const filesBlock = blocks.length?`<div class="files">${blocks.join('')}</div>`:'';
+    el.querySelector('.card-body').innerHTML=(g.length||blocks.length)?guiasBlock+filesBlock:`<div class="empty">Sem material publicado ainda.</div>`;
+  }
   async function loadAll(){
-    window.__rate=false;
     document.getElementById('apimsg').textContent='';
     renderShell();
+    const ok=await loadManifest();
+    if(!ok) document.getElementById('apimsg').innerHTML='<span style="color:var(--warn)">manifest.json indisponível — listando pela API do GitHub…</span>';
     await Promise.all(disc.map(buildCard));
-    if(window.__rate){
-      document.getElementById('apimsg').innerHTML='<span style="color:var(--warn)">Limite da API do GitHub atingido — mostrando do cache. Tente de novo em alguns minutos.</span>';
-    }
   }
-  document.getElementById('refresh').addEventListener('click',()=>{
-    // limpa cache e recarrega
-    Object.keys(localStorage).forEach(k=>{ if(k.startsWith('gh:')) localStorage.removeItem(k); });
-    loadAll();
-  });
+  document.getElementById('refresh').addEventListener('click',loadAll);
   loadAll();
 
   /* ===== grade de horários ===== */

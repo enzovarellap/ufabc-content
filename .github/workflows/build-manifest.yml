@@ -1,0 +1,40 @@
+name: Atualizar manifest.json
+
+# Regenera o manifest.json (lista de guias/listas/materiais por disciplina)
+# sempre que algo é enviado para a main. O dashboard (index.html) lê esse arquivo
+# de uma vez só, sem depender da API do GitHub (que tem limite de 60 req/h).
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'manifest.json'   # evita laço: o commit do manifest não dispara o workflow
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manifest-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Gerar manifest.json
+        run: python scripts/gen_manifest.py
+      - name: Commitar se mudou
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- manifest.json; then
+            git add manifest.json
+            git commit -m "chore: atualiza manifest.json [skip ci]"
+            git push
+          else
+            echo "manifest.json sem mudancas."
+          fi
