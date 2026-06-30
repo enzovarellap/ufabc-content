@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDO · Plano de exercícios da P1 — 1 parte por dia até sexta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1419;--bg-elev:#151c24;--card:#1a2330;--border:#2a3a4d;--border-soft:#223040;
+--text:#e7eef5;--dim:#9db0c2;--faint:#6f8398;--accent:#6ea8fe;--accent-2:#7ee0c8;--accent-3:#c9a4ff;
+--ok:#8ce99a;--warn:#ffd166;--danger:#ff8a8a;--formula-bg:#11202b;--formula-bd:#2f7d6b;--r:14px;--shadow:0 10px 30px rgba(0,0,0,.35);--maxw:900px;}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#16222e 0%,var(--bg) 55%) fixed;color:var(--text);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6;font-size:16.5px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:262px 1fr}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:linear-gradient(180deg,var(--bg-elev),#10171e);border-right:1px solid var(--border-soft);padding:22px 15px 60px}
+.sidebar::-webkit-scrollbar{width:8px}.sidebar::-webkit-scrollbar-thumb{background:#26323f;border-radius:8px}
+.brand{display:flex;gap:11px;align-items:center;margin-bottom:14px}
+.brand .dot{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent-3));display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:600;color:#06121a;font-size:13px}
+.brand b{font-family:'Fraunces';font-size:17px;font-weight:600}.brand small{display:block;color:var(--faint);font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+.glink{display:block;margin:8px 0 0;padding:9px 11px;border:1px solid var(--border-soft);border-radius:9px;background:#121b24;color:var(--dim);font-size:12.5px}
+.glink:hover{text-decoration:none;border-color:var(--accent);color:var(--text)}.glink b{color:var(--accent-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:1px}
+nav.toc .group{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);margin:16px 0 6px 8px}
+nav.toc a{display:block;color:var(--dim);padding:6px 10px;border-radius:8px;font-size:14px;border-left:2px solid transparent}
+nav.toc a:hover{background:#172029;color:var(--text);text-decoration:none}
+main{padding:34px clamp(18px,5vw,60px) 120px;max-width:calc(var(--maxw) + 120px);margin:0 auto;width:100%}
+h1{font-family:'Fraunces';font-weight:600;font-size:clamp(25px,4vw,34px);line-height:1.15;margin:.2em 0 .3em}
+h2{font-family:'Fraunces';font-weight:600;font-size:clamp(19px,3vw,24px);margin:1.4em 0 .4em}
+p{margin:.5em 0}strong{color:#fff}.lead{color:var(--dim);font-size:17px}
+.hero{background:linear-gradient(135deg,#1d2433,#141d27);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px;box-shadow:var(--shadow)}
+.pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:#0e1a23;border:1px solid var(--border);border-radius:999px;padding:6px 13px;font-size:13px;color:var(--dim)}.pill b{color:#fff}
+.pill.hot{border-color:#7a3b3b;background:#241317}.pill.hot b{color:#ffb0b0}
+.callout{border-radius:12px;padding:13px 16px 13px 18px;margin:15px 0;border:1px solid var(--border);border-left-width:4px;background:var(--card)}
+.callout .lab{font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px}
+.callout.note{border-left-color:var(--accent)}.callout.note .lab{color:var(--accent)}
+.callout.tip{border-left-color:var(--accent-2)}.callout.tip .lab{color:var(--accent-2)}
+.callout.warn{border-left-color:var(--warn)}.callout.warn .lab{color:var(--warn)}
+.day{border:1px solid var(--border);border-radius:var(--r);background:linear-gradient(135deg,#19212c,#141c25);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.day-h{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border-soft);background:#16202b}
+.day-h .num{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-family:'Fraunces';font-weight:600;font-size:20px;color:#06121a;background:linear-gradient(135deg,var(--accent),var(--accent-2));flex:none}
+.day-h h3{margin:0;font-family:'Fraunces';font-size:19px}
+.day-h .date{color:var(--faint);font-size:12.5px;text-transform:uppercase;letter-spacing:.5px}
+.day-h .goal{margin-left:auto;font-size:12.5px;color:var(--accent-2);text-align:right;max-width:230px}
+.day-b{padding:6px 20px 18px}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px;background:var(--card);border-radius:10px;overflow:hidden}
+th,td{border:1px solid var(--border-soft);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#172230;color:#eaf2fb;font-weight:600;font-size:12.5px}
+td.ex{white-space:nowrap;font-weight:600;color:#eaf2fb}
+.ref{display:inline-block;font-size:11.5px;background:#11202b;border:1px solid var(--border);border-radius:6px;padding:2px 7px;margin:2px 3px 2px 0;color:var(--accent-2)}
+.ref:hover{text-decoration:none;border-color:var(--accent-2)}
+.tg{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;border:1px solid var(--border);color:var(--dim);margin-right:5px}
+.method{color:var(--dim);font-size:13.5px}
+.fml{background:var(--formula-bg);border:1px solid var(--border);border-left:3px solid var(--formula-bd);border-radius:7px;padding:2px 8px;display:inline-block;font-size:13.5px;margin:2px 0}
+footer{color:var(--faint);font-size:12.5px;border-top:1px solid var(--border-soft);margin-top:50px;padding-top:18px}
+.chk{accent-color:var(--accent-2);width:15px;height:15px;vertical-align:-2px;margin-right:4px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border-soft)}.day-h .goal{display:none}}
+</style>
+<script>MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand"><div class="dot">EDO</div><div><b>Plano P1</b><small>Exercícios · 4 dias</small></div></div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);margin:14px 0 4px 4px">Guias de apoio</div>
+  <a class="glink" href="guia-edo-p1-revisao.html"><b>Revisão</b>Mapa da P1 + foco modelagem/autônomas</a>
+  <a class="glink" href="guia-edo-p1-fundamentos.html"><b>Guia 1</b>Fundamentos · separáveis · lineares</a>
+  <a class="glink" href="guia-edo-p1-substituicoes.html"><b>Guia 2</b>Substituições · Bernoulli · Riccati</a>
+  <a class="glink" href="guia-edo-p1-modelagem-autonomas-teu.html"><b>Guia 3</b>Modelagem · autônomas · campo · TEU</a>
+  <a class="glink" href="guia-edo-p0-calculo-base.html"><b>Guia 0</b>Revisão de cálculo (derivar/integrar)</a>
+  <nav class="toc">
+    <div class="group">Cronograma</div>
+    <a href="#d1">Dia 1 · Seg — Fundamentos + separáveis</a>
+    <a href="#d2">Dia 2 · Ter — Lineares + substituições</a>
+    <a href="#d3">Dia 3 · Qua — Modelagem</a>
+    <a href="#d4">Dia 4 · Qui — Autônomas + TEU</a>
+    <a href="#d5">Sexta — Revisão e prova</a>
+  </nav>
+</aside>
+
+<main>
+  <section class="hero">
+    <h1>Plano de exercícios da P1</h1>
+    <p class="lead">Uma frente de exercícios por dia, de hoje até a prova. Cada exercício traz <strong>o conteúdo a revisar</strong> (link pro guia) e o <strong>método de resolução</strong>. Os gabaritos passo a passo estão nas resoluções das listas.</p>
+    <div class="pills">
+      <span class="pill hot">📅 P1: <b>sexta, 03/07</b></span>
+      <span class="pill">📚 Listas <b>0, 1 e 2</b> (recomendadas pelo prof.)</span>
+      <span class="pill">⏱️ ~1h/dia</span>
+    </div>
+    <div class="callout note" style="margin-top:16px"><span class="lab">Como rodar cada dia</span>
+      1) Leia o tópico no guia indicado (10 min). 2) Resolva os exercícios <b>do zero</b>, sem olhar. 3) Só então confira no gabarito da lista. 4) O que errar, marque e revise na sexta.</div>
+    <div class="callout tip"><span class="lab">Gabaritos</span>
+      <a href="../listas/resolucao-lista0.html">Resolução Lista 0</a> · <a href="../listas/resolucao-lista1.html">Resolução Lista 1</a> · <a href="../listas/resolucao-lista2.html">Resolução Lista 2</a></div>
+  </section>
+
+  <!-- ===== DIA 1 ===== -->
+  <div class="day" id="d1">
+    <div class="day-h"><div class="num">1</div>
+      <div><h3>Fundamentos + equações separáveis</h3><div class="date">Segunda · 29/06</div></div>
+      <div class="goal">Reaquecer cálculo e fechar separáveis</div></div>
+    <div class="day-b">
+      <table><thead><tr><th>Exercício</th><th>Conteúdo a revisar</th><th>Método de resolução</th></tr></thead><tbody>
+        <tr><td class="ex"><input type="checkbox" class="chk">L0 · 1a-c</td><td><a class="ref" href="guia-edo-p0-calculo-base.html">Guia 0 · derivadas</a></td><td class="method">Aplicar regras (cadeia, produto, quociente). É só aquecimento para verificar soluções e separar variáveis.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L0 · 7,8,9</td><td><a class="ref" href="guia-edo-p0-calculo-base.html">Guia 0 · integrais</a></td><td class="method">7 = substituição \(u\); 8 = por partes (LIATE); 9 = frações parciais. São exatamente as integrais que aparecem ao resolver separáveis/lineares.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L1 · 1</td><td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1 · classificação</a></td><td class="method">Classificar: ordem (maior derivada) e linearidade (\(y\) e derivadas em grau 1, sem produtos/funções de \(y\)).</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L1 · 2b,e,f,g,h</td><td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1 · verificar solução</a></td><td class="method">Substituir a função dada (e suas derivadas) na EDO e checar se vira identidade. Atenção ao intervalo de definição.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L1 · 5a-f</td><td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1 · separáveis</a></td><td class="method">Separar <span class="fml">\(g(y)\,dy=h(x)\,dx\)</span>, integrar os dois lados, isolar \(y\) (se der). Não esqueça as soluções constantes perdidas ao dividir.</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ===== DIA 2 ===== -->
+  <div class="day" id="d2">
+    <div class="day-h"><div class="num">2</div>
+      <div><h3>Lineares de 1ª ordem + substituições</h3><div class="date">Terça · 30/06</div></div>
+      <div class="goal">Fator integrante e trocas de variável</div></div>
+    <div class="day-b">
+      <table><thead><tr><th>Exercício</th><th>Conteúdo a revisar</th><th>Método de resolução</th></tr></thead><tbody>
+        <tr><td class="ex"><input type="checkbox" class="chk">L1 · 6</td><td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1 · lineares</a></td><td class="method">Forma padrão <span class="fml">\(y'+P(x)y=Q(x)\)</span>; fator <span class="fml">\(\mu=e^{\int P\,dx}\)</span>; \((\mu y)'=\mu Q\); integra e isola \(y\).</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L1 · 7</td><td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1 · PVI</a></td><td class="method">Resolver geral (separável ou linear) e usar a condição inicial para achar a constante. Confira o intervalo de validade.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L1 · 8,9,10</td><td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#autonomas">Guia 3 · comportamento</a></td><td class="method">Achar a solução e analisar <span class="fml">\(\lim_{t\to\infty}\)</span>. Ponte com autônomas: o limite costuma ser um equilíbrio.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L1 · substituições</td><td><a class="ref" href="guia-edo-p1-substituicoes.html">Guia 2</a></td><td class="method">Identifique o tipo: <span class="tg">homogênea</span> \(v=y/x\) · <span class="tg">Bernoulli</span> \(y'+Py=Qy^n\Rightarrow v=y^{1-n}\) · <span class="tg">F(ax+by+c)</span> \(v=ax+by+c\). Substitui, vira separável/linear, resolve e volta para \(y\).</td></tr>
+      </tbody></table>
+      <div class="callout warn"><span class="lab">Dia da antiga data</span>Hoje seria a prova no calendário original — bom sinal pra fazer esse bloco com seriedade, cronometrando.</div>
+    </div>
+  </div>
+
+  <!-- ===== DIA 3 ===== -->
+  <div class="day" id="d3">
+    <div class="day-h"><div class="num">3</div>
+      <div><h3>Modelagem de 1ª ordem</h3><div class="date">Quarta · 01/07</div></div>
+      <div class="goal">Montar a EDO: taxa = entra − sai</div></div>
+    <div class="day-b">
+      <table><thead><tr><th>Exercício</th><th>Conteúdo a revisar</th><th>Método de resolução</th></tr></thead><tbody>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 1</td><td><a class="ref" href="guia-edo-p1-revisao.html#modelagem">Revisão · exponencial</a></td><td class="method">Crescimento de bactérias: <span class="fml">\(x'=kx\Rightarrow x=x_0e^{kt}\)</span>. Use dois dados para achar \(k\) e \(x_0\).</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 2</td><td><a class="ref" href="guia-edo-p1-revisao.html#modelagem">Revisão · decaimento</a></td><td class="method">Césio-137: \(x'=kx,\ k<0\). Meia-vida <span class="fml">\(k=-\ln2/T\)</span>; depois isola o tempo.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 3,6</td><td><a class="ref" href="guia-edo-p1-revisao.html#modelagem">Revisão · limitado</a></td><td class="method">Aprendizado / publicidade: crescimento até um teto <span class="fml">\(x'=k(A-x)\Rightarrow x\to A\)</span>. Separável.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 4</td><td><a class="ref" href="guia-edo-p1-revisao.html#modelagem">Revisão · Newton</a></td><td class="method">Resfriamento: <span class="fml">\(T'=k(T-T_m)\Rightarrow T=T_m+(T_0-T_m)e^{kt}\)</span>. Acha \(k\) com um ponto, depois o tempo pedido.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 5,7</td><td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#mistura">Guia 3 · mistura / RC</a></td><td class="method">Compartimento <span class="fml">\(Q'=r_ec_e-r_s\frac{Q}{V}\)</span> e circuito RC: ambos viram <b>linear de 1ª ordem</b> (fator integrante). Cuidado com \(V(t)\) variável.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 8,10</td><td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#gompertz">Guia 3 · Gompertz</a></td><td class="method">Gompertz e Von Bertalanffy: separáveis com integral por substituição/frações parciais. Reconhecer a forma é metade do trabalho.</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ===== DIA 4 ===== -->
+  <div class="day" id="d4">
+    <div class="day-h"><div class="num">4</div>
+      <div><h3>Autônomas, estabilidade e TEU</h3><div class="date">Quinta · 02/07</div></div>
+      <div class="goal">Análise qualitativa sem resolver</div></div>
+    <div class="day-b">
+      <table><thead><tr><th>Exercício</th><th>Conteúdo a revisar</th><th>Método de resolução</th></tr></thead><tbody>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 9</td><td><a class="ref" href="guia-edo-p1-revisao.html#autonomas">Revisão · autônomas</a></td><td class="method">Pontos críticos: \(f(y)=0\); sinal de \(f\); reta de fase; classificar por <span class="fml">\(f'(c)\)</span> (&lt;0 estável, &gt;0 instável, =0 cheque os lados).</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 11</td><td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#teu">Guia 3 · TEU</a></td><td class="method">Em cada ponto, verifique se \(f\) e <span class="fml">\(\partial f/\partial y\)</span> são contínuas numa vizinhança. Se sim ⟹ existe solução única local.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 12</td><td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#teu">Guia 3 · TEU</a></td><td class="method">Determinar a <b>região</b> do plano onde \(f\) e \(\partial f/\partial y\) são contínuas (onde o teorema garante unicidade).</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">L2 · 13</td><td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#teu">Guia 3 · TEU</a></td><td class="method">Interpretação: duas soluções podem coexistir num ponto onde a hipótese do TEU <b>falha</b> (ex.: \(y'=y^{1/3}\) em \(y=0\)) — não há contradição.</td></tr>
+        <tr><td class="ex"><input type="checkbox" class="chk">Campo de direções</td><td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#campo">Guia 3 · campo</a></td><td class="method">Saber ler/esboçar: sinal de \(f(x,y)\) dá a inclinação; isóclinas \(f=\text{const}\). Costuma vir como questão de interpretação.</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ===== SEXTA ===== -->
+  <div class="day" id="d5">
+    <div class="day-h"><div class="num">★</div>
+      <div><h3>Revisão final + prova</h3><div class="date">Sexta · 03/07</div></div>
+      <div class="goal">Cola, erros marcados e P1</div></div>
+    <div class="day-b">
+      <p>De manhã/tarde, antes da prova (19h):</p>
+      <table><thead><tr><th>Bloco</th><th>O que fazer</th></tr></thead><tbody>
+        <tr><td class="ex">Cola</td><td class="method">Ler a <a href="guia-edo-p1-revisao.html#cola">cola de 1 página</a> e o <a href="guia-edo-p1-revisao.html#quiz">quiz relâmpago</a> da revisão.</td></tr>
+        <tr><td class="ex">Erros</td><td class="method">Refazer só os exercícios que você marcou nos dias 1–4. Nada novo na véspera.</td></tr>
+        <tr><td class="ex">Feynman</td><td class="method">Explicar em voz alta os 3 blocos Feynman da revisão (autônomas, mistura, estabilidade).</td></tr>
+      </tbody></table>
+      <div class="callout tip"><span class="lab">Checklist mental na prova</span>Toda EDO de 1ª ordem: é <b>separável</b>? <b>linear</b>? precisa de <b>substituição</b>? é <b>autônoma</b> (dá pra usar reta de fase)? Identificar o tipo primeiro economiza tempo.</div>
+    </div>
+  </div>
+
+  <footer>
+    Plano de exercícios · BCN0405 — Introdução às EDOs · UFABC 2026.2 · Listas 0/1/2 (recomendadas pelo professor).<br>
+    Foque em <b>resolver do zero antes de ver o gabarito</b> — é o que move a nota. Prova: sexta, 03/07/2026, 19h.
+  </footer>
+</main>
+</div>
+</body>
+</html>

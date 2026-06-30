@@ -72,6 +72,25 @@ Cada pasta em `Disciplinas/` tem:
 - Lembrete **semanal** automático: panorama de prazos, provas próximas e prioridades.
 - O painel central é `_dashboard/index.html` (abrir no navegador).
 
+### Fórmulas matemáticas nos guias HTML — padrão (decidido em 29/06/2026)
+- **Padrão do projeto: MathJax 3 (saída `tex-svg`) via CDN jsDelivr.** É o que todos os guias
+  de EDO/Discreta já usam — manter consistente. Sempre usar este bloco no `<head>`:
+  ```html
+  <script>MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  ```
+- **Delimitadores:** inline com `\( ... \)`, display com `\[ ... \]`. Em LaTeX dentro do HTML,
+  escapar a barra (`\\(`, `\\frac`) só na config JS; no corpo do texto basta `\(` normal.
+- **Por que `tex-svg` (e não CHTML):** renderiza em **SVG** → nítido em qualquer zoom, imprime
+  bem e **não depende de baixar fontes** (essencial para a releitura **offline via PWA** do site
+  publicado). `fontCache:'global'` deixa rápido em páginas com muitas fórmulas.
+- **Por que CDN e não copiar o JS local:** o build (`build-site.py`) + service worker já cacheiam
+  o script no 1º acesso, então funciona offline depois — sem precisar versionar o MathJax no repo.
+- **Alternativa (KaTeX):** mais rápida para páginas com pouca matemática, mas cobre menos LaTeX e
+  exige renderização manual; **não usar** salvo necessidade específica. Manter MathJax como default.
+- **Nunca** colar fórmula como imagem/PNG nem usar Unicode "na mão" para expressões — sempre LaTeX
+  via MathJax, para ficar pesquisável, acessível e editável.
+
 ## Publicação dos guias (acesso web/celular) — decidido em 08/06/2026
 - **Decisão:** publicar os guias como **site estático privado** (não recriar no Notion —
   perde MathJax/quizzes/tema). Notion fica só como segundo cérebro de anotações.
