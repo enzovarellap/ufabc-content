@@ -135,10 +135,8 @@
   const disc=[
     {code:'BCN0405-15',name:'Introdução às Equações Diferenciais Ordinárias',c:'#4da3ff',tpi:'4-0-4',horas:['Ter 21–23','Sex 19–21'],dir:'Disciplinas/BCN0405 - EDO'},
     {code:'MCCC010-23',name:'Matemática Discreta II',c:'#ff6b6b',tpi:'4-0-4',horas:['Seg 19–21','Qua 21–23'],dir:'Disciplinas/MCCC010 - Matematica Discreta II'},
-    {code:'ESTO017-17',name:'Métodos Experimentais em Engenharia',c:'#7ee787',tpi:'2-2-4',horas:['Ter 19–21','Qui 21–23'],dir:'Disciplinas/ESTO017 - Metodos Experimentais'},
     {code:'ESMA001-23',name:'Soluções para Desafios em Engenharia',c:'#ffb454',tpi:'0-2-5',horas:['Qui 19–21'],dir:'Disciplinas/ESMA001 - Solucoes Desafios Eng'},
     {code:'NHLQ002-22',name:'Práticas de Ensino de Química I',c:'#d2a8ff',tpi:'0-3-4',horas:['Sex 21–23','Qua 19–21 (quinz.)'],dir:'Disciplinas/NHLQ002 - Praticas Ensino Quimica I'},
-    {code:'ESTA020-17',name:'Modelagem e Controle',c:'#56d4dd',tpi:'2-0-5',horas:['Seg 21–23'],dir:'Disciplinas/ESTA020 - Modelagem e Controle'},
   ];
 
   /* ===== helpers ===== */
@@ -216,10 +214,10 @@
 
   /* ===== grade de horários ===== */
   const grade=[
-    ['Segunda','Matemática Discreta II','Modelagem e Controle'],
-    ['Terça','Métodos Experimentais','EDO'],
+    ['Segunda','Matemática Discreta II',''],
+    ['Terça','','EDO'],
     ['Quarta','Práticas Ens. Química I (quinz.)','Matemática Discreta II'],
-    ['Quinta','Soluções p/ Desafios em Eng.','Métodos Experimentais'],
+    ['Quinta','Soluções p/ Desafios em Eng.',''],
     ['Sexta','EDO','Práticas Ens. Química I'],
   ];
   const dayIdx=today.getDay();
@@ -249,13 +247,10 @@
 
   /* ===== provas ===== */
   const provas=[
-    [new Date(2026,5,15),'15/06','Modelagem e Controle','Prova 1'],
     [new Date(2026,5,29),'29/06','Matemática Discreta II','Prova 1 (P1) — Sem. 1–4'],
-    [new Date(2026,5,30),'30/06','EDO','Prova 1 (P1)'],
-    [new Date(2026,7,3),'03/08','Modelagem e Controle','Prova 2'],
+    [new Date(2026,6,3),'03/07','EDO','Prova 1 (P1)'],
     [new Date(2026,7,7),'07/08','EDO','Prova 2 (P2)'],
     [new Date(2026,7,10),'10/08','Matemática Discreta II','Prova 2 (P2) — Sem. 5–11'],
-    [new Date(2026,7,11),'11/08','Métodos Experimentais','Prova individual'],
     [new Date(2026,7,14),'14/08','Práticas Ens. Química I','Prova escrita individual'],
   ];
   provas.sort((a,b)=>a[0]-b[0]);

@@ -23,39 +23,36 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 ### Mapa de provas 2026.2 (consolidado dos planos de ensino)
 | Data | Matéria | Avaliação |
 |---|---|---|
-| 15/06 (seg) | Modelagem e Controle | Prova 1 |
 | 29/06 (seg) | Matemática Discreta II | Prova 1 (Sem. 1–4) |
 | 03/07 (sex) | EDO | Prova 1 _(remarcada de 30/06)_ |
-| 03/08 (seg) | Modelagem e Controle | Prova 2 |
 | 07/08 (sex) | EDO | Prova 2 |
 | 10/08 (seg) | Matemática Discreta II | Prova 2 (Sem. 5–11) |
-| 11/08 (ter) | Métodos Experimentais (NB2-SA) | Prova individual |
 | 14/08 (sex) | Práticas de Ensino de Química I | Prova escrita individual |
 
 Substitutivas/REC: EDO SUB 11/08, REC 18/08 · Discreta SUB 12/08, REC 19/08 ·
-Modelagem SUB 10/08 · Métodos SUB 13/08, REC 19/08 · Química REC 19–21/08.
+Química REC 19–21/08.
 ESMA001 (projeto): entregas por aula (Relatório Final ≈13/08) — **datas exatas a confirmar**.
 
 > ⚠️ **Práticas de Química** proíbe uso de IA em atividades avaliadas — guias só para estudo, nunca para produzir entregas.
-> **Professores:** EDO=Edson A. Arrázola · Discreta II=Renzo G. Gómez Diaz · Modelagem=Victor A. F. de Campos · Métodos(NB2)=Daniel Z. de Flório · ESMA001=Humberto de Paiva Jr. · Química=Rafaela Valero.
+> **Professores:** EDO=Edson A. Arrázola · Discreta II=Renzo G. Gómez Diaz · ESMA001=Humberto de Paiva Jr. · Química=Rafaela Valero.
 
-## Disciplinas (6)
+## Disciplinas (4)
 | Sigla | Nome | Pasta |
 |---|---|---|
 | BCN0405-15 | Introdução às Equações Diferenciais Ordinárias | `Disciplinas/BCN0405 - EDO` |
-| ESTO017-17 | Métodos Experimentais em Engenharia | `Disciplinas/ESTO017 - Metodos Experimentais` |
 | ESMA001-23 | Soluções para Desafios em Engenharia | `Disciplinas/ESMA001 - Solucoes Desafios Eng` |
 | NHLQ002-22 | Práticas de Ensino de Química I | `Disciplinas/NHLQ002 - Praticas Ensino Quimica I` |
 | MCCC010-23 | Matemática Discreta II | `Disciplinas/MCCC010 - Matematica Discreta II` |
-| ESTA020-17 | Modelagem e Controle | `Disciplinas/ESTA020 - Modelagem e Controle` |
+
+> Matérias **trancadas em 29/06/2026:** Modelagem e Controle (ESTA020) e Métodos Experimentais (ESTO017) — removidas do quadrimestre.
 
 ## Grade de horários (noturno, Santo André)
 | Dia | 19:00–21:00 | 21:00–23:00 |
 |---|---|---|
-| Segunda | Matemática Discreta II | Modelagem e Controle |
-| Terça | Métodos Experimentais | EDO |
+| Segunda | Matemática Discreta II | — |
+| Terça | — | EDO |
 | Quarta | Práticas Ens. Química I *(quinzenal I)* | Matemática Discreta II |
-| Quinta | Soluções p/ Desafios em Eng. | Métodos Experimentais |
+| Quinta | Soluções p/ Desafios em Eng. | — |
 | Sexta | EDO | Práticas Ens. Química I |
 
 ## Organização de cada disciplina
@@ -113,7 +110,7 @@ Cada pasta em `Disciplinas/` tem:
 - **Prioridades:** **Matemática Discreta II** e **EDO** (as mais difíceis).
 - **Foco do material:** resumos teóricos enxutos + listas resolvidas passo a passo + simulados.
 - **Provas antigas:** não tem → buscar exemplos similares na web para montar simulados.
-- **Apoio extra:** projeto da **ESMA001** e **relatórios de prática** de Métodos Experimentais.
+- **Apoio extra:** projeto da **ESMA001**.
 
 ## Ferramentas conectadas
 - **Google Calendar** — aulas recorrentes, provas, prazos e **revisões espaçadas**.
@@ -121,7 +118,7 @@ Cada pasta em `Disciplinas/` tem:
 - **Notion** — segundo cérebro: resumos/anotações pesquisáveis.
 - **Skills:** `university-study-guide` (guias HTML), `calculus-problem-set-solver`
   (listas EDO/Discreta), `pdf`/`pdf-viewer` (extrair planos/listas),
-  `data:create-viz` (gráficos/regressão p/ Métodos Exp.), `theme-factory`,
+  `data:create-viz` (gráficos/regressão), `theme-factory`,
   `docx`/`pptx`/`xlsx`, `doc-coauthoring`.
 
 ## Workflows de IA (como o Claude deve trabalhar)
@@ -137,8 +134,8 @@ Baseados em evidência (active recall + repetição espaçada melhoram desempenh
    (buscar exemplos similares na web quando faltar prova antiga).
 6. **Pacote de fim de semana:** a cada fim de semana, entregar um plano priorizado de ~5h
    (ordem do que estudar), começando por Discreta II e EDO conforme proximidade de provas.
-7. **Projeto/relatórios:** apoiar ESMA001 (cronograma + entregas) e relatórios de
-   Métodos Experimentais (`doc-coauthoring` + `data:create-viz`).
+7. **Projeto/relatórios:** apoiar ESMA001 (cronograma + entregas) com
+   `doc-coauthoring` + `data:create-viz`.
 
 > **Regra permanente:** sempre transcrever neste CLAUDE.md o contexto novo que surgir
 > nas conversas (decisões, preferências, mudanças de escopo), para servir de steering file.

@@ -123,10 +123,6 @@
      guias:[['★ Guia 0 — Cálculo base','guias/guia-edo-p0-calculo-base.html'],['★ Guia 1 — Fundamentos · Separáveis · Lineares','guias/guia-edo-p1-fundamentos.html'],['★ Guia 2 — Substituições · Bernoulli · Riccati','guias/guia-edo-p1-substituicoes.html'],['★ Guia 3 — Modelagem · Autônomas · TEU','guias/guia-edo-p1-modelagem-autonomas-teu.html']],
      listas:[['Lista 0','listas/lista0.pdf'],['★ Lista 0 resolvida','listas/resolucao-lista0.html'],['Lista 1','listas/lista1 (1).pdf'],['★ Lista 1 resolvida','listas/resolucao-lista1.html'],['Lista 2','listas/lista2 (1).pdf'],['★ Lista 2 resolvida','listas/resolucao-lista2.html']],
      material:[['Aula 1','material/aula1.pdf'],['Aula 2','material/aula2.pdf'],['Aula 3','material/aula3.pdf'],['Aula 4','material/aula4.pdf'],['Plano de ensino','material/plano de ensino.pdf']]},
-    {code:'ESTO017-17',name:'Métodos Experimentais em Engenharia',c:'#7ee787',tpi:'2-2-4',horas:['Ter 19–21','Qui 21–23'],
-     dir:'../Disciplinas/ESTO017 - Metodos Experimentais',
-     guias:[],listas:[],
-     material:[['Cronograma 2º quad. 2026 (DOCX)','material/ESTO017-17 cronograma 2quad2026.docx']]},
     {code:'ESMA001-23',name:'Soluções para Desafios em Engenharia',c:'#ffb454',tpi:'0-2-5',horas:['Qui 19–21'],
      dir:'../Disciplinas/ESMA001 - Solucoes Desafios Eng',
      guias:[],listas:[],
@@ -141,9 +137,6 @@
      guias:[['★ Guia Teoria — Sem. 1–4','guias/guia-teoria-semanas1-4.html'],['★ Guia Grafos avançados — P2','guias/guia-grafos-avancados-p2.html'],['★ Lista 1 resolvida','listas/resolucao-lista1.html']],
      listas:[['Lista 1 (enunciado)','listas/lista1-md2.pdf']],
      material:[['Intro','material/intro.pdf'],['Aula 1','material/aula1.pdf'],['Aula 2','material/aula2.pdf'],['Aula 3','material/aula3.pdf'],['Aula 3.2','material/aula3.2.pdf'],['Aula 4','material/aula4.pdf'],['Plano de ensino','material/plano-ensino-md2.pdf']]},
-    {code:'ESTA020-17',name:'Modelagem e Controle',c:'#56d4dd',tpi:'2-0-5',horas:['Seg 21–23'],
-     dir:'../Disciplinas/ESTA020 - Modelagem e Controle',
-     guias:[],listas:[],material:[]},
   ];
   const fileLinks=(dir,arr)=>arr.map(it=>`<a href="${encodeURI(dir+'/'+it[1])}">${it[0]}</a>`).join('');
   document.getElementById('cards').innerHTML=disc.map(d=>{
@@ -162,10 +155,10 @@
   }).join('');
 
   const grade=[
-    ['Segunda','Matemática Discreta II','Modelagem e Controle'],
-    ['Terça','Métodos Experimentais','EDO'],
+    ['Segunda','Matemática Discreta II',''],
+    ['Terça','','EDO'],
     ['Quarta','Práticas Ens. Química I (quinz.)','Matemática Discreta II'],
-    ['Quinta','Soluções p/ Desafios em Eng.','Métodos Experimentais'],
+    ['Quinta','Soluções p/ Desafios em Eng.',''],
     ['Sexta','EDO','Práticas Ens. Química I'],
   ];
   const dayIdx=today.getDay();
@@ -193,13 +186,10 @@
   }).join('');
 
   const provas=[
-    [new Date(2026,5,15),'15/06','Modelagem e Controle','Prova 1'],
     [new Date(2026,5,29),'29/06','Matemática Discreta II','Prova 1 (P1) — Sem. 1–4'],
-    [new Date(2026,5,30),'30/06','EDO','Prova 1 (P1)'],
-    [new Date(2026,7,3),'03/08','Modelagem e Controle','Prova 2'],
+    [new Date(2026,6,3),'03/07','EDO','Prova 1 (P1)'],
     [new Date(2026,7,7),'07/08','EDO','Prova 2 (P2)'],
     [new Date(2026,7,10),'10/08','Matemática Discreta II','Prova 2 (P2) — Sem. 5–11'],
-    [new Date(2026,7,11),'11/08','Métodos Experimentais','Prova individual'],
     [new Date(2026,7,14),'14/08','Práticas Ens. Química I','Prova escrita individual'],
   ];
   provas.sort((a,b)=>a[0]-b[0]);
