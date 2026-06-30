@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDO · Revisão da P1 — Mapa geral + Modelagem e Autônomas (foco)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1419;--bg-elev:#151c24;--card:#1a2330;--border:#2a3a4d;--border-soft:#223040;
+--text:#e7eef5;--dim:#9db0c2;--faint:#6f8398;--accent:#6ea8fe;--accent-2:#7ee0c8;--accent-3:#c9a4ff;
+--ok:#8ce99a;--warn:#ffd166;--danger:#ff8a8a;--formula-bg:#11202b;--formula-bd:#2f7d6b;--r:14px;--shadow:0 10px 30px rgba(0,0,0,.35);--maxw:880px;}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#16222e 0%,var(--bg) 55%) fixed;color:var(--text);font-family:'DM Sans',system-ui,sans-serif;line-height:1.65;font-size:16.5px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:268px 1fr}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:linear-gradient(180deg,var(--bg-elev),#10171e);border-right:1px solid var(--border-soft);padding:22px 15px 60px}
+.sidebar::-webkit-scrollbar{width:8px}.sidebar::-webkit-scrollbar-thumb{background:#26323f;border-radius:8px}
+.brand{display:flex;gap:11px;align-items:center;margin-bottom:14px}
+.brand .dot{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent-3));display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:600;color:#06121a;font-size:13px}
+.brand b{font-family:'Fraunces';font-size:17px;font-weight:600}.brand small{display:block;color:var(--faint);font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+.glink{display:block;margin:8px 0 0;padding:9px 11px;border:1px solid var(--border-soft);border-radius:9px;background:#121b24;color:var(--dim);font-size:12.5px}
+.glink:hover{text-decoration:none;border-color:var(--accent);color:var(--text)}.glink b{color:var(--accent-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:1px}
+nav.toc .group{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);margin:16px 0 6px 8px}
+nav.toc a{display:block;color:var(--dim);padding:6px 10px;border-radius:8px;font-size:14px;border-left:2px solid transparent}
+nav.toc a:hover{background:#172029;color:var(--text);text-decoration:none}
+main{padding:34px clamp(18px,5vw,60px) 120px;max-width:calc(var(--maxw) + 120px);margin:0 auto;width:100%}
+h1{font-family:'Fraunces';font-weight:600;font-size:clamp(25px,4vw,35px);line-height:1.15;margin:.2em 0 .3em}
+h2{font-family:'Fraunces';font-weight:600;font-size:clamp(20px,3vw,26px);margin:1.5em 0 .5em;padding-bottom:.3em;border-bottom:1px solid var(--border-soft)}
+h3{font-family:'Fraunces';font-weight:600;font-size:19px;margin:1.3em 0 .3em;color:#eaf2fb}
+p{margin:.5em 0}strong{color:#fff}.lead{color:var(--dim);font-size:17px}
+.hero{background:linear-gradient(135deg,#1d2433,#141d27);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px;box-shadow:var(--shadow)}
+.pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:#0e1a23;border:1px solid var(--border);border-radius:999px;padding:6px 13px;font-size:13px;color:var(--dim)}.pill b{color:#fff}
+.pill.hot{border-color:#7a3b3b;background:#241317}.pill.hot b{color:#ffb0b0}
+.callout{border-radius:12px;padding:13px 16px 13px 18px;margin:15px 0;border:1px solid var(--border);border-left-width:4px;background:var(--card)}
+.callout .lab{font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px}
+.callout.note{border-left-color:var(--accent)}.callout.note .lab{color:var(--accent)}
+.callout.tip{border-left-color:var(--accent-2)}.callout.tip .lab{color:var(--accent-2)}
+.callout.warn{border-left-color:var(--warn)}.callout.warn .lab{color:var(--warn)}
+.callout.key{border-left-color:var(--accent-3)}.callout.key .lab{color:var(--accent-3)}
+.fml{background:var(--formula-bg);border:1px solid var(--border);border-left:4px solid var(--formula-bd);border-radius:10px;padding:12px 16px;margin:12px 0;overflow-x:auto;font-size:15.5px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;background:var(--card);border-radius:10px;overflow:hidden}
+th,td{border:1px solid var(--border-soft);padding:8px 11px;text-align:left;vertical-align:top}
+th{background:#172230;color:#eaf2fb;font-weight:600}
+details{background:var(--card);border:1px solid var(--border);border-radius:11px;margin:12px 0;overflow:hidden}
+details summary{cursor:pointer;padding:13px 16px;display:flex;align-items:center;gap:10px;font-weight:500;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary .arr{transition:transform .2s;color:var(--accent);font-size:13px}
+details[open] summary .arr{transform:rotate(90deg)}
+details summary .tag{margin-left:auto;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);border:1px solid var(--border);border-radius:6px;padding:2px 7px}
+.body{padding:2px 16px 14px;border-top:1px solid var(--border-soft)}
+.ref{display:inline-block;font-size:12px;background:#11202b;border:1px solid var(--border);border-radius:7px;padding:3px 9px;margin:3px 4px 3px 0;color:var(--accent-2)}
+.ref:hover{text-decoration:none;border-color:var(--accent-2)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.step{background:#101a23;border:1px solid var(--border-soft);border-radius:9px;padding:10px 13px;margin:8px 0}
+.step b{color:var(--accent)}
+ol li,ul li{margin:.25em 0}
+.q{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:14px 16px;margin:12px 0}
+.q .opt{display:block;padding:8px 12px;margin:6px 0;border:1px solid var(--border-soft);border-radius:8px;cursor:pointer;transition:.15s}
+.q .opt:hover{border-color:var(--accent)}
+.q .opt.ok{border-color:var(--ok);background:#15281c}.q .opt.no{border-color:var(--danger);background:#2a1518}
+.q .exp{display:none;margin-top:8px;font-size:14px;color:var(--dim);border-top:1px dashed var(--border);padding-top:8px}
+footer{color:var(--faint);font-size:12.5px;border-top:1px solid var(--border-soft);margin-top:50px;padding-top:18px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border-soft)}.grid2{grid-template-columns:1fr}}
+</style>
+<script>
+MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand"><div class="dot">EDO</div><div><b>Revisão P1</b><small>BCN0405 · 2026.2</small></div></div>
+
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);margin:14px 0 4px 4px">Guias da P1 (referência)</div>
+  <a class="glink" href="guia-edo-p0-calculo-base.html"><b>Guia 0</b>Revisão de cálculo + classificação</a>
+  <a class="glink" href="guia-edo-p1-fundamentos.html"><b>Guia 1</b>Fundamentos · separáveis · lineares 1ª ordem</a>
+  <a class="glink" href="guia-edo-p1-substituicoes.html"><b>Guia 2</b>Substituições · Bernoulli · Riccati</a>
+  <a class="glink" href="guia-edo-p1-modelagem-autonomas-teu.html"><b>Guia 3</b>Modelagem · autônomas · campo · TEU</a>
+
+  <nav class="toc">
+    <div class="group">Esta revisão</div>
+    <a href="#mapa">🗺️ Mapa da P1 inteira</a>
+    <a href="#modelagem">① Modelagem (aula 5)</a>
+    <a href="#autonomas">② Autônomas (aula 6)</a>
+    <a href="#cola">🧊 Cola de 1 página</a>
+    <a href="#feynman">🗣️ Feynman</a>
+    <a href="#quiz">✅ Quiz relâmpago</a>
+  </nav>
+</aside>
+
+<main>
+  <section class="hero">
+    <h1>Revisão da P1 de EDO</h1>
+    <p class="lead">Mapa de tudo que cai na P1 (com link pro guia que aprofunda cada tópico) + aprofundamento no conteúdo novo das aulas 5 e 6: <strong>modelagem de 1ª ordem</strong> e <strong>equações autônomas</strong>.</p>
+    <div class="pills">
+      <span class="pill hot">📅 P1: <b>sexta, 03/07</b> (remarcada)</span>
+      <span class="pill">⚖️ Vale <b>50%</b> · precisa <b>≥ 4,5</b></span>
+      <span class="pill">👨‍🏫 Prof. <b>Edson Arrázola</b></span>
+      <span class="pill">🎯 Meta: <b>passar tranquilo</b></span>
+    </div>
+    <div class="callout note" style="margin-top:16px">
+      <span class="lab">Como usar</span>
+      O conteúdo das aulas 5 e 6 que você adicionou já estava no <b>Guia 3</b> — aqui ele vem condensado em modo revisão. Para os outros tópicos da P1, o <a href="#mapa">mapa abaixo</a> aponta direto pro guia que ensina do zero. Estude pelos toggles "lembra disso?" (active recall) antes de abrir a resposta.
+    </div>
+  </section>
+
+  <!-- ================= MAPA ================= -->
+  <h2 id="mapa">🗺️ Mapa da P1 inteira</h2>
+  <p>Tudo que pode cair, e onde aprofundar. As duas últimas linhas são o foco desta revisão (logo abaixo).</p>
+  <table>
+    <thead><tr><th>Tópico</th><th>O que você precisa saber fazer</th><th>Onde estudar a fundo</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Classificação</b></td>
+        <td>Ordem, linear × não-linear, EDO × EDP; forma normal; verificar se uma função é solução; intervalo de definição.</td>
+        <td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1</a><a class="ref" href="guia-edo-p0-calculo-base.html">Guia 0</a></td>
+      </tr>
+      <tr>
+        <td><b>Separáveis</b></td>
+        <td>Separar \(g(y)\,dy=h(x)\,dx\), integrar, aplicar PVI, achar domínio; soluções perdidas (constantes).</td>
+        <td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1</a></td>
+      </tr>
+      <tr>
+        <td><b>Lineares 1ª ordem</b></td>
+        <td>Forma padrão \(y'+P(x)y=Q(x)\), fator integrante \(\mu=e^{\int P\,dx}\), \((\mu y)'=\mu Q\).</td>
+        <td><a class="ref" href="guia-edo-p1-fundamentos.html">Guia 1</a></td>
+      </tr>
+      <tr>
+        <td><b>Substituições</b></td>
+        <td>\(y'=F(ax+by+c)\) (\(v=ax+by+c\)); homogêneas (\(v=y/x\)); Bernoulli (\(v=y^{1-n}\)); Riccati.</td>
+        <td><a class="ref" href="guia-edo-p1-substituicoes.html">Guia 2</a></td>
+      </tr>
+      <tr>
+        <td><b>Campo de direções</b></td>
+        <td>Ler o comportamento da solução pelo sinal de \(f(x,y)\); isóclinas \(f=\text{const}\).</td>
+        <td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#campo">Guia 3 · campo</a></td>
+      </tr>
+      <tr>
+        <td><b>Existência e Unicidade (TEU)</b></td>
+        <td>Hipóteses: \(f\) e \(\partial f/\partial y\) contínuas numa vizinhança do ponto inicial; falha de unicidade (\(y'=y^{1/3}\)).</td>
+        <td><a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#teu">Guia 3 · TEU</a></td>
+      </tr>
+      <tr style="background:#15212c">
+        <td><b>① Modelagem 1ª ordem</b> <span style="color:var(--warn)">★ novo</span></td>
+        <td>Montar a EDO (taxa = entrada − saída): exponencial, decaimento/meia-vida, Newton, crescimento limitado, misturas.</td>
+        <td><a class="ref" href="#modelagem">↓ nesta página</a> · <a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#modelo-geral">Guia 3</a></td>
+      </tr>
+      <tr style="background:#15212c">
+        <td><b>② Equações autônomas</b> <span style="color:var(--warn)">★ novo</span></td>
+        <td>\(y'=f(y)\): equilíbrios, reta de fase, sinal de \(f\), estabilidade (atrator/repulsor/semiestável), esboço.</td>
+        <td><a class="ref" href="#autonomas">↓ nesta página</a> · <a class="ref" href="guia-edo-p1-modelagem-autonomas-teu.html#autonomas">Guia 3</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout tip"><span class="lab">Listas resolvidas</span>Pratique nas resoluções passo a passo: <a href="../listas/resolucao-lista1.html">Lista 1</a> (classificação + 1ª ordem) e <a href="../listas/resolucao-lista2.html">Lista 2</a> (modelagem, autônomas, TEU).</div>
+
+  <!-- ================= MODELAGEM ================= -->
+  <h2 id="modelagem">① Modelagem de 1ª ordem <span style="font-size:14px;color:var(--faint)">— aula 5</span></h2>
+  <p>A ideia única por trás de tudo: descrever <strong>como uma quantidade varia no tempo</strong>. A taxa \(\dfrac{dx}{dt}\) é modelada por uma regra física, e quase sempre cai na forma:</p>
+  <div class="fml">\[ \frac{dx}{dt}=\text{(taxa de entrada)} - \text{(taxa de saída)} \]</div>
+
+  <h3>A. Modelo exponencial (taxa ∝ quantidade)</h3>
+  <p>Quando a taxa de variação é proporcional à quantidade presente:</p>
+  <div class="fml">\[ \frac{dx}{dt}=kx \quad\Longrightarrow\quad x(t)=x_0\,e^{kt} \]</div>
+  <p>\(k>0\): crescimento (população livre); \(k<0\): decrescimento (decaimento radioativo). É <strong>separável</strong> — você já sabe resolver pelo Guia 1.</p>
+
+  <details><summary><span class="arr">▶</span> Decaimento radioativo e meia-vida (C-14) <span class="tag">lembra disso?</span></summary>
+  <div class="body">
+    <p>\(Q'=kQ,\ k<0\Rightarrow Q(t)=Q_0e^{kt}\). A <strong>meia-vida</strong> \(T\) é o tempo para a quantidade cair pela metade:</p>
+    <div class="fml">\[ e^{kT}=\tfrac12 \;\Rightarrow\; k=\frac{\ln(1/2)}{T}=-\frac{\ln 2}{T} \]</div>
+    <p>Com a meia-vida do C-14 \(\approx 5600\) anos, \(k=\frac1{5600}\ln\frac12\approx-1{,}24\times10^{-4}\). Datação de fóssil: dado \(Q/Q_0\), isola \(t=\frac1k\ln\frac{Q}{Q_0}\).</p>
+  </div></details>
+
+  <details><summary><span class="arr">▶</span> Modelo com termo extra: ratos + predação <span class="tag">cuidado: não é mais só kx</span></summary>
+  <div class="body">
+    <p>População de ratos cresce a \(k=0{,}5\)/mês, mas corujas comem \(450\) ratos/mês:</p>
+    <div class="fml">\[ \frac{dP}{dt}=kP-450 = 0{,}5P-450 \]</div>
+    <p>Agora há um termo constante de saída. A solução é \(P(t)=900+ce^{0{,}5t}\) (note o <strong>equilíbrio em 900</strong> = 450/0,5). Repare: isto é uma <strong>autônoma</strong> — população &lt; 900 decresce, &gt; 900 cresce. Conecta direto com a seção ②.</p>
+  </div></details>
+
+  <h3>B. Lei de resfriamento de Newton</h3>
+  <p>A taxa de variação da temperatura é proporcional à diferença para o ambiente \(T_m\) (constante):</p>
+  <div class="fml">\[ \frac{dT}{dt}=k\,(T-T_m),\qquad T(0)=T_0 \;\Rightarrow\; T(t)=T_m+(T_0-T_m)e^{kt} \]</div>
+  <details><summary><span class="arr">▶</span> Exemplo do slide (café) — resolvido <span class="tag">conferido</span></summary>
+  <div class="body">
+    <p>Café a \(90^\circ\), ambiente \(22^\circ\); após 5 min está a \(70^\circ\). Quando chega a \(50^\circ\)?</p>
+    <div class="step"><b>1.</b> PVI: \(T(0)=90,\ T_m=22 \Rightarrow T(t)=22+68e^{kt}\).</div>
+    <div class="step"><b>2.</b> Acha \(k\) com \(T(5)=70\): \(68e^{5k}=48 \Rightarrow k=\frac15\ln\frac{48}{68}\approx-0{,}0697\).</div>
+    <div class="step"><b>3.</b> Resolve \(T(t)=50\): \(e^{kt}=\frac{28}{68} \Rightarrow t=\frac{\ln(28/68)}{k}\approx \mathbf{12{,}7\ \text{min}}\).</div>
+    <p class="lead" style="font-size:14px">Longo prazo: \(t\to\infty\Rightarrow T\to T_m\) (esfria até o ambiente). Vale também para aquecimento.</p>
+  </div></details>
+
+  <h3>C. Crescimento limitado / aprendizado / difusão</h3>
+  <p>Quando a quantidade se aproxima de um teto \(A\) (capacidade, valor-alvo):</p>
+  <div class="fml">\[ \frac{dx}{dt}=k\,(A-x) \;\Rightarrow\; x(t)=A-(A-x_0)e^{-kt} \quad(x\to A) \]</div>
+  <p class="lead" style="font-size:14px">Mesma "cara" do Newton (é o mesmo tipo de EDO). Para crescimento logístico/Gompertz, ver <a href="guia-edo-p1-modelagem-autonomas-teu.html#gompertz">Guia 3 · Gompertz</a>.</p>
+
+  <h3>D. Misturas em tanque (modelo de 1 compartimento)</h3>
+  <div class="fml">\[ \frac{dQ}{dt}=\underbrace{r_{e}\,c_{e}}_{\text{entra}} - \underbrace{r_{s}\,\frac{Q}{V(t)}}_{\text{sai}} \]</div>
+  <p>\(Q\) = quantidade de soluto; \(r_e,r_s\) = vazões (ℓ/min); \(c_e\) = concentração que entra; concentração que sai = \(Q/V\) (bem misturado).</p>
+  <div class="callout warn"><span class="lab">O detalhe que derruba gente</span>O volume só é constante se \(r_e=r_s\). Senão, \(V(t)=V_0+(r_e-r_s)\,t\) — e aí a EDO vira <b>linear de coeficiente variável</b> (fator integrante), não separável.</div>
+  <details><summary><span class="arr">▶</span> Volume constante — Exemplo 1 do slide <span class="tag">conferido</span></summary>
+  <div class="body">
+    <p>1000 ℓ de água pura; entra salmoura a \(6\,\ell/\)min com \(0{,}1\,\)kg/ℓ; sai a \(6\,\ell/\)min. Quando a concentração chega a \(0{,}05\) kg/ℓ?</p>
+    <div class="fml">\[ \frac{dQ}{dt}=6\cdot0{,}1-6\cdot\frac{Q}{1000}=0{,}6-0{,}006\,Q,\quad Q(0)=0 \]</div>
+    <p>Solução (linear/separável): \(Q(t)=100\left(1-e^{-0{,}006t}\right)\). Concentração \(0{,}05\) kg/ℓ ⟹ \(Q=50\):</p>
+    <div class="fml">\[ 50=100(1-e^{-0{,}006t}) \Rightarrow e^{-0{,}006t}=\tfrac12 \Rightarrow t=\frac{\ln 2}{0{,}006}\approx \mathbf{115{,}5\ \text{min}} \]</div>
+    <p class="lead" style="font-size:14px">Equilíbrio: \(Q\to 0{,}6/0{,}006=100\) kg (concentração \(\to 0{,}1\), a de entrada). Faz sentido.</p>
+  </div></details>
+  <details><summary><span class="arr">▶</span> Volume variável — Exemplo 3 do slide (cloro) <span class="tag">linear coef. variável</span></summary>
+  <div class="body">
+    <p>400 ℓ com cloro a \(0{,}05\) g/ℓ; entra <b>água pura</b> a \(4\,\ell/\)min; sai a \(10\,\ell/\)min.</p>
+    <div class="step"><b>Volume:</b> \(\dfrac{dV}{dt}=4-10=-6 \Rightarrow V(t)=400-6t\).</div>
+    <div class="step"><b>EDO:</b> entrada \(=0\) (água pura), saída \(=10\cdot\dfrac{Q}{400-6t}\): \(\displaystyle \frac{dQ}{dt}=-\frac{10\,Q}{400-6t},\ Q(0)=20\) g.</div>
+    <p>É separável aqui (entrada zero), mas no caso geral de salmoura com \(V(t)=V_0+t\) vira linear: monte \(\frac{dQ}{dt}+\frac{r_s}{V(t)}Q=r_ec_e\) e use fator integrante (Guia 1 / <a href="guia-edo-p1-modelagem-autonomas-teu.html#mistura">Guia 3 · mistura</a>).</p>
+  </div></details>
+
+  <!-- ================= AUTONOMAS ================= -->
+  <h2 id="autonomas">② Equações autônomas <span style="font-size:14px;color:var(--faint)">— aula 6</span></h2>
+  <p>Uma EDO é <strong>autônoma</strong> quando o lado direito depende só de \(y\) (não de \(x\)):</p>
+  <div class="fml">\[ \frac{dy}{dx}=f(y) \]</div>
+  <p>Exemplos: \(y'=y-1\), \(y'=y(1-y)\), \(y'=(y-1)^2\) são autônomas. \(y'=xy\) e \(y'=\frac{y}{1+x}\) <strong>não</strong> são (aparece \(x\)). Toda autônoma é separável — mas a graça é extrair o comportamento <strong>sem resolver</strong>.</p>
+
+  <div class="callout key"><span class="lab">A chave</span>Como \(y'=f(y)\), o <b>sinal de \(f(y)\)</b> diz o que a solução faz:<br>
+  \(f(y)>0\Rightarrow y\) cresce · \(f(y)<0\Rightarrow y\) decresce · \(f(y)=0\Rightarrow y\) constante.</div>
+
+  <h3>Pontos e soluções de equilíbrio</h3>
+  <p>\(c\) é <strong>ponto de equilíbrio</strong> (ou crítico) se \(f(c)=0\). Aí \(y(x)=c\) é a <strong>solução de equilíbrio</strong> (constante). Pela unicidade, <strong>nenhuma outra solução cruza uma solução de equilíbrio</strong> — elas funcionam como "paredes".</p>
+
+  <h3>Reta de fase e estabilidade</h3>
+  <p>Marque os equilíbrios numa reta vertical e o sinal de \(f\) em cada intervalo (seta ↑ se \(f>0\), ↓ se \(f<0\)). A configuração das setas em torno de \(c\) classifica o equilíbrio:</p>
+  <table>
+    <thead><tr><th>Tipo</th><th>Setas ao redor</th><th>Teste da derivada</th></tr></thead>
+    <tbody>
+      <tr><td><b>Estável</b> (atrator)</td><td>→ • ← (ambas apontam pra \(c\))</td><td>\(f'(c)<0\)</td></tr>
+      <tr><td><b>Instável</b> (repulsor)</td><td>← • → (ambas se afastam)</td><td>\(f'(c)>0\)</td></tr>
+      <tr><td><b>Semiestável</b></td><td>→ • → ou ← • ← (mesmo sentido)</td><td>\(f'(c)=0\) (ex.: raiz dupla)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout note"><span class="lab">Atalho</span>Se \(f\) é derivável, o sinal de \(f'(c)\) resolve direto: negativo = estável, positivo = instável. Se \(f'(c)=0\), volte pro sinal de \(f\) dos dois lados (provável semiestável, como \(y'=(y-1)^2\)).</div>
+
+  <h3>Roteiro de análise qualitativa (5 passos)</h3>
+  <div class="step"><b>1.</b> Ache os equilíbrios resolvendo \(f(y)=0\).</div>
+  <div class="step"><b>2.</b> Estude o sinal de \(f(y)\) em cada intervalo entre eles.</div>
+  <div class="step"><b>3.</b> Monte a reta (retrato) de fase com as setas.</div>
+  <div class="step"><b>4.</b> Classifique cada equilíbrio (estável / instável / semiestável).</div>
+  <div class="step"><b>5.</b> Esboce curvas-solução para condições iniciais variadas (concavidade: muda onde \(f'(y)=0\)).</div>
+
+  <details><summary><span class="arr">▶</span> Exemplo logístico \(y'=y(1-y)\) — completo <span class="tag">conferido</span></summary>
+  <div class="body">
+    <p><b>Equilíbrios:</b> \(f(y)=y(1-y)=0 \Rightarrow y=0\) e \(y=1\).</p>
+    <p><b>Sinal de \(f\):</b> \(y<0\Rightarrow f<0\) (decresce); \(0<y<1\Rightarrow f>0\) (cresce); \(y>1\Rightarrow f<0\) (decresce).</p>
+    <p><b>Reta de fase:</b> \(\;\xrightarrow{\;\;}\;0\;\xrightarrow{\;\;}\;1\;\xleftarrow{\;\;}\) — setas convergem para 1, divergem de 0.</p>
+    <p><b>Classificação</b> (com \(f'(y)=1-2y\)): \(f'(0)=1>0\) ⟹ <strong>0 instável</strong>; \(f'(1)=-1<0\) ⟹ <strong>1 assintoticamente estável</strong>. Toda solução com \(y_0>0\) tende a 1.</p>
+    <p><b>Concavidade:</b> \(f\) é máximo em \(y=\tfrac12\) ⟹ maior taxa de crescimento aí, e a curva-solução tem <strong>ponto de inflexão</strong> ao passar por \(y=\tfrac12\).</p>
+  </div></details>
+
+  <div class="callout tip"><span class="lab">Ponte com modelagem</span>Modelos como logístico, Gompertz e "ratos + predação" são autônomos — a reta de fase já te dá o destino da população sem resolver a EDO. Os dois tópicos novos conversam: use ② para checar o longo prazo de ①.</div>
+
+  <!-- ================= COLA ================= -->
+  <h2 id="cola">🧊 Cola de 1 página (revisão de véspera)</h2>
+  <div class="grid2">
+    <div class="callout note"><span class="lab">Separável</span>\(g(y)dy=h(x)dx\) → integra os dois lados. Cheque soluções constantes perdidas.</div>
+    <div class="callout note"><span class="lab">Linear 1ª ordem</span>\(y'+P y=Q\); \(\mu=e^{\int P dx}\); \((\mu y)'=\mu Q\); \(y=\frac1\mu\!\int\!\mu Q\,dx\).</div>
+    <div class="callout note"><span class="lab">Substituições</span>\(F(ax+by+c)\): \(v=ax+by+c\). Homogênea: \(v=y/x\). Bernoulli \(y'+Py=Qy^n\): \(v=y^{1-n}\).</div>
+    <div class="callout note"><span class="lab">Exponencial</span>\(x'=kx \Rightarrow x=x_0e^{kt}\). Meia-vida: \(k=-\ln 2/T\).</div>
+    <div class="callout note"><span class="lab">Newton / limitado</span>\(T'=k(T-T_m)\Rightarrow T=T_m+(T_0-T_m)e^{kt}\). Teto: \(x'=k(A-x)\Rightarrow x\to A\).</div>
+    <div class="callout note"><span class="lab">Mistura</span>\(Q'=r_ec_e - r_s\frac{Q}{V}\); \(V(t)=V_0+(r_e-r_s)t\). \(V\) varia ⟹ linear.</div>
+    <div class="callout note"><span class="lab">Autônoma</span>\(y'=f(y)\). Equilíbrio: \(f(c)=0\). \(f'(c)<0\) estável, \(>0\) instável, \(=0\) cheque o sinal.</div>
+    <div class="callout note"><span class="lab">TEU (Picard)</span>\(f\) e \(\partial f/\partial y\) contínuas perto de \((x_0,y_0)\) ⟹ existe solução única local. \(y'=y^{1/3}\): unicidade falha em \(y=0\).</div>
+  </div>
+
+  <!-- ================= FEYNMAN ================= -->
+  <h2 id="feynman">🗣️ Bloco Feynman</h2>
+  <p>Explique <strong>em voz alta, sem olhar</strong>, como se ensinasse alguém. Depois confira com o gabarito.</p>
+  <details><summary><span class="arr">▶</span> "Por que toda equação autônoma é separável, mas mesmo assim a gente faz a reta de fase?"</summary>
+  <div class="body"><p><b>Esperado:</b> \(y'=f(y)\) separa em \(dy/f(y)=dx\), então em princípio dá pra integrar. Mas a integral pode ser feia/impossível em forma fechada, e muitas vezes só queremos o <b>comportamento qualitativo</b> (cresce? estabiliza? em quê?). A reta de fase entrega equilíbrios, estabilidade e limites quando \(x\to\infty\) sem resolver nada.</p></div></details>
+  <details><summary><span class="arr">▶</span> "Como você monta a EDO de um problema de mistura do zero?"</summary>
+  <div class="body"><p><b>Esperado:</b> defino \(Q(t)\) = quantidade de soluto. \(dQ/dt\) = (vazão entra × concentração entra) − (vazão sai × concentração no tanque \(=Q/V\)). Vejo se \(V\) é constante (\(r_e=r_s\)) ou \(V(t)=V_0+(r_e-r_s)t\). Escrevo o PVI com \(Q(0)\) e resolvo (separável ou fator integrante).</p></div></details>
+  <details><summary><span class="arr">▶</span> "Qual a diferença entre estável, instável e semiestável — e como decido rápido?"</summary>
+  <div class="body"><p><b>Esperado:</b> estável = soluções vizinhas convergem pro equilíbrio (atrator, \(f'(c)<0\)); instável = se afastam (repulsor, \(f'(c)>0\)); semiestável = atraem de um lado e repelem do outro (setas no mesmo sentido, tipicamente raiz dupla com \(f'(c)=0\)). Decido pelo sinal de \(f'(c)\); se der zero, olho o sinal de \(f\) dos dois lados.</p></div></details>
+
+  <!-- ================= QUIZ ================= -->
+  <h2 id="quiz">✅ Quiz relâmpago</h2>
+
+  <div class="q" data-a="1">
+    <p><b>1.</b> A equação \(\dfrac{dy}{dx}=\dfrac{y}{1+x}\) é autônoma?</p>
+    <span class="opt">a) Sim, depende só de \(y\)</span>
+    <span class="opt">b) Não, aparece \(x\) no lado direito</span>
+    <span class="opt">c) Só se \(x>0\)</span>
+    <div class="exp">Não. Autônoma exige lado direito função <b>só de \(y\)</b>; aqui o \(1+x\) traz \(x\).</div>
+  </div>
+
+  <div class="q" data-a="2">
+    <p><b>2.</b> Para \(y'=y(1-y)\), o equilíbrio \(y=1\) é:</p>
+    <span class="opt">a) Instável, porque \(f(1)=0\)</span>
+    <span class="opt">b) Estável, porque \(f'(1)=-1<0\)</span>
+    <span class="opt">c) Semiestável</span>
+    <div class="exp">Estável: \(f'(y)=1-2y\), \(f'(1)=-1<0\) ⟹ atrator. Soluções com \(y_0>0\) tendem a 1.</div>
+  </div>
+
+  <div class="q" data-a="1">
+    <p><b>3.</b> Num tanque com \(r_e=6\), \(r_s=4\) ℓ/min e \(V_0=200\) ℓ, o volume no instante \(t\) é:</p>
+    <span class="opt">a) \(V(t)=200+2t\)</span>
+    <span class="opt">b) \(V(t)=200\) (constante)</span>
+    <span class="opt">c) \(V(t)=200-2t\)</span>
+    <div class="exp">\(V(t)=V_0+(r_e-r_s)t=200+(6-4)t=200+2t\). Como \(r_e\neq r_s\), o volume cresce.</div>
+  </div>
+
+  <div class="q" data-a="2">
+    <p><b>4.</b> No resfriamento de Newton \(T'=k(T-T_m)\), quando \(t\to\infty\):</p>
+    <span class="opt">a) \(T\to\infty\)</span>
+    <span class="opt">b) \(T\to T_m\) (temperatura ambiente)</span>
+    <span class="opt">c) \(T\to T_0\)</span>
+    <div class="exp">Como \(k<0\), \(e^{kt}\to0\) e \(T=T_m+(T_0-T_m)e^{kt}\to T_m\).</div>
+  </div>
+
+  <div class="q" data-a="0">
+    <p><b>5.</b> A meia-vida \(T\) de um decaimento \(Q'=kQ\) relaciona-se com \(k\) por:</p>
+    <span class="opt">a) \(k=-\dfrac{\ln 2}{T}\)</span>
+    <span class="opt">b) \(k=\dfrac{\ln 2}{T}\)</span>
+    <span class="opt">c) \(k=-\dfrac{T}{\ln 2}\)</span>
+    <div class="exp">\(e^{kT}=1/2\Rightarrow kT=\ln(1/2)=-\ln2\Rightarrow k=-\ln2/T\) (negativo, pois decai).</div>
+  </div>
+
+  <footer>
+    Revisão da P1 · BCN0405 — Introdução às EDOs · UFABC 2026.2 · foco: aulas 5 (modelagem) e 6 (autônomas), com mapa para os Guias 0–3.<br>
+    Contas dos exemplos (Newton, mistura, logística) conferidas simbolicamente. Prova: sexta, 03/07/2026.
+  </footer>
+</main>
+</div>
+
+<script>
+// Quiz
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.a, opts=q.querySelectorAll('.opt'), exp=q.querySelector('.exp');
+  opts.forEach((o,i)=>o.addEventListener('click',()=>{
+    opts.forEach(x=>x.classList.remove('ok','no'));
+    o.classList.add(i===ans?'ok':'no');
+    if(i!==ans) opts[ans].classList.add('ok');
+    exp.style.display='block';
+  }));
+});
+// TOC scroll highlight (simple)
+</script>
+</body>
+</html>

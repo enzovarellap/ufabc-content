@@ -25,7 +25,7 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 |---|---|---|
 | 15/06 (seg) | Modelagem e Controle | Prova 1 |
 | 29/06 (seg) | Matemática Discreta II | Prova 1 (Sem. 1–4) |
-| 30/06 (ter) | EDO | Prova 1 |
+| 03/07 (sex) | EDO | Prova 1 _(remarcada de 30/06)_ |
 | 03/08 (seg) | Modelagem e Controle | Prova 2 |
 | 07/08 (sex) | EDO | Prova 2 |
 | 10/08 (seg) | Matemática Discreta II | Prova 2 (Sem. 5–11) |
