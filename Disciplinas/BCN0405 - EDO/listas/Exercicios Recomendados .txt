@@ -1,0 +1,15 @@
+Lista 0
+
+Resolver 1a,b,c, 7a,b,c,d, 8, 9a,b,c,e,f - Atualizado em 08/06/2026
+Lista 1
+
+Resolver 1, 2b,e,f,g,h, 5a,b,c,d,e,f - Atualizado em 08/06/2026
+Resolver 6, 7, 8, 9, 10 - Atualizado em 10/06/2026
+Resolver 5 g, h, i, j, 11e, f, 12 a - Atualizado em 19/06/2026
+Lista 2
+
+Resolver 1, 2, 3, 4 - Atualizado em 19/06/2026
+Exercícios do livro do Zill (Seção 2.5) 3, 13, 17, 21, 24, 26, 27 - Atualizado em 19/06/2026
+
+Resolver 5, 6 - Atualizado em 24/06/2026 
+Resolver 9 a,b,d,e,f,g - Atualizado em 27/06/2026

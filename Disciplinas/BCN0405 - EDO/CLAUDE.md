@@ -39,6 +39,9 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
 - `aula4.pdf` (13/06/2026) — Métodos de substituição: `y'=F(ax+by+c)` (v=ax+by+c), homogêneas (v=y/x), Bernoulli (v=y¹⁻ⁿ) e Riccati* (y=y₁+1/z).
 - `aula5.pdf` — Aplicações I (modelagem): modelo entrada−saída, exponencial (crescimento/decaimento), C-14 + meia-vida, ratos+predação, resfriamento de Newton, misturas em tanque (volume constante e variável). _Conteúdo já coberto pelo Guia 3._
 - `aula6.pdf` — Equações autônomas: análise qualitativa pelo sinal de f(y), equilíbrios, reta de fase, estabilidade (estável/instável/semiestável), roteiro 5 passos, logística y'=y(1−y). _Conteúdo já coberto pelo Guia 3._
+- `aula6-v2.pdf` (02/07/2026) — Autônomas **revisada**: vocabulário formal (ponto × solução de equilíbrio, **assintoticamente estável** com lim y(x)=c), **propriedades geométricas das curvas solução** (unicidade → curvas não se cruzam/tangenciam, nenhuma cruza equilíbrio), roteiro 5 passos, exemplos y'=y−1, y'=2−y, logística.
+- `aula7.pdf` (02/07/2026) — **Modelos de população**: Malthusiano (P'=kP, limitações) e **logístico de Verhulst** P'=P(a−bP)=rP(1−P/K), K=a/b capacidade de carga, solução explícita P(t)=aP₀/(bP₀+(a−bP₀)e^{−at}), lim=K, curva em S; ref. Exercício 6.13 do livro do Santos.
+- `aula8.pdf` (02/07/2026) — **TEU** formalizado: retângulo R, f e f_y contínuas → existência e unicidade local em J⊂(a,b), + consequências geométricas (mesmas da aula 6-v2).
 - **Listas (`listas/`):** Lista 0 (revisão de derivadas/integrais), Lista 1 (classificação + 1ª ordem, Bernoulli/Riccati), Lista 2 (modelagem, autônomas, TEU). Todas com gabarito.
 
 > Slides cobrem até substituições (Aula 4). Faltam para a P1 (só nas Listas): campo de direções, autônomas/estabilidade, modelagem e TEU.
@@ -55,6 +58,10 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   TEU → modelagem → substituições (opcional) → cola de 1 página + quiz de 8 questões. Contas conferidas
   no sympy. Meta explícita: garantir ≥ 4,5. **Math pré-renderizado em SVG** (mathjax-full/Node, sem CDN —
   o tex-svg via CDN não carregou na máquina do Enzo em 02/07; mesmo esquema do Guia 3).
+  **Ampliado 02/07 (noite)** com as aulas 6-v2/7/8: vocabulário formal de estabilidade, propriedades
+  geométricas das curvas, Malthus + logística (K, solução explícita, curva em S), consequências
+  geométricas do TEU e 2 questões novas no quiz (análise qualitativa era o gap sentido pelo Enzo).
+- **`guia-edo-p1-metro.html`** (02/07/2026, feito pelo Enzo) — revisão da P1 para ler no metrô.
 
 Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matéria difícil).
 
@@ -64,10 +71,11 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
 > de Cálculo + estudo espaçado desde o início do conteúdo da P2 (não repetir véspera).
 
 ## Exercícios recomendados pelo professor (do Moodle/aula)
-> Fonte: listas oficiais em gradmat.ufabc.edu.br/disciplinas/iedo. Lista 2 ainda **sem recomendação**.
+> Fonte: listas oficiais em gradmat.ufabc.edu.br/disciplinas/iedo. Espelho em `listas/Exercicios Recomendados .txt`.
 - **Lista 0** (rev. Cálculo): 1a,b,c · 7a,b,c,d · 8 · 9a,b,c,e,f — _atualizado 08/06/2026_
-- **Lista 1** (classif. + 1ª ordem): 1 · 2b,e,f,g,h · 5a,b,c,d,e,f — _atualizado 08/06/2026_; 6 · 7 · 8 · 9 · 10 — _atualizado 10/06/2026_
-- _Obs.: 5a–f são separáveis (5g–j homogêneas não foram pedidas); Bernoulli (11) e Riccati (12) ainda não recomendados._
+- **Lista 1** (classif. + 1ª ordem): 1 · 2b,e,f,g,h · 5a,b,c,d,e,f — _08/06_; 6 · 7 · 8 · 9 · 10 — _10/06_; **5g,h,i,j (homogêneas) · 11e,f (Bernoulli) · 12a (Riccati)** — _19/06/2026_
+- **Lista 2** (modelagem/autônomas/TEU): 1 · 2 · 3 · 4 — _19/06_; 5 · 6 — _24/06_; **9a,b,d,e,f,g** — _27/06/2026_
+- **Zill, Seção 2.5:** 3 · 13 · 17 · 21 · 24 · 26 · 27 — _19/06/2026_
 
 ## Progresso
 - [x] Plano de ensino indexado
