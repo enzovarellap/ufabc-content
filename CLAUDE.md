@@ -87,6 +87,11 @@ Cada pasta em `Disciplinas/` tem:
   exige renderização manual; **não usar** salvo necessidade específica. Manter MathJax como default.
 - **Nunca** colar fórmula como imagem/PNG nem usar Unicode "na mão" para expressões — sempre LaTeX
   via MathJax, para ficar pesquisável, acessível e editável.
+- ⚠️ **Atualização (02/07/2026):** o `tex-svg.js` via CDN **falhou ao carregar** na máquina do Enzo
+  (guia de véspera de EDO apareceu com LaTeX cru). Novo padrão preferido: **pré-renderizar** as
+  fórmulas em SVG com `mathjax-full` (Node, `fontCache:'local'`) antes de entregar o guia — igual ao
+  Guia 3 de EDO. Fica 100% offline, sem CDN. Escrever o guia com `\(`/`\[` normalmente e rodar o passo
+  de pré-render no final (des-escapar `&lt;`→`<` dentro do TeX antes de converter).
 
 ## Publicação dos guias (acesso web/celular) — decidido em 08/06/2026
 - **Decisão:** publicar os guias como **site estático privado** (não recriar no Notion —

@@ -49,7 +49,19 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
 - **`guia-edo-p1-revisao.html`** (29/06/2026) — **Guia de revisão da P1**: mapa de todos os tópicos da P1 com link pro guia que aprofunda cada um, + aprofundamento condensado do conteúdo novo (aula5 modelagem + aula6 autônomas) com active recall, Feynman, cola de 1 página e quiz. Contas (Newton/mistura/logística) conferidas no sympy.
 - **`guia-edo-p1-modelagem-autonomas-teu.html`** (27/06/2026) — Guia 3, **fecha a P1**: campo de direções/isóclinas, **equações autônomas** (reta de fase, equilíbrios, estabilidade atrator/repulsor/semiestável via sinal de `f(y)` e `f'(y₀)`), **modelagem de 1ª ordem** (exponencial + meia-vida, resfriamento de Newton, crescimento limitado/aprendizado/difusão, **Gompertz**, misturas em tanque) e **TEU** (Picard–Lindelöf, hipóteses de continuidade de `f` e `∂f/∂y`, falha de unicidade em `y'=y^{1/3}`, intervalo de validade). Exemplos resolvidos da Lista 2 (incl. Gompertz ex.8 com `r=0,71`, `K=80,5·10⁶`), conferidos no sympy. Math pré-renderizado em SVG (MathJax). Quiz + Feynman + cola.
 
+- **`guia-edo-p1-vespera.html`** (02/07/2026) — **Guia de véspera da P1** (prova 03/07): plano de ataque
+  de 5–6h calibrado por diagnóstico (Enzo errou as 4 questões-teste; base de cálculo fraca). Blocos com
+  timer: base de cálculo de emergência → classificação → separáveis → fator integrante → autônomas →
+  TEU → modelagem → substituições (opcional) → cola de 1 página + quiz de 8 questões. Contas conferidas
+  no sympy. Meta explícita: garantir ≥ 4,5. **Math pré-renderizado em SVG** (mathjax-full/Node, sem CDN —
+  o tex-svg via CDN não carregou na máquina do Enzo em 02/07; mesmo esquema do Guia 3).
+
 Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matéria difícil).
+
+> **Diagnóstico pré-P1 (02/07/2026):** Enzo errou as 4 questões-diagnóstico (identificação de método,
+> fator integrante, estabilidade, TEU), não resolve separável simples e reporta base de Cálculo fraca —
+> leu apenas parcialmente os Guias 1 e 3. Pós-P1: independente do resultado, planejar revisão de base
+> de Cálculo + estudo espaçado desde o início do conteúdo da P2 (não repetir véspera).
 
 ## Exercícios recomendados pelo professor (do Moodle/aula)
 > Fonte: listas oficiais em gradmat.ufabc.edu.br/disciplinas/iedo. Lista 2 ainda **sem recomendação**.
