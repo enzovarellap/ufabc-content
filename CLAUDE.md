@@ -93,6 +93,20 @@ Cada pasta em `Disciplinas/` tem:
   Guia 3 de EDO. Fica 100% offline, sem CDN. Escrever o guia com `\(`/`\[` normalmente e rodar o passo
   de pré-render no final (des-escapar `&lt;`→`<` dentro do TeX antes de converter).
 
+## Deploy do GitHub Pages (dashboard público) — corrigido em 03/07/2026
+- **Problema:** modo "Deploy from a branch" disparava um deployment do Pages a cada push
+  na `main`, incluindo o commit-bot do `manifest.json` (segundos depois) → dois deployments
+  corriam em paralelo, um cancelava o outro no meio → API do Pages retornava
+  **"Deployment failed, try again later"** de forma intermitente. Foi o que deixou o painel
+  publicado (`enzovarellap.github.io/ufabc-content`) desatualizado.
+- **Correção:** novo workflow `.github/workflows/pages.yml`, deploy via **Actions**
+  (`upload-pages-artifact` + `deploy-pages`), gera `manifest.json` direto no build (sem
+  depender do commit automático) e usa `concurrency: cancel-in-progress: false` (deployments
+  enfileiram, não brigam). `build-manifest.yml` continua existindo só para manter o
+  `manifest.json` versionado atualizado (útil pra abrir `index.html` localmente).
+- **⚠️ Passo manual pendente:** Settings → Pages → Source → trocar de "Deploy from a branch"
+  para **"GitHub Actions"**. Sem isso o workflow novo não assume o deploy.
+
 ## Publicação dos guias (acesso web/celular) — decidido em 08/06/2026
 - **Decisão:** publicar os guias como **site estático privado** (não recriar no Notion —
   perde MathJax/quizzes/tema). Notion fica só como segundo cérebro de anotações.
