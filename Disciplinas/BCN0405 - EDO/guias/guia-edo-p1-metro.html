@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>EDO · Revisão P1 no Metrô</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script>MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+:root{--bg:#0e1419;--bg2:#151c24;--card:#1a2330;--border:#2a3a4d;--border-s:#223040;
+--text:#e7eef5;--dim:#9db0c2;--faint:#6f8398;--accent:#6ea8fe;--accent2:#7ee0c8;--accent3:#c9a4ff;
+--ok:#8ce99a;--warn:#ffd166;--danger:#ff8a8a;--fbg:#11202b;--fbd:#2f7d6b;--r:14px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;
+line-height:1.6;font-size:16px;overflow-x:hidden;padding-bottom:80px}
+a{color:var(--accent);text-decoration:none}
+strong{color:#fff}
+
+/* Top bar */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(14,20,25,.95);backdrop-filter:blur(12px);
+border-bottom:1px solid var(--border-s);padding:12px 16px}
+.topbar h1{margin:0;font-family:'Fraunces';font-size:18px;font-weight:600}
+.topbar .sub{font-size:12px;color:var(--faint)}
+.progress-bar{height:3px;background:var(--border-s);border-radius:2px;margin-top:8px;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+width:0%;transition:width .4s}
+
+/* Tab nav */
+.tabs{position:sticky;top:72px;z-index:40;background:rgba(14,20,25,.95);backdrop-filter:blur(12px);
+display:flex;overflow-x:auto;gap:6px;padding:8px 12px;border-bottom:1px solid var(--border-s);
+-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:7px 14px;border-radius:20px;font-size:13px;font-weight:500;
+border:1px solid var(--border-s);background:transparent;color:var(--dim);cursor:pointer;
+white-space:nowrap;transition:.2s}
+.tab.active{background:var(--accent);color:#0a1520;border-color:var(--accent);font-weight:600}
+.tab .num{display:inline-block;width:18px;height:18px;border-radius:50%;font-size:11px;
+line-height:18px;text-align:center;background:rgba(255,255,255,.15);margin-right:4px}
+.tab.active .num{background:rgba(0,0,0,.2)}
+
+/* Sections */
+.section{display:none;padding:16px;max-width:680px;margin:0 auto}
+.section.active{display:block}
+h2{font-family:'Fraunces';font-size:22px;font-weight:600;margin:0 0 6px;line-height:1.2}
+h3{font-family:'Fraunces';font-size:18px;font-weight:600;margin:18px 0 8px;color:#eaf2fb}
+h4{font-size:14px;color:var(--accent2);margin:14px 0 6px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+p{margin:.4em 0}
+
+/* Cards */
+.intro-card{background:linear-gradient(135deg,#1d2433,#141d27);border:1px solid var(--border);
+border-radius:var(--r);padding:18px;margin-bottom:16px}
+.pill{display:inline-flex;align-items:center;gap:5px;background:#0e1a23;border:1px solid var(--border);
+border-radius:999px;padding:5px 12px;font-size:12px;color:var(--dim);margin:4px 4px 0 0}
+.pill b{color:#fff}
+.pill.hot{border-color:#7a3b3b;background:#241317}.pill.hot b{color:#ffb0b0}
+
+/* Formula */
+.fml{background:var(--fbg);border:1px solid var(--border);border-left:3px solid var(--fbd);
+border-radius:10px;padding:10px 14px;margin:10px 0;overflow-x:auto;font-size:15px}
+.fml.center{text-align:center}
+
+/* Callout */
+.co{border-radius:10px;padding:11px 14px;margin:10px 0;border:1px solid var(--border);border-left-width:3px;
+background:var(--card);font-size:14.5px}
+.co .lb{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.co.note{border-left-color:var(--accent)}.co.note .lb{color:var(--accent)}
+.co.tip{border-left-color:var(--accent2)}.co.tip .lb{color:var(--accent2)}
+.co.warn{border-left-color:var(--warn)}.co.warn .lb{color:var(--warn)}
+.co.danger{border-left-color:var(--danger)}.co.danger .lb{color:var(--danger)}
+.co.key{border-left-color:var(--accent3)}.co.key .lb{color:var(--accent3)}
+
+/* ========== FLASHCARDS ========== */
+.fc-deck{perspective:800px;margin:12px 0}
+.fc{position:relative;width:100%;min-height:180px;cursor:pointer;margin-bottom:12px}
+.fc-inner{position:relative;width:100%;min-height:180px;transition:transform .5s;transform-style:preserve-3d}
+.fc.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-front,.fc-back{border-radius:12px;padding:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.fc-front{background:linear-gradient(135deg,#1a2a3a,#162030);border:1px solid var(--accent);
+display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.fc-back{background:linear-gradient(135deg,#1a302a,#142520);border:1px solid var(--accent2);
+position:absolute;top:0;left:0;right:0;min-height:180px;transform:rotateY(180deg);padding:16px}
+.fc-front .icon{font-size:24px;margin-bottom:8px}
+.fc-front .q{font-size:16px;font-weight:600;color:#fff;line-height:1.4}
+.fc-front .hint{font-size:12px;color:var(--faint);margin-top:10px}
+.fc-back .answer{font-size:14.5px;line-height:1.55}
+.fc-back .tag{font-size:11px;color:var(--accent2);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.fc-counter{text-align:center;font-size:12px;color:var(--faint);margin:4px 0 8px}
+
+/* ========== QUIZ ========== */
+.quiz-q{background:var(--card);border:1px solid var(--border);border-radius:12px;
+padding:16px;margin:12px 0}
+.quiz-q .stem{font-weight:600;font-size:15px;margin-bottom:10px}
+.quiz-q .opts{display:flex;flex-direction:column;gap:8px}
+.quiz-q .opt{text-align:left;background:#0f1a23;border:1px solid var(--border);color:var(--text);
+padding:11px 14px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px;transition:.15s;
+-webkit-appearance:none;appearance:none}
+.quiz-q .opt:active{transform:scale(.98)}
+.quiz-q .opt.right{border-color:var(--ok);background:rgba(140,233,154,.12)}
+.quiz-q .opt.wrong{border-color:var(--danger);background:rgba(255,138,138,.1)}
+.quiz-q .fb{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;
+background:#0c161e;border:1px solid var(--border-s);font-size:13.5px;color:var(--dim);line-height:1.5}
+.quiz-q .fb.show{display:block}
+.quiz-score{text-align:center;padding:16px;background:var(--card);border-radius:12px;
+border:1px solid var(--border);margin:16px 0}
+.quiz-score .big{font-size:36px;font-weight:700;font-family:'Fraunces'}
+
+/* Flowchart */
+.flow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin:12px 0}
+.flow-step{display:flex;align-items:flex-start;gap:10px;margin:8px 0;padding:8px 10px;
+border-radius:8px;border:1px solid var(--border-s);font-size:14px;background:#0f1a23}
+.flow-step .badge{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+font-size:11px;font-weight:700;font-family:'JetBrains Mono'}
+.flow-step .badge.yes{background:rgba(140,233,154,.2);color:var(--ok)}
+.flow-step .badge.no{background:rgba(255,138,138,.2);color:var(--danger)}
+.flow-step .badge.q{background:rgba(110,168,254,.2);color:var(--accent)}
+.flow-arrow{text-align:center;color:var(--faint);font-size:18px;margin:2px 0}
+
+/* Details (examples) */
+details{background:var(--card);border:1px solid var(--border);border-radius:10px;
+margin:10px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 14px;font-weight:600;font-size:14px;
+list-style:none;display:flex;align-items:center;gap:8px;color:#eaf2fb}
+details summary::-webkit-details-marker{display:none}
+details summary .arr{color:var(--accent);transition:transform .2s;font-size:12px}
+details[open] summary .arr{transform:rotate(90deg)}
+.dbody{padding:4px 14px 14px;border-top:1px solid var(--border-s);font-size:14px}
+.stp{margin:8px 0;padding-left:12px;border-left:2px solid var(--border-s)}
+.stp b{color:var(--accent2)}
+
+/* Table */
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--border-s);padding:7px 10px;text-align:left}
+th{background:#172230;color:#eaf2fb;font-weight:600;font-size:12px}
+
+/* Cola section */
+.cola-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+padding:12px 14px;margin:8px 0}
+.cola-card .title{font-weight:700;font-size:13px;color:var(--accent);margin-bottom:4px}
+.cola-card .content{font-size:13.5px;line-height:1.5}
+
+/* Nav buttons */
+.nav-btns{display:flex;gap:10px;margin-top:20px}
+.nav-btn{flex:1;padding:14px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;
+cursor:pointer;border:1px solid var(--border);transition:.2s}
+.nav-btn.prev{background:var(--card);color:var(--text)}
+.nav-btn.next{background:var(--accent);color:#0a1520;border-color:var(--accent)}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn:disabled{opacity:.3;cursor:default;transform:none}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.section.active{animation:fadeIn .3s ease-out}
+
+/* Scroll spacer for last tab target */
+.spacer{height:60px}
+</style>
+</head>
+<body>
+
+<!-- ====== TOP BAR ====== -->
+<div class="topbar">
+  <h1>EDO · Revisao P1 no Metro</h1>
+  <div class="sub">BCN0405 · P1: sexta 03/07 · toque nos cards para virar</div>
+  <div class="progress-bar"><div class="fill" id="pbar"></div></div>
+</div>
+
+<!-- ====== TABS ====== -->
+<div class="tabs" id="tabs">
+  <button class="tab active" data-s="inicio"><span class="num">0</span>Inicio</button>
+  <button class="tab" data-s="fluxo"><span class="num">1</span>Que metodo?</button>
+  <button class="tab" data-s="fund"><span class="num">2</span>Fundamentos</button>
+  <button class="tab" data-s="sep"><span class="num">3</span>Separaveis</button>
+  <button class="tab" data-s="lin"><span class="num">4</span>Lineares</button>
+  <button class="tab" data-s="sub"><span class="num">5</span>Substituicoes</button>
+  <button class="tab" data-s="mod"><span class="num">6</span>Modelagem</button>
+  <button class="tab" data-s="aut"><span class="num">7</span>Autonomas</button>
+  <button class="tab" data-s="teu"><span class="num">8</span>TEU</button>
+  <button class="tab" data-s="cola"><span class="num">9</span>Cola</button>
+  <button class="tab" data-s="quiz"><span class="num">!</span>Quiz Final</button>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 0: INICIO                                         -->
+<!-- ======================================================= -->
+<div class="section active" id="s-inicio">
+  <div class="intro-card">
+    <h2>Revisao completa da P1</h2>
+    <p style="color:var(--dim);font-size:14px">Guia interativo para ler no metro — sem precisar fazer contas. Flashcards, resumos, exemplos e quiz cobrindo <strong>todos os topicos</strong> da P1.</p>
+    <div>
+      <span class="pill hot">P1: <b>sexta 03/07</b></span>
+      <span class="pill">Peso: <b>50%</b></span>
+      <span class="pill">Minimo: <b>4,5</b></span>
+    </div>
+  </div>
+
+  <div class="co tip"><div class="lb">Como usar</div>
+  Navegue pelas abas no topo. Cada secao tem:<br>
+  <strong>Resumo</strong> ultra-curto + <strong>Flashcards</strong> (toque para virar) + <strong>Exemplos</strong> (toque para abrir) + <strong>Quiz</strong> no final. Leia no seu ritmo — 2h da pra cobrir tudo.</div>
+
+  <h3>O que cai na P1</h3>
+  <table>
+    <tr><th>Topico</th><th>Peso provavel</th></tr>
+    <tr><td><b>Classificacao</b></td><td>Leve (1 questao)</td></tr>
+    <tr><td><b>Separaveis</b></td><td>Medio (resolver EDO)</td></tr>
+    <tr><td><b>Lineares 1a ordem</b></td><td>Medio-alto (fator integrante)</td></tr>
+    <tr><td><b>Substituicoes</b></td><td>Medio (Bernoulli/homogenea)</td></tr>
+    <tr><td><b>Modelagem</b></td><td>Alto (Newton, mistura, exponencial)</td></tr>
+    <tr><td><b>Autonomas</b></td><td>Medio (reta de fase, estabilidade)</td></tr>
+    <tr><td><b>TEU</b></td><td>Leve (hipoteses, exemplo classico)</td></tr>
+  </table>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" disabled>Anterior</button>
+    <button class="nav-btn next" onclick="goTab('fluxo')">Comecar revisao →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 1: FLUXOGRAMA DE DECISAO                          -->
+<!-- ======================================================= -->
+<div class="section" id="s-fluxo">
+  <h2>Que metodo usar?</h2>
+  <p style="color:var(--dim);font-size:14px">Olhou a EDO e travou? Siga este fluxo de cima para baixo.</p>
+
+  <div class="flow">
+    <div class="flow-step"><div class="badge q">?</div><div>A EDO e de <strong>1a ordem</strong>? (maior derivada = \(y'\))</div></div>
+    <div class="flow-arrow">↓ Sim</div>
+    <div class="flow-step"><div class="badge q">?</div><div>Da pra <strong>separar</strong> \(g(y)\,dy = h(x)\,dx\)?</div></div>
+    <div class="flow-arrow">↓ Sim → <span style="color:var(--ok)">Separavel!</span> &nbsp;|&nbsp; Nao ↓</div>
+    <div class="flow-step"><div class="badge q">?</div><div>Tem a forma \(y' + P(x)y = Q(x)\)? (linear)</div></div>
+    <div class="flow-arrow">↓ Sim → <span style="color:var(--ok)">Fator integrante!</span> &nbsp;|&nbsp; Nao ↓</div>
+    <div class="flow-step"><div class="badge q">?</div><div>Tem \(y^n\) do lado direito? → \(y'+Py=Qy^n\)</div></div>
+    <div class="flow-arrow">↓ Sim → <span style="color:var(--accent3)">Bernoulli</span> (\(v=y^{1-n}\)) &nbsp;|&nbsp; Nao ↓</div>
+    <div class="flow-step"><div class="badge q">?</div><div>O lado direito depende so de \(y/x\)?</div></div>
+    <div class="flow-arrow">↓ Sim → <span style="color:var(--accent3)">Homogenea</span> (\(v=y/x\)) &nbsp;|&nbsp; Nao ↓</div>
+    <div class="flow-step"><div class="badge q">?</div><div>\(y'=F(ax+by+c)\)?</div></div>
+    <div class="flow-arrow">↓ Sim → <span style="color:var(--accent3)">Subst.</span> \(v=ax+by+c\) &nbsp;|&nbsp; Nao ↓</div>
+    <div class="flow-step"><div class="badge q">?</div><div>Tem \(y^2\) e uma solucao \(y_1\) conhecida?</div></div>
+    <div class="flow-arrow">↓ Sim → <span style="color:var(--accent3)">Riccati</span> (\(y=y_1+1/z\))</div>
+  </div>
+
+  <div class="co key"><div class="lb">Regra de ouro</div>
+  Sempre tente <strong>separavel</strong> primeiro (mais simples), depois <strong>linear</strong> (fator integrante), so entao substituicoes. Na prova, ler o formato da EDO <em>antes</em> de comecar a resolver economiza tempo.</div>
+
+  <h3>Resumo visual: substituicoes</h3>
+  <table>
+    <tr><th>Formato</th><th>Subst.</th><th>Vira</th></tr>
+    <tr><td>\(y'=F(ax+by+c)\)</td><td>\(v=ax+by+c\)</td><td>Separavel</td></tr>
+    <tr><td>\(y'=F(y/x)\)</td><td>\(v=y/x\)</td><td>Separavel</td></tr>
+    <tr><td>\(y'+Py=Qy^n\)</td><td>\(v=y^{1-n}\)</td><td>Linear</td></tr>
+    <tr><td>\(y'+py+qy^2=f\)</td><td>\(y=y_1+1/z\)</td><td>Linear</td></tr>
+  </table>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('inicio')">← Inicio</button>
+    <button class="nav-btn next" onclick="goTab('fund')">Fundamentos →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 2: FUNDAMENTOS                                    -->
+<!-- ======================================================= -->
+<div class="section" id="s-fund">
+  <h2>Fundamentos &amp; Classificacao</h2>
+  <p style="color:var(--dim);font-size:14px">Base de tudo: saber classificar a EDO decide o metodo.</p>
+
+  <h4>Resumo-relampago</h4>
+  <div class="co note"><div class="lb">Ordem</div>= a da <strong>maior derivada</strong>. Nao confunda com grau (potencia da derivada).</div>
+  <div class="co note"><div class="lb">Linear</div>\(y\) e derivadas so na potencia 1, sem produtos entre elas, sem \(\sin y, e^y, y^2\). Coeficientes \(a_i(x)\) podem variar — continua linear!</div>
+  <div class="co note"><div class="lb">Solucao</div>Funcao \(\varphi\) que satisfaz a EDO em todo \(x \in I\). PVI: \(y(x_0)=y_0\) fixa a constante \(C\).</div>
+
+  <h4>Flashcards</h4>
+  <div class="fc-deck">
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📐</div><div class="q">Qual a ORDEM de \(y'' + y' \cdot y = 0\)?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Resposta</div><div class="answer"><strong>2a ordem</strong> — a maior derivada e \(y''\).<br><br>E <strong>nao-linear</strong> porque tem o produto \(y' \cdot y\).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🔍</div><div class="q">\(x^2 y'' - x y' + y = \ln x\) e linear?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Resposta</div><div class="answer"><strong>Sim, e linear de 2a ordem.</strong><br><br>Os coeficientes \(x^2\) e \(-x\) dependem de \(x\), mas isso <em>nao</em> quebra linearidade. O que importa: \(y, y', y''\) estao na potencia 1, sem produtos entre si.</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">⚡</div><div class="q">O que faz uma EDO ser NAO-LINEAR?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Resposta</div><div class="answer">Qualquer uma dessas:<br>• \(y^2\) ou \((y')^3\) — potencia diferente de 1<br>• \(y \cdot y'\) — produto de \(y\) com derivada<br>• \(\sin(y)\), \(e^y\) — funcao nao-linear de \(y\)<br><br>Lembre: \(\sin(x)\), \(x^2\) nos coeficientes <strong>nao</strong> torna nao-linear!</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">✅</div><div class="q">Como VERIFICAR se \(\varphi(x)\) e solucao de uma EDO?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Receita em 4 passos</div><div class="answer"><b>1.</b> Derive \(\varphi\) ate a ordem \(n\)<br><b>2.</b> Substitua \(\varphi\) e suas derivadas na EDO<br><b>3.</b> Confira que vira identidade (0=0)<br><b>4.</b> Diga o intervalo \(I\) onde tudo e continuo<br><br>Ex: \(y=e^{-3t}\) em \(y''+2y'-3y=0\): substitua, some, obtenha 0. ✓</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🎯</div><div class="q">Qual a diferenca entre forma GERAL e forma NORMAL?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Resposta</div><div class="answer"><strong>Geral (implicita):</strong> \(F(x,y,y',\dots,y^{(n)})=0\)<br><br><strong>Normal:</strong> maior derivada isolada:<br>\(y^{(n)} = f(x,y,y',\dots,y^{(n-1)})\)<br><br>Para 1a ordem: \(y' = f(x,y)\). A forma normal e a que usamos para decidir o metodo.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('fluxo')">← Fluxograma</button>
+    <button class="nav-btn next" onclick="goTab('sep')">Separaveis →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 3: SEPARAVEIS                                     -->
+<!-- ======================================================= -->
+<div class="section" id="s-sep">
+  <h2>Equacoes Separaveis</h2>
+  <p style="color:var(--dim);font-size:14px">O metodo mais direto. Se da pra separar \(x\) de \(y\), e separavel.</p>
+
+  <h4>Resumo-relampago</h4>
+  <div class="fml center">\[ \frac{dy}{dx} = \frac{g(x)}{h(y)} \;\Longrightarrow\; h(y)\,dy = g(x)\,dx \;\Longrightarrow\; \int h(y)\,dy = \int g(x)\,dx + C \]</div>
+
+  <div class="co warn"><div class="lb">Erro classico</div>
+  Ao dividir por \(h(y)\), voce pode <strong>perder solucoes constantes</strong>. Em \(y'=2xy\), dividir por \(y\) esconde \(y=0\). Sempre cheque!</div>
+
+  <h4>Flashcards</h4>
+  <div class="fc-deck">
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🧪</div><div class="q">\(y' = 2xy\) — qual o metodo e a solucao geral?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Separavel</div><div class="answer">Separe: \(\frac{dy}{y}=2x\,dx\)<br><br>Integre: \(\ln|y|=x^2+c\)<br><br>Exponencie: \(y = ke^{x^2}\)<br><br>Com \(k=0\) recupera \(y=0\) (solucao perdida).<br>Geral: \(\boxed{y=ke^{x^2}}\)</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🔄</div><div class="q">Receita SEPARAVEL em 4 passos</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Receita</div><div class="answer"><b>1.</b> Separe: \(h(y)\,dy = g(x)\,dx\)<br><b>2.</b> Integre os dois lados (+C)<br><b>3.</b> PVI? Use \(y(x_0)=y_0\) para achar C<br><b>4.</b> Isole \(y\) (se der) e defina o dominio \(I\)<br><br><span style="color:var(--danger)">Nao esqueca: cheque \(y\) que zeram o denominador!</span></div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">❓</div><div class="q">\(y' = 1 + xy\) e separavel?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Resposta</div><div class="answer"><strong>Nao!</strong><br><br>\(1+xy\) nao fatora como \(f(x) \cdot g(y)\). A soma \(1 + xy\) mistura \(x\) e \(y\) de forma inseparavel.<br><br>Compare: \(y'=x^2 y^2 = (x^2)(y^2)\) — esse sim e separavel.</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📝</div><div class="q">PVI: \(\sin(x)\,dx + y\,dy = 0\), \(y(0)=-2\). Solucao?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Lista 1, ex. 5(c)</div><div class="answer">Separe: \(y\,dy = -\sin(x)\,dx\)<br><br>Integre: \(\frac{y^2}{2}=\cos x + C\)<br><br>PVI: \(\frac{4}{2}=1+C \Rightarrow C=1\)<br><br>\(y^2=2\cos x+2\). Como \(y(0)=-2<0\):<br>\(\boxed{y=-\sqrt{2\cos x+2}}\)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <details><summary><span class="arr">▶</span> Exemplo detalhado: fatorar \(x^2y'=1-x^2+y^2-x^2y^2\)</summary>
+  <div class="dbody">
+    <div class="stp"><b>Pulo:</b> \(1-x^2+y^2-x^2y^2 = (1-x^2)(1+y^2)\)</div>
+    <div class="stp"><b>Separe:</b> \(\frac{dy}{1+y^2} = \frac{1-x^2}{x^2}\,dx = \left(\frac{1}{x^2}-1\right)dx\)</div>
+    <div class="stp"><b>Integre:</b> \(\arctan(y)=-\frac{1}{x}-x+C\)</div>
+    <p style="font-size:13px;color:var(--dim)">Fica implicita — nem sempre da pra isolar \(y\), e tudo bem.</p>
+  </div></details>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('fund')">← Fundamentos</button>
+    <button class="nav-btn next" onclick="goTab('lin')">Lineares →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 4: LINEARES DE 1a ORDEM                           -->
+<!-- ======================================================= -->
+<div class="section" id="s-lin">
+  <h2>Lineares de 1a ordem</h2>
+  <p style="color:var(--dim);font-size:14px">O metodo do <strong>fator integrante</strong> — essencial para a P1.</p>
+
+  <h4>Resumo-relampago</h4>
+  <div class="fml center">\[ y' + P(x)\,y = Q(x) \quad\xrightarrow{\mu=e^{\int P\,dx}}\quad (\mu y)' = \mu Q \quad\Rightarrow\quad y = \frac{1}{\mu}\left(\int \mu Q\,dx + C\right) \]</div>
+
+  <div class="co danger"><div class="lb">Erro #1 da P1</div>
+  O \(C\) fica <strong>dentro</strong> dos parenteses e e dividido por \(\mu\)! Nao jogue o \(C\) fora.</div>
+  <div class="co warn"><div class="lb">Passo zero obrigatorio</div>
+  Coloque na <strong>forma padrao</strong> \(y'+Py=Q\) primeiro. Se a equacao for \(2y'+4y=6x\), divida tudo por 2 antes de achar \(\mu\).</div>
+
+  <h4>Flashcards</h4>
+  <div class="fc-deck">
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🔑</div><div class="q">De onde vem o fator integrante \(\mu = e^{\int P\,dx}\)?</div><div class="hint">toque para ver a deducao</div></div>
+        <div class="fc-back"><div class="tag">Deducao</div><div class="answer"><b>1.</b> Multiplique \(y'+Py=Q\) por \(u(x)\):<br>\(uy'+uPy = uQ\)<br><br><b>2.</b> Queremos que o lado esq. = \((uy)' = uy'+u'y\)<br><br><b>3.</b> Comparando: \(u'y = uPy \Rightarrow u'=Pu\)<br><br><b>4.</b> Isso e separavel! \(\frac{u'}{u}=P \Rightarrow \ln u = \int P\,dx\)<br><br><b>5.</b> \(\boxed{\mu = e^{\int P\,dx}}\)</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📋</div><div class="q">Receita FATOR INTEGRANTE em 4 passos</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Receita</div><div class="answer"><b>0.</b> Forma padrao: \(y'+Py=Q\)<br><b>1.</b> Calcule \(\mu = e^{\int P\,dx}\)<br><b>2.</b> Multiplique: \((\mu y)' = \mu Q\)<br><b>3.</b> Integre e isole: \(y=\frac{1}{\mu}\left(\int\mu Q\,dx + C\right)\)<br><br>Se tiver PVI, aplique \(y(x_0)=y_0\) para achar \(C\).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📊</div><div class="q">\(y'+y=x\) — qual a solucao?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Aula 3</div><div class="answer">\(P=1, Q=x\). \(\mu=e^x\).<br><br>\((e^x y)' = xe^x\)<br><br>Integra por partes: \(\int xe^x dx = e^x(x-1)\)<br><br>\(e^x y = e^x(x-1)+C\)<br><br>\(\boxed{y = x-1+Ce^{-x}}\)<br><br>Quando \(x\to\infty\): \(y\approx x-1\) (transiente \(Ce^{-x}\to0\)).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">💡</div><div class="q">O que e "transiente" vs "estacionario" na solucao?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Conceito</div><div class="answer">Solucao = <strong>homogenea</strong> (transiente) + <strong>particular</strong> (estacionaria).<br><br>Em \(y=x-1+Ce^{-x}\):<br>• \(Ce^{-x}\) = transiente (some com o tempo)<br>• \(x-1\) = estacionario (fica para sempre)<br><br>Se \(P>0\) constante, o transiente \(\to 0\).<br>Se \(P<0\), o transiente <strong>explode</strong>!</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">⚠️</div><div class="q">PVI: \(y'-y=2te^{2t}\), \(y(0)=1\)</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Lista 1, ex. 7(a)</div><div class="answer">\(P=-1\), \(\mu=e^{-t}\).<br>\((e^{-t}y)'=2te^t\)<br><br>\(\int 2te^t dt = 2e^t(t-1)\)<br><br>\(e^{-t}y = 2e^t(t-1)+C\)<br>\(y = 2e^{2t}(t-1)+Ce^t\)<br><br>PVI: \(y(0)=2(-1)+C=1 \Rightarrow C=3\)<br>\(\boxed{y=2e^{2t}(t-1)+3e^t}\)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('sep')">← Separaveis</button>
+    <button class="nav-btn next" onclick="goTab('sub')">Substituicoes →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 5: SUBSTITUICOES                                  -->
+<!-- ======================================================= -->
+<div class="section" id="s-sub">
+  <h2>Metodos de Substituicao</h2>
+  <p style="color:var(--dim);font-size:14px">Quando nao e separavel nem linear, uma troca de variavel transforma a EDO.</p>
+
+  <h4>Resumo-relampago</h4>
+  <table>
+    <tr><th>Tipo</th><th>Substitui</th><th>Resultado</th></tr>
+    <tr><td>\(y'=F(ax+by+c)\)</td><td>\(v=ax+by+c\)</td><td>Separavel</td></tr>
+    <tr><td>Homogenea \(y'=F(y/x)\)</td><td>\(v=y/x\), logo \(y=vx\)</td><td>Separavel</td></tr>
+    <tr><td>Bernoulli \(y'+Py=Qy^n\)</td><td>\(v=y^{1-n}\)</td><td>Linear</td></tr>
+    <tr><td>Riccati \(y'+py+qy^2=f\)</td><td>\(y=y_1+1/z\)</td><td>Linear</td></tr>
+  </table>
+
+  <h4>Flashcards</h4>
+  <div class="fc-deck">
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🏠</div><div class="q">HOMOGENEA: Como reconhecer e qual a substituicao?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Homogenea</div><div class="answer"><strong>Reconhecer:</strong> o lado direito depende so de \(y/x\).<br>Teste: troque \((x,y)\to(tx,ty)\) — se nada muda, e homogenea.<br><br><strong>Substituicao:</strong> \(v=y/x \Rightarrow y=vx \Rightarrow y'=v+xv'\)<br><br>Substituindo: \(v+xv'=F(v)\)<br>\(\Rightarrow xv'=F(v)-v\) — <strong>separavel!</strong><br><br>No fim, volte com \(y=vx\).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🔥</div><div class="q">BERNOULLI: \(y'+Py=Qy^n\). Como linearizar?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Bernoulli</div><div class="answer"><b>1.</b> Divida tudo por \(y^n\): \(y^{-n}y'+Py^{1-n}=Q\)<br><br><b>2.</b> Faca \(v=y^{1-n}\), entao \(v'=(1-n)y^{-n}y'\)<br><br><b>3.</b> Substitua: \(\frac{v'}{1-n}+Pv=Q\)<br>\(\Rightarrow v'+(1-n)Pv=(1-n)Q\) — <strong>linear!</strong><br><br><b>4.</b> Resolva por fator integrante<br><b>5.</b> Volte com \(y=v^{1/(1-n)}\)<br><br>Cuidado com o sinal de \((1-n)\)!</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">⭐</div><div class="q">RICCATI: Por que precisa conhecer \(y_1\)?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Riccati</div><div class="answer">A equacao \(y'+py+qy^2=f\) tem \(y^2\) E termo livre \(f\).<br><br>Sem \(y_1\), a troca nao cancela o \(f\). Com \(y_1\):<br><br>\(y=y_1+1/z \Rightarrow\) os termos com \(y_1\) viram \(f\) e se cancelam.<br><br>Sobra: \(z'-(p+2qy_1)z = q\) — <strong>linear em \(z\)!</strong><br><br>Resolva e volte: \(y=y_1+1/z\).<br><br>O \(y_1\) sempre vem dado no enunciado.</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📝</div><div class="q">Exemplo: \(y'-y/x = -y^2/x\). Que metodo?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Bernoulli, n=2</div><div class="answer">\(y'-\frac{1}{x}y = -\frac{1}{x}y^2\) → Bernoulli com \(n=2\).<br><br>\(v=y^{-1}\), \(v'=-y^{-2}y'\).<br>Multiplicar por \(y^{-2}\): \(-v'-\frac{v}{x}=-\frac{1}{x}\)<br>\(\Rightarrow v'+\frac{v}{x}=\frac{1}{x}\) (linear!)<br><br>\(\mu=x\): \((xv)'=1 \Rightarrow xv=x+C\)<br>\(v=(x+C)/x\)<br><br>\(\boxed{y=\frac{x}{x+C}}\)</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">⚠️</div><div class="q">NAO confunda os dois significados de "HOMOGENEA"</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Armadilha</div><div class="answer">Na 1a ordem: <strong>homogenea = lado direito e \(F(y/x)\)</strong> → subst. \(v=y/x\).<br><br>Na 2a ordem (P2): "homogenea" = \(g(x)=0\) na linear.<br><br>Mesmo nome, conceitos <strong>totalmente diferentes</strong>. Na P1, o contexto e sempre \(F(y/x)\).</div></div>
+      </div>
+    </div>
+  </div>
+
+  <details><summary><span class="arr">▶</span> Exemplo: homogenea \(xy\,y' = x^2+y^2\)</summary>
+  <div class="dbody">
+    <div class="stp"><b>Reescreva:</b> \(y' = \frac{x}{y}+\frac{y}{x} = \frac{1}{v}+v\) com \(v=y/x\). E homogenea.</div>
+    <div class="stp"><b>Substitua:</b> \(v+xv'=\frac{1}{v}+v \Rightarrow xv'=\frac{1}{v}\)</div>
+    <div class="stp"><b>Separe:</b> \(v\,dv = \frac{dx}{x} \Rightarrow \frac{v^2}{2}=\ln|x|+C\)</div>
+    <div class="stp"><b>Volte:</b> \(\frac{y^2}{x^2}=\ln x^2+C \Rightarrow y^2=x^2(\ln x^2+C)\)</div>
+  </div></details>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('lin')">← Lineares</button>
+    <button class="nav-btn next" onclick="goTab('mod')">Modelagem →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 6: MODELAGEM                                      -->
+<!-- ======================================================= -->
+<div class="section" id="s-mod">
+  <h2>Modelagem de 1a ordem</h2>
+  <p style="color:var(--dim);font-size:14px">A ideia unica: \(\frac{dx}{dt} = \text{entrada} - \text{saida}\). Montar a EDO corretamente e metade da questao.</p>
+
+  <h4>Resumo-relampago: os 5 modelos</h4>
+  <div class="co note"><div class="lb">A. Exponencial</div>
+  \(x'=kx \Rightarrow x=x_0 e^{kt}\). Se \(k>0\): cresce. Se \(k<0\): decai.<br>
+  Meia-vida: \(k = -\frac{\ln 2}{T}\). Datacao: \(t = \frac{1}{k}\ln\frac{Q}{Q_0}\).</div>
+
+  <div class="co note"><div class="lb">B. Resfriamento de Newton</div>
+  \(T' = k(T-T_m) \Rightarrow T(t) = T_m + (T_0-T_m)e^{kt}\), com \(k<0\).<br>
+  Quando \(t\to\infty\): \(T\to T_m\) (temperatura ambiente).</div>
+
+  <div class="co note"><div class="lb">C. Crescimento limitado</div>
+  \(x' = k(A-x) \Rightarrow x(t) = A-(A-x_0)e^{-kt}\). Tende ao teto \(A\).</div>
+
+  <div class="co note"><div class="lb">D. Gompertz</div>
+  \(P' = rP\ln\!\left(\frac{K}{P}\right) \Rightarrow P\to K\). Usado em tumores/populacao. Crescimento desacelera com \(\ln(K/P)\).</div>
+
+  <div class="co note"><div class="lb">E. Mistura em tanque</div>
+  \(Q' = r_e c_e - r_s \frac{Q}{V(t)}\), com \(V(t)=V_0+(r_e-r_s)t\).<br>
+  Se \(r_e=r_s\): volume constante (separavel ou linear simples).<br>
+  Se \(r_e\neq r_s\): linear de coeficiente variavel (fator integrante).</div>
+
+  <h4>Flashcards</h4>
+  <div class="fc-deck">
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">☕</div><div class="q">Cafe a 90°, ambiente 22°, apos 5min esta a 70°. Quando chega a 50°?</div><div class="hint">toque para ver a resolucao</div></div>
+        <div class="fc-back"><div class="tag">Newton — Exemplo classico</div><div class="answer">\(T(t)=22+68e^{kt}\)<br><br><b>Achar k:</b> \(T(5)=70\): \(68e^{5k}=48\)<br>\(k=\frac{1}{5}\ln\frac{48}{68}\approx -0{,}0697\)<br><br><b>Resolver:</b> \(T(t)=50\): \(68e^{kt}=28\)<br>\(t=\frac{\ln(28/68)}{k}\approx \mathbf{12{,}7\text{ min}}\)<br><br>Longo prazo: \(T\to 22°\) (ambiente).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🧂</div><div class="q">Como montar a EDO de MISTURA em tanque?</div><div class="hint">toque para ver a receita</div></div>
+        <div class="fc-back"><div class="tag">Receita mistura</div><div class="answer"><b>1.</b> Defina \(Q(t)\) = massa de soluto no tanque<br><b>2.</b> Entrada = \(r_e \times c_e\) (vazao × concentracao)<br><b>3.</b> Saida = \(r_s \times \frac{Q}{V(t)}\) (vazao × conc. no tanque)<br><b>4.</b> \(V(t)=V_0+(r_e-r_s)t\)<br><b>5.</b> \(\frac{dQ}{dt} = r_ec_e - r_s\frac{Q}{V(t)}\)<br><br>Se \(r_e=r_s\): V constante → separavel<br>Se \(r_e\neq r_s\): V varia → linear coef. variavel</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">☢️</div><div class="q">C-14 tem meia-vida 5600 anos. Qual o valor de k?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Decaimento</div><div class="answer">\(Q'=kQ \Rightarrow Q=Q_0 e^{kt}\)<br><br>Meia-vida: \(e^{kT}=\frac{1}{2}\)<br>\(kT = \ln\frac{1}{2} = -\ln 2\)<br><br>\(\boxed{k = -\frac{\ln 2}{5600} \approx -1{,}24 \times 10^{-4}}\)<br><br>Para datar: \(t = \frac{1}{k}\ln\frac{Q}{Q_0}\)</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🐀</div><div class="q">Ratos: crescem a \(k=0{,}5\)/mes, corujas comem 450/mes. Qual o equilibrio?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Modelo com predacao</div><div class="answer">\(\frac{dP}{dt}=0{,}5P-450\)<br><br>Equilibrio: \(0{,}5P-450=0 \Rightarrow \boxed{P=900}\)<br><br>Solucao: \(P(t)=900+Ce^{0{,}5t}\)<br><br>• \(P<900\): decresce (corujas dominam)<br>• \(P>900\): cresce (reproducao domina)<br>• 900 e <strong>instavel</strong> (perturbacao afasta)</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🧪</div><div class="q">Tanque: 1000L agua pura, entra 6L/min com 0,1 kg/L, sai 6L/min. Quando conc.=0,05?</div><div class="hint">toque para ver a resolucao</div></div>
+        <div class="fc-back"><div class="tag">Vol. constante</div><div class="answer">\(Q'=0{,}6-0{,}006Q\), \(Q(0)=0\).<br>\(r_e=r_s=6 \Rightarrow V=1000\) (cte).<br><br>Solucao: \(Q(t)=100(1-e^{-0{,}006t})\)<br><br>Conc.=0,05 → \(Q=50\):<br>\(50=100(1-e^{-0{,}006t})\)<br>\(e^{-0{,}006t}=\frac{1}{2}\)<br>\(\boxed{t=\frac{\ln 2}{0{,}006}\approx 115{,}5\text{ min}}\)<br><br>Equilibrio: \(Q\to100\) kg (conc→0,1).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📈</div><div class="q">Qual a diferenca entre exponencial, Newton e limitado?</div><div class="hint">toque para ver a comparacao</div></div>
+        <div class="fc-back"><div class="tag">Comparacao</div><div class="answer"><b>Exponencial:</b> \(x'=kx\) — crescimento/decaimento sem limite<br><br><b>Newton:</b> \(T'=k(T-T_m)\) — tende a \(T_m\) (ambiente). Mesma estrutura que limitado mas com diferenca.<br><br><b>Limitado:</b> \(x'=k(A-x)\) — tende ao teto \(A\).<br><br>Newton e limitado sao o <strong>mesmo tipo de EDO</strong>! A forma e \(y'=k(\text{alvo}-y)\). Equilibrio = o alvo.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="co tip"><div class="lb">Dica de prova</div>
+  O professor adora mistura em tanque e Newton. Monte a EDO com cuidado, identifique se e separavel ou linear, e resolva. Metade dos pontos vem de <strong>montar a EDO corretamente</strong>.</div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('sub')">← Substituicoes</button>
+    <button class="nav-btn next" onclick="goTab('aut')">Autonomas →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 7: AUTONOMAS                                      -->
+<!-- ======================================================= -->
+<div class="section" id="s-aut">
+  <h2>Equacoes Autonomas</h2>
+  <p style="color:var(--dim);font-size:14px">Quando \(y'=f(y)\) — o lado direito so depende de \(y\). O sinal de \(f\) conta toda a historia.</p>
+
+  <h4>Resumo-relampago</h4>
+  <div class="co key"><div class="lb">A chave</div>
+  \(f(y)>0 \Rightarrow y\) cresce · \(f(y)<0 \Rightarrow y\) decresce · \(f(y)=0 \Rightarrow y\) constante (equilibrio).<br>
+  Nenhuma solucao cruza um equilibrio (pelo TEU).</div>
+
+  <table>
+    <tr><th>Tipo</th><th>Setas</th><th>Teste</th></tr>
+    <tr><td><b>Estavel</b> (atrator)</td><td>→ • ← convergem</td><td>\(f'(c)<0\)</td></tr>
+    <tr><td><b>Instavel</b> (repulsor)</td><td>← • → divergem</td><td>\(f'(c)>0\)</td></tr>
+    <tr><td><b>Semiestavel</b></td><td>→ • → mesmo lado</td><td>\(f'(c)=0\), checar sinal</td></tr>
+  </table>
+
+  <h4>Roteiro: analise qualitativa (5 passos)</h4>
+  <div class="co note"><div class="lb">Roteiro</div>
+  <b>1.</b> Resolva \(f(y)=0\) → equilibrios<br>
+  <b>2.</b> Sinal de \(f(y)\) em cada intervalo<br>
+  <b>3.</b> Monte a reta de fase (setas ↑↓)<br>
+  <b>4.</b> Classifique: estavel/instavel/semi<br>
+  <b>5.</b> Esboce curvas; inflexao onde \(f'(y)=0\)</div>
+
+  <h4>Flashcards</h4>
+  <div class="fc-deck">
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📉</div><div class="q">\(y'=y(1-y)\) — quais os equilibrios e a estabilidade?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Logistica classica</div><div class="answer"><b>Equilibrios:</b> \(f(y)=y(1-y)=0 \Rightarrow y=0, y=1\)<br><br><b>Sinal:</b><br>• \(y<0\): \(f<0\) (↓)<br>• \(0<y<1\): \(f>0\) (↑)<br>• \(y>1\): \(f<0\) (↓)<br><br><b>Reta:</b> ↓ 0 ↑ 1 ↓<br><br>\(f'(y)=1-2y\):<br>• \(f'(0)=1>0\) → <strong>instavel</strong><br>• \(f'(1)=-1<0\) → <strong>estavel</strong><br><br>Toda solucao com \(y_0>0\) tende a 1. Inflexao em \(y=1/2\).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🔲</div><div class="q">\(y'=(y-1)^2\) — que tipo de equilibrio e \(y=1\)?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Semiestavel</div><div class="answer">\(f(y)=(y-1)^2 \geq 0\) sempre.<br><br>Equilibrio: \(y=1\) (raiz dupla).<br><br>Sinal: \(f>0\) tanto para \(y<1\) quanto \(y>1\).<br><br>Reta de fase: ↑ 1 ↑ (ambas sobem).<br><br>\(f'(1)=0\) → nao decide. Pelo sinal: sobe dos dois lados → <strong>semiestavel</strong>.<br><br>Solucoes abaixo de 1 sobem ate 1; acima de 1 sobem e se afastam.</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🤔</div><div class="q">Toda autonoma e separavel. Entao por que fazer reta de fase?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Insight</div><div class="answer">\(y'=f(y)\) separa em \(dy/f(y)=dx\), mas:<br><br>• A integral pode ser impossivel em forma fechada<br>• Muitas vezes so queremos o <strong>comportamento qualitativo</strong><br><br>A reta de fase entrega equilibrios, estabilidade e limites quando \(x\to\infty\) <strong>sem resolver nada</strong>.<br><br>Na prova: se pedir analise qualitativa, <strong>nao resolva</strong> — use a reta de fase.</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🔗</div><div class="q">Por que nenhuma solucao CRUZA uma solucao de equilibrio?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">TEU</div><div class="answer">Pelo <strong>Teorema de Existencia e Unicidade</strong>: se \(f\) e \(\partial f/\partial y\) sao continuas, a solucao que passa por um ponto e unica.<br><br>Se uma curva-solucao tocasse a reta \(y=c\) (equilibrio), teriamos duas solucoes passando pelo mesmo ponto — contradiz unicidade.<br><br>Equilibrios funcionam como <strong>"paredes"</strong> que as solucoes nao atravessam.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('mod')">← Modelagem</button>
+    <button class="nav-btn next" onclick="goTab('teu')">TEU →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 8: TEU                                            -->
+<!-- ======================================================= -->
+<div class="section" id="s-teu">
+  <h2>Teorema de Existencia e Unicidade</h2>
+  <p style="color:var(--dim);font-size:14px">Picard-Lindelof: quando a EDO tem solucao e quando essa solucao e unica.</p>
+
+  <h4>Resumo-relampago</h4>
+  <div class="fml">
+  <strong>TEU (Picard-Lindelof):</strong> Dado o PVI \(y'=f(x,y),\ y(x_0)=y_0\):<br><br>
+  Se \(f\) e \(\dfrac{\partial f}{\partial y}\) sao <strong>continuas</strong> numa vizinhanca retangular de \((x_0,y_0)\),<br>
+  entao <strong>existe uma unica</strong> solucao local passando por esse ponto.
+  </div>
+
+  <h4>Flashcards</h4>
+  <div class="fc-deck">
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">📜</div><div class="q">Quais as DUAS hipoteses do TEU?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Hipoteses</div><div class="answer"><b>1. Existencia:</b> \(f(x,y)\) continua perto de \((x_0,y_0)\) → <strong>existe</strong> pelo menos uma solucao.<br><br><b>2. Unicidade:</b> \(\frac{\partial f}{\partial y}\) tambem continua perto de \((x_0,y_0)\) → a solucao e <strong>unica</strong>.<br><br>Se so (1) vale: pode haver mais de uma solucao!<br>Se (1) e (2) valem: solucao unica local.</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">💥</div><div class="q">\(y'=y^{1/3}\), \(y(0)=0\). Unicidade vale?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Exemplo classico de falha</div><div class="answer">\(f(y)=y^{1/3}\) e continua em toda parte → <strong>existencia OK</strong>.<br><br>Mas \(\frac{\partial f}{\partial y}=\frac{1}{3}y^{-2/3}\) → <strong>nao e continua em \(y=0\)</strong> (explode!).<br><br>Resultado: unicidade <strong>falha</strong>. De fato, tanto \(y=0\) quanto \(y=\left(\frac{2x}{3}\right)^{3/2}\) resolvem o PVI. Duas solucoes distintas!<br><br>Este e <strong>o</strong> exemplo que cai na prova.</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🎯</div><div class="q">Quando o TEU garante solucao unica para EDOs LINEARES?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Caso linear</div><div class="answer">Para \(y'+P(x)y=Q(x)\): se \(P\) e \(Q\) sao continuas num intervalo \(I\) contendo \(x_0\), o TEU garante solucao unica em <strong>todo</strong> \(I\) (nao so local).<br><br>EDOs lineares sao "bem comportadas" — o TEU da resultado mais forte.<br><br>Nao-lineares: solucao so local (pode explodir em tempo finito).</div></div>
+      </div>
+    </div>
+    <div class="fc" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="icon">🧩</div><div class="q">TEU + Autonomas: por que equilibrios sao "paredes"?</div><div class="hint">toque para ver a resposta</div></div>
+        <div class="fc-back"><div class="tag">Conexao</div><div class="answer">Se \(y=c\) e equilibrio (\(f(c)=0\)) e o TEU vale no ponto:<br><br>Entao a solucao por \((x_0,c)\) e <strong>unica</strong> = a constante \(y=c\).<br><br>Nenhuma outra curva-solucao pode tocar \(y=c\), senao teriamos duas solucoes pelo mesmo ponto → contradiz unicidade.<br><br>Por isso as setas da reta de fase nunca cruzam os pontos de equilibrio.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="co tip"><div class="lb">Na prova</div>
+  O TEU costuma aparecer como: "Verifique se o PVI tem solucao unica" → cheque se \(f\) e \(\partial f/\partial y\) sao continuas no ponto dado. Se \(\partial f/\partial y\) explode (como em \(y^{1/3}\) com \(y=0\)), aponte a falha.</div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('aut')">← Autonomas</button>
+    <button class="nav-btn next" onclick="goTab('cola')">Cola Final →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 9: COLA FINAL                                     -->
+<!-- ======================================================= -->
+<div class="section" id="s-cola">
+  <h2>Cola de 1 pagina</h2>
+  <p style="color:var(--dim);font-size:14px">Tudo que voce precisa, condensado. Leia isso nos ultimos 10 minutos antes da prova.</p>
+
+  <div class="cola-card">
+    <div class="title">Separavel</div>
+    <div class="content">\(g(y)\,dy = h(x)\,dx\) → integra dos dois lados. Cheque \(y\) que zera o denominador (solucoes perdidas).</div>
+  </div>
+  <div class="cola-card">
+    <div class="title">Linear 1a ordem</div>
+    <div class="content">\(y'+Py=Q\). Fator: \(\mu=e^{\int P\,dx}\). Entao \((\mu y)'=\mu Q\). Solucao: \(y=\frac{1}{\mu}\big(\int\mu Q\,dx + C\big)\). O \(C\) e dividido por \(\mu\)!</div>
+  </div>
+  <div class="cola-card">
+    <div class="title">Substituicoes</div>
+    <div class="content">
+    <b>\(F(ax+by+c)\):</b> \(v=ax+by+c \Rightarrow v'=bF(v)+a\) (separavel).<br>
+    <b>Homogenea:</b> \(v=y/x\), \(y=vx\), \(y'=v+xv'\) → separavel.<br>
+    <b>Bernoulli:</b> \(v=y^{1-n}\) → linear. Cuidado com sinal de \((1-n)\).<br>
+    <b>Riccati:</b> \(y=y_1+1/z\) → linear em \(z\). Precisa de \(y_1\) dado.
+    </div>
+  </div>
+  <div class="cola-card">
+    <div class="title">Modelo exponencial</div>
+    <div class="content">\(x'=kx \Rightarrow x=x_0 e^{kt}\). Meia-vida: \(k=-\ln 2/T\).</div>
+  </div>
+  <div class="cola-card">
+    <div class="title">Resfriamento de Newton</div>
+    <div class="content">\(T'=k(T-T_m) \Rightarrow T=T_m+(T_0-T_m)e^{kt}\). Eq: \(T\to T_m\). Use 2 dados para achar \(k\), depois resolva.</div>
+  </div>
+  <div class="cola-card">
+    <div class="title">Mistura em tanque</div>
+    <div class="content">\(Q'=r_ec_e - r_s\frac{Q}{V(t)}\). Vol: \(V(t)=V_0+(r_e-r_s)t\). Se \(r_e=r_s\): separavel. Se nao: linear coef. variavel.</div>
+  </div>
+  <div class="cola-card">
+    <div class="title">Autonoma \(y'=f(y)\)</div>
+    <div class="content">Equilibrio: \(f(c)=0\). Estavel se \(f'(c)<0\), instavel se \(f'(c)>0\), semi se \(f'(c)=0\) (checar sinal). Setas: \(f>0\)↑, \(f<0\)↓.</div>
+  </div>
+  <div class="cola-card">
+    <div class="title">TEU (Picard-Lindelof)</div>
+    <div class="content">\(f\) e \(\partial f/\partial y\) continuas perto de \((x_0,y_0)\) → existe solucao unica local. Falha classica: \(y'=y^{1/3}\) em \(y=0\) (\(\partial f/\partial y\) explode).</div>
+  </div>
+
+  <div class="co warn"><div class="lb">Erros que derrubam nota</div>
+  1. Forma padrao esquecida (linear)<br>
+  2. \(+C\) no lugar errado<br>
+  3. Solucao constante perdida (separavel)<br>
+  4. Volume variavel esquecido (mistura)<br>
+  5. Nao voltar de \(v\) para \(y\) (substituicao)<br>
+  6. Confundir ordem com grau
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('teu')">← TEU</button>
+    <button class="nav-btn next" onclick="goTab('quiz')">Quiz Final →</button>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECAO 10: QUIZ FINAL                                    -->
+<!-- ======================================================= -->
+<div class="section" id="s-quiz">
+  <h2>Quiz Final — Teste seus conhecimentos</h2>
+  <p style="color:var(--dim);font-size:14px">20 perguntas cobrindo toda a P1. Tente acertar pelo menos 16.</p>
+
+  <div id="quiz-area">
+
+  <div class="quiz-q" data-a="1">
+    <div class="stem">1. \(y'' + \sin(y) = 0\) e:</div>
+    <div class="opts">
+      <button class="opt">a) Linear de 2a ordem</button>
+      <button class="opt">b) Nao-linear de 2a ordem</button>
+      <button class="opt">c) Nao-linear de 1a ordem</button>
+    </div>
+    <div class="fb">Nao-linear de 2a ordem: o \(\sin(y)\) torna nao-linear, e a maior derivada e \(y''\).</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">2. Para resolver \(y'+3y=e^x\), o fator integrante e:</div>
+    <div class="opts">
+      <button class="opt">a) \(\mu = e^{3x}\)</button>
+      <button class="opt">b) \(\mu = e^{-3x}\)</button>
+      <button class="opt">c) \(\mu = 3x\)</button>
+    </div>
+    <div class="fb">\(P=3\), entao \(\mu = e^{\int 3\,dx} = e^{3x}\).</div>
+  </div>
+
+  <div class="quiz-q" data-a="2">
+    <div class="stem">3. Em equacoes separaveis, dividir por \(h(y)\) pode:</div>
+    <div class="opts">
+      <button class="opt">a) Criar solucoes extras</button>
+      <button class="opt">b) Mudar a ordem da EDO</button>
+      <button class="opt">c) Perder solucoes constantes</button>
+    </div>
+    <div class="fb">Dividir por \(h(y)\) descarta os \(y\) que zeram \(h\) — essas sao solucoes constantes perdidas. Sempre cheque!</div>
+  </div>
+
+  <div class="quiz-q" data-a="1">
+    <div class="stem">4. \(y' = \frac{x^2+y^2}{xy}\) e melhor resolvida como:</div>
+    <div class="opts">
+      <button class="opt">a) Linear de 1a ordem</button>
+      <button class="opt">b) Homogenea (\(v=y/x\))</button>
+      <button class="opt">c) Separavel</button>
+    </div>
+    <div class="fb">Reescreva: \(y'=x/y+y/x=1/v+v\) — depende so de \(y/x\), logo homogenea.</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">5. Na equacao de Bernoulli \(y'+Py=Qy^3\), a substituicao e:</div>
+    <div class="opts">
+      <button class="opt">a) \(v = y^{-2}\)</button>
+      <button class="opt">b) \(v = y^{3}\)</button>
+      <button class="opt">c) \(v = y/x\)</button>
+    </div>
+    <div class="fb">\(n=3\), entao \(v=y^{1-n}=y^{1-3}=y^{-2}\).</div>
+  </div>
+
+  <div class="quiz-q" data-a="1">
+    <div class="stem">6. No resfriamento de Newton, quando \(t\to\infty\):</div>
+    <div class="opts">
+      <button class="opt">a) \(T\to\infty\)</button>
+      <button class="opt">b) \(T\to T_m\) (ambiente)</button>
+      <button class="opt">c) \(T\to 0\)</button>
+    </div>
+    <div class="fb">\(T=T_m+(T_0-T_m)e^{kt}\) com \(k<0\), entao \(e^{kt}\to0\) e \(T\to T_m\).</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">7. A meia-vida \(T\) de \(Q'=kQ\) se relaciona com \(k\) por:</div>
+    <div class="opts">
+      <button class="opt">a) \(k = -\ln 2/T\)</button>
+      <button class="opt">b) \(k = \ln 2/T\)</button>
+      <button class="opt">c) \(k = -T/\ln 2\)</button>
+    </div>
+    <div class="fb">\(e^{kT}=1/2 \Rightarrow kT=-\ln 2 \Rightarrow k=-\ln 2/T\) (negativo, pois decai).</div>
+  </div>
+
+  <div class="quiz-q" data-a="2">
+    <div class="stem">8. Num tanque com \(r_e=4\), \(r_s=6\) L/min e \(V_0=200\)L, o volume no instante \(t\) e:</div>
+    <div class="opts">
+      <button class="opt">a) \(V=200\) (constante)</button>
+      <button class="opt">b) \(V=200+2t\)</button>
+      <button class="opt">c) \(V=200-2t\)</button>
+    </div>
+    <div class="fb">\(V(t)=200+(4-6)t=200-2t\). Sai mais do que entra, o tanque esvazia.</div>
+  </div>
+
+  <div class="quiz-q" data-a="1">
+    <div class="stem">9. Para \(y'=y(1-y)\), o equilibrio \(y=1\) e:</div>
+    <div class="opts">
+      <button class="opt">a) Instavel</button>
+      <button class="opt">b) Assintoticamente estavel</button>
+      <button class="opt">c) Semiestavel</button>
+    </div>
+    <div class="fb">\(f'(y)=1-2y\), \(f'(1)=-1<0\) → estavel. Setas: ↑ 1 ↓ (convergem para 1).</div>
+  </div>
+
+  <div class="quiz-q" data-a="2">
+    <div class="stem">10. \(y'=(y-2)^2\). O equilibrio \(y=2\) e:</div>
+    <div class="opts">
+      <button class="opt">a) Estavel</button>
+      <button class="opt">b) Instavel</button>
+      <button class="opt">c) Semiestavel</button>
+    </div>
+    <div class="fb">\(f(y)=(y-2)^2\geq0\) sempre. Setas: ↑ 2 ↑ (ambas sobem). Raiz dupla, \(f'(2)=0\) → semiestavel.</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">11. No TEU, \(y'=y^{1/3}\) com \(y(0)=0\) falha unicidade porque:</div>
+    <div class="opts">
+      <button class="opt">a) \(\partial f/\partial y = \frac{1}{3}y^{-2/3}\) nao e continua em \(y=0\)</button>
+      <button class="opt">b) \(f(y)\) nao e continua em \(y=0\)</button>
+      <button class="opt">c) O PVI nao tem solucao</button>
+    </div>
+    <div class="fb">\(f=y^{1/3}\) e continua (existencia OK), mas \(\partial f/\partial y = \frac{1}{3}y^{-2/3}\to\infty\) em \(y=0\) (unicidade falha). Duas solucoes: \(y=0\) e \(y=(2x/3)^{3/2}\).</div>
+  </div>
+
+  <div class="quiz-q" data-a="1">
+    <div class="stem">12. \(y'=x+y^2\) e separavel?</div>
+    <div class="opts">
+      <button class="opt">a) Sim</button>
+      <button class="opt">b) Nao — soma \(x+y^2\) nao fatora</button>
+      <button class="opt">c) Sim, se dividir por \(y^2\)</button>
+    </div>
+    <div class="fb">\(x+y^2\) e uma soma de funcao de \(x\) com funcao de \(y\) — nao fatora como produto. Nao e separavel.</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">13. Qual o PRIMEIRO passo antes de aplicar fator integrante?</div>
+    <div class="opts">
+      <button class="opt">a) Colocar na forma padrao \(y'+Py=Q\)</button>
+      <button class="opt">b) Calcular \(\mu\)</button>
+      <button class="opt">c) Integrar os dois lados</button>
+    </div>
+    <div class="fb">Sem a forma padrao, voce usa \(P\) errado e o fator integrante sai errado. Divida por \(a_1(x)\) primeiro!</div>
+  </div>
+
+  <div class="quiz-q" data-a="2">
+    <div class="stem">14. \(x^2y''-xy'+y=\ln x\) e linear?</div>
+    <div class="opts">
+      <button class="opt">a) Nao, porque tem \(x^2\) e \(-x\)</button>
+      <button class="opt">b) Nao, porque tem \(\ln x\)</button>
+      <button class="opt">c) Sim — coeficientes em \(x\) nao afetam linearidade</button>
+    </div>
+    <div class="fb">Linear! Os coeficientes \(a_i(x)\) podem depender de \(x\) a vontade. O que importa: \(y,y',y''\) na potencia 1.</div>
+  </div>
+
+  <div class="quiz-q" data-a="1">
+    <div class="stem">15. A equacao de Riccati precisa de \(y_1\) conhecido porque:</div>
+    <div class="opts">
+      <button class="opt">a) Sem \(y_1\) a EDO e linear</button>
+      <button class="opt">b) \(y_1\) cancela o termo \(f(t)\) na substituicao</button>
+      <button class="opt">c) E uma convencao, qualquer funcao serve</button>
+    </div>
+    <div class="fb">Ao substituir \(y=y_1+1/z\), os termos que envolvem \(y_1\) somam exatamente \(f(t)\) e cancelam. Sem \(y_1\), o cancelamento nao ocorre.</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">16. \(y'=\frac{y}{1+x}\) e autonoma?</div>
+    <div class="opts">
+      <button class="opt">a) Nao — aparece \(x\) no lado direito</button>
+      <button class="opt">b) Sim — depende so de \(y\)</button>
+      <button class="opt">c) Sim, se \(x>0\)</button>
+    </div>
+    <div class="fb">Autonoma exige \(y'=f(y)\) — o lado direito so depende de \(y\). Aqui o \(1+x\) traz \(x\), entao nao e autonoma.</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">17. No modelo de mistura, a concentracao de SAIDA e:</div>
+    <div class="opts">
+      <button class="opt">a) \(Q/V(t)\) — quantidade sobre volume (bem misturado)</button>
+      <button class="opt">b) \(c_e\) — a mesma da entrada</button>
+      <button class="opt">c) Constante ao longo do tempo</button>
+    </div>
+    <div class="fb">Hipotese de mistura perfeita: a concentracao em qualquer ponto do tanque e \(Q/V(t)\). Isso vale para a saida tambem.</div>
+  </div>
+
+  <div class="quiz-q" data-a="2">
+    <div class="stem">18. Em Bernoulli \(y'+Py=Qy^n\), com \(n=2\), o fator \((1-n)\) vale:</div>
+    <div class="opts">
+      <button class="opt">a) \(1\)</button>
+      <button class="opt">b) \(2\)</button>
+      <button class="opt">c) \(-1\)</button>
+    </div>
+    <div class="fb">\(1-n=1-2=-1\). Cuidado com esse sinal! A equacao em \(v\) fica com sinais trocados.</div>
+  </div>
+
+  <div class="quiz-q" data-a="1">
+    <div class="stem">19. Se \(f'(c)=0\) num equilibrio de uma autonoma, o equilibrio e:</div>
+    <div class="opts">
+      <button class="opt">a) Sempre instavel</button>
+      <button class="opt">b) Possivelmente semiestavel — cheque o sinal de \(f\) dos dois lados</button>
+      <button class="opt">c) Sempre estavel</button>
+    </div>
+    <div class="fb">\(f'(c)=0\) nao decide sozinho. Volte ao sinal de \(f\) dos dois lados de \(c\). Se ambos positivos ou ambos negativos → semiestavel. Se troca sinal → pode ser estavel ou instavel (mas raro com \(f'=0\)).</div>
+  </div>
+
+  <div class="quiz-q" data-a="0">
+    <div class="stem">20. A EDO do crescimento limitado \(x'=k(A-x)\) tende a:</div>
+    <div class="opts">
+      <button class="opt">a) \(x\to A\) (o teto)</button>
+      <button class="opt">b) \(x\to\infty\)</button>
+      <button class="opt">c) \(x\to 0\)</button>
+    </div>
+    <div class="fb">\(x(t)=A-(A-x_0)e^{-kt}\). Como \(k>0\), \(e^{-kt}\to0\) e \(x\to A\). O equilibrio \(x=A\) e estavel.</div>
+  </div>
+
+  </div>
+
+  <div class="quiz-score" id="quiz-score" style="display:none">
+    <p style="color:var(--dim);margin:0 0 4px">Sua pontuacao:</p>
+    <div class="big" id="score-val">0/20</div>
+    <p id="score-msg" style="margin:6px 0 0;font-size:14px;color:var(--dim)"></p>
+  </div>
+
+  <div class="co tip" style="margin-top:16px"><div class="lb">Terminou?</div>
+  Se acertou 16+: voce esta pronto. Foco nos erros.<br>
+  Se acertou 12-15: revise os topicos que errou usando as abas.<br>
+  Se acertou menos: releia a Cola (aba 9) e refaca o quiz.</div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTab('cola')">← Cola</button>
+    <button class="nav-btn next" onclick="goTab('inicio')">Voltar ao inicio</button>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ====== JAVASCRIPT ====== -->
+<script>
+// Tab navigation
+const tabs = document.querySelectorAll('.tab');
+const sections = document.querySelectorAll('.section');
+const pbar = document.getElementById('pbar');
+const tabOrder = ['inicio','fluxo','fund','sep','lin','sub','mod','aut','teu','cola','quiz'];
+
+function goTab(id) {
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.s === id));
+  sections.forEach(s => s.classList.toggle('active', s.id === 's-' + id));
+  const idx = tabOrder.indexOf(id);
+  pbar.style.width = Math.round((idx / (tabOrder.length - 1)) * 100) + '%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const activeTab = document.querySelector('.tab[data-s="' + id + '"]');
+  if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}
+
+tabs.forEach(t => t.addEventListener('click', () => goTab(t.dataset.s)));
+
+// Quiz logic
+let answered = 0, correct = 0;
+document.querySelectorAll('.quiz-q').forEach(q => {
+  const ans = +q.dataset.a;
+  const opts = q.querySelectorAll('.opt');
+  const fb = q.querySelector('.fb');
+  let done = false;
+  opts.forEach((o, i) => o.addEventListener('click', () => {
+    if (done) return;
+    done = true;
+    answered++;
+    if (i === ans) { o.classList.add('right'); correct++; }
+    else { o.classList.add('wrong'); opts[ans].classList.add('right'); }
+    fb.classList.add('show');
+    // Show score when all answered
+    if (answered === document.querySelectorAll('.quiz-q').length) {
+      const sc = document.getElementById('quiz-score');
+      sc.style.display = 'block';
+      document.getElementById('score-val').textContent = correct + '/' + answered;
+      const pct = correct / answered;
+      const msg = document.getElementById('score-msg');
+      if (pct >= 0.8) msg.textContent = 'Excelente! Voce esta preparado para a P1.';
+      else if (pct >= 0.6) msg.textContent = 'Bom, mas revise os topicos que errou.';
+      else msg.textContent = 'Recomendo reler os resumos e refazer o quiz.';
+      msg.style.color = pct >= 0.8 ? 'var(--ok)' : pct >= 0.6 ? 'var(--warn)' : 'var(--danger)';
+      sc.scrollIntoView({ behavior: 'smooth' });
+    }
+  }));
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  const cur = tabOrder.findIndex(id => document.querySelector('.tab[data-s="'+id+'"]').classList.contains('active'));
+  if (e.key === 'ArrowRight' && cur < tabOrder.length - 1) goTab(tabOrder[cur + 1]);
+  if (e.key === 'ArrowLeft' && cur > 0) goTab(tabOrder[cur - 1]);
+});
+
+// Swipe gesture (simple)
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(dx) < 60) return;
+  const cur = tabOrder.findIndex(id => document.querySelector('.tab[data-s="'+id+'"]').classList.contains('active'));
+  if (dx < 0 && cur < tabOrder.length - 1) goTab(tabOrder[cur + 1]);
+  if (dx > 0 && cur > 0) goTab(tabOrder[cur - 1]);
+}, { passive: true });
+</script>
+</body>
+</html>
