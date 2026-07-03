@@ -62,6 +62,17 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   geométricas das curvas, Malthus + logística (K, solução explícita, curva em S), consequências
   geométricas do TEU e 2 questões novas no quiz (análise qualitativa era o gap sentido pelo Enzo).
 - **`guia-edo-p1-metro.html`** (02/07/2026, feito pelo Enzo) — revisão da P1 para ler no metrô.
+- **`guia-edo-p1-quiz-caminho-certo.html`** (03/07/2026) — **Quiz "Escolha o caminho certo"**: 53 cartões / 60 passos
+  interativos cobrindo os exercícios recomendados das Listas 0, 1 e 2 (+ Zill §2.5). Treina **reconhecimento de método**
+  sem fazer contas: por exercício, escolhe-se a técnica → a substituição/1º passo → o próximo passo. Feedback imediato
+  com o "porquê" de cada caminho; placar conta acertos de 1ª; barra de progresso. Cobre: Lista 0 (derivadas — cadeia/
+  produto/quociente; integrais — substituição, partes incl. cíclica 8c, frações parciais incl. dividir-antes 9e/9f);
+  Lista 1 (classificação ordem/linearidade; separável×homogênea×linear no Ex.5; fator integrante Ex.6/7; comportamento
+  t→∞ Ex.8/9/10; Bernoulli 11e,f; Riccati 12a); Lista 2 (montar a EDO de modelagem Ex.1–6; autônomas/estabilidade
+  incl. semiestável 9a,b,d,e,f,g). Respostas conferidas contra os gabaritos oficiais das listas. **Math pré-renderizado
+  em SVG** (mathjax-full/Node, fontCache local — sem CDN, 100% offline, mesmo esquema do Guia 3/véspera). Testado no
+  navegador (Playwright): fluxo, feedback e placar OK, 0 erros de console. Endereça diretamente o gap do diagnóstico da
+  P1 (identificação de método).
 
 Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matéria difícil).
 
@@ -86,4 +97,7 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
 - [x] Resoluções passo a passo das listas recomendadas — `listas/resolucao-lista0.html` e `listas/resolucao-lista1.html` (17/06/2026, conferidas no sympy)
 - [x] Resolução passo a passo da **Lista 2** (P1) — `listas/resolucao-lista2.html` (27/06/2026): 13 exercícios — modelagem (bactérias, Césio-137, aprendizado, Newton, misturas em tanque, publicidade, RC, Gompertz, Von Bertalanffy), equações autônomas/estabilidade e TEU. Todas as contas conferidas no sympy; MathJax; mesmo tema das Listas 0/1.
 - [x] Guia de **revisão da P1** gerado — `guias/guia-edo-p1-revisao.html` (29/06/2026): mapa da P1 + foco modelagem/autônomas (aulas 5–6) + cola/quiz/Feynman. Aulas 5 e 6 indexadas; **P1 remarcada para sexta 03/07**.
+- [x] **Quiz "Escolha o caminho certo"** — `guias/guia-edo-p1-quiz-caminho-certo.html` (03/07/2026): 53 cartões
+  interativos de reconhecimento de método (sem contas) das Listas 0/1/2 + Zill §2.5; feedback imediato + placar;
+  SVG pré-renderizado (offline); testado no navegador.
 - [ ] Guia da P2: 2ª ordem (coef. constantes, Euler-Cauchy), variação de parâmetros, vibrações
