@@ -46,11 +46,14 @@
   "Disciplinas/MCCC010 - Matematica Discreta II": {
    "guias": [
     "guia-grafos-avancados-p2.html",
+    "guia-p1-completo.html",
     "guia-probabilidade-p2.html",
     "guia-teoria-semanas1-4.html"
    ],
    "listas": [
+    "lista-p1.pdf",
     "lista1-md2.pdf",
+    "lista2-md2.pdf",
     "resolucao-lista1.html"
    ],
    "material": [
@@ -60,6 +63,7 @@
     "aula3.pdf",
     "aula4e5.pdf",
     "aula6e7.pdf",
+    "aula8e9.pdf",
     "intro.pdf",
     "plano-ensino-md2.pdf"
    ]
