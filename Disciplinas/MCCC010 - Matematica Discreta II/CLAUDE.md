@@ -46,6 +46,20 @@ circunferência (g≤2·diam+1); **bipartidos** (⟺ sem ciclo ímpar); **Teorem
 folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,3)≤6) e paridade.
 
 ## Guias gerados em `guias/`
+- **`guias/guia-p1-completo.html`** — **GUIA PRINCIPAL DA P1** (gerado 06/07/2026). Autocontido,
+  cobre TODO o conteúdo até a aula8e9: Cap. 1 (básicos, isomorfismo, conexidade, distância/cintura,
+  bipartidos, Mantel), Cap. 3 (árvores, lagartas), Cap. 2 (eulerianos: Teo 2.1 + Cor. 2.1/2.2 + Fleury)
+  e Cap. 4 (hamiltonianos: Teo 4.1 c(G−S)≤|S|, Dirac, Ore, Bondy–Chvátal, fecho) — **todas com
+  demonstrações completas didáticas**. Inclui: Lista P1 resolvida (E1–E11) com SVGs fiéis dos grafos,
+  simulado cronometrado (100 min, 5 questões + gabarito), cola de teoremas, quiz (10), flashcards (16),
+  bloco Feynman. Fórmulas **pré-renderizadas** (mathjax-full, SVG offline — padrão pós-02/07).
+  - Gabarito lista-p1: E1 diam=3, ham sim (1 2 4 3 5 6 1), trilha euleriana sim (2→3), caminho euleriano
+    não; E2 G6,1=K6, G5,2=Petersen, r=C(n−k,k); E3 n=22; E4 ℓ≥Δ (contagem); E5 triângulo+pêndulo;
+    E6 diam(Ḡ)≤2; E7(a) **todas as 6 são lagartas**, (b) aranha S(2,2,2)+folha; E8 **Herschel, não-ham**
+    (bipartido 5/6; S={1,2,3,8,9} dá c=6>5); E9 arestas forçadas por grau 2; E10 crossover bipartido;
+    E11 via Ore, exemplo K(n−1)+pêndulo.
+  - ⚠️ **Escopo da P1 mudou**: a lista oficial cobre até hamiltonianos (aula8e9), não só Semanas 1–4.
+    Nova data da P1 a confirmar com o Enzo (a de 29/06 do plano original passou).
 - **`guias/guia-teoria-semanas1-4.html`** — guia HTML interativo de teoria de grafos
   (Semanas 1–4 / P1): resumo enxuto que ensina do zero, com exemplos resolvidos
   colapsáveis, cola de teoremas, quiz, flashcards e bloco Feynman.
