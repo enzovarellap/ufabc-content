@@ -87,6 +87,21 @@ Cada pasta em `Disciplinas/` tem:
   exige renderização manual; **não usar** salvo necessidade específica. Manter MathJax como default.
 - **Nunca** colar fórmula como imagem/PNG nem usar Unicode "na mão" para expressões — sempre LaTeX
   via MathJax, para ficar pesquisável, acessível e editável.
+- ✅ **Atualização (27/07/2026) — receita definitiva de pré-render.** Usada no guia da P2 de Discreta
+  (2 399 fórmulas, 0 erros). Node + `mathjax-full` (instalar em qualquer pasta, o require resolve):
+  `liteAdaptor` + `TeX({packages: AllPackages})` + `SVG({fontCache:'global'})`, converter cada
+  `\(…\)` (inline) e `\[…\]` (display) por regex e, **no fim, injetar UMA vez** o
+  `svgOutput.fontCache.getCache()` dentro de um `<svg style="position:absolute;width:0;height:0">`
+  logo após `<body>`.
+  - **Use `fontCache:'global'`, nunca `'local'`.** O nº de nós no DOM é o mesmo, mas `'local'` duplica
+    os `<path>` dos glifos em cada fórmula: o mesmo guia deu **7,5 MB** com `'local'` e **2,7 MB** com
+    `'global'` (cache compartilhado de 89 KB).
+  - Antes de converter: trocar `\mathbb{1}` por `\mathbf{1}` (MathJax só tem maiúsculas em `\mathbb`)
+    e **tirar HTML de dentro do TeX** — `\tag*{<span class="qed"></span>}` quebra; extrair o span e
+    concatenar depois do SVG. Des-escapar `&lt;`/`&gt;`/`&amp;` dentro do TeX.
+  - No corpo do texto, preferir `\lt`/`\gt` a `<`/`>` para o parser de HTML não engasgar.
+  - Escrever o guia em **fragmentos** numerados e concatenar num `build.js` — arquivo único de 200 KB+
+    é frágil de escrever e impossível de revisar.
 - ⚠️ **Atualização (02/07/2026):** o `tex-svg.js` via CDN **falhou ao carregar** na máquina do Enzo
   (guia de véspera de EDO apareceu com LaTeX cru). Novo padrão preferido: **pré-renderizar** as
   fórmulas em SVG com `mathjax-full` (Node, `fontCache:'local'`) antes de entregar o guia — igual ao
