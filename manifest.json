@@ -47,17 +47,27 @@
    "guias": [
     "guia-grafos-avancados-p2.html",
     "guia-p1-completo.html",
+    "guia-p2-completo.html",
     "guia-probabilidade-p2.html",
     "guia-teoria-semanas1-4.html"
    ],
    "listas": [
+    "gabarito-lista3.pdf",
     "lista-p1.pdf",
     "lista1-md2.pdf",
     "lista2-md2.pdf",
+    "lista4.pdf",
+    "lista5.pdf",
     "resolucao-lista1.html"
    ],
    "material": [
     "aula1.pdf",
+    "aula10.pdf",
+    "aula11.pdf",
+    "aula14.pdf",
+    "aula15.pdf",
+    "aula16.pdf",
+    "aula17.pdf",
     "aula2.pdf",
     "aula3.2.pdf",
     "aula3.pdf",
