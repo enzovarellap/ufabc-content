@@ -75,7 +75,21 @@ Recuperação (prova dissertativa) só para D/F. Obs.: atividades sem uso de IA 
 - [x] Guia de estudo do seminário gerado (`guias/`)
 - [x] Aulas 10 e 11 indexadas em `material/` (01/08/2026)
 - [x] **Guia completo da prova de 14/08 gerado** (`guias/guia-prova-peq1-completo.html`)
-- [ ] Revisões espaçadas até 14/08 (plano de 4 passadas está no fim do guia, §26)
+- [x] Revisões espaçadas criadas no Google Calendar (01/08/2026) — 5 blocos, ≈6h45
+
+### Revisões agendadas (Google Calendar, cor 5)
+| Quando | Duração | Foco |
+|---|---|---|
+| Dom 02/08 15:00 | 1h | Passada 1 — §00–§08 (CA, MCC, Vigotski) |
+| Ter 11/08 19:00 | 1h45 | Passada 2 — **Bloco 4** ⚠️ §09–§14 (perfis, obstáculos) |
+| Qua 12/08 19:00 | 1h45 | Passada 3 — **Blocos 5–6** ⚠️ §15–§19 (linguagem, Johnstone) |
+| Qui 13/08 17:30 | 1h | Passada 4 — §21 mapa de relações + Q1–Q4 à mão |
+| Sex 14/08 17:30 | 1h15 | Véspera — flashcards + quiz + Q5–Q8 + erros |
+
+> Plano montado em volta da **P2 de EDO (07/08)** e da **P2 de Discreta II (10/08)** — por isso o
+> peso cai na semana da prova. **Pontos fracos declarados pelo Enzo:** Bloco 4 (perfil
+> epistemológico × conceitual) e Bloco 6 (crítica dialética ao triângulo) → ganharam os maiores slots.
+> Qui 13/08 também é a entrega do Relatório Final da ESMA001 — é a passada sacrificável se apertar.
 
 ## Leitura estratégica da avaliação
 O conceito final sai da tabela cruzada **I1 (prova) × I3 (seminários)**. Com **I3 = A**, um
