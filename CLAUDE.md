@@ -45,6 +45,9 @@ ESMA001 (projeto): entregas por aula (Relatório Final ≈13/08) — **datas exa
 | MCCC010-23 | Matemática Discreta II | `Disciplinas/MCCC010 - Matematica Discreta II` |
 
 > Matérias **trancadas em 29/06/2026:** Modelagem e Controle (ESTA020) e Métodos Experimentais (ESTO017) — removidas do quadrimestre.
+> ✅ **Eventos do Google Calendar dessas duas matérias foram apagados em 01/08/2026** (série recorrente
+> de aulas do ESTO017 + lembrete "Revisar Métodos Experimentais"). ESTA020 já não tinha eventos.
+> Ao trancar/alterar matérias, lembrar de limpar **também** o Calendar, não só o CLAUDE.md.
 
 ## Grade de horários (noturno, Santo André)
 | Dia | 19:00–21:00 | 21:00–23:00 |
@@ -137,6 +140,9 @@ Cada pasta em `Disciplinas/` tem:
 
 ## Perfil de estudo do Enzo (contexto que guia tudo)
 - **Tempo:** ~5h/semana, concentradas nos **fins de semana**.
+- **Disponibilidade real (do Google Calendar):** tem **compromissos de trabalho em horário comercial**
+  nos dias úteis → ao agendar estudo, usar **fins de semana** ou **fim de tarde/noite antes das aulas**
+  (as aulas ocupam 19–23h). Recorrentes fixos: bloco de estudo sáb 14–19h; psicóloga qua 15h.
 - **Aulas:** em sua maioria **não serão aproveitadas por inteiro** → os guias são a
   **fonte principal de aprendizado** (ensinam do zero, não pressupõem a aula).
 - **Meta:** **passar com tranquilidade** (não mira A) → calibrar ao essencial/cobrado.
