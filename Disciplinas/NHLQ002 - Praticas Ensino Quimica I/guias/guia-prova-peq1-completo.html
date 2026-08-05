@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia da Prova — Práticas de Ensino de Química I | NHLQ002-22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1117; --bg2:#141925; --card:#1a2030; --card2:#212a3d;
+    --ink:#e8ecf3; --ink-dim:#aab4c5; --ink-faint:#7b8699;
+    --line:#2a3447; --line2:#384459;
+    --ca:#ff7a59;     --ca-bg:rgba(255,122,89,.12);      /* concepções alternativas */
+    --mcc:#4dabf7;    --mcc-bg:rgba(77,171,247,.12);     /* mudança conceitual */
+    --perfil:#b197fc; --perfil-bg:rgba(177,151,252,.12); /* perfis / Bachelard */
+    --ling:#38d9a9;   --ling-bg:rgba(56,217,169,.12);    /* linguagem / representação */
+    --tip:#51cf66;    --tip-bg:rgba(81,207,102,.12);
+    --warn:#ffd43b;   --warn-bg:rgba(255,212,59,.10);
+    --danger:#ff6b6b; --danger-bg:rgba(255,107,107,.12);
+    --accent:#7c9cff;
+    --radius:14px; --maxw:960px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.22}
+  code,.mono{font-family:'JetBrains Mono',monospace}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .topbar-grad{height:5px;background:linear-gradient(90deg,var(--ca) 0%,var(--mcc) 34%,var(--perfil) 67%,var(--ling) 100%);position:fixed;top:0;left:0;right:0;z-index:60}
+
+  /* ---------- layout ---------- */
+  .wrap{display:flex;min-height:100vh}
+  .sidebar{width:310px;flex:0 0 310px;background:var(--bg2);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 0 60px}
+  .content{flex:1;min-width:0;padding:32px clamp(18px,5vw,64px) 140px;max-width:calc(var(--maxw) + 128px);margin:0 auto}
+
+  .brand{padding:6px 22px 14px}
+  .brand .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ling);font-weight:700}
+  .brand h1{font-size:20px;margin:6px 0 4px}
+  .brand .sub{font-size:12.5px;color:var(--ink-faint)}
+
+  .search{padding:10px 18px 8px}
+  .search input{width:100%;background:var(--card);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit}
+  .search input::placeholder{color:var(--ink-faint)}
+  .search input:focus{outline:none;border-color:var(--accent)}
+  .search .hits{font-size:11.5px;color:var(--ink-faint);padding:6px 2px 0;min-height:16px}
+
+  nav .group{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;padding:16px 22px 6px}
+  nav a.navlink{display:flex;gap:9px;align-items:baseline;padding:7px 22px;font-size:13.5px;color:var(--ink-dim);border-left:2.5px solid transparent}
+  nav a.navlink:hover{background:var(--card);color:var(--ink);text-decoration:none}
+  nav a.navlink.active{color:var(--ink);border-left-color:var(--ling);background:linear-gradient(90deg,var(--ling-bg),transparent)}
+  nav a.navlink .n{font-family:'JetBrains Mono';font-size:11px;color:var(--ink-faint);min-width:18px}
+
+  /* ---------- hero ---------- */
+  .hero{background:linear-gradient(135deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;margin-bottom:26px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:radial-gradient(circle,var(--ling-bg),transparent 70%);pointer-events:none}
+  .hero .tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .hero h2{font-size:clamp(22px,3.4vw,30px);margin-bottom:10px}
+  .hero p{color:var(--ink-dim);max-width:66ch}
+  .countdown{display:inline-flex;align-items:baseline;gap:8px;margin-top:16px;background:var(--danger-bg);border:1px solid rgba(255,107,107,.35);border-radius:10px;padding:8px 14px}
+  .countdown b{font-family:'JetBrains Mono';font-size:20px;color:var(--danger)}
+  .countdown span{font-size:12.5px;color:var(--ink-dim)}
+
+  /* ---------- tags ---------- */
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3.5px 9px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+  .tag.ca{background:var(--ca-bg);color:var(--ca);border-color:rgba(255,122,89,.32)}
+  .tag.mcc{background:var(--mcc-bg);color:var(--mcc);border-color:rgba(77,171,247,.32)}
+  .tag.perfil{background:var(--perfil-bg);color:var(--perfil);border-color:rgba(177,151,252,.32)}
+  .tag.ling{background:var(--ling-bg);color:var(--ling);border-color:rgba(56,217,169,.32)}
+  .tag.hot{background:var(--danger-bg);color:var(--danger);border-color:rgba(255,107,107,.32)}
+  .tag.aula{background:var(--card2);color:var(--ink-faint);border-color:var(--line2)}
+
+  /* ---------- sections ---------- */
+  section{margin-bottom:46px;scroll-margin-top:24px}
+  section > h2{font-size:clamp(20px,2.8vw,25px);margin-bottom:6px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+  section > h2 .num{font-family:'JetBrains Mono';font-size:12px;color:var(--ink-faint);background:var(--card);border:1px solid var(--line2);border-radius:7px;padding:3px 8px;font-weight:500}
+  section .lede{color:var(--ink-dim);margin-bottom:18px;max-width:70ch}
+  h3{font-size:17.5px;margin:26px 0 9px;color:var(--ink)}
+  h4{font-size:15px;margin:18px 0 7px;color:var(--ink-dim);font-family:'DM Sans';font-weight:700;letter-spacing:.01em}
+  p{margin-bottom:12px}
+  ul,ol{margin:0 0 13px 20px}
+  li{margin-bottom:6px}
+  strong{color:#fff;font-weight:600}
+  em.term{font-style:normal;color:var(--ling);font-weight:600}
+
+  /* ---------- blocks ---------- */
+  .def{background:var(--card);border-left:3px solid var(--ling);border-radius:0 12px 12px 0;padding:15px 18px;margin:14px 0}
+  .def .lbl{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ling);font-weight:700;margin-bottom:6px}
+  .def.ca{border-left-color:var(--ca)} .def.ca .lbl{color:var(--ca)}
+  .def.mcc{border-left-color:var(--mcc)} .def.mcc .lbl{color:var(--mcc)}
+  .def.perfil{border-left-color:var(--perfil)} .def.perfil .lbl{color:var(--perfil)}
+
+  .callout{border-radius:12px;padding:14px 17px;margin:14px 0;border:1px solid}
+  .callout .lbl{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;margin-bottom:6px;display:block}
+  .callout.tip{background:var(--tip-bg);border-color:rgba(81,207,102,.3)} .callout.tip .lbl{color:var(--tip)}
+  .callout.warn{background:var(--warn-bg);border-color:rgba(255,212,59,.3)} .callout.warn .lbl{color:var(--warn)}
+  .callout.danger{background:var(--danger-bg);border-color:rgba(255,107,107,.3)} .callout.danger .lbl{color:var(--danger)}
+  .callout p:last-child{margin-bottom:0}
+
+  .quote{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:14px 0;font-size:15px;color:var(--ink-dim);font-style:italic}
+  .quote .src{display:block;margin-top:8px;font-style:normal;font-size:12px;color:var(--ink-faint)}
+
+  /* ---------- tables ---------- */
+  .tw{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:14.2px;min-width:460px}
+  th{background:var(--card2);text-align:left;padding:11px 14px;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-dim);border-bottom:1px solid var(--line2)}
+  td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-dim)}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:rgba(255,255,255,.022)}
+  td strong{color:var(--ink)}
+  table.vs th:first-child,table.vs td:first-child{width:26%}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;gap:13px;margin:14px 0}
+  .grid.g2{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .grid.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
+  .card h4{margin:0 0 7px;color:var(--ink);font-size:14.5px}
+  .card p{font-size:14px;color:var(--ink-dim);margin-bottom:0}
+  .card .who{font-size:11.5px;color:var(--ink-faint);font-family:'JetBrains Mono';margin-bottom:8px}
+
+  /* ---------- collapsible ---------- */
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:13px 0;overflow:hidden}
+  details summary{cursor:pointer;padding:13px 17px;font-weight:600;font-size:14.8px;list-style:none;display:flex;align-items:center;gap:10px;user-select:none}
+  details summary::-webkit-details-marker{display:none}
+  details summary::before{content:"▶";font-size:10px;color:var(--ink-faint);transition:transform .2s}
+  details[open] summary::before{transform:rotate(90deg)}
+  details summary:hover{background:var(--card2)}
+  details .body{padding:2px 17px 16px;border-top:1px solid var(--line);font-size:14.8px}
+  details .body > *:first-child{margin-top:13px}
+
+  /* ---------- flow / chain ---------- */
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:9px;margin:16px 0}
+  .flow .step{flex:1 1 150px;background:var(--card);border:1px solid var(--line2);border-radius:11px;padding:12px 14px}
+  .flow .step .k{font-family:'JetBrains Mono';font-size:10.5px;color:var(--ling);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+  .flow .step p{font-size:13.4px;color:var(--ink-dim);margin:0}
+  .arrow{align-self:center;color:var(--ink-faint);font-size:18px}
+
+  /* ---------- johnstone triangle ---------- */
+  .tri{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:16px 0}
+  .tri .apex{grid-column:1/-1}
+  .lvl{border-radius:12px;padding:15px 17px;border:1px solid}
+  .lvl.macro{background:rgba(255,122,89,.09);border-color:rgba(255,122,89,.33)}
+  .lvl.micro{background:rgba(77,171,247,.09);border-color:rgba(77,171,247,.33)}
+  .lvl.simb{background:rgba(177,151,252,.09);border-color:rgba(177,151,252,.33)}
+  .lvl h4{margin:0 0 6px;font-family:'Fraunces';font-size:16px;color:var(--ink)}
+  .lvl p{font-size:13.8px;color:var(--ink-dim);margin-bottom:6px}
+  .lvl .ex{font-family:'JetBrains Mono';font-size:13px;background:rgba(0,0,0,.28);border-radius:7px;padding:7px 10px;color:var(--ink);display:inline-block;margin-top:4px}
+
+  /* ---------- flashcards ---------- */
+  .fcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px;margin:16px 0}
+  .fc{background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:15px 16px;cursor:pointer;min-height:112px;display:flex;flex-direction:column;justify-content:center;transition:border-color .18s,background .18s}
+  .fc:hover{border-color:var(--ling)}
+  .fc .q{font-weight:600;font-size:14.4px}
+  .fc .a{display:none;font-size:13.8px;color:var(--ink-dim);margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+  .fc.flip{background:var(--card2);border-color:var(--ling)}
+  .fc.flip .a{display:block}
+  .fc .hint{font-size:10.5px;color:var(--ink-faint);margin-top:8px;letter-spacing:.06em;text-transform:uppercase}
+  .fc.flip .hint{display:none}
+
+  /* ---------- quiz ---------- */
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:17px 19px;margin:14px 0}
+  .quiz .qtext{font-weight:600;margin-bottom:11px;font-size:15px}
+  .quiz .opt{display:block;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:10px 13px;margin-bottom:8px;cursor:pointer;font-size:14.2px;color:var(--ink-dim);transition:.15s}
+  .quiz .opt:hover{border-color:var(--accent);color:var(--ink)}
+  .quiz .opt.right{background:var(--tip-bg);border-color:var(--tip);color:var(--ink)}
+  .quiz .opt.wrong{background:var(--danger-bg);border-color:var(--danger);color:var(--ink)}
+  .quiz .why{display:none;margin-top:10px;padding-top:11px;border-top:1px solid var(--line);font-size:13.8px;color:var(--ink-dim)}
+  .quiz.done .why{display:block}
+
+  /* ---------- feynman ---------- */
+  .feyn{background:linear-gradient(135deg,var(--card2),var(--card));border:1px dashed var(--line2);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .feyn .lbl{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--warn);font-weight:700;margin-bottom:8px}
+  .feyn textarea{width:100%;min-height:88px;background:var(--bg);border:1px solid var(--line2);border-radius:9px;color:var(--ink);padding:11px 13px;font-family:inherit;font-size:14.2px;resize:vertical;line-height:1.6}
+  .feyn textarea:focus{outline:none;border-color:var(--warn)}
+
+  /* ---------- misc ---------- */
+  .kbd{font-family:'JetBrains Mono';font-size:12px;background:var(--card2);border:1px solid var(--line2);border-radius:5px;padding:1.5px 6px;color:var(--ink-dim)}
+  mark{background:rgba(255,212,59,.32);color:#fff;border-radius:3px;padding:0 2px}
+  .anchor-ref{font-size:13px;color:var(--ink-faint);font-style:italic}
+  hr.sep{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .footer{color:var(--ink-faint);font-size:13px;border-top:1px solid var(--line);padding-top:18px;margin-top:44px}
+
+  .menu-btn{display:none;position:fixed;bottom:20px;right:20px;z-index:70;background:var(--ling);color:#06231a;border:none;border-radius:50%;width:54px;height:54px;font-size:21px;cursor:pointer;box-shadow:0 5px 22px rgba(0,0,0,.45)}
+
+  @media (max-width:900px){
+    .sidebar{position:fixed;left:0;top:0;z-index:65;transform:translateX(-100%);transition:transform .25s;box-shadow:6px 0 30px rgba(0,0,0,.5)}
+    .sidebar.open{transform:translateX(0)}
+    .menu-btn{display:block}
+    .content{padding:26px 17px 120px}
+    .tri{grid-template-columns:1fr}
+  }
+  @media print{
+    .sidebar,.menu-btn,.topbar-grad,.search{display:none}
+    body{background:#fff;color:#000;font-size:11pt}
+    .content{max-width:100%;padding:0}
+    details{border:1px solid #ccc} details .body{display:block!important}
+    details[open] summary::before{content:""}
+    .card,.def,.callout,.quote,.tw,.fc{break-inside:avoid}
+    .fc .a{display:block!important} .fc .hint{display:none}
+    a{color:#000;text-decoration:underline}
+  }
+</style>
+</head>
+<body>
+<div class="topbar-grad"></div>
+<div class="wrap">
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="kicker">NHLQ002-22 · Prova 14/08</div>
+    <h1>Guia da Prova — PEQ I</h1>
+    <div class="sub">Práticas de Ensino de Química I · Profa. Rafaela Valero · 2026.2</div>
+  </div>
+  <div class="search">
+    <input id="q" type="search" placeholder="Buscar conceito, autor, aula…" autocomplete="off">
+    <div class="hits" id="hits"></div>
+  </div>
+  <nav id="nav">
+    <div class="group">Antes de tudo</div>
+    <a class="navlink" href="#s0"><span class="n">00</span> Como cai a prova</a>
+    <a class="navlink" href="#s-mapa"><span class="n">01</span> Mapa dos 5 blocos</a>
+
+    <div class="group">Bloco 1 · Concepções alternativas</div>
+    <a class="navlink" href="#s1"><span class="n">02</span> O que são concepções alternativas</a>
+    <a class="navlink" href="#s2"><span class="n">03</span> Características e nomes</a>
+
+    <div class="group">Bloco 2 · Mudança conceitual</div>
+    <a class="navlink" href="#s3"><span class="n">04</span> O Movimento de Mudança Conceitual</a>
+    <a class="navlink" href="#s4"><span class="n">05</span> Raízes: Kuhn, Lakatos, Piaget</a>
+    <a class="navlink" href="#s5"><span class="n">06</span> As 4 condições da acomodação</a>
+    <a class="navlink" href="#s6"><span class="n">07</span> Críticas ao MCC</a>
+
+    <div class="group">Bloco 3 · Vigotski</div>
+    <a class="navlink" href="#s7"><span class="n">08</span> Conceito espontâneo × científico</a>
+
+    <div class="group">Bloco 4 · Perfis e obstáculos <span style="color:var(--ca)">(Aula 10)</span></div>
+    <a class="navlink" href="#s8"><span class="n">09</span> O caso da eletricidade</a>
+    <a class="navlink" href="#s9"><span class="n">10</span> Perfil epistemológico (Bachelard)</a>
+    <a class="navlink" href="#s10"><span class="n">11</span> Perfil conceitual (Mortimer)</a>
+    <a class="navlink" href="#s11"><span class="n">12</span> PE × PC — a tabela que cai</a>
+    <a class="navlink" href="#s12"><span class="n">13</span> Obstáculos epistemológicos</a>
+    <a class="navlink" href="#s13"><span class="n">14</span> Concepção alternativa × obstáculo</a>
+
+    <div class="group">Bloco 5 · Linguagem <span style="color:var(--ca)">(Aula 11)</span></div>
+    <a class="navlink" href="#s14"><span class="n">15</span> Os teóricos da linguagem</a>
+    <a class="navlink" href="#s15"><span class="n">16</span> Por que linguagem entrou no ensino</a>
+    <a class="navlink" href="#s16"><span class="n">17</span> Tipos de estudo sobre linguagem</a>
+
+    <div class="group">Bloco 6 · Níveis de representação</div>
+    <a class="navlink" href="#s17"><span class="n">18</span> Triângulo de Johnstone</a>
+    <a class="navlink" href="#s18"><span class="n">19</span> A crítica dialética ao triângulo</a>
+
+    <div class="group">Bloco 7 · Extensão</div>
+    <a class="navlink" href="#s19"><span class="n">20</span> O instrumento de levantamento</a>
+
+    <div class="group">Revisão ativa</div>
+    <a class="navlink" href="#s20"><span class="n">21</span> Mapa de relações entre conceitos</a>
+    <a class="navlink" href="#s21"><span class="n">22</span> Questões dissertativas modelo</a>
+    <a class="navlink" href="#s22"><span class="n">23</span> Flashcards</a>
+    <a class="navlink" href="#s23"><span class="n">24</span> Quiz relâmpago</a>
+    <a class="navlink" href="#s24"><span class="n">25</span> Erros que custam conceito</a>
+    <a class="navlink" href="#s25"><span class="n">26</span> Loop Feynman</a>
+  </nav>
+</aside>
+
+<main class="content" id="content">
+
+<div class="hero">
+  <div class="tagrow">
+    <span class="tag ca">Concepções alternativas</span>
+    <span class="tag mcc">Mudança conceitual</span>
+    <span class="tag perfil">Perfis &amp; obstáculos</span>
+    <span class="tag ling">Linguagem &amp; representação</span>
+  </div>
+  <h2>Tudo o que cai na prova de PEQ I</h2>
+  <p>Guia único cobrindo as <strong>Aulas 1, 2, 10 e 11</strong> — que são as aulas expositivas da
+  disciplina e, portanto, o conteúdo teórico avaliável. As aulas 3 a 9 foram seminários e atividades
+  práticas (construção e aplicação do instrumento), cobertas de forma resumida no Bloco 7.
+  A prova é <strong>escrita, individual, sem consulta e dissertativa</strong> — o critério explícito do
+  plano de ensino é <em class="term">“estabelecer relações entre conceitos”</em>, então cada seção termina
+  com os fios que a ligam às outras.</p>
+  <div class="countdown"><b>14/08</b><span>sexta-feira · prova escrita individual (I1)</span></div>
+</div>
+
+<div class="callout danger">
+  <span class="lbl">Regra da disciplina</span>
+  <p>A NHLQ002 <strong>proíbe o uso de IA em atividades avaliadas</strong>. Este guia é material de
+  <em class="term">estudo e compreensão</em> — serve para você entender e treinar recall antes da prova.
+  Nada daqui deve virar entrega avaliada, e na prova (sem consulta) o que vale é o que ficou na sua cabeça.</p>
+</div>
+
+<!-- ============================== 00 ============================== -->
+<section id="s0">
+  <h2><span class="num">00</span> Como cai a prova <span class="tag hot">Leia primeiro</span></h2>
+  <p class="lede">Antes de decorar conteúdo, entenda como a professora corrige. Isso muda como você escreve.</p>
+
+  <h3>Os três critérios de correção (plano de ensino)</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4>1. Norma culta + caligrafia</h4>
+      <p>Escrever em português formal e <strong>legível</strong>. Sim, isso é critério oficial. Letra ruim custa ponto.</p>
+    </div>
+    <div class="card">
+      <h4>2. Resposta direta e embasada</h4>
+      <p>Responder de modo <strong>direto</strong>, mas <strong>completo, detalhado, coerente e embasado na
+      bibliografia discutida em sala</strong>. Ou seja: cite autor.</p>
+    </div>
+    <div class="card">
+      <h4>3. Relações entre conceitos</h4>
+      <p><strong>Estabelecer relações</strong> demonstrando domínio. É o critério de maior peso na prática —
+      quem só define conceito isolado fica em C.</p>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Fórmula de resposta que atende aos 3 critérios</span>
+    <p><strong>(1) Defina</strong> o conceito com precisão → <strong>(2) atribua ao autor</strong>
+    (“segundo Mortimer (1996)…”, “na perspectiva bachelardiana…”) → <strong>(3) dê um exemplo químico
+    concreto</strong> → <strong>(4) relacione com outro conceito da disciplina</strong> (contraste ou
+    complementaridade). Quatro movimentos, sempre. É o esqueleto de toda resposta dissertativa aqui.</p>
+  </div>
+
+  <h3>Escala de conceito da prova (I1)</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Aproveitamento</th><th>Conceito</th></tr></thead>
+    <tbody>
+      <tr><td>85–100%</td><td><strong>A</strong></td></tr>
+      <tr><td>70–84%</td><td><strong>B</strong></td></tr>
+      <tr><td>55–69%</td><td><strong>C</strong></td></tr>
+      <tr><td>40–54%</td><td><strong>D</strong></td></tr>
+      <tr><td>&lt; 40%</td><td><strong>F</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Como a prova vira conceito final</h3>
+  <p>O conceito final combina <strong>I1 (prova)</strong> com <strong>I3 (apresentações/seminários)</strong>
+  pela tabela cruzada abaixo. O <strong>I2 (participação)</strong> complementa a análise.</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>I1 ↓ / I3 →</th><th>A</th><th>B</th><th>C</th><th>D</th><th>F</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A</strong></td><td>A</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+      <tr><td><strong>B</strong></td><td>A</td><td>B</td><td>B</td><td>C</td><td>D</td></tr>
+      <tr><td><strong>C</strong></td><td>A</td><td>B</td><td>C</td><td>D</td><td>D</td></tr>
+      <tr><td><strong>D</strong></td><td>B</td><td>B</td><td>C</td><td>D</td><td>F</td></tr>
+      <tr><td><strong>F</strong></td><td>C</td><td>C</td><td>D</td><td>F</td><td>F</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn">
+    <span class="lbl">Leitura estratégica da tabela</span>
+    <p>Se o seu I3 (seminários) for <strong>A</strong>, um <strong>C</strong> na prova ainda te dá
+    <strong>A</strong> final. Mas um <strong>F</strong> na prova com I3 = A trava em <strong>C</strong>.
+    Ou seja: <strong>a meta realista é não tirar D nem F na prova</strong> — 55% já resolve a vida
+    se os seminários foram bem. Isso bate com a sua meta de passar com tranquilidade.</p>
+  </div>
+
+  <h3>Aprovação, substitutiva e recuperação</h3>
+  <ul>
+    <li><strong>Aprovação:</strong> ≥ 75% de frequência <strong>E</strong> conceito ≥ D — as duas condições
+    simultaneamente.</li>
+    <li><strong>Recuperação (19–21/08):</strong> prova dissertativa, individual, sem consulta, sobre
+    <strong>todos os temas da disciplina</strong>, só para quem tirou D ou F e tem 75% de frequência.</li>
+    <li><strong>Faltou na prova?</strong> Com justificativa (Consepe nº 227/2018) dá para fazer a
+    substitutiva no período da recuperação. A justificativa <strong>não abona a falta</strong>, só
+    libera a prova.</li>
+  </ul>
+
+  <h3>Bibliografia básica — os nomes que valem citação</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Referência</th><th>Serve para falar de</th></tr></thead>
+    <tbody>
+      <tr><td><strong>MORTIMER, E. F. (1996)</strong> — <em>Construtivismo, Mudança Conceitual e Ensino de Ciências: para onde vamos?</em></td><td>Praticamente tudo: MCC, críticas ao MCC, perfil epistemológico, perfil conceitual. <strong>É a referência-mãe da disciplina.</strong></td></tr>
+      <tr><td><strong>LOPES, A. C. (2007)</strong> — <em>Currículo e epistemologia</em></td><td>Obstáculos epistemológicos e sua presença em livros didáticos de química.</td></tr>
+      <tr><td>ARRUDA &amp; VILLANI (1994)</td><td>Definição de concepção alternativa; as 4 condições da acomodação.</td></tr>
+      <tr><td>NARDI &amp; GATTI (2004)</td><td>Revisão do construtivismo; concepções espontâneas.</td></tr>
+      <tr><td>AMARAL &amp; MORTIMER (2011)</td><td>Zonas do perfil conceitual de <strong>calor</strong>.</td></tr>
+      <tr><td>SILVA, F. K. D. et al. (2024)</td><td>Diferença entre perfil epistemológico e perfil conceitual (“usos, abusos e confusões”).</td></tr>
+      <tr><td>SILVA &amp; MESSEDER NETO (2021)</td><td>Crítica dialética ao triângulo de Johnstone.</td></tr>
+      <tr><td>LAVARDA &amp; PEREIRA (2019)</td><td>Histórico das pesquisas sobre linguagem no ensino de ciências no Brasil.</td></tr>
+      <tr><td>VIGOTSKI (2001/2009)</td><td>Conceito espontâneo × científico; mediação simbólica.</td></tr>
+      <tr><td>OKI (2000); MELZER &amp; AIRES (2015); OLIVEIRA et al. (2018)</td><td>História da eletricidade / teoria atômica (o caso da Aula 10).</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============================== MAPA ============================== -->
+<section id="s-mapa">
+  <h2><span class="num">01</span> Mapa dos 5 blocos</h2>
+  <p class="lede">A disciplina inteira é uma única discussão que vai se complexificando. Entenda a
+  progressão e você não decora nada solto.</p>
+
+  <div class="flow">
+    <div class="step"><div class="k">Bloco 1 · Aula 1</div><p><strong>O aluno traz ideias.</strong> Existem concepções alternativas, são estáveis e resistentes.</p></div>
+    <span class="arrow">→</span>
+    <div class="step"><div class="k">Bloco 2 · Aula 2</div><p><strong>Então troque-as.</strong> O MCC propõe substituir CA por concepção científica via conflito cognitivo.</p></div>
+    <span class="arrow">→</span>
+    <div class="step"><div class="k">Bloco 3 · Aula 2</div><p><strong>Mas não é substituição.</strong> Vigotski: espontâneo e científico se apoiam mutuamente.</p></div>
+  </div>
+  <div class="flow">
+    <div class="step"><div class="k">Bloco 4 · Aula 10</div><p><strong>Elas coexistem.</strong> Perfil conceitual (zonas que convivem) e obstáculos epistemológicos (por que resistem).</p></div>
+    <span class="arrow">→</span>
+    <div class="step"><div class="k">Bloco 5 · Aula 11</div><p><strong>E tudo passa pela linguagem.</strong> O sujeito não está isolado; aprender química é dominar seus níveis de representação.</p></div>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">A frase que resume a disciplina inteira</span>
+    <p>“O ensino de química partiu de <strong>substituir</strong> as ideias do aluno (MCC), passou a
+    <strong>conviver</strong> com elas (perfil conceitual) e hoje entende que essa convivência se constrói
+    <strong>socialmente, pela linguagem</strong> (Vigotski, abordagens discursivas) e pela
+    <strong>mediação simbólica</strong> entre o macro e o submicroscópico.”
+    Se você entra na prova sabendo defender essa frase, você passa.</p>
+  </div>
+</section>
+
+<!-- ============================== 02 ============================== -->
+<section id="s1">
+  <h2><span class="num">02</span> O que são concepções alternativas <span class="tag aula">Aula 1</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">O conceito fundador de toda a disciplina. Se você errar essa definição, o resto desanda.</p>
+
+  <div class="def ca">
+    <div class="lbl">Definição — decore esta</div>
+    <p><strong>Concepções alternativas</strong> são <strong>preconcepções ou concepções espontâneas</strong>:
+    ideias <strong>intuitivas, relativamente estáveis, parcialmente consistentes</strong>, <strong>úteis para
+    a interpretação dos fenômenos cotidianos</strong> e que constituem o <strong>“conhecimento do senso
+    comum”</strong>. <span class="anchor-ref">(ARRUDA &amp; VILLANI, 1994)</span></p>
+  </div>
+
+  <div class="def ca">
+    <div class="lbl">Definição complementar</div>
+    <p>São <strong>ideias que estudantes têm sobre conceitos, conteúdos e fenômenos e que diferem
+    substancialmente da ciência que se pretende ensinar</strong>, <strong>influenciam a aprendizagem
+    futura</strong> e <strong>podem ser resistentes a mudanças</strong>.
+    <span class="anchor-ref">(NARDI &amp; GATTI, 2004)</span></p>
+  </div>
+
+  <div class="callout warn">
+    <span class="lbl">O detalhe que a professora enfatiza</span>
+    <p>“Alternativa” significa <strong>alternativa AO conhecimento científico</strong> — não “alternativa”
+    no sentido de excêntrica ou de segunda categoria. E, principalmente: <strong>elas são úteis</strong>.
+    Funcionam bem para o cotidiano. É exatamente por funcionarem que são estáveis e difíceis de mudar.
+    Escrever “concepção alternativa é o erro do aluno” é a forma mais rápida de perder ponto.</p>
+  </div>
+
+  <h3>Contexto histórico</h3>
+  <ul>
+    <li><strong>Década de 1970:</strong> surge a preocupação da pesquisa em ensino com <strong>o que os
+    alunos trazem</strong> para a sala de aula.</li>
+    <li>Rompe com a ideia de que <strong>o aluno é uma tábula rasa</strong> — uma folha em branco onde o
+    professor deposita conteúdo.</li>
+    <li>Consequência pedagógica direta: <strong>precisamos considerar o que o aluno traz</strong> →
+    aprendizagem ativa.</li>
+  </ul>
+
+  <h3>Um exemplo em química</h3>
+  <p>O exemplo trabalhado na disciplina: <strong>“quando algo queima ou enferruja, a matéria desaparece”</strong>.
+  O aluno vê o papel virar cinza (menos volume, menos massa aparente) e conclui que sumiu. Ele não vê os
+  gases. A concepção é útil no cotidiano e coerente com o que os sentidos entregam — e por isso resiste.
+  <span class="anchor-ref">Volte a este exemplo em §07, §13 e §14 — ele é o fio condutor da disciplina inteira.</span></p>
+</section>
+
+<!-- ============================== 03 ============================== -->
+<section id="s2">
+  <h2><span class="num">03</span> Características e os outros nomes <span class="tag aula">Aula 1 · 2</span></h2>
+
+  <h3>Também conhecidas como…</h3>
+  <p>A professora listou os sinônimos que circulam na literatura. Saber que existem vários nomes
+  <em class="term">e por que o nome escolhido importa</em> é bom material de resposta.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Concepção prévia</h4><p>Enfatiza que vem <strong>antes</strong> do ensino formal.</p></div>
+    <div class="card"><h4>Concepção espontânea</h4><p>Enfatiza que se forma <strong>sem instrução</strong>, na vivência.</p></div>
+    <div class="card"><h4>Conceitos intuitivos</h4><p>Enfatiza a origem na <strong>intuição</strong>, não no raciocínio sistemático.</p></div>
+    <div class="card"><h4>Concepção errônea <em>(misconception)</em></h4><p>Enfatiza o <strong>desvio</strong> em relação à ciência — é o termo mais problemático, porque carrega juízo de valor.</p></div>
+  </div>
+
+  <h3>As cinco características que caem em prova</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Característica</th><th>O que significa</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Pessoais</strong></td><td>Cada estudante constrói a sua a partir da própria experiência.</td></tr>
+      <tr><td><strong>Influenciadas pelo contexto</strong></td><td>Dependem da cultura, da vivência, da linguagem do meio — ponte direta com o Bloco 5.</td></tr>
+      <tr><td><strong>Estáveis</strong></td><td>Não são chutes momentâneos; são consistentes ao longo do tempo.</td></tr>
+      <tr><td><strong>Resistentes à mudança</strong></td><td>Sobrevivem ao ensino formal. <strong>Por quê?</strong> Porque funcionam para o cotidiano — e, segundo Bachelard, porque se apoiam em <a href="#s12">obstáculos epistemológicos</a>.</td></tr>
+      <tr><td><strong>Iguais em diferentes partes do mundo</strong></td><td>São <strong>amplamente mapeadas</strong> pela pesquisa e se repetem entre culturas — o que sugere que não são idiossincrasia, mas modos de pensar compartilhados.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Relação para a prova</span>
+    <p>Essas duas últimas características parecem se contradizer com “pessoais”, e a professora explora isso.
+    Resolução: são <strong>pessoais na formulação</strong> (cada um diz do seu jeito) mas
+    <strong>supra-individuais na estrutura</strong> (o mesmo padrão de raciocínio se repete no mundo todo).
+    É exatamente esse caráter supra-individual que Bachelard chama de <strong>obstáculo epistemológico</strong>
+    e que Mortimer transforma em <strong>zona de perfil conceitual</strong>. Essa é uma relação de altíssimo
+    valor numa dissertativa.</p>
+  </div>
+
+  <h3>Os 8 temas dos seminários da turma</h3>
+  <p>Cada grupo mapeou as CA de um conteúdo químico. Vale saber a lista — pode aparecer pedindo exemplo:</p>
+  <p><span class="tag ca">1. Ácido-Base</span> <span class="tag ca">2. Eletroquímica</span>
+  <span class="tag ca">3. Equilíbrio Químico</span> <span class="tag ca">4. Estrutura da Matéria</span>
+  <span class="tag ca">5. Funções Inorgânicas</span> <span class="tag ca">6. Ligações Químicas</span>
+  <span class="tag ca">7. Soluções</span> <span class="tag ca">8. Transformações Químicas</span></p>
+  <p class="anchor-ref">O seu grupo foi o <strong>1 — Ácido-Base</strong> (texto base: Figueira et al., 2009).
+  Se a prova pedir “dê um exemplo de concepção alternativa”, use o que você dominou no seminário.</p>
+</section>
+
+<!-- ============================== 04 ============================== -->
+<section id="s3">
+  <h2><span class="num">04</span> O Movimento de Mudança Conceitual (MCC) <span class="tag aula">Aula 2</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">Descoberto que o aluno tem ideias próprias, a pergunta vira: <em>como trocá-las pelas
+  científicas?</em> A resposta dos anos 80 foi o MCC.</p>
+
+  <div class="def mcc">
+    <div class="lbl">O que é</div>
+    <p>O <strong>Movimento de Mudança Conceitual</strong> é um <strong>programa/movimento de pesquisa</strong>
+    da área de ensino de ciências, <strong>ligado ao construtivismo</strong>, que busca explicar e promover a
+    passagem das <strong>concepções alternativas</strong> para as <strong>concepções científicas</strong>.</p>
+  </div>
+
+  <div class="flow">
+    <div class="step" style="border-color:rgba(255,122,89,.4)"><div class="k" style="color:var(--ca)">Ponto de partida</div><p>Concepções alternativas</p></div>
+    <span class="arrow">→</span>
+    <div class="step" style="border-color:rgba(255,212,59,.4)"><div class="k" style="color:var(--warn)">Motor</div><p><strong>Conflito cognitivo</strong> de ideias</p></div>
+    <span class="arrow">→</span>
+    <div class="step" style="border-color:rgba(77,171,247,.4)"><div class="k" style="color:var(--mcc)">Chegada</div><p>Concepções científicas</p></div>
+  </div>
+
+  <h3>Os dois motores da mudança segundo o MCC</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Conflito cognitivo</h4>
+      <p>A mudança é provocada por uma <strong>situação de conflito</strong> em que a ideia do aluno não dá
+      conta do fenômeno. Raiz <strong>piagetiana</strong>.</p>
+    </div>
+    <div class="card">
+      <h4>Analogia com a revolução científica</h4>
+      <p>A mudança na cabeça do aluno é pensada <strong>por analogia com a mudança de paradigma</strong> na
+      história da ciência. Raiz <strong>kuhniana / lakatosiana</strong>.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="lbl">A tese central (e polêmica) do MCC</span>
+    <p>Existe uma <strong>analogia entre o pensamento científico e o pensamento da criança</strong>: o aluno
+    teria sua própria “ciência normal”, entraria em crise diante de uma anomalia e faria sua “revolução”
+    pessoal. <strong>Guarde isso</strong> — é exatamente essa analogia que vai ser criticada em §07.</p>
+  </div>
+</section>
+
+<!-- ============================== 05 ============================== -->
+<section id="s4">
+  <h2><span class="num">05</span> As raízes epistemológicas: Kuhn, Lakatos e Piaget <span class="tag aula">Aula 2</span></h2>
+  <p class="lede">O MCC foi <strong>inspirado nas ideias de epistemólogos</strong>. Saber de onde ele veio é
+  o que permite criticá-lo depois.</p>
+
+  <h3>Thomas Kuhn — ciência normal e revolução</h3>
+  <div class="def mcc">
+    <div class="lbl">Visão kuhniana</div>
+    <p>A ciência alterna entre períodos de <strong>ciência normal</strong> (trabalho dentro de um paradigma
+    aceito) e <strong>períodos revolucionários</strong>. A revolução <strong>começa com uma anomalia</strong>:
+    uma gradual consciência, na comunidade científica, de que <strong>o paradigma dominante não está
+    conseguindo resolver certos problemas</strong> e de que uma <strong>reestruturação das concepções
+    existentes</strong> precisa ser efetuada.</p>
+  </div>
+
+  <h4>Incomensurabilidade</h4>
+  <p>Dois paradigmas científicos diferentes <strong>não podem ser comparados de maneira totalmente direta</strong>
+  usando os mesmos critérios, conceitos ou linguagem.</p>
+  <div class="callout tip">
+    <span class="lbl">O exemplo da aula — Newton × Einstein</span>
+    <p>Na física <strong>newtoniana</strong>, tempo e espaço são <strong>absolutos</strong>. Na
+    <strong>relatividade</strong>, tempo e espaço são <strong>relativos</strong>. Os mesmos termos
+    (“tempo”, “massa”, “movimento”) <strong>não têm exatamente o mesmo significado</strong> nos dois
+    paradigmas — por isso são, em parte, incomensuráveis.</p>
+    <p><strong>Ponte com o Bloco 5:</strong> incomensurabilidade é, no fundo, um problema de
+    <strong>linguagem</strong> — a mesma palavra significando coisas diferentes em sistemas diferentes.
+    Boa relação para citar numa dissertativa.</p>
+  </div>
+
+  <h3>Imre Lakatos — programas de pesquisa</h3>
+  <p>Entra como a segunda inspiração epistemológica: em vez de rupturas abruptas, a ciência avança por
+  <strong>programas de pesquisa</strong> com um núcleo que se preserva e um cinturão de hipóteses que se
+  ajusta. Serve de modelo alternativo ao “tudo ou nada” kuhniano.</p>
+
+  <h3>Jean Piaget — assimilação e acomodação</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Assimilação</h4>
+      <p>O sujeito <strong>encaixa a nova informação</strong> nos esquemas mentais que já possui. A estrutura
+      de pensamento <strong>não muda</strong>.</p>
+    </div>
+    <div class="card">
+      <h4>Acomodação</h4>
+      <p>A nova informação <strong>não cabe</strong> nos esquemas existentes, e o sujeito precisa
+      <strong>reestruturar</strong> seus esquemas. <strong>É aqui que a mudança conceitual acontece.</strong></p>
+    </div>
+  </div>
+  <p>É da <strong>psicologia piagetiana</strong> que o MCC toma emprestada a ideia de que o aprendizado
+  profundo exige acomodação — e é por isso que a pergunta seguinte é: <strong>sob que condições a
+  acomodação ocorre?</strong></p>
+</section>
+
+<!-- ============================== 06 ============================== -->
+<section id="s5">
+  <h2><span class="num">06</span> As 4 condições da acomodação <span class="tag aula">Aula 2</span> <span class="tag hot">Quase certeza de cair</span></h2>
+  <p class="lede">Conteúdo mais “decorável” da disciplina e o mais provável de virar questão direta —
+  possivelmente pedindo um exemplo de ensino de química. Decore os quatro nomes <strong>em ordem</strong>.</p>
+
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Condição</th><th>Definição (Arruda &amp; Villani, 1994)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Insatisfação</strong></td><td>Tem que haver uma <strong>anomalia</strong> — a concepção atual falha em explicar algo. Sem insatisfação, nada se move.</td></tr>
+      <tr><td><strong>2. Inteligibilidade</strong></td><td>A nova concepção <strong>tem que fazer sentido</strong> para o aluno. Ele precisa conseguir entendê-la.</td></tr>
+      <tr><td><strong>3. Plausibilidade</strong></td><td>A nova concepção <strong>resolve a anomalia</strong> <em>e</em> é <strong>consistente com outros conhecimentos</strong> que o aluno já tem.</td></tr>
+      <tr><td><strong>4. Fertilidade</strong></td><td>A nova concepção <strong>conduz a novas descobertas</strong> e pode ser <strong>estendida a outras áreas ou casos</strong>.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Mnemônico</span>
+    <p><strong>I-I-P-F</strong> → “<strong>I</strong>nsatisfeito, <strong>I</strong>nteligível,
+    <strong>P</strong>lausível, <strong>F</strong>értil”. Ou a frase: <em>“Não gostei da minha ideia (1),
+    entendi a nova (2), ela resolve e combina com o resto (3) e ainda serve pra outras coisas (4).”</em></p>
+  </div>
+
+  <details open>
+    <summary>Exemplo completo da aula — a ferrugem na palha de aço (esse é o exemplo oficial)</summary>
+    <div class="body">
+      <div class="tw">
+      <table class="vs">
+        <thead><tr><th>Etapa</th><th>O que acontece</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ideia inicial</strong><br><span class="anchor-ref">a “ciência normal” do aluno</span></td><td>“Algo que queima ou enferruja <strong>desaparece</strong>” — a matéria some.</td></tr>
+          <tr><td><strong>1. Insatisfação</strong></td><td>O aluno <strong>observa que a massa aumentou</strong> depois da ferrugem na palha de aço. Isso é a <strong>anomalia</strong>: contradiz frontalmente a ideia de que a matéria desaparece.</td></tr>
+          <tr><td><strong>2. Inteligibilidade</strong></td><td>O professor apresenta a <strong>teoria da oxidação</strong>: o ferro reage com o oxigênio do ar. O aluno consegue entender o que está sendo dito.</td></tr>
+          <tr><td><strong>3. Plausibilidade</strong></td><td>A nova ideia <strong>resolve a anomalia</strong> — a massa aumentou porque o oxigênio se incorporou. E é coerente com o que ele sabe sobre o ar ter matéria.</td></tr>
+          <tr><td><strong>4. Fertilidade</strong></td><td>A mesma ideia <strong>explica a combustão do papel, a formação de óxidos e a conservação da massa</strong>. Vale para casos novos.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout warn">
+        <span class="lbl">Por que este exemplo é ouro</span>
+        <p>Ele conecta <strong>quatro</strong> pontos da disciplina de uma vez: é uma <a href="#s1">concepção
+        alternativa</a> (§02), é o exemplo de <a href="#s5">acomodação</a> (§06), é sustentado por um
+        <a href="#s12">obstáculo realista</a> (§13: “não vejo os gases, vejo que tudo desapareceu”) e exige
+        articular <a href="#s17">macro e submicroscópico</a> (§18). <strong>Se você só puder decorar um
+        exemplo para a prova inteira, decore este.</strong></p>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Roteiro para construir o seu próprio exemplo (atividade da aula)</summary>
+    <div class="body">
+      <p>A professora pediu em aula: pense numa situação de ensino de Química em que haja acomodação e
+      descreva. Se cair na prova, é literalmente responder estas cinco perguntas:</p>
+      <ol>
+        <li><strong>Qual era a ideia inicial do aluno?</strong> (a “ciência normal” dele)</li>
+        <li><strong>O que gerou insatisfação?</strong> (experimento, pergunta, resultado inesperado, contradição)</li>
+        <li><strong>Como a nova explicação fez sentido?</strong> (inteligibilidade)</li>
+        <li><strong>Por que ela pareceu melhor que a anterior?</strong> (plausibilidade)</li>
+        <li><strong>Em quais outras situações essa nova ideia poderia ser usada?</strong> (fertilidade)</li>
+      </ol>
+      <p><strong>Outros exemplos químicos que funcionam bem:</strong> dissolução do sal (“o sal sumiu” →
+      conservação da massa e dispersão de íons); equilíbrio químico (“a reação parou” → equilíbrio dinâmico);
+      neutralização (“ácido + base sempre dá pH 7” → depende da força relativa).</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================== 07 ============================== -->
+<section id="s6">
+  <h2><span class="num">07</span> Críticas ao MCC <span class="tag aula">Aula 2 · 10</span> <span class="tag hot">Muito provável</span></h2>
+  <p class="lede">O ponto de virada da disciplina. É aqui que Mortimer (1996) entra e abre caminho para o
+  perfil conceitual. Uma questão do tipo “discuta os limites do MCC” é altamente provável.</p>
+
+  <h3>As duas críticas nomeadas na Aula 10</h3>
+  <div class="grid g2">
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>1. Associação direta entre <em>aprender</em> e <em>fazer ciência</em></h4>
+      <p>O MCC trata o aluno como se ele fosse um cientista em miniatura vivendo revoluções paradigmáticas.
+      Mas <strong>aprender ciência não é o mesmo processo que produzir ciência</strong> — os contextos, os
+      objetivos e as condições sociais são diferentes.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>2. A própria história da ciência desmente a substituição</h4>
+      <p>O <strong>campo da mecânica quântica surgiu com a mecânica clássica ainda valendo</strong>. A teoria
+      nova <strong>não apagou</strong> a antiga: as duas coexistem, cada uma no seu domínio de validade.
+      Se nem na ciência há substituição pura, por que exigir isso do aluno?</p>
+    </div>
+  </div>
+
+  <div class="def perfil">
+    <div class="lbl">A conclusão que gera o próximo bloco</div>
+    <p><strong>Ao invés de substituir → conviver / coexistir.</strong> Essa é a virada de Mortimer (1996) e a
+    porta de entrada do <a href="#s10">perfil conceitual</a>.</p>
+  </div>
+
+  <h3>As críticas e modificações internas ao MCC</h3>
+  <p>Mesmo dentro do movimento, a mudança conceitual foi reformulada. Ela passou a ser entendida como:</p>
+  <ul>
+    <li><strong>Não linear</strong> — não é uma escada em que se sobe um degrau e nunca mais se volta.</li>
+    <li><strong>Envolve idas e vindas</strong> — o aluno oscila entre as concepções.</li>
+    <li><strong>Não é definitiva</strong> — a concepção antiga pode ressurgir em outro contexto.</li>
+    <li><strong>Não é só um processo intelectual</strong> — envolve dimensões afetivas, sociais, contextuais.</li>
+  </ul>
+
+  <div class="callout warn">
+    <span class="lbl">A pergunta central: <em>substituição × evolução</em></span>
+    <p><strong>Abandona-se ou não a concepção prévia?</strong> O MCC clássico diz sim (substituição). A
+    resposta madura da disciplina é <strong>não</strong>: o conhecimento prévio <strong>evolui e coexiste</strong>.
+    <br><br>E daí decorre a virada de postura docente: as concepções passam a ser encaradas como
+    <strong>construções pessoais que o professor tem o dever de procurar conhecer, compreender e valorizar</strong>
+    para decidir o que fazer e como fazer o seu ensino ao longo do estudo de um tópico.</p>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">O exemplo da blusa de lã (citado na Aula 10)</span>
+    <p>Usado por Mortimer para mostrar a coexistência: no cotidiano dizemos “<strong>vou vestir a blusa de lã
+    para me esquentar</strong>” — como se a blusa produzisse calor. Cientificamente sabemos que ela apenas
+    <strong>isola</strong>, reduzindo a perda de calor do corpo. E ainda assim continuamos falando assim, sem
+    prejuízo. <strong>A zona científica não apagou a zona do senso comum</strong> — ela ganhou um contexto
+    próprio de uso. É a demonstração viva de que se convive em vez de substituir.</p>
+  </div>
+</section>
+
+<!-- ============================== 08 ============================== -->
+<section id="s7">
+  <h2><span class="num">08</span> Vigotski: conceito espontâneo × conceito científico <span class="tag aula">Aula 2</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">A pergunta de Vigotski é outra: <strong>como o ser humano forma conceitos na mente?</strong>
+  Essa dupla de conceitos é candidata forte a questão comparativa.</p>
+
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th></th><th>Conceito espontâneo</th><th>Conceito científico</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Origem</strong></td><td>Nasce de <strong>experiências do cotidiano</strong>: situações vividas, observações, linguagem do dia a dia.</td><td><strong>Aprendido na escola</strong>, no processo de ensino sistemático.</td></tr>
+      <tr><td><strong>Organização</strong></td><td><strong>Difuso</strong> e <strong>pouco sistemático</strong>.</td><td>Faz parte de um <strong>sistema organizado de ideias</strong>; <strong>nunca aparece sozinho</strong>, sempre ligado a outros conceitos.</td></tr>
+      <tr><td><strong>Consciência</strong></td><td>A pessoa <strong>usa mas não consegue defini-lo</strong> claramente nem relacioná-lo com outros. Desenvolve-se <strong>sem consciência</strong>.</td><td><strong>Sistemático e generalista</strong>; a pessoa tem consciência do conceito e de suas relações.</td></tr>
+      <tr><td><strong>Direção</strong></td><td>Do concreto vivido → em direção à generalização.</td><td>Da definição/sistema → em direção ao concreto.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="def">
+    <div class="lbl">A tese central — e o que mais cai</div>
+    <p>Os dois <strong>não estão em conflito</strong>. São <strong>processos intimamente interligados que
+    exercem influências um sobre o outro</strong>, ainda que se formem e se desenvolvam sob
+    <strong>condições externas e internas diferentes</strong> e motivados por <strong>problemas
+    diferentes</strong>. <span class="anchor-ref">(VIGOTSKI, 2001)</span></p>
+  </div>
+
+  <div class="quote">
+    “O desenvolvimento dos conceitos espontâneos e científicos — cabe pressupor — são processos intimamente
+    interligados, que exercem influências um sobre o outro. […] o desenvolvimento dos conceitos científicos
+    deve apoiar-se forçosamente em um determinado nível de maturação dos conceitos espontâneos.”
+    <span class="src">VIGOTSKI, L. S. <em>A construção do pensamento e da linguagem</em>, p. 261.</span>
+  </div>
+
+  <h3>A dependência: o científico se apoia no espontâneo</h3>
+  <p>É necessário que <strong>o conceito espontâneo tenha alcançado um certo nível</strong> para que o
+  conceito científico correspondente seja <strong>internalizado</strong>. Exemplo dado: conceitos históricos
+  dependem de a criança já usar a noção de <strong>passado</strong> nos acontecimentos cotidianos.</p>
+  <p><strong>Em química:</strong> para internalizar o conceito científico de <strong>calor</strong> como
+  energia em trânsito, o aluno precisa ter maturado o espontâneo de calor como “quando está muito quente”.
+  <span class="anchor-ref">— é literalmente o exemplo do slide, e reaparece nas zonas do perfil conceitual de calor em §11.</span></p>
+
+  <h3>A analogia da língua estrangeira</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Língua materna ↔ conceito espontâneo</h4>
+      <p>Aprendemos a partir da <strong>nomeação direta dos objetos</strong>. O contato é imediato.</p>
+    </div>
+    <div class="card">
+      <h4>Língua estrangeira ↔ conceito científico</h4>
+      <p>A <strong>mediação da língua materna substitui o objeto</strong> — chega-se ao novo termo
+      <em>através</em> do já conhecido, não do objeto direto.</p>
+    </div>
+  </div>
+  <div class="quote">
+    “No processo de ensino do sistema de conhecimentos, ensina-se a criança o que ela não tem diante dos olhos,
+    o que vai além dos limites da sua experiência atual e da eventual experiência imediata. Pode-se dizer que a
+    assimilação dos conceitos científicos se baseia igualmente nos conceitos elaborados no processo da própria
+    experiência da criança, como o estudo de uma língua estrangeira se baseia na semântica da língua materna.”
+    <span class="src">VIGOTSKI, p. 268–9.</span>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Conceito científico &gt; conceito espontâneo — mas em que sentido?</span>
+    <p>O slide afirma a superioridade do conceito científico <strong>apenas do ponto de vista da contribuição
+    para o desenvolvimento cognitivo</strong> — porque é sistemático, generalizante e consciente. <strong>Não</strong>
+    é uma superioridade de valor da pessoa ou de “verdade absoluta”. Escreva essa ressalva na prova: mostra leitura fina.</p>
+  </div>
+
+  <div class="callout warn">
+    <span class="lbl">Relação de ouro para a dissertativa</span>
+    <p><strong>Vigotski é o argumento psicológico contra a substituição do MCC.</strong> Se o conceito
+    científico <em>precisa se apoiar</em> no espontâneo para existir, então destruir o espontâneo seria
+    destruir a própria base do científico. Isso converge exatamente com a crítica de Mortimer (§07) e com a
+    coexistência de zonas do perfil conceitual (§11) — três caminhos diferentes chegando à mesma conclusão.</p>
+  </div>
+</section>
+
+<!-- ============================== 09 ============================== -->
+<section id="s8">
+  <h2><span class="num">09</span> O caso da natureza elétrica da matéria <span class="tag aula">Aula 10 · NOVA</span></h2>
+  <p class="lede">A Aula 10 abre com um percurso histórico. Ele não é enfeite: é o <strong>argumento</strong>
+  que justifica o perfil conceitual. A história da ciência mostra que conceitos <em>não</em> são substituídos
+  de uma vez — eles se reconfiguram e convivem.</p>
+
+  <div class="callout tip">
+    <span class="lbl">A pergunta que abre a aula</span>
+    <p>Hoje sabemos que <strong>eletricidade é um fenômeno relacionado ao movimento de cargas elétricas</strong>,
+    e não compreendemos eletricidade sem compreender as características da matéria (inclusive sua natureza
+    elétrica). Mas — <strong>sempre foi assim?</strong></p>
+  </div>
+
+  <h3>As quatro fases</h3>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Período</th><th>Concepção de eletricidade</th><th>Marcos</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Grécia antiga</strong></td>
+        <td><strong>Fenômeno místico, sobrenatural</strong></td>
+        <td>Eletricidade por <strong>atrito</strong>. Explicada por forças sobrenaturais. Vista como um fenômeno <strong>curioso, de pouca importância</strong>. <strong>Tales de Mileto</strong> e a água como princípio material que dá origem a todas as coisas.</td>
+      </tr>
+      <tr>
+        <td><strong>Séculos XVII–XVIII</strong></td>
+        <td><strong>Fluido</strong></td>
+        <td>Um <strong>fluido invisível e sem peso</strong> que podia passar de um corpo para outro. O mesmo modelo de fluido foi pensado para <strong>calor, luz e magnetismo</strong>. Houve tentativas de <strong>“engarrafar” o fluido</strong> — o capacitor primitivo (garrafa de Leiden).</td>
+      </tr>
+      <tr>
+        <td><strong>Séculos XVIII–XIX</strong></td>
+        <td><strong>Ferramenta experimental</strong></td>
+        <td><strong>Centelhas elétricas para produzir reações químicas</strong> — síntese da água por <strong>Henry Cavendish</strong>. Em <strong>1807</strong>, <strong>Humphry Davy</strong> decompôs a potassa e a soda usando eletricidade, levando à <strong>primeira síntese do potássio e do sódio</strong>, metais ainda não isolados. Objetivo: <strong>isolar substâncias para processos industriais</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>Século XIX</strong></td>
+        <td><strong>Matéria e eletricidade se aproximam</strong></td>
+        <td><strong>Michael Faraday</strong>: relações de <strong>proporcionalidade entre matéria decomposta e quantidade de eletricidade utilizada</strong> → <strong>a reação química é resultado de fenômenos elétricos</strong>. <strong>J. J. Thomson</strong>: experimento dos <strong>raios catódicos</strong>, cálculo da <strong>relação carga/massa do elétron</strong> e o modelo atômico que estabelece a <strong>natureza elétrica da matéria</strong>.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>A dimensão social da ciência — o que a professora quer que você note</h3>
+  <p>A aula não conta só <em>o quê</em> foi descoberto, mas <strong>sob que condições</strong>. Esse é o
+  recado epistemológico:</p>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Instituições importam</h4>
+      <p>A <strong>Royal Institution</strong> foi crucial para as pesquisas de Faraday; Thomson atuou no
+      <strong>Laboratório Cavendish</strong>. Havia <strong>apoio de academias nacionais, instituições
+      militares e corporações industriais</strong>.</p>
+    </div>
+    <div class="card">
+      <h4>Convivência entre cientistas</h4>
+      <p>A <strong>convivência de Faraday com Davy, Volta e Ampère</strong> pode ter auxiliado no
+      desenvolvimento de suas ideias. Ciência não se faz sozinho.</p>
+    </div>
+    <div class="card">
+      <h4>Interesses econômicos</h4>
+      <p>Eletricidade tem <strong>relação com forças produtivas</strong>; havia uma <strong>corrida
+      europeia</strong> por experimentos e por <strong>prestígio das instituições científicas</strong>.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,212,59,.35)">
+      <h4>Quem ficou de fora</h4>
+      <p><strong>Ausência de mulheres, pessoas pretas e indígenas</strong> — reflexo do contexto histórico.
+      A ciência que herdamos foi produzida por um grupo restrito, e isso não é acidente.</p>
+    </div>
+  </div>
+
+  <div class="def perfil">
+    <div class="lbl">As três lições explícitas do slide — decore as três</div>
+    <p>O que a história nos revela:</p>
+    <ul style="margin-bottom:0">
+      <li><strong>O conhecimento muda;</strong></li>
+      <li><strong>O conhecimento tem interesse</strong> (econômico, militar, industrial, de prestígio);</li>
+      <li><strong>O conhecimento tem relação com condições históricas.</strong></li>
+    </ul>
+  </div>
+
+  <h3>E a conclusão que gera o perfil conceitual</h3>
+  <div class="flow">
+    <div class="step" style="border-color:rgba(255,122,89,.4)"><div class="k" style="color:var(--ca)">DE</div><p>Concepção de que <strong>eletricidade era mágica</strong></p></div>
+    <span class="arrow">→</span>
+    <div class="step" style="border-color:rgba(77,171,247,.4)"><div class="k" style="color:var(--mcc)">PARA</div><p>Eletricidade é <strong>fenômeno relacionado a cargas</strong>; cargas são <strong>subpartículas da matéria</strong></p></div>
+  </div>
+  <div class="callout warn">
+    <span class="lbl">A pergunta-chave da aula</span>
+    <p><strong>COEXISTÊNCIA: podemos encontrar ainda hoje a concepção mística de eletricidade?</strong></p>
+    <p>A resposta é <strong>sim</strong> — e é isso que destrói o modelo de substituição. Expressões como
+    “tomei um choque, tem um espírito nessa tomada”, energias, fluidos vitais, campos místicos: a zona
+    mística <strong>não foi apagada</strong>, ela convive com a científica. <strong>Se nem a humanidade
+    substituiu suas concepções ao longo de séculos, por que esperar que um aluno substitua a dele em um
+    bimestre?</strong> Essa frase é uma excelente conclusão de dissertativa.</p>
+  </div>
+</section>
+
+<!-- ============================== 10 ============================== -->
+<section id="s9">
+  <h2><span class="num">10</span> Perfil epistemológico (Bachelard) <span class="tag aula">Aula 10 · NOVA</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">A noção de <strong>perfil epistemológico</strong> é de <strong>Gaston Bachelard</strong> (1940).
+  A tese: <strong>uma única doutrina filosófica não é suficiente para descrever todas as diferentes formas de
+  pensar um simples conceito</strong>.</p>
+
+  <div class="def perfil">
+    <div class="lbl">Definição</div>
+    <p>O <strong>perfil epistemológico</strong> é uma <strong>“escala graduada”</strong> de zonas filosóficas
+    que descrevem as diferentes maneiras de conceber <strong>um mesmo conceito</strong>. Cada zona corresponde
+    a uma <strong>filosofia</strong> (realismo, empirismo, racionalismo…), e <strong>a altura de cada zona</strong>
+    representa <strong>o quanto aquela “maneira de ver” está presente no pensamento individual</strong> —
+    definida pelo <strong>background cultural</strong> e pelas <strong>oportunidades que a pessoa teve de usar
+    cada divisão do perfil na sua vida</strong>.</p>
+  </div>
+
+  <h3>O exemplo canônico: o conceito de MASSA</h3>
+  <p>É o exemplo que Bachelard usa e que apareceu no slide da Aula 10. <strong>Sabe-se de cor.</strong></p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Zona</th><th>Como concebe a massa</th><th>Como apareceu no slide</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Realismo</strong><br><span class="anchor-ref">senso comum</span></td><td>Atribui massa apenas <strong>àquilo que é pesado</strong>. “Aprecia-se a massa pela vista” — apreciação quantitativa grosseira.</td><td><em>“Aquilo que é pesado”</em></td></tr>
+      <tr><td><strong>Empirismo</strong><br><span class="anchor-ref">“claro e positivista”</span></td><td>Emprego cautelosamente empírico, <strong>determinação objetiva precisa</strong>. O conceito está ligado à <strong>utilização da balança</strong>. Ultrapassa a realidade imediata pelo instrumento, mas ainda não dá conta das relações racionais.</td><td><em>“Utilização da balança”</em></td></tr>
+      <tr><td><strong>Racionalismo clássico</strong></td><td>A massa <strong>define-se num corpo de noções</strong>, não como elemento primitivo da experiência direta. Com Newton, <strong>massa = força / aceleração</strong>. Força, aceleração e massa se estabelecem correlativamente numa relação racional.</td><td><em>“Quociente entre força e aceleração”</em></td></tr>
+      <tr><td><strong>Racionalismo moderno</strong></td><td>A noção simples <strong>torna-se complexa</strong>: a massa não é mais absoluta no tempo e no espaço, mas <strong>função complicada da velocidade</strong>. Na física relativista, massa <strong>não é mais heterogênea à energia</strong>.</td><td><em>“Está em função da velocidade da luz”</em></td></tr>
+      <tr><td><strong>Racionalismo contemporâneo</strong></td><td>“A realização se impõe à realidade”: na <strong>mecânica de Dirac</strong>, é a <strong>forma de propagação</strong> que define o que se propaga — ela é, de saída, <strong>“desrealizada”</strong>.</td><td>não apareceu no slide, mas está em Mortimer (1996)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Adaptação de Mortimer (1992) ao conhecimento químico</span>
+    <p>Mortimer adapta a proposta de Bachelard às particularidades do conhecimento químico com as zonas:
+    <strong>realismo</strong> (senso comum) → <strong>empirismo</strong> (instrumentos de medida, mas sem
+    relações racionais) → <strong>racionalismo clássico</strong> (rede de relações racionais) →
+    <strong>racionalismo moderno</strong> (noções simples se tornam complexas em rede mais ampla) →
+    <strong>racionalismo contemporâneo</strong> (forma, fractais, sistemas não-lineares, reações distantes do
+    equilíbrio, sistemas irreversíveis).</p>
+  </div>
+
+  <h3>Três propriedades do perfil que caem em prova</h3>
+  <ul>
+    <li><strong>Progressão dupla:</strong> ao percorrer o perfil, qualquer conceito vai se tornando
+    <strong>mais complexo</strong> e também <strong>mais racional</strong>.</li>
+    <li><strong>O perfil é individual:</strong> difere de pessoa para pessoa, fortemente influenciado pelas
+    <strong>diferentes experiências</strong> e <strong>raízes culturais</strong> de cada um. Mortimer conta
+    que <em>o seu próprio</em> perfil de massa tem a zona <strong>empirista</strong> mais acentuada (anos
+    trabalhando com balanças em laboratório), enquanto o de <strong>Bachelard</strong> tem a zona
+    <strong>racionalista clássica</strong> mais pronunciada (formação de físico e filósofo).</li>
+    <li><strong>A zona realista = as concepções alternativas.</strong> A parte “realista” do espectro
+    corresponde, normalmente, <strong>às concepções alternativas que as pessoas possuem</strong>, muitas
+    vezes independentemente da formação escolar. <strong>No corpo teórico da ciência esse tipo de noção
+    já não existe</strong> — lá o espectro começa pelo empirismo.</li>
+  </ul>
+
+  <div class="callout warn">
+    <span class="lbl">A distinção que separa o especialista do novato</span>
+    <p>Bachelard e Mortimer <em>também</em> têm componente realista no perfil de massa — falamos de “uma
+    <strong>massa</strong> de ar frio que se aproxima”, “uma <strong>massa</strong> de detalhes a resolver”.
+    O que distingue o químico ou o físico de um estudante novato <strong>não é a ausência da zona realista</strong>,
+    mas o fato de que <strong>o especialista é consciente do seu perfil e usa cada noção no contexto
+    apropriado</strong>, enquanto o novato pode ainda não ter atingido esse grau de consciência.</p>
+    <p><strong>Consequência pedagógica direta:</strong> o objetivo do ensino não é apagar zonas — é
+    <strong>ampliar o perfil e tornar o estudante consciente dele</strong>.</p>
+  </div>
+</section>
+
+<!-- ============================== 11 ============================== -->
+<section id="s10">
+  <h2><span class="num">11</span> Perfil conceitual (Mortimer) <span class="tag aula">Aula 10 · NOVA</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">Mortimer <strong>não copia</strong> Bachelard — ele reelabora a noção para pensar
+  <strong>aprendizagem</strong>, não desenvolvimento científico. A diferença é a pegadinha favorita.</p>
+
+  <div class="def perfil">
+    <div class="lbl">Definição</div>
+    <p>O <strong>perfil conceitual</strong> é a ideia de que, para um mesmo conceito, um indivíduo possui
+    <strong>diferentes zonas</strong> de significação que <strong>coexistem</strong>, sendo usadas em
+    <strong>contextos diferentes</strong>. Aprender ciência <strong>não é substituir</strong> uma zona por
+    outra, mas <strong>ampliar o perfil</strong> e <strong>tomar consciência</strong> de qual zona é
+    apropriada a cada contexto.</p>
+  </div>
+
+  <h3>As três propriedades do perfil conceitual</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4>As zonas diferem ontológica e epistemologicamente entre si</h4>
+      <p>Não é questão de “mais certo” e “menos certo”: cada zona pressupõe uma <strong>natureza diferente
+      do objeto</strong> (ontologia) e uma <strong>forma diferente de conhecer</strong> (epistemologia).</p>
+    </div>
+    <div class="card">
+      <h4>O estudante precisa tomar consciência do seu perfil</h4>
+      <p>A meta do ensino é <strong>metacognitiva</strong>: saber que se tem várias zonas e reconhecer qual
+      está usando.</p>
+    </div>
+    <div class="card">
+      <h4>Depende do contexto</h4>
+      <p>A zona ativada <strong>varia com a situação</strong>. No laboratório usa-se a racionalista; na
+      conversa sobre a blusa de lã, a realista — e está tudo bem.</p>
+    </div>
+  </div>
+  <p>Além disso, o perfil conceitual é, em relação ao epistemológico, <strong>mais complexo</strong> e
+  <strong>mais pessoal</strong>.</p>
+
+  <h3>As zonas do perfil conceitual de CALOR <span class="tag hot">Tabela que cai</span></h3>
+  <p>Exemplo desenvolvido por <strong>Amaral &amp; Mortimer (2011)</strong>. É a tabela mais “decorável” da
+  Aula 10 — e note como ela dialoga com o exemplo de calor de Vigotski em §08.</p>
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Zona</th><th>Definição</th><th>Como soa na fala de um aluno</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Realista</strong></td><td>Vinculada estritamente <strong>às sensações de calor e frio</strong>.</td><td>“Está calor hoje.” / “Essa panela está quente.”</td></tr>
+      <tr><td><strong>Animista</strong></td><td><strong>Substância viva</strong>, ou capaz de construir vida.</td><td>“O calor dá vida às coisas.” / “O sol aquece porque é vivo.”</td></tr>
+      <tr><td><strong>Substancialista</strong></td><td>Uma <strong>substância que pode penetrar outros materiais</strong>.</td><td>“O calor <em>entrou</em> na panela.” / “O agasalho <em>segura</em> o calor dentro.”</td></tr>
+      <tr><td><strong>Empírica</strong></td><td><strong>Algo que pode ser medido.</strong></td><td>“Calor é o que o termômetro mede.”</td></tr>
+      <tr><td><strong>Racionalista</strong></td><td><strong>Relação entre diferença de temperatura e calor.</strong></td><td>“Calor é energia transferida em função de um gradiente de temperatura.”</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout tip">
+    <span class="lbl">Mnemônico das zonas de calor</span>
+    <p><strong>R-A-S-E-R</strong> → <strong>“Realista, Animista, Substancialista, Empírica, Racionalista”</strong>.
+    Repare que as três primeiras coincidem com <strong>nomes de obstáculos epistemológicos</strong> (§13) —
+    isso não é coincidência: <strong>as zonas mais “baixas” do perfil são justamente as sustentadas por
+    obstáculos</strong>. Dizer isso na prova vale muito.</p>
+  </div>
+</section>
+
+<!-- ============================== 12 ============================== -->
+<section id="s11">
+  <h2><span class="num">12</span> Perfil epistemológico × perfil conceitual <span class="tag aula">Aula 10 · NOVA</span> <span class="tag hot">Altíssima chance</span></h2>
+  <p class="lede">Esta tabela foi para o slide inteira, com referência a um artigo chamado literalmente
+  <em>“Usos, Abusos e Confusões?”</em>. Quando uma professora coloca isso na aula, ela está avisando que
+  <strong>vai cobrar a distinção</strong>. Decore as três linhas.</p>
+
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Critério</th><th>Perfil epistemológico <span class="anchor-ref">(Bachelard)</span></th><th>Perfil conceitual <span class="anchor-ref">(Mortimer)</span></th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Preocupação central</strong></td>
+        <td>Bachelard preocupa-se com o <strong>desenvolvimento científico</strong>.</td>
+        <td>Mortimer preocupa-se com a <strong>aprendizagem de conceitos científicos</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>De onde tira as zonas</strong></td>
+        <td>Parte da <strong>História da Ciência</strong> e do seu desenvolvimento para traçar as zonas.</td>
+        <td>Parte de <strong>aspectos históricos</strong>, da <strong>compreensão dos estudantes</strong> e de <strong>livros didáticos</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>Como se muda de zona</strong></td>
+        <td>Evolução para nova zona: <strong>por RUPTURA</strong>.</td>
+        <td><strong>COEXISTÊNCIA de zonas.</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout danger">
+    <span class="lbl">A pegadinha</span>
+    <p>É muito fácil escrever “perfil conceitual é a mesma coisa que perfil epistemológico aplicado à
+    educação”. <strong>Não é.</strong> Há uma diferença de fundo: <strong>Bachelard trabalha com RUPTURA</strong>
+    (a nova zona supera a anterior no desenvolvimento da ciência), <strong>Mortimer trabalha com
+    COEXISTÊNCIA</strong> (as zonas convivem no mesmo sujeito). Se você trocar isso, erra o coração da
+    Aula 10.</p>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Frase pronta para a dissertativa</span>
+    <p>“Embora o perfil conceitual de Mortimer se inspire no perfil epistemológico de Bachelard, eles não se
+    confundem: Bachelard voltava-se ao <strong>desenvolvimento da ciência</strong> e traçava suas zonas a
+    partir da História da Ciência, concebendo a passagem entre elas como <strong>ruptura</strong>; Mortimer
+    volta-se à <strong>aprendizagem</strong>, traça as zonas também a partir da compreensão dos estudantes e
+    dos livros didáticos, e sustenta a <strong>coexistência</strong> das zonas em um mesmo sujeito, ativadas
+    conforme o contexto (SILVA et al., 2024).”</p>
+  </div>
+</section>
+
+<!-- ============================== 13 ============================== -->
+<section id="s12">
+  <h2><span class="num">13</span> Obstáculos epistemológicos <span class="tag aula">Aula 10 · NOVA</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">Se as concepções alternativas descrevem <em>o que</em> o aluno pensa, os obstáculos
+  epistemológicos explicam <strong>por que ele resiste a mudar</strong>. Conceito de <strong>Bachelard</strong>,
+  trabalhado na disciplina via <strong>Lopes (2007)</strong> — que é bibliografia básica do plano de ensino.</p>
+
+  <div class="def perfil">
+    <div class="lbl">Definição — o slide traz esta formulação inteira</div>
+    <p>A <strong>razão acomodada ao que já conhece</strong>, procurando <strong>manter a continuidade do
+    conhecimento</strong>, <strong>opõe-se à retificação dos erros</strong> introduzindo um <strong>número
+    excessivo de analogias, metáforas e imagens</strong> no próprio ato de conhecer, com o fim de
+    <strong>tornar familiar todo conhecimento abstrato</strong>, constituindo, assim, os
+    <strong>obstáculos epistemológicos</strong>. <span class="anchor-ref">(LOPES, 2007)</span></p>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Traduzindo a definição em uma frase</span>
+    <p>O obstáculo nasce da <strong>tentativa de tornar o abstrato familiar</strong>. Quando o professor
+    explica o átomo dizendo “é como um sisteminha solar”, ele está criando conforto — e simultaneamente
+    plantando um obstáculo que vai <strong>travar</strong> a compreensão do modelo quântico depois.
+    <strong>O obstáculo não é a falta de conhecimento; é o conhecimento já estabelecido funcionando como
+    barreira.</strong></p>
+  </div>
+
+  <h3>Os quatro obstáculos que caem <span class="tag perfil">Lopes, 2007</span></h3>
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Obstáculo</th><th>Definição do slide</th><th>Exemplo em química</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Animista</strong></td>
+        <td><strong>Dar vida aos fenômenos.</strong></td>
+        <td>“O átomo <strong>quer</strong> ficar com oito elétrons.” / “Os ácidos <strong>atacam</strong> o metal.” / “A reação <strong>procura</strong> o equilíbrio.”</td>
+      </tr>
+      <tr>
+        <td><strong>Realista</strong></td>
+        <td><strong>Supervalorização das impressões táteis, visuais</strong> — o que os sentidos entregam é tomado como a realidade.</td>
+        <td>“O papel queimou e <strong>sumiu</strong>” (não vejo os gases). / “O sal <strong>desapareceu</strong> na água.” / “Não tem nada dentro do copo vazio.”</td>
+      </tr>
+      <tr>
+        <td><strong>Verbal</strong></td>
+        <td><strong>Desatenção com o sentido dos termos</strong>, nos limites de novas teorias científicas — a palavra é usada como se explicasse.</td>
+        <td>Dizer que algo acontece “por causa da <strong>afinidade</strong> química” ou da “<strong>energia</strong>” sem definir nada. / Usar “orgânico”, “natural”, “força” com o sentido cotidiano dentro da explicação científica.</td>
+      </tr>
+      <tr>
+        <td><strong>Substancialista</strong></td>
+        <td><strong>Conjunto de propriedades visto como pertencente à determinada substância</strong> — a propriedade vira uma coisa que mora dentro do material.</td>
+        <td>“O açúcar <strong>tem</strong> doçura dentro dele.” / “O calor <strong>está guardado</strong> no agasalho.” / “A acidez é uma substância que o limão <strong>contém</strong>.”</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="lbl">Relação com o perfil conceitual — diga isso na prova</span>
+    <p>Compare esta lista com as <a href="#s10">zonas do perfil conceitual de calor</a> (§11):
+    <strong>realista, animista, substancialista</strong> aparecem <strong>nas duas listas</strong>. Faz
+    sentido: os obstáculos são as <strong>estruturas de pensamento</strong> que sustentam as
+    <strong>zonas mais realistas do perfil</strong>. São dois recortes do mesmo fenômeno — um dá conta de
+    <em>por que resiste</em>, o outro de <em>como convive</em>.</p>
+  </div>
+</section>
+
+<!-- ============================== 14 ============================== -->
+<section id="s13">
+  <h2><span class="num">14</span> Concepção alternativa × obstáculo epistemológico <span class="tag aula">Aula 10 · NOVA</span> <span class="tag hot">Altíssima chance</span></h2>
+  <p class="lede">A Aula 10 fecha com <strong>dois slides inteiros</strong> só sobre essa distinção, e ainda
+  dá um exemplo. Isso é sinalização máxima. <strong>Trate como questão garantida.</strong></p>
+
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Critério</th><th>Concepção alternativa</th><th>Obstáculo epistemológico</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>O que é</strong></td>
+        <td><strong>Ideia específica do estudante</strong> sobre um fenômeno.</td>
+        <td><strong>Estrutura de pensamento</strong> que dificulta a construção do conhecimento científico.</td>
+      </tr>
+      <tr>
+        <td><strong>O que faz</strong></td>
+        <td><strong>Descreve o que o aluno pensa.</strong></td>
+        <td><strong>Explica por que esse pensamento é resistente.</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Abrangência</strong></td>
+        <td><strong>Pode variar de aluno para aluno.</strong></td>
+        <td><strong>Pode sustentar diversas concepções alternativas</strong> e <strong>também aparecer na história da ciência</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>De onde vem</strong></td>
+        <td>Conceito da <strong>pesquisa em aprendizagem</strong>.</td>
+        <td>Conceito da <strong>epistemologia de Bachelard</strong>.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">A relação em uma frase</span>
+    <p><strong>A concepção alternativa é o sintoma; o obstáculo epistemológico é a causa estrutural.</strong>
+    Um obstáculo é <strong>mais geral</strong> e <strong>mais profundo</strong>: sustenta <em>várias</em>
+    concepções alternativas de uma vez e não é exclusivo do aluno — <strong>aparece também na história da
+    ciência</strong> (a teoria do flogístico, o calórico como fluido, a eletricidade como fluido em §09 são
+    obstáculos substancialistas na própria ciência).</p>
+  </div>
+
+  <h3>O exemplo do slide final da Aula 10</h3>
+  <div class="grid g2">
+    <div class="card" style="border-color:rgba(255,122,89,.4)">
+      <div class="who">CONCEPÇÃO ALTERNATIVA</div>
+      <h4>“A queima faz a matéria desaparecer”</h4>
+      <p>O aluno afirma que, ao queimar, a matéria <strong>desapareceu</strong>. É a ideia específica dele
+      sobre o fenômeno.</p>
+    </div>
+    <div class="card" style="border-color:rgba(177,151,252,.4)">
+      <div class="who">OBSTÁCULO EPISTEMOLÓGICO QUE A SUSTENTA</div>
+      <h4>Obstáculo realista</h4>
+      <p><strong>“Não vejo os gases, vejo que tudo desapareceu.”</strong> A supervalorização da impressão
+      visual é a <strong>estrutura</strong> que torna aquela concepção não só possível, mas <strong>razoável
+      e resistente</strong>.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="lbl">Por que isso muda o ensino — o argumento pedagógico</span>
+    <p>Se o professor combate apenas a <strong>concepção</strong> (“não, a matéria não desaparece, veja a
+    equação”), o <strong>obstáculo permanece intacto</strong> e vai gerar a próxima concepção alternativa —
+    agora sobre gases, sobre dissolução, sobre equilíbrio. Trabalhar o obstáculo realista significa
+    construir situações em que o <strong>não-visível</strong> se torne pensável: pesar sistemas fechados,
+    recolher gases, articular explicitamente o <a href="#s17">nível submicroscópico</a>. É por isso que a
+    Aula 10 desemboca na Aula 11.</p>
+  </div>
+</section>
+
+<!-- ============================== 15 ============================== -->
+<section id="s14">
+  <h2><span class="num">15</span> Os teóricos da linguagem <span class="tag aula">Aula 11 · NOVA</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">Cinco nomes, cada um com <strong>uma tese</strong>. A prova provavelmente vai pedir para
+  associar autor↔ideia ou usar um deles para justificar algo. Decore a <strong>frase-chave</strong> de cada.</p>
+
+  <div class="grid g2">
+    <div class="card" style="border-color:rgba(56,217,169,.35)">
+      <div class="who">Ferdinand de SAUSSURE</div>
+      <h4>Língua × fala</h4>
+      <p>Marco inicial da <strong>fundação da Linguística</strong>; <em>Curso de Linguística Geral</em>,
+      <strong>1916</strong>. Tentou <strong>definir o objeto da Linguística</strong> e propôs a
+      <strong>separação língua/fala</strong>. A <strong>língua</strong> é um <strong>sistema abstrato de
+      regras</strong>; a <strong>fala</strong> é o <strong>uso</strong> que se faz dessas regras. Estudou
+      <strong>a língua, não a fala</strong>. Separa o que para ele é <strong>social e passível de
+      descrição (língua)</strong> do que é <strong>individual (fala)</strong>.</p>
+    </div>
+    <div class="card" style="border-color:rgba(56,217,169,.35)">
+      <div class="who">Mikhail BAKHTIN</div>
+      <h4>A fala é social</h4>
+      <p><strong>Valoriza, junto com a fala, a enunciação</strong>, e afirma sua <strong>natureza social,
+      não individual</strong>. A fala está <strong>indissoluvelmente ligada às condições da comunicação</strong>,
+      que por sua vez estão <strong>sempre ligadas às estruturas sociais</strong>.
+      <br><span class="anchor-ref">→ É a resposta direta a Saussure: o que Saussure descartou como
+      individual, Bakhtin mostra ser social.</span></p>
+    </div>
+    <div class="card" style="border-color:rgba(56,217,169,.35)">
+      <div class="who">Lev S. VIGOTSKI</div>
+      <h4>A linguagem determina o pensamento</h4>
+      <p><strong>A linguagem determina o desenvolvimento do pensamento.</strong> É pelos <strong>instrumentos
+      linguísticos do pensamento</strong> e pela <strong>experiência sociocultural</strong> que a criança se
+      desenvolve. A linguagem constitui-se como <strong>o principal processo de interiorização das funções
+      psicológicas superiores</strong>.
+      <br><span class="anchor-ref">→ É o mesmo Vigotski de §08 — o elo entre os dois blocos.</span></p>
+    </div>
+    <div class="card" style="border-color:rgba(56,217,169,.35)">
+      <div class="who">Michel FOUCAULT</div>
+      <h4>Discurso, poder e autoridade</h4>
+      <p>A <strong>linguagem se coloca em movimento pelo discurso</strong>. O <strong>discurso é prática que
+      pode definir verdades e produzir sujeitos</strong>. Interessam: <strong>o que pode ser dito, quem tem
+      autoridade para falar e quais saberes são validados</strong>.
+      <br><span class="anchor-ref">→ Em sala de aula: quem tem direito de dizer o que é química? A voz do
+      livro? A do professor? A do aluno?</span></p>
+    </div>
+    <div class="card" style="border-color:rgba(56,217,169,.35)">
+      <div class="who">Michel PÊCHEUX</div>
+      <h4>Análise de Discurso e ideologia</h4>
+      <p><strong>Círculo de intelectuais que fundou a linha conhecida como Análise de Discurso.</strong> O
+      <strong>discurso é efeito de sentido entre interlocutores</strong>. A <strong>linguagem é materializada
+      na ideologia</strong>.</p>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Como memorizar os cinco</span>
+    <p><strong>Saussure</strong> separa (língua/fala) → <strong>Bakhtin</strong> devolve o social à fala →
+    <strong>Vigotski</strong> mostra que a linguagem <em>forma</em> o pensamento → <strong>Foucault</strong>
+    mostra que o discurso <em>produz</em> verdades e sujeitos → <strong>Pêcheux</strong> mostra que ele
+    materializa <em>ideologia</em>. É uma progressão: <strong>da estrutura → ao social → ao psíquico → ao
+    poder → à ideologia.</strong></p>
+  </div>
+</section>
+
+<!-- ============================== 16 ============================== -->
+<section id="s15">
+  <h2><span class="num">16</span> Por que a linguagem entrou no ensino de ciências <span class="tag aula">Aula 11 · NOVA</span> <span class="tag hot">Muito provável</span></h2>
+  <p class="lede">Esta é a <strong>narrativa histórica</strong> que amarra a disciplina inteira. Uma questão
+  do tipo “explique a relação entre a crise do movimento de concepções alternativas e a emergência dos
+  estudos sobre linguagem” é praticamente escrita nos slides.</p>
+
+  <div class="flow">
+    <div class="step" style="border-color:rgba(255,122,89,.4)">
+      <div class="k" style="color:var(--ca)">A partir de 1990</div>
+      <p>Surge no Brasil <strong>um grande número de pesquisas</strong> envolvendo <strong>as ideias dos
+      alunos</strong> em relação a conceitos científicos aprendidos na escola: <strong>as concepções
+      alternativas</strong>.</p>
+    </div>
+    <span class="arrow">→</span>
+    <div class="step" style="border-color:rgba(255,212,59,.4)">
+      <div class="k" style="color:var(--warn)">A crise</div>
+      <p>O movimento de concepções alternativas <strong>entrou em crise</strong>: a comunidade de
+      pesquisadores percebeu que <strong>não bastava olhar para o sujeito isolado</strong> — era necessário
+      <strong>levar em conta o contexto histórico, cultural e social</strong> desse indivíduo.</p>
+    </div>
+    <span class="arrow">→</span>
+    <div class="step" style="border-color:rgba(56,217,169,.4)">
+      <div class="k" style="color:var(--ling)">A virada</div>
+      <p>Chegam as <strong>primeiras traduções de Vigotski no Brasil</strong> (anos 1990). A pergunta muda
+      para: <strong>como se dá o aprendizado dos conceitos científicos através das interações sociais
+      mediadas pela linguagem?</strong></p>
+    </div>
+  </div>
+
+  <h3>A motivação prática</h3>
+  <p>A necessidade de pesquisas voltadas para a articulação com a linguagem <strong>emergiu da preocupação
+  dos professores com alunos que tinham dificuldades de leitura e interpretação de textos e imagens</strong>.
+  Ou seja: não foi só um debate teórico — nasceu de um problema concreto de sala de aula.</p>
+
+  <h3>A institucionalização</h3>
+  <div class="def">
+    <div class="lbl">Marco</div>
+    <p>Criação da <strong>linha temática “Linguagem” no ENPEC em 2005</strong>, com quatro eixos:</p>
+    <ul style="margin-bottom:0">
+      <li><strong>Abordagens discursivas</strong> na Educação em Ciências;</li>
+      <li><strong>Argumentação</strong> na Educação em Ciências;</li>
+      <li><strong>Interações discursivas</strong> na Educação em Ciências;</li>
+      <li><strong>Leitura e escrita</strong> na Educação em Ciências.</li>
+    </ul>
+  </div>
+  <p class="anchor-ref">Referência de tudo isso: LAVARDA &amp; PEREIRA (2019), <em>Um levantamento histórico
+  das pesquisas sobre linguagem no ensino de ciências no Brasil</em>.</p>
+
+  <div class="callout warn">
+    <span class="lbl">A ligação com o resto da disciplina — não perca isso</span>
+    <p>Repare que a <strong>crise das concepções alternativas</strong> gera <strong>duas respostas
+    diferentes</strong>, que são justamente as duas últimas aulas:</p>
+    <ul style="margin-bottom:0">
+      <li><strong>Aula 10 — resposta epistemológica:</strong> as concepções não somem, <strong>coexistem</strong>
+      (perfil conceitual) e são sustentadas por <strong>obstáculos</strong> que também aparecem na história da
+      ciência.</li>
+      <li><strong>Aula 11 — resposta sociocultural:</strong> o sujeito <strong>não está isolado</strong>; ele
+      aprende em <strong>interação social mediada pela linguagem</strong>.</li>
+    </ul>
+    <p style="margin-top:10px">Se a prova pedir uma questão ampla sobre “os rumos da pesquisa em ensino de
+    química”, <strong>é essa bifurcação que se espera que você reconstrua</strong>.</p>
+  </div>
+</section>
+
+<!-- ============================== 17 ============================== -->
+<section id="s16">
+  <h2><span class="num">17</span> Tipos de estudo sobre linguagem + o exemplo da química <span class="tag aula">Aula 11 · NOVA</span></h2>
+
+  <h3>Que tipos de estudo se preocupam com a linguagem?</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Leitura e escrita</h4><p>Como os estudantes leem e produzem textos científicos.</p></div>
+    <div class="card"><h4>Abordagens discursivas</h4><p>Análise do discurso em sala de aula.</p></div>
+    <div class="card"><h4>Discurso científico</h4><p>As formas próprias de dizer da ciência.</p></div>
+    <div class="card"><h4>Argumentação</h4><p>Como se constroem e justificam afirmações.</p></div>
+    <div class="card"><h4>Multimodalidade</h4><p>Texto + imagem + gesto + símbolo agindo juntos — muito relevante para a química.</p></div>
+    <div class="card"><h4>Alfabetização científica</h4><p>Domínio da linguagem da ciência como condição de participação.</p></div>
+  </div>
+
+  <h3>O exemplo da química (Mortimer)</h3>
+  <div class="def">
+    <div class="lbl">Os quatro pontos do slide</div>
+    <ul style="margin-bottom:0">
+      <li>Descreve a <strong>evolução das explicações atomísticas para os estados físicos da matéria</strong>.</li>
+      <li>Defende a ideia de <strong>perfil epistemológico</strong> <span class="anchor-ref">— o elo explícito com a Aula 10</span>.</li>
+      <li><strong>Hipótese levantada: aprendizagem é ENCULTURAÇÃO.</strong> E isso <strong>inclui adquirir
+      linguagem</strong>.</li>
+      <li>A <strong>aquisição de ideias atomísticas é melhor descrita por NEGOCIAÇÃO</strong>. Elementos da
+      cultura científica são <strong>argumentos racionais de autoridade</strong>.</li>
+    </ul>
+  </div>
+  <div class="quote">
+    A <strong>fonte do progresso</strong> está na <strong>relação sujeito-objeto</strong> e na
+    <strong>relação sujeito-cultura, mediada pela linguagem</strong>.
+    <span class="src">citado no slide da Aula 11, p. 128</span>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Duas palavras que valem ponto: enculturação e negociação</span>
+    <p><strong>Enculturação</strong>: aprender ciência é <strong>entrar numa cultura</strong> — adquirir suas
+    práticas, seus valores e sua <strong>linguagem</strong> — e não apenas trocar ideias erradas por certas.
+    <br><strong>Negociação</strong>: o conceito científico não é <em>transmitido</em> nem <em>descoberto
+    sozinho</em>; é <strong>negociado</strong> na interação, onde entram <strong>argumentos racionais de
+    autoridade</strong> (a voz da comunidade científica).
+    <br><br>Note como isso <strong>reformula o MCC de novo</strong>: onde o MCC via conflito cognitivo
+    <em>individual</em>, aqui se vê negociação <em>social</em>.</p>
+  </div>
+</section>
+
+<!-- ============================== 18 ============================== -->
+<section id="s17">
+  <h2><span class="num">18</span> Os níveis de representação — Triângulo de Johnstone <span class="tag aula">Aula 11 · NOVA</span> <span class="tag hot">Cai certo</span></h2>
+  <p class="lede">O modelo mais famoso do ensino de química. Está inclusive nos <strong>objetivos gerais do
+  plano de ensino</strong> (“representação simbólica e os níveis de interpretação microscópico e
+  macroscópico”). <strong>Saiba definir os três níveis e articular um exemplo nos três.</strong></p>
+
+  <div class="tri">
+    <div class="lvl macro apex">
+      <h4>① Nível MACROSCÓPICO</h4>
+      <p><strong>Representações das propriedades empíricas.</strong> <strong>Perceptíveis em laboratórios de
+      química e no cotidiano</strong> e, portanto, <strong>passíveis de medição</strong>. É o
+      <strong>sensível</strong>: fenômenos observáveis, propriedades empíricas perceptíveis.</p>
+      <p><em>Cor, massa, temperatura, odor, efervescência, mudança de estado.</em></p>
+    </div>
+    <div class="lvl micro">
+      <h4>② Nível SUBMICROSCÓPICO</h4>
+      <p><strong>Modelos constituídos por entidades como átomos, íons e moléculas.</strong> Por exemplo, a
+      existência de <strong>sólidos</strong> pode ser descrita em termos de <strong>átomos ou moléculas
+      compactados</strong>, ou a de <strong>coloides</strong> como <strong>agrupamentos de entidades em
+      micelas</strong>. É o nível <strong>molecular/atômico</strong>, utilizado para <strong>explicar
+      qualitativamente o fenômeno</strong>.</p>
+    </div>
+    <div class="lvl simb">
+      <h4>③ Nível SIMBÓLICO</h4>
+      <p>Envolve a <strong>atribuição de símbolos para representar átomos</strong> — de um único elemento ou
+      de grupos ligados de vários elementos —, de <strong>sinais para representar a carga elétrica</strong>,
+      de <strong>subscritos para indicar o número de átomos</strong> em um íon ou molécula individual e de
+      <strong>letras para indicar o estado físico</strong> da entidade. São as <strong>fórmulas químicas,
+      símbolos e equações</strong>.</p>
+    </div>
+  </div>
+
+  <h3>O exemplo do slide, articulado nos três níveis</h3>
+  <div class="def ling" style="border-left-color:var(--perfil)">
+    <div class="lbl" style="color:var(--perfil)">A equação do slide</div>
+    <p style="font-family:'JetBrains Mono';font-size:19px;color:var(--ink);text-align:center;margin:8px 0">
+      H<sub>2</sub>O<sub>(l)</sub> &nbsp;→&nbsp; H<sub>2</sub>O<sub>(g)</sub>
+    </p>
+  </div>
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Nível</th><th>Como o fenômeno aparece</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Macroscópico</strong></td><td>A água na panela <strong>ferve</strong>: vejo bolhas, sinto o vapor, meço 100 °C no termômetro, o volume de líquido diminui.</td></tr>
+      <tr><td><strong>Submicroscópico</strong></td><td>As <strong>moléculas de água ganham energia cinética</strong> suficiente para <strong>vencer as ligações de hidrogênio</strong> que as mantinham próximas e passam a se mover independentemente, muito mais afastadas entre si. <strong>As moléculas não mudam</strong> — muda a interação entre elas.</td></tr>
+      <tr><td><strong>Simbólico</strong></td><td>H<sub>2</sub>O<sub>(l)</sub> → H<sub>2</sub>O<sub>(g)</sub>. Note os elementos: <strong>H e O</strong> (símbolos de átomos), <strong>subscrito 2</strong> (número de átomos), <strong>(l) e (g)</strong> (letras indicando estado físico), <strong>seta</strong> (transformação).</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout danger">
+    <span class="lbl">A concepção alternativa clássica deste exemplo — cai como pergunta de aplicação</span>
+    <p>Muitos estudantes leem essa equação como se a água <strong>se decompusesse</strong> ao ferver: “as
+    bolhas são hidrogênio e oxigênio”. É uma <strong>concepção alternativa</strong> que nasce exatamente de
+    um <strong>salto malfeito entre níveis</strong> — o aluno vê o macro (bolhas), pula direto para o
+    simbólico (H<sub>2</sub>O tem H e O) e nunca constrói o submicro (o que muda é a <em>interação
+    intermolecular</em>, não a ligação intramolecular). <strong>É o argumento perfeito de por que os níveis
+    precisam ser articulados explicitamente.</strong></p>
+  </div>
+
+  <details>
+    <summary>Atividade da aula — articule estes dois fenômenos nos três níveis <span class="tag hot" style="margin-left:6px">Pode virar questão</span></summary>
+    <div class="body">
+      <p>A professora pediu literalmente: <em>“Pense nos fenômenos de queima de carvão e reação química com
+      catalisador. Como articular esses fenômenos ao triângulo de Johnstone?”</em> Tente antes de ler.</p>
+
+      <h4>Queima de carvão</h4>
+      <div class="tw">
+      <table class="vs">
+        <thead><tr><th>Nível</th><th>Descrição</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Macro</strong></td><td>O carvão <strong>brilha, esquenta, libera fumaça</strong> e sobra uma cinza cuja massa é <strong>menor</strong> que a do carvão inicial. Sinto o calor, vejo a chama.</td></tr>
+          <tr><td><strong>Submicro</strong></td><td>Átomos de <strong>carbono</strong> do sólido <strong>reagem com moléculas de O<sub>2</sub></strong> do ar formando <strong>moléculas de CO<sub>2</sub> gasoso</strong>, que se dispersam. <strong>Nenhum átomo é destruído</strong> — eles se rearranjam e saem do sistema pelo ar. O processo libera energia porque as ligações formadas são mais estáveis que as rompidas.</td></tr>
+          <tr><td><strong>Simbólico</strong></td><td>C<sub>(s)</sub> + O<sub>2(g)</sub> → CO<sub>2(g)</sub></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout warn">
+        <span class="lbl">A relação que vale ouro nesta questão</span>
+        <p>Este é <strong>exatamente</strong> o exemplo da <a href="#s13">concepção alternativa da §14</a>
+        (“a queima faz a matéria desaparecer”), sustentado pelo <strong>obstáculo realista</strong>. E a razão
+        pela qual ele resiste é precisamente que <strong>o aluno só tem acesso ao nível macroscópico</strong>
+        — o que sai é invisível. <strong>Sem a mediação simbólica não há como acessar o submicro</strong>, e
+        sem o submicro a conservação da massa é literalmente impensável. Se você amarrar Aula 10 e Aula 11
+        assim numa resposta, é conceito A.</p>
+      </div>
+
+      <h4>Reação química com catalisador</h4>
+      <div class="tw">
+      <table class="vs">
+        <thead><tr><th>Nível</th><th>Descrição</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Macro</strong></td><td>A reação fica <strong>visivelmente mais rápida</strong> (mais efervescência, menos tempo) e, ao final, <strong>o catalisador continua lá</strong>, na mesma quantidade. Ex.: água oxigenada com dióxido de manganês.</td></tr>
+          <tr><td><strong>Submicro</strong></td><td>O catalisador oferece um <strong>caminho reacional alternativo com menor energia de ativação</strong>: ele <strong>interage com os reagentes formando um complexo intermediário</strong> e é <strong>regenerado ao final</strong>. Não altera o ΔH nem a posição do equilíbrio — <strong>altera a velocidade</strong>.</td></tr>
+          <tr><td><strong>Simbólico</strong></td><td>Escrito <strong>sobre a seta</strong>: 2 H<sub>2</sub>O<sub>2(aq)</sub> —<sup>MnO<sub>2</sub></sup>→ 2 H<sub>2</sub>O<sub>(l)</sub> + O<sub>2(g)</sub>. <strong>A própria convenção de notação já carrega uma ideia teórica</strong>: o catalisador vai <em>sobre</em> a seta porque não é consumido.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p><strong>Concepção alternativa comum aqui:</strong> “o catalisador é um reagente que acelera” ou “o
+      catalisador aumenta o rendimento”. Ambas nascem de não se construir o nível submicro — e a primeira é
+      reforçada por um <strong>obstáculo animista</strong> (“o catalisador <em>ajuda</em> / <em>empurra</em>
+      a reação”).</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================== 19 ============================== -->
+<section id="s18">
+  <h2><span class="num">19</span> A crítica dialética ao triângulo <span class="tag aula">Aula 11 · NOVA</span> <span class="tag hot">Diferencial de nota</span></h2>
+  <p class="lede">A Aula 11 dedica <strong>seis slides</strong> à crítica de <strong>Silva &amp; Messeder Neto
+  (2021)</strong>. Quem responder Johnstone sem mencionar a crítica dá uma resposta incompleta; quem
+  mencionar, se destaca.</p>
+
+  <h3>O ponto de partida da crítica</h3>
+  <div class="def" style="border-left-color:var(--danger)">
+    <div class="lbl" style="color:var(--danger)">A tese</div>
+    <p>Existe uma <strong>hegemonia</strong> no campo do ensino de química em torno do triângulo de Johnstone.
+    Mas há um <strong>equívoco em incluir as representações no mesmo horizonte ontológico dos níveis
+    submicroscópico e macroscópico</strong>.</p>
+    <p>Isso porque o <strong>nível macroscópico e o submicroscópico</strong> são <strong>níveis diferentes de
+    um mesmo plano ontológico</strong> — <strong>fazem parte de uma mesma materialidade, de uma mesma razão
+    de ser</strong>. A representação, não: ela é de outra ordem.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <div class="who">JOHNSTONE — o triângulo</div>
+      <h4>Três vértices equivalentes</h4>
+      <p>Macro, submicro e simbólico como <strong>três níveis do mesmo tipo</strong>, entre os quais o
+      estudante deve <strong>transitar</strong>.</p>
+    </div>
+    <div class="card" style="border-color:rgba(56,217,169,.4)">
+      <div class="who">SILVA &amp; MESSEDER NETO — a unidade dialética</div>
+      <h4>Dois níveis + um mediador</h4>
+      <p><strong>Macro ⇄ Submicro</strong> formam uma <strong>unidade dialética</strong> (são a mesma
+      materialidade). O <strong>símbolo/signo/representação</strong> não é um terceiro nível: é o
+      <strong>mediador</strong> que permite acessar um a partir do outro.</p>
+    </div>
+  </div>
+
+  <h3>“A química é uma ciência abstrata?” — a resposta</h3>
+  <p>A crítica se opõe à concepção de que <strong>a química é essencialmente uma ciência abstrata</strong>
+  por causa dos <strong>entes submicroscópicos não tangíveis</strong>. A defesa dos autores:</p>
+  <div class="quote">
+    A química, como qualquer outra ciência, <strong>parte da materialidade</strong> (seja no nível
+    macroscópico ou submicroscópico) e <strong>utiliza do pensamento para abstrair aspectos necessários à
+    compreensão dos fenômenos</strong>.
+  </div>
+  <div class="callout tip">
+    <span class="lbl">A formulação exata do slide — vale citar</span>
+    <p>“<strong>Do ponto de vista do pensamento</strong>, a química é constituída de <strong>abstrações
+    humanas</strong>. No entanto, <strong>do ponto de vista da realidade global</strong>, os fenômenos
+    químicos <strong>existem na sua concreticidade</strong>. Isso também inclui <strong>os entes
+    submicroscópicos da realidade</strong>.”</p>
+    <p><strong>Em português claro:</strong> o átomo não é <em>só</em> uma ideia na nossa cabeça. O
+    <strong>modelo</strong> é uma abstração nossa, mas <strong>a entidade material existe</strong>. Confundir
+    o modelo com a inexistência do objeto é o erro que a crítica combate.</p>
+  </div>
+
+  <h3>Macro e submicro como opostos dialéticos</h3>
+  <div class="grid g2">
+    <div class="card" style="border-color:rgba(255,122,89,.4)">
+      <div class="who">MACROSCÓPICO</div>
+      <h4>O que se vê, mede e sente</h4>
+      <p>Cor, massa, temperatura.</p>
+    </div>
+    <div class="card" style="border-color:rgba(77,171,247,.4)">
+      <div class="who">SUBMICROSCÓPICO</div>
+      <h4>Átomos, moléculas, íons e suas interações</h4>
+      <p>A materialidade não diretamente perceptível.</p>
+    </div>
+  </div>
+  <p style="text-align:center;color:var(--ling);font-weight:600;margin:8px 0 16px">
+    Opostos dialéticos: <strong>interpenetram-se — não existem separadamente</strong></p>
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Propriedade</th><th>O que significa</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Condicionam-se</strong></td><td><strong>Um polo só existe porque o outro existe.</strong> O exemplo do slide: <em>“O conceito de ente macroscópico só surge porque produz seu oposto: o ente submicroscópico.”</em> Só faz sentido chamar algo de “macroscópico” se existir um “submicroscópico” do qual ele se distingue.</td></tr>
+      <tr><td><strong>2. Excluem-se</strong></td><td><strong>Um polo é a negação do outro.</strong> O que é macroscópico não é, por definição, submicroscópico. A tensão entre eles é o que move a compreensão.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>As três funções da representação <span class="tag hot">Tabela que cai</span></h3>
+  <p>“A representação vai além de comunicar entre pares.” Ela liga a <strong>teoria química</strong> às
+  <strong>entidades corpusculares não observáveis</strong> e cumpre <strong>três funções</strong>:</p>
+  <div class="grid g3">
+    <div class="card" style="border-color:rgba(56,217,169,.4)">
+      <h4>COMUNICAR</h4>
+      <p><strong>Linguagem partilhada entre os químicos.</strong> É a função mais óbvia — e a única que
+      normalmente se ensina.</p>
+    </div>
+    <div class="card" style="border-color:rgba(56,217,169,.4)">
+      <h4>PREVER <span class="anchor-ref">(heurística)</span></h4>
+      <p><strong>Ferramenta para resolver problemas.</strong> A fórmula permite antecipar comportamentos que
+      ainda não foram observados.</p>
+    </div>
+    <div class="card" style="border-color:rgba(56,217,169,.4)">
+      <h4>EXPLICAR</h4>
+      <p><strong>Dá sentido ao que não se observa.</strong> É a função decisiva: é por ela que o submicro se
+      torna pensável.</p>
+    </div>
+  </div>
+
+  <div class="def">
+    <div class="lbl">Vigotski (2009) entra aqui</div>
+    <p><strong>As elaborações simbólicas da química promovem desenvolvimento psíquico — abstração e
+    generalização — impossível sem elas.</strong>
+    <br><span class="anchor-ref">Ou seja: o símbolo químico não é só notação conveniente; é
+    <strong>instrumento psicológico</strong>, no sentido vigotskiano de §08 e §15.</span></p>
+  </div>
+
+  <h3>A ressalva e a conclusão</h3>
+  <div class="callout warn">
+    <span class="lbl">Ressalva importante — não caia no exagero oposto</span>
+    <p>Isso <strong>não quer dizer que os modelos e representações dão conta da totalidade do nível
+    submicro</strong>. Eles são acesso parcial, não espelho. Mas <strong>é a partir destas representações
+    que podemos acessar o nível submicroscópico e justificar as propriedades e os fenômenos que observamos
+    em nível macroscópico</strong>. E o <strong>conjunto da materialidade submicro GERA a materialidade
+    macro</strong>.</p>
+  </div>
+
+  <div class="quote">
+    “A simbologia manifestada na representação de estruturas moleculares, por exemplo, <strong>se configura
+    como mediadora das duas esferas</strong> (macroscópica e submicroscópica), pois permite aos que participam
+    da relação, a partir de suas propriedades essenciais, exercerem entre si uma <strong>influência
+    recíproca</strong>. Desse modo, <strong>não faz sentido dizer que a aprendizagem da Química está
+    condicionada ao trânsito entre os ‘três níveis’ do conhecimento, mas sim da UNIDADE ENTRE OS DOIS
+    NÍVEIS</strong>. Contudo, <strong>se ficarmos apenas no nível macro, no fenômeno aparente, não há
+    aprendizagem científica/química</strong>, e, <strong>para conhecer a esfera submicroscópica, faz-se
+    necessária a mediação simbólica</strong>.”
+    <span class="src">SILVA &amp; MESSEDER NETO, 2021 — trecho final da Aula 11.</span>
+  </div>
+
+  <div class="callout danger">
+    <span class="lbl">A frase-resumo da crítica — memorize</span>
+    <p><strong>“Não são três níveis entre os quais se transita, são DOIS níveis em unidade, mediados pelo
+    símbolo.”</strong> E as duas consequências pedagógicas:</p>
+    <ul style="margin-bottom:0">
+      <li><strong>Ficar só no macro não é ensinar química</strong> — o fenômeno aparente não basta.</li>
+      <li><strong>Não há acesso ao submicro sem mediação simbólica</strong> — logo, ensinar a linguagem
+      simbólica não é acessório, é condição.</li>
+    </ul>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Como isso fecha a disciplina inteira</span>
+    <p>Volte à <a href="#s13">§14</a>: o <strong>obstáculo realista</strong> prende o aluno no macro (“só
+    creio no que vejo”). Silva &amp; Messeder Neto dizem que <strong>ficar no macro não é aprendizagem
+    química</strong>. E o instrumento para sair de lá é a <strong>mediação simbólica</strong> — que é
+    linguagem, que é Vigotski, que é interação social. <strong>Obstáculo epistemológico (Aula 10) +
+    mediação simbólica (Aula 11) são o diagnóstico e o remédio do mesmo problema.</strong> Terminar uma
+    dissertativa com essa articulação é o melhor fechamento possível.</p>
+  </div>
+</section>
+
+<!-- ============================== 20 ============================== -->
+<section id="s19">
+  <h2><span class="num">20</span> O instrumento de levantamento (aulas 5–9) <span class="tag aula">Extensão</span></h2>
+  <p class="lede">As aulas 5 a 9 foram práticas: criar, aplicar e avaliar um instrumento para levantar
+  concepções alternativas com estudantes do Ensino Médio. É o <strong>componente extensionista</strong>, e
+  a prova pode pedir a fundamentação teórica dele.</p>
+
+  <div class="flow">
+    <div class="step"><div class="k">Aulas 5–6 · 19 e 24/06</div><p><strong>Criação</strong> do instrumento <strong>com base em referenciais teóricos</strong>.</p></div>
+    <span class="arrow">→</span>
+    <div class="step"><div class="k">Aulas 7–8 · 26/06 e 03/07</div><p><strong>Aplicação</strong> do instrumento para levantamento de concepções alternativas.</p></div>
+    <span class="arrow">→</span>
+    <div class="step"><div class="k">Aula 9 · 08/07</div><p><strong>Avaliação</strong> do instrumento.</p></div>
+  </div>
+
+  <h3>O que o plano de ensino diz sobre a metodologia extensionista</h3>
+  <p>Os licenciandos devem desenvolver um instrumento que permita <strong>identificar e dar conta das
+  dificuldades conceituais manifestadas por estudantes de Ensino Médio</strong>. Uma vez elaborado — em geral
+  algo que <strong>configura uma ação pedagógica em sala de aula de EM</strong> —, os licenciandos vão às
+  <strong>escolas do entorno</strong>. O processo <strong>não é unilateral</strong>: exige
+  <strong>considerar o contexto escolar, dialogar com professores e coordenação e interagir com os
+  estudantes</strong>.</p>
+
+  <div class="callout tip">
+    <span class="lbl">Se cair “justifique teoricamente a construção de um instrumento de levantamento de CA”</span>
+    <p>Encadeie assim: <strong>(1)</strong> o aluno não é tábula rasa e traz concepções alternativas estáveis
+    e resistentes (Aula 1); <strong>(2)</strong> logo, o ensino precisa <em>partir</em> delas — o professor
+    tem o dever de <strong>conhecer, compreender e valorizar</strong> essas construções pessoais para decidir
+    o que e como ensinar (crítica ao MCC, §07); <strong>(3)</strong> o instrumento é justamente o que torna
+    essas concepções <strong>acessíveis</strong>; <strong>(4)</strong> ele deve buscar não só a concepção,
+    mas <strong>o obstáculo que a sustenta</strong> (§13) e <strong>as zonas do perfil</strong> mobilizadas
+    (§11); <strong>(5)</strong> e como as concepções se manifestam <strong>na linguagem</strong>, o
+    instrumento é sempre também uma análise discursiva (§15–16); <strong>(6)</strong> por fim, boas questões
+    pedem que o estudante <strong>articule macro, submicro e simbólico</strong>, porque é no
+    <strong>desencontro entre níveis</strong> que muitas concepções se revelam (§18–19).</p>
+  </div>
+
+  <div class="callout warn">
+    <span class="lbl">Critério de avaliação da apresentação do instrumento (I3)</span>
+    <p>O plano exige <strong>apontar potencialidades E limites do instrumento criado</strong>, explicitar a
+    <strong>contribuição de cada pessoa</strong> e <strong>respeitar o tempo</strong>. Se a prova tiver uma
+    questão reflexiva sobre a experiência, falar dos <strong>limites</strong> do que vocês fizeram é o que
+    demonstra maturidade — não tente vender o instrumento como perfeito.</p>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ============================== 21 ============================== -->
+<section id="s20">
+  <h2><span class="num">21</span> Mapa de relações entre conceitos <span class="tag hot">O critério de maior peso</span></h2>
+  <p class="lede">O plano de ensino diz textualmente: <em>“estabelecer relações entre conceitos, demonstrando
+  domínio do assunto”</em>. Esta seção é o que separa um C de um A. Cada linha é um par que você pode citar.</p>
+
+  <div class="tw">
+  <table class="vs">
+    <thead><tr><th>Par de conceitos</th><th>Como se relacionam — frase pronta</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Concepção alternativa ↔ Obstáculo epistemológico</strong></td>
+        <td>A CA <strong>descreve o que</strong> o aluno pensa; o OE <strong>explica por que</strong> esse pensamento resiste. Um obstáculo sustenta <strong>várias</strong> CA e aparece também <strong>na história da ciência</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>MCC ↔ Perfil conceitual</strong></td>
+        <td>O perfil conceitual nasce <strong>da crítica ao MCC</strong>: como a mudança não é substituição (nem na ciência — a quântica não apagou a clássica), propõe-se <strong>coexistência de zonas</strong> em vez de troca.</td>
+      </tr>
+      <tr>
+        <td><strong>Perfil epistemológico ↔ Perfil conceitual</strong></td>
+        <td>Bachelard: <strong>desenvolvimento científico</strong>, zonas da <strong>História da Ciência</strong>, mudança por <strong>ruptura</strong>. Mortimer: <strong>aprendizagem</strong>, zonas também dos <strong>estudantes e livros didáticos</strong>, <strong>coexistência</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>Vigotski ↔ crítica ao MCC</strong></td>
+        <td>Se o conceito científico <strong>se apoia forçosamente</strong> na maturação do espontâneo, então <strong>não se pode destruir o espontâneo</strong> — é a fundamentação psicológica da coexistência.</td>
+      </tr>
+      <tr>
+        <td><strong>Concepção alternativa ↔ zona realista do perfil</strong></td>
+        <td>Mortimer é explícito: a <strong>parte “realista” do espectro corresponde normalmente às concepções alternativas</strong> das pessoas. No corpo teórico da ciência essa zona já não existe — lá o espectro <strong>começa pelo empirismo</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>História da eletricidade ↔ perfil conceitual</strong></td>
+        <td>A concepção mística de eletricidade <strong>não foi apagada</strong> pela científica — <strong>coexiste até hoje</strong>. Se a humanidade não substituiu em séculos, exigir substituição do aluno em um bimestre é insustentável.</td>
+      </tr>
+      <tr>
+        <td><strong>Crise das CA ↔ linguagem</strong></td>
+        <td>O movimento entrou em crise porque <strong>não bastava olhar o sujeito isolado</strong> — era preciso o <strong>contexto histórico, cultural e social</strong>. Daí Vigotski, daí as abordagens discursivas, daí a linha “Linguagem” no ENPEC (2005).</td>
+      </tr>
+      <tr>
+        <td><strong>Aula 10 ↔ Aula 11</strong></td>
+        <td>São as <strong>duas respostas à mesma crise</strong>: a <strong>epistemológica</strong> (coexistência e obstáculos) e a <strong>sociocultural</strong> (linguagem e mediação). Não competem — se complementam.</td>
+      </tr>
+      <tr>
+        <td><strong>Obstáculo realista ↔ triângulo de Johnstone</strong></td>
+        <td>O obstáculo realista <strong>prende o aluno no nível macroscópico</strong>. E Silva &amp; Messeder Neto afirmam que <strong>ficar só no macro não é aprendizagem química</strong>. A saída é a <strong>mediação simbólica</strong>. Diagnóstico e remédio.</td>
+      </tr>
+      <tr>
+        <td><strong>Enculturação/negociação ↔ conflito cognitivo</strong></td>
+        <td>O MCC via a mudança como <strong>conflito cognitivo individual</strong>. A perspectiva sociocultural a vê como <strong>enculturação</strong> e <strong>negociação</strong> — processo <strong>social</strong>, mediado pela linguagem, com <strong>argumentos racionais de autoridade</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>Vigotski (conceitos) ↔ Vigotski (símbolo químico)</strong></td>
+        <td>É o mesmo argumento em dois níveis: a <strong>linguagem é instrumento psicológico</strong>. Na Aula 2, ela permite formar conceitos científicos; na Aula 11, <strong>as elaborações simbólicas da química promovem abstração e generalização impossíveis sem elas</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>Incomensurabilidade (Kuhn) ↔ linguagem</strong></td>
+        <td>Paradigmas são incomensuráveis porque <strong>os mesmos termos significam coisas diferentes</strong> — é um problema <strong>linguístico</strong>. O mesmo vale entre a linguagem do senso comum e a da química.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============================== 22 ============================== -->
+<section id="s21">
+  <h2><span class="num">22</span> Questões dissertativas modelo</h2>
+  <p class="lede">Simulado no formato provável da prova. <strong>Escreva a sua resposta antes de abrir</strong> —
+  recall ativo vale muito mais que reler. Cada esqueleto segue a fórmula de 4 movimentos da §00.</p>
+
+  <details>
+    <summary>Q1. Explique o que são concepções alternativas e discuta por que são resistentes à mudança.</summary>
+    <div class="body">
+      <p><strong>Esqueleto de resposta:</strong></p>
+      <ol>
+        <li><strong>Defina:</strong> preconcepções/concepções espontâneas — ideias intuitivas, relativamente
+        estáveis, parcialmente consistentes, <strong>úteis para interpretar fenômenos cotidianos</strong>,
+        constituindo o conhecimento do senso comum (Arruda &amp; Villani, 1994); diferem substancialmente da
+        ciência que se pretende ensinar (Nardi &amp; Gatti, 2004).</li>
+        <li><strong>Características:</strong> pessoais, influenciadas pelo contexto, estáveis, resistentes,
+        iguais em diferentes partes do mundo, amplamente mapeadas.</li>
+        <li><strong>Por que resistem — dois argumentos:</strong> (a) porque <strong>funcionam</strong> para o
+        cotidiano — não são erros gratuitos, são explicações eficazes no seu domínio; (b) porque se apoiam em
+        <strong>obstáculos epistemológicos</strong> (Bachelard/Lopes, 2007) — estruturas de pensamento que
+        opõem resistência à retificação, e que aparecem inclusive na história da ciência.</li>
+        <li><strong>Exemplo:</strong> “a queima faz a matéria desaparecer”, sustentada pelo obstáculo
+        <strong>realista</strong> (“não vejo os gases”).</li>
+        <li><strong>Relacione:</strong> ligue à zona realista do perfil conceitual e à consequência didática —
+        o professor deve conhecer, compreender e valorizar essas construções.</li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q2. Diferencie concepção alternativa de obstáculo epistemológico, exemplificando.</summary>
+    <div class="body">
+      <p><strong>Esqueleto:</strong> monte a tabela de §14 em prosa —</p>
+      <ul>
+        <li><strong>CA:</strong> ideia específica do estudante sobre um fenômeno; <strong>descreve o que ele
+        pensa</strong>; varia de aluno para aluno; conceito da <strong>pesquisa em aprendizagem</strong>.</li>
+        <li><strong>OE:</strong> estrutura de pensamento que dificulta a construção do conhecimento científico;
+        <strong>explica por que o pensamento resiste</strong>; sustenta várias CA e <strong>aparece também na
+        história da ciência</strong>; conceito da <strong>epistemologia de Bachelard</strong>.</li>
+        <li><strong>Exemplo obrigatório:</strong> a CA “a queima faz a matéria desaparecer” apoia-se no
+        <strong>obstáculo realista</strong> — supervalorização da impressão visual.</li>
+        <li><strong>Feche relacionando:</strong> combater a concepção sem tocar o obstáculo faz o obstáculo
+        gerar a próxima concepção. Daí a necessidade de trabalhar o nível submicroscópico.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q3. Compare perfil epistemológico e perfil conceitual.</summary>
+    <div class="body">
+      <p>Três eixos, sem falhar nenhum (§12):</p>
+      <ol>
+        <li><strong>Preocupação:</strong> Bachelard → desenvolvimento científico. Mortimer → aprendizagem de
+        conceitos científicos.</li>
+        <li><strong>Origem das zonas:</strong> Bachelard → História da Ciência. Mortimer → aspectos históricos
+        <strong>+ compreensão dos estudantes + livros didáticos</strong>.</li>
+        <li><strong>Mudança de zona:</strong> Bachelard → <strong>ruptura</strong>. Mortimer →
+        <strong>coexistência</strong>. <span class="anchor-ref">← esta é a diferença decisiva</span></li>
+      </ol>
+      <p><strong>Enriqueça com:</strong> o perfil de <strong>massa</strong> (realismo → empirismo →
+      racionalismo clássico → moderno → contemporâneo) e as zonas de <strong>calor</strong> (realista,
+      animista, substancialista, empírica, racionalista — Amaral &amp; Mortimer, 2011). Cite Silva et al. (2024).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q4. Apresente as condições para que ocorra a acomodação e exemplifique com uma situação de ensino de Química.</summary>
+    <div class="body">
+      <p><strong>1.</strong> Situe: as condições vêm do MCC, ligado ao construtivismo e inspirado em Kuhn,
+      Lakatos e na psicologia piagetiana (assimilação/acomodação).</p>
+      <p><strong>2.</strong> As quatro, com definição: <strong>insatisfação</strong> (anomalia),
+      <strong>inteligibilidade</strong> (faz sentido), <strong>plausibilidade</strong> (resolve a anomalia e é
+      consistente com outros conhecimentos), <strong>fertilidade</strong> (conduz a novas descobertas, estende-se
+      a outros casos).</p>
+      <p><strong>3.</strong> Exemplo completo — palha de aço: ideia inicial “queimar/enferrujar faz sumir” →
+      observar que a <strong>massa aumentou</strong> após a ferrugem (insatisfação) → professor apresenta a
+      <strong>teoria da oxidação</strong> (inteligibilidade) → resolve a anomalia, o oxigênio se incorporou
+      (plausibilidade) → explica combustão do papel, formação de óxidos e conservação da massa (fertilidade).</p>
+      <p><strong>4.</strong> <strong>Feche com crítica</strong> — é isso que eleva a resposta: na prática a
+      mudança <strong>não é linear, envolve idas e vindas, não é definitiva nem puramente intelectual</strong>,
+      e a concepção anterior <strong>tende a coexistir</strong> em vez de desaparecer.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q5. Explique os níveis de representação da Química e discuta a crítica ao triângulo de Johnstone.</summary>
+    <div class="body">
+      <p><strong>Parte 1 — os três níveis</strong>, com as definições de §18: macroscópico (propriedades
+      empíricas perceptíveis e mensuráveis), submicroscópico (modelos com átomos, íons, moléculas; explica
+      qualitativamente), simbólico (símbolos de átomos, sinais de carga, subscritos, letras de estado físico;
+      fórmulas e equações). <strong>Articule um exemplo nos três</strong> —
+      H<sub>2</sub>O<sub>(l)</sub> → H<sub>2</sub>O<sub>(g)</sub>, a queima do carvão ou o catalisador.</p>
+      <p><strong>Parte 2 — a crítica</strong> (Silva &amp; Messeder Neto, 2021):</p>
+      <ul>
+        <li>Há <strong>hegemonia</strong> do triângulo no campo, mas é <strong>equivocado colocar a
+        representação no mesmo horizonte ontológico</strong> dos outros dois.</li>
+        <li>Macro e submicro são <strong>níveis diferentes de um mesmo plano ontológico</strong> — mesma
+        materialidade, mesma razão de ser. São <strong>opostos dialéticos</strong>: <strong>condicionam-se</strong>
+        (um só existe porque o outro existe) e <strong>excluem-se</strong> (um é a negação do outro).</li>
+        <li>A química <strong>não é abstrata por natureza</strong>: parte da materialidade e usa o pensamento
+        para abstrair. Os entes submicroscópicos <strong>existem na sua concreticidade</strong>.</li>
+        <li>A representação é <strong>mediadora</strong>, com três funções: <strong>comunicar, prever
+        (heurística) e explicar</strong> — e, via Vigotski (2009), promove abstração e generalização
+        impossíveis sem ela.</li>
+        <li><strong>Conclusão:</strong> não é trânsito entre três níveis, é <strong>unidade entre dois</strong>,
+        mediada pelo símbolo. <strong>Ficar só no macro não é aprendizagem química</strong>; e não há acesso ao
+        submicro <strong>sem mediação simbólica</strong>.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q6. Discuta a relação entre a crise do movimento de concepções alternativas e a emergência dos estudos sobre linguagem no ensino de ciências.</summary>
+    <div class="body">
+      <ol>
+        <li><strong>Contexto:</strong> a partir de 1990 explodem no Brasil as pesquisas sobre as ideias dos
+        alunos.</li>
+        <li><strong>A crise:</strong> percebeu-se que <strong>não bastava olhar para o sujeito isolado</strong> —
+        era preciso considerar o <strong>contexto histórico, cultural e social</strong>. Some a isso a
+        preocupação concreta dos professores com <strong>dificuldades de leitura e interpretação de textos e
+        imagens</strong>.</li>
+        <li><strong>A virada:</strong> chegam as traduções de <strong>Vigotski</strong>; a pergunta passa a ser
+        <em>como se dá o aprendizado dos conceitos científicos através das interações sociais mediadas pela
+        linguagem?</em></li>
+        <li><strong>Institucionalização:</strong> linha “Linguagem” no <strong>ENPEC, 2005</strong> —
+        abordagens discursivas, argumentação, interações discursivas, leitura e escrita.</li>
+        <li><strong>Aporte teórico:</strong> Saussure (língua/fala), Bakhtin (enunciação social), Vigotski
+        (linguagem determina o pensamento), Foucault (discurso produz verdades e sujeitos), Pêcheux (AD,
+        ideologia).</li>
+        <li><strong>Feche:</strong> a aprendizagem passa a ser vista como <strong>enculturação</strong>, e a
+        aquisição de conceitos como <strong>negociação</strong>, com a fonte do progresso na relação
+        <strong>sujeito-cultura mediada pela linguagem</strong>.</li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q7. Por que a história da ciência é usada para sustentar a noção de perfil conceitual? Exemplifique.</summary>
+    <div class="body">
+      <p>Use <strong>o caso da natureza elétrica da matéria</strong> (§09) inteiro:</p>
+      <ol>
+        <li><strong>O percurso:</strong> místico/sobrenatural (Grécia, Tales) → fluido invisível e sem peso
+        (séc. XVII–XVIII) → ferramenta experimental (Cavendish, Davy 1807) → aproximação matéria-eletricidade
+        (Faraday, Thomson).</li>
+        <li><strong>As três lições:</strong> o conhecimento <strong>muda</strong>, tem <strong>interesse</strong>
+        e tem relação com <strong>condições históricas</strong> (instituições, financiamento, corrida por
+        prestígio, exclusão de mulheres e pessoas pretas e indígenas).</li>
+        <li><strong>O argumento decisivo:</strong> a concepção mística de eletricidade <strong>ainda é
+        encontrada hoje</strong> — a nova não apagou a antiga. Se nem a ciência substituiu, o modelo de
+        substituição do MCC não se sustenta.</li>
+        <li><strong>Conclusão:</strong> daí “ao invés de substituir, conviver/coexistir” → perfil conceitual.
+        Reforce com a crítica de que a <strong>mecânica quântica surgiu com a clássica ainda valendo</strong>.</li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q8. Relacione os conceitos espontâneo e científico de Vigotski com o ensino de Química.</summary>
+    <div class="body">
+      <ol>
+        <li><strong>Defina os dois</strong> (tabela de §08): origem, organização, consciência.</li>
+        <li><strong>A tese:</strong> não estão em conflito — são <strong>processos intimamente interligados
+        que se influenciam</strong>, formados sob condições e problemas diferentes. E o científico
+        <strong>deve apoiar-se forçosamente</strong> em certo nível de maturação do espontâneo.</li>
+        <li><strong>A analogia da língua estrangeira:</strong> na materna aprendemos pela nomeação direta do
+        objeto; na estrangeira, <strong>a mediação da língua materna substitui o objeto</strong>.</li>
+        <li><strong>Em química:</strong> o conceito científico de calor (energia em trânsito) só se
+        internaliza sobre o espontâneo (“quando está muito quente”). O mesmo vale para
+        <strong>substância</strong>, <strong>mistura</strong>, <strong>ácido</strong> (“o que corrói”, “o que
+        tem gosto azedo”).</li>
+        <li><strong>Relacione:</strong> é a base psicológica da <strong>coexistência</strong> — e converge com
+        as zonas do perfil conceitual de calor, onde a zona realista (“sensações de calor e frio”) permanece ao
+        lado da racionalista.</li>
+      </ol>
+    </div>
+  </details>
+</section>
+
+<!-- ============================== 23 ============================== -->
+<section id="s22">
+  <h2><span class="num">23</span> Flashcards <span class="tag ling">clique para virar</span></h2>
+  <p class="lede">Recall ativo. Responda em voz alta <strong>antes</strong> de clicar.</p>
+  <div class="fcgrid" id="fcgrid">
+    <div class="fc"><div class="q">Definição de concepção alternativa (Arruda &amp; Villani, 1994)</div><div class="a">Preconcepções ou concepções espontâneas: ideias intuitivas, relativamente estáveis, parcialmente consistentes, úteis para a interpretação dos fenômenos cotidianos, que constituem o “conhecimento do senso comum”.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">As 5 características das concepções alternativas</div><div class="a">Pessoais · influenciadas pelo contexto · estáveis · resistentes à mudança · iguais em diferentes partes do mundo (e amplamente mapeadas).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">As 4 condições da acomodação</div><div class="a">1. Insatisfação (anomalia) · 2. Inteligibilidade (faz sentido) · 3. Plausibilidade (resolve a anomalia e é consistente) · 4. Fertilidade (leva a novas descobertas, estende-se).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Os 3 epistemólogos/psicólogos que inspiram o MCC</div><div class="a">Kuhn (ciência normal / revolução / anomalia), Lakatos (programas de pesquisa) e Piaget (assimilação e acomodação).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">O que é incomensurabilidade e qual o exemplo da aula</div><div class="a">Dois paradigmas não podem ser comparados diretamente com os mesmos critérios, conceitos ou linguagem. Ex.: Newton (tempo e espaço absolutos) × Einstein (relativos) — os mesmos termos não têm o mesmo significado.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">As 2 críticas ao MCC apresentadas na Aula 10</div><div class="a">1. Associação direta entre aprender e fazer ciência. 2. O campo da mecânica quântica surgiu com a mecânica clássica ainda valendo — não houve substituição. Conclusão: ao invés de substituir, conviver/coexistir.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Conceito espontâneo × conceito científico (Vigotski)</div><div class="a">Espontâneo: nasce do cotidiano, difuso, pouco sistemático, usado sem consciência. Científico: aprendido na escola, parte de um sistema organizado, nunca aparece sozinho, sistemático e generalista. Não estão em conflito — se apoiam mutuamente.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">As 3 lições da história da eletricidade</div><div class="a">O conhecimento muda; o conhecimento tem interesse; o conhecimento tem relação com condições históricas.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">As 4 fases da concepção de eletricidade</div><div class="a">Místico/sobrenatural (Grécia, Tales) → fluido invisível e sem peso (XVII–XVIII) → ferramenta experimental (Cavendish, Davy 1807) → aproximação com a matéria (Faraday, Thomson).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Zonas do perfil epistemológico de MASSA</div><div class="a">Realismo (aquilo que é pesado) · Empirismo (a balança) · Racionalismo clássico (F/a, Newton) · Racionalismo moderno (função da velocidade, relatividade) · Racionalismo contemporâneo (Dirac).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Zonas do perfil conceitual de CALOR</div><div class="a">Realista (sensações de calor e frio) · Animista (substância viva ou capaz de construir vida) · Substancialista (substância que penetra materiais) · Empírica (algo que pode ser medido) · Racionalista (relação entre diferença de temperatura e calor).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Perfil epistemológico × perfil conceitual — as 3 diferenças</div><div class="a">Preocupação: desenvolvimento científico × aprendizagem. Origem das zonas: História da Ciência × história + estudantes + livros didáticos. Mudança: por RUPTURA × COEXISTÊNCIA.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Definição de obstáculo epistemológico</div><div class="a">A razão acomodada ao que já conhece, buscando manter a continuidade do conhecimento, opõe-se à retificação dos erros introduzindo excesso de analogias, metáforas e imagens no ato de conhecer, para tornar familiar todo conhecimento abstrato (Lopes, 2007).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Os 4 obstáculos epistemológicos</div><div class="a">Animista (dar vida aos fenômenos) · Realista (supervalorização das impressões táteis e visuais) · Verbal (desatenção com o sentido dos termos) · Substancialista (propriedades vistas como pertencentes à substância).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">CA × OE em uma frase</div><div class="a">A CA descreve o que o aluno pensa e varia de aluno para aluno (pesquisa em aprendizagem); o OE explica por que resiste, sustenta várias CA e aparece também na história da ciência (epistemologia de Bachelard).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Saussure — tese central</div><div class="a">Separação língua/fala. Língua = sistema abstrato de regras, social e descritível. Fala = uso individual dessas regras. Estudou a língua, não a fala. <em>Curso de Linguística Geral</em>, 1916.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Bakhtin — tese central</div><div class="a">Valoriza a enunciação junto com a fala e afirma sua natureza social, não individual. A fala está indissoluvelmente ligada às condições da comunicação, ligadas às estruturas sociais.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Foucault e Pêcheux — teses centrais</div><div class="a">Foucault: a linguagem se move pelo discurso; o discurso define verdades e produz sujeitos (o que pode ser dito, quem tem autoridade, quais saberes são validados). Pêcheux: fundou a Análise de Discurso; discurso é efeito de sentido entre interlocutores; linguagem materializada na ideologia.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Por que o movimento de CA entrou em crise?</div><div class="a">Porque não bastava olhar para o sujeito isolado — era necessário levar em conta o contexto histórico, cultural e social do indivíduo. Daí a virada para a linguagem e as interações sociais (Vigotski).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Quando foi criada a linha “Linguagem” no ENPEC e quais seus eixos?</div><div class="a">2005. Abordagens discursivas · argumentação · interações discursivas · leitura e escrita na Educação em Ciências.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Aprendizagem é enculturação — o que isso significa?</div><div class="a">Hipótese de Mortimer: aprender ciência é entrar numa cultura, o que inclui adquirir sua linguagem. A aquisição de ideias atomísticas é melhor descrita por NEGOCIAÇÃO; elementos da cultura científica são argumentos racionais de autoridade.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Os 3 níveis do triângulo de Johnstone</div><div class="a">Macroscópico (propriedades empíricas perceptíveis e mensuráveis) · Submicroscópico (modelos com átomos, íons, moléculas; explica qualitativamente) · Simbólico (símbolos de átomos, sinais de carga, subscritos, letras de estado físico; fórmulas e equações).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">A crítica de Silva &amp; Messeder Neto (2021) em uma frase</div><div class="a">É equivocado colocar a representação no mesmo horizonte ontológico do macro e do submicro: estes são níveis diferentes de um mesmo plano ontológico. Não é trânsito entre três níveis, é unidade entre dois, mediada pelo símbolo.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">As 3 funções da representação química</div><div class="a">Comunicar (linguagem partilhada entre químicos) · Prever / heurística (ferramenta para resolver problemas) · Explicar (dá sentido ao que não se observa).</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">O que significa macro e submicro serem opostos dialéticos?</div><div class="a">Condicionam-se (um polo só existe porque o outro existe — o ente macroscópico só surge porque produz seu oposto) e excluem-se (um polo é a negação do outro). Interpenetram-se: não existem separadamente.</div><div class="hint">clique</div></div>
+    <div class="fc"><div class="q">Por que “ficar no macro” não é aprendizagem química?</div><div class="a">Porque no fenômeno aparente não há aprendizagem científica/química; para conhecer a esfera submicroscópica faz-se necessária a mediação simbólica (Silva &amp; Messeder Neto, 2021).</div><div class="hint">clique</div></div>
+  </div>
+</section>
+
+<!-- ============================== 24 ============================== -->
+<section id="s23">
+  <h2><span class="num">24</span> Quiz relâmpago</h2>
+  <p class="lede">Cinco questões nos pontos onde mais se erra. Clique na alternativa.</p>
+
+  <div class="quiz" data-right="2">
+    <div class="qtext">1. A principal diferença entre perfil epistemológico (Bachelard) e perfil conceitual (Mortimer) é que:</div>
+    <div class="opt" data-i="0">O perfil epistemológico trata de química e o conceitual, de física.</div>
+    <div class="opt" data-i="1">O perfil conceitual tem 5 zonas e o epistemológico, 4.</div>
+    <div class="opt" data-i="2">Bachelard concebe a passagem entre zonas como ruptura, e Mortimer sustenta a coexistência das zonas.</div>
+    <div class="opt" data-i="3">O perfil epistemológico é individual e o conceitual é coletivo.</div>
+    <div class="why"><strong>Correta: C.</strong> Bachelard se preocupa com o desenvolvimento científico e traça zonas a partir da História da Ciência, com mudança por <strong>ruptura</strong>; Mortimer se preocupa com a aprendizagem, traça zonas também a partir dos estudantes e dos livros didáticos, e sustenta a <strong>coexistência</strong>. Ambos são individuais e ambos servem a qualquer conceito.</div>
+  </div>
+
+  <div class="quiz" data-right="1">
+    <div class="qtext">2. “O átomo quer completar sua camada de valência.” Que obstáculo epistemológico está em jogo?</div>
+    <div class="opt" data-i="0">Realista</div>
+    <div class="opt" data-i="1">Animista</div>
+    <div class="opt" data-i="2">Substancialista</div>
+    <div class="opt" data-i="3">Verbal</div>
+    <div class="why"><strong>Correta: B.</strong> Obstáculo <strong>animista</strong> — dar vida (intenção, vontade, desejo) aos fenômenos. Cuidado para não confundir com o <strong>verbal</strong>: este seria usar um termo como “afinidade” ou “energia” como se ele próprio explicasse algo.</div>
+  </div>
+
+  <div class="quiz" data-right="3">
+    <div class="qtext">3. Sobre a relação entre conceito espontâneo e conceito científico em Vigotski, é correto afirmar:</div>
+    <div class="opt" data-i="0">O conceito científico substitui progressivamente o espontâneo até eliminá-lo.</div>
+    <div class="opt" data-i="1">São processos independentes, que não se influenciam.</div>
+    <div class="opt" data-i="2">O conceito espontâneo é um erro a ser corrigido pela escola.</div>
+    <div class="opt" data-i="3">São processos intimamente interligados que se influenciam mutuamente, e o científico deve apoiar-se num certo nível de maturação do espontâneo.</div>
+    <div class="why"><strong>Correta: D.</strong> Eles se formam sob condições e problemas diferentes, mas <strong>não estão em conflito</strong>. A superioridade do conceito científico é <em>apenas</em> do ponto de vista da contribuição ao desenvolvimento cognitivo — sistematicidade, generalização e consciência.</div>
+  </div>
+
+  <div class="quiz" data-right="0">
+    <div class="qtext">4. A crítica de Silva &amp; Messeder Neto (2021) ao triângulo de Johnstone sustenta que:</div>
+    <div class="opt" data-i="0">A representação não pertence ao mesmo horizonte ontológico do macro e do submicro; estes formam uma unidade dialética mediada pelo símbolo.</div>
+    <div class="opt" data-i="1">O nível simbólico deve ser abandonado no ensino de química.</div>
+    <div class="opt" data-i="2">A química é uma ciência essencialmente abstrata, pois seus entes não são tangíveis.</div>
+    <div class="opt" data-i="3">O nível macroscópico é suficiente para a aprendizagem química, pois é o único material.</div>
+    <div class="why"><strong>Correta: A.</strong> As outras invertem a tese. Os autores <strong>criticam</strong> a ideia de que a química seja abstrata por natureza (ela parte da materialidade), afirmam que a mediação simbólica é <strong>indispensável</strong> para acessar o submicro, e sustentam que <strong>ficar apenas no macro não é aprendizagem científica/química</strong>.</div>
+  </div>
+
+  <div class="quiz" data-right="2">
+    <div class="qtext">5. Um aluno afirma que, ao queimar, o papel “desaparece”. Qual análise é a mais completa?</div>
+    <div class="opt" data-i="0">É apenas um erro de conteúdo, corrigível pela apresentação da equação balanceada.</div>
+    <div class="opt" data-i="1">É um obstáculo epistemológico, portanto não pode ser modificado.</div>
+    <div class="opt" data-i="2">É uma concepção alternativa apoiada no obstáculo realista, que prende o aluno ao nível macroscópico; superá-la exige mediação simbólica para acessar o submicroscópico.</div>
+    <div class="opt" data-i="3">É uma zona racionalista do perfil conceitual do aluno.</div>
+    <div class="why"><strong>Correta: C.</strong> A alternativa articula CA + OE + níveis de representação — exatamente o tipo de resposta que o critério “estabelecer relações entre conceitos” premia. A <strong>A</strong> ignora o obstáculo (e por isso a próxima concepção alternativa reaparecerá); a <strong>B</strong> confunde os dois conceitos e é fatalista; a <strong>D</strong> inverte — seria a zona <strong>realista</strong>.</div>
+  </div>
+</section>
+
+<!-- ============================== 25 ============================== -->
+<section id="s24">
+  <h2><span class="num">25</span> Erros que custam conceito</h2>
+  <div class="grid g2">
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ “Concepção alternativa é o erro do aluno”</h4>
+      <p>✅ São ideias <strong>úteis para interpretar fenômenos cotidianos</strong> e funcionam no seu domínio.
+      É <em>por funcionarem</em> que resistem. Chamar de erro apaga o argumento central da disciplina.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ Confundir perfil epistemológico com perfil conceitual</h4>
+      <p>✅ <strong>Ruptura (Bachelard) × coexistência (Mortimer)</strong>. A professora dedicou um slide
+      inteiro a essa distinção, citando um artigo chamado <em>“Usos, Abusos e Confusões?”</em>.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ Confundir concepção alternativa com obstáculo epistemológico</h4>
+      <p>✅ A CA é a <strong>ideia específica</strong> (descreve <em>o que</em> pensa); o OE é a
+      <strong>estrutura de pensamento</strong> (explica <em>por que</em> resiste), sustenta várias CA e
+      aparece também na história da ciência.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ Apresentar o MCC como a resposta final</h4>
+      <p>✅ Sempre feche com as <strong>críticas</strong>: analogia indevida entre aprender e fazer ciência;
+      a quântica surgiu com a clássica ainda valendo; a mudança é não linear, com idas e vindas, não
+      definitiva e não só intelectual.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ Explicar Johnstone sem citar a crítica</h4>
+      <p>✅ A Aula 11 gastou seis slides em Silva &amp; Messeder Neto (2021). Responder só o triângulo é
+      responder metade da aula.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ Dizer que Vigotski defende substituir o espontâneo</h4>
+      <p>✅ Ele diz o <strong>oposto</strong>: o científico <strong>se apoia forçosamente</strong> num certo
+      nível de maturação do espontâneo. Eles não estão em conflito.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ Definir sem citar autor</h4>
+      <p>✅ O critério é explícito: resposta <strong>“embasada na bibliografia discutida em sala”</strong>.
+      Ancore em Mortimer (1996), Lopes (2007), Arruda &amp; Villani (1994), Vigotski, Silva &amp;
+      Messeder Neto (2021).</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,107,.35)">
+      <h4>❌ Responder conceito isolado, sem relacionar</h4>
+      <p>✅ Terceiro critério de correção: <strong>estabelecer relações</strong>. Toda resposta ganha um
+      parágrafo final de amarração — use a tabela da <a href="#s20">§21</a>.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,212,59,.35)">
+      <h4>⚠️ Escrever sem exemplo químico</h4>
+      <p>✅ É uma disciplina de <strong>ensino de química</strong>. Toda resposta teórica pede um exemplo
+      químico concreto — queima, ferrugem, dissolução, equilíbrio, calor, catalisador, ácido-base.</p>
+    </div>
+    <div class="card" style="border-color:rgba(255,212,59,.35)">
+      <h4>⚠️ Caligrafia e norma culta</h4>
+      <p>✅ São <strong>critério oficial</strong> de correção. Prova manuscrita: escreva com calma, deixe
+      parágrafos claros e releia. Perder ponto por isso seria bobo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 26 ============================== -->
+<section id="s25">
+  <h2><span class="num">26</span> Loop Feynman — explique com suas palavras</h2>
+  <p class="lede">Você aprende ensinando. Escreva as respostas abaixo <strong>sem olhar o guia</strong>, depois
+  volte e confira. O texto fica salvo no seu navegador.</p>
+
+  <div class="feyn">
+    <div class="lbl">1 · Para um colega que faltou a todas as aulas</div>
+    <p style="font-size:14px;color:var(--ink-dim);margin-bottom:10px">Explique em até 6 linhas o caminho da
+    disciplina: por que se passou de “substituir as concepções do aluno” para “conviver com elas” e depois
+    para “tudo passa pela linguagem”.</p>
+    <textarea data-fk="f1" placeholder="Escreva aqui…"></textarea>
+  </div>
+
+  <div class="feyn">
+    <div class="lbl">2 · Sem usar as palavras “estrutura” e “ideia”</div>
+    <p style="font-size:14px;color:var(--ink-dim);margin-bottom:10px">Explique a diferença entre concepção
+    alternativa e obstáculo epistemológico, usando um exemplo químico que <strong>não seja</strong> a queima.</p>
+    <textarea data-fk="f2" placeholder="Escreva aqui…"></textarea>
+  </div>
+
+  <div class="feyn">
+    <div class="lbl">3 · Para um aluno do 1º ano do Ensino Médio</div>
+    <p style="font-size:14px;color:var(--ink-dim);margin-bottom:10px">Explique o que são os níveis
+    macroscópico, submicroscópico e simbólico usando a dissolução de sal em água. Depois responda: por que
+    Silva &amp; Messeder Neto diriam que são <em>dois</em> níveis e não três?</p>
+    <textarea data-fk="f3" placeholder="Escreva aqui…"></textarea>
+  </div>
+
+  <div class="feyn">
+    <div class="lbl">4 · O teste mais difícil</div>
+    <p style="font-size:14px;color:var(--ink-dim);margin-bottom:10px">Defenda esta afirmação em um parágrafo:
+    <em>“A história da eletricidade é o melhor argumento contra o movimento de mudança conceitual.”</em></p>
+    <textarea data-fk="f4" placeholder="Escreva aqui…"></textarea>
+  </div>
+
+  <div class="callout tip">
+    <span class="lbl">Plano de revisão espaçada até 14/08 <span class="tag ling" style="margin-left:6px">no Google Calendar</span></span>
+    <p>Montado em volta das outras duas provas — <strong>EDO em 07/08</strong> e <strong>Discreta II em
+    10/08</strong> —, por isso o peso cai todo na semana da prova. Os Blocos 4 e 6 ganham os maiores slots
+    por serem os mais abstratos.</p>
+    <div class="tw" style="margin-top:12px">
+    <table class="vs">
+      <thead><tr><th>Quando</th><th>Duração</th><th>O quê</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Dom 02/08</strong><br>15:00</td><td>1h</td><td><strong>Passada 1 — leve.</strong> §00–§08: como cai a prova, concepções alternativas, MCC, Vigotski. Fechar com os flashcards desses blocos.</td></tr>
+        <tr><td><strong>Ter 11/08</strong><br>19:00</td><td>1h45</td><td><strong>Passada 2 — Bloco 4</strong> ⚠️. §09–§14: eletricidade, perfil epistemológico, perfil conceitual, PE×PC, obstáculos, CA×OE. <em>Saída:</em> escrever as tabelas §12 e §14 de cabeça.</td></tr>
+        <tr><td><strong>Qua 12/08</strong><br>19:00</td><td>1h45</td><td><strong>Passada 3 — Blocos 5–6</strong> ⚠️. §15–§19: teóricos da linguagem, a crise das CA, Johnstone e a crítica dialética. <em>Saída:</em> explicar em 2 min por que “ficar só no macro não é aprendizagem química”.</td></tr>
+        <tr><td><strong>Qui 13/08</strong><br>17:30</td><td>1h</td><td><strong>Passada 4.</strong> §21 mapa de relações + escrever <strong>Q1–Q4 à mão</strong>, sem consultar. <em>Dia da entrega do relatório da ESMA — se apertar, é esta que se corta.</em></td></tr>
+        <tr><td><strong>Sex 14/08</strong><br>17:30</td><td>1h15</td><td><strong>Véspera/dia.</strong> §23 flashcards inteiros em voz alta + §24 quiz + esqueletos de Q5–Q8 + §25 erros. Prova às 21h.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:10px"><span class="anchor-ref">Total ≈ 6h45. Escrever à mão importa: a prova é
+    manuscrita e a caligrafia é critério oficial de correção.</span></p>
+  </div>
+</section>
+
+<div class="footer">
+  <p><strong>Guia da Prova — Práticas de Ensino de Química I (NHLQ002-22)</strong> · Profa. Rafaela Valero ·
+  UFABC 2026.2 · prova em <strong>14/08/2026</strong>.</p>
+  <p>Fontes: slides das <strong>Aulas 1, 2, 10 e 11</strong>, <strong>Plano de Ensino</strong> e
+  <strong>Mortimer (1996)</strong>, todos em <code>material/</code>.</p>
+  <p style="margin-top:10px;color:var(--warn)">⚠️ Material de <strong>estudo</strong>. A disciplina proíbe o
+  uso de IA em atividades avaliadas — nada daqui deve virar entrega.</p>
+</div>
+</main>
+</div>
+<button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- mobile menu ---------- */
+  var sb = document.getElementById('sidebar'), mb = document.getElementById('menuBtn');
+  mb.addEventListener('click', function(){ sb.classList.toggle('open'); });
+  document.addEventListener('click', function(e){
+    if(window.innerWidth <= 900 && sb.classList.contains('open') &&
+       !sb.contains(e.target) && e.target !== mb){ sb.classList.remove('open'); }
+  });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav a.navlink'));
+  links.forEach(function(a){
+    a.addEventListener('click', function(){ if(window.innerWidth <= 900) sb.classList.remove('open'); });
+  });
+
+  /* ---------- scroll spy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+  function spy(){
+    var pos = window.scrollY + 110, cur = sections[0];
+    for(var i=0;i<sections.length;i++){ if(sections[i].offsetTop <= pos) cur = sections[i]; }
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur.id);
+    });
+  }
+  window.addEventListener('scroll', spy, {passive:true});
+  window.addEventListener('resize', spy);
+  spy();
+
+  /* ---------- flashcards ---------- */
+  document.querySelectorAll('.fc').forEach(function(c){
+    c.addEventListener('click', function(){ c.classList.toggle('flip'); });
+  });
+
+  /* ---------- quiz ---------- */
+  document.querySelectorAll('.quiz').forEach(function(q){
+    var right = parseInt(q.getAttribute('data-right'), 10);
+    q.querySelectorAll('.opt').forEach(function(o){
+      o.addEventListener('click', function(){
+        if(q.classList.contains('done')) return;
+        q.classList.add('done');
+        q.querySelectorAll('.opt').forEach(function(x){
+          if(parseInt(x.getAttribute('data-i'),10) === right) x.classList.add('right');
+        });
+        if(parseInt(o.getAttribute('data-i'),10) !== right) o.classList.add('wrong');
+      });
+    });
+  });
+
+  /* ---------- feynman: persistência local ---------- */
+  document.querySelectorAll('.feyn textarea').forEach(function(t){
+    var k = 'peq1-guia-' + t.getAttribute('data-fk');
+    try{ var v = localStorage.getItem(k); if(v) t.value = v; }catch(e){}
+    t.addEventListener('input', function(){ try{ localStorage.setItem(k, t.value); }catch(e){} });
+  });
+
+  /* ---------- busca com destaque ---------- */
+  var input = document.getElementById('q'), hits = document.getElementById('hits');
+  var SKIP = {SCRIPT:1, STYLE:1, TEXTAREA:1, INPUT:1};
+
+  function clearMarks(root){
+    root.querySelectorAll('mark').forEach(function(m){
+      var p = m.parentNode;
+      p.replaceChild(document.createTextNode(m.textContent), m);
+      p.normalize();
+    });
+  }
+  function walk(node, re, counter){
+    for(var n = node.firstChild; n; n = n.nextSibling){
+      if(n.nodeType === 3){
+        var txt = n.nodeValue;
+        if(!re.test(txt)){ re.lastIndex = 0; continue; }
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment(), last = 0, m;
+        while((m = re.exec(txt)) !== null){
+          if(m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
+          var mk = document.createElement('mark');
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          last = m.index + m[0].length;
+          counter.n++;
+          if(m[0].length === 0) re.lastIndex++;
+        }
+        if(last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+        var next = n.nextSibling;
+        n.parentNode.replaceChild(frag, n);
+        n = next ? next.previousSibling || next : null;
+        if(!n) break;
+      } else if(n.nodeType === 1 && !SKIP[n.tagName]){
+        walk(n, re, counter);
+      }
+    }
+  }
+  function esc(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  var content = document.getElementById('content'), timer = null;
+  function runSearch(){
+    var term = input.value.trim();
+    clearMarks(content);
+    if(term.length < 2){ hits.textContent = ''; return; }
+    var counter = {n:0};
+    var re = new RegExp(esc(term), 'gi');
+    walk(content, re, counter);
+    if(counter.n){
+      /* abre os details que contenham resultado */
+      content.querySelectorAll('details').forEach(function(d){
+        if(d.querySelector('mark')) d.open = true;
+      });
+      /* revela flashcards com resultado no verso */
+      content.querySelectorAll('.fc').forEach(function(c){
+        if(c.querySelector('.a mark')) c.classList.add('flip');
+      });
+      var first = content.querySelector('mark');
+      if(first) first.scrollIntoView({behavior:'smooth', block:'center'});
+      hits.textContent = counter.n + (counter.n === 1 ? ' ocorrência' : ' ocorrências');
+    } else {
+      hits.textContent = 'nenhum resultado';
+    }
+  }
+  input.addEventListener('input', function(){
+    clearTimeout(timer);
+    timer = setTimeout(runSearch, 220);
+  });
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ input.value=''; clearMarks(content); hits.textContent=''; }
+  });
+})();
+</script>
+</body>
+</html>
