@@ -99,7 +99,11 @@ tr:nth-child(even) td{background:#141b23}
 
 /* svg figures */
 figure{margin:16px 0;text-align:center}
-figure svg{background:#0b1117;border:1px solid var(--line);border-radius:10px;max-width:100%}
+/* SÓ filho direto: `figure svg` também pegava os SVGs de fórmula dentro da
+   <figcaption> e, com box-sizing:border-box, o padding zerava a caixa das
+   fórmulas curtas — o glifo vazava gigante por cima da página. */
+figure > svg{background:#0b1117;border:1px solid var(--line);border-radius:10px;max-width:100%}
+figure mjx-container svg{max-width:none;background:none;border:0;border-radius:0;padding:0}
 figcaption{color:var(--muted);font-size:13px;margin-top:6px}
 .vx{fill:#0b1117;stroke:#e6edf3;stroke-width:2}
 .vx.h{fill:#6ea8fe;stroke:#cfe3ff}
