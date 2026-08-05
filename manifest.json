@@ -80,12 +80,15 @@
   },
   "Disciplinas/NHLQ002 - Praticas Ensino Quimica I": {
    "guias": [
+    "guia-prova-peq1-completo.html",
     "guia-seminario-concepcoes-alternativas-acidos-bases.html",
     "opcoes-experimentos-acido-base.pdf"
    ],
    "listas": [],
    "material": [
     "Aula 1.pdf",
+    "Aula 10.pdf",
+    "Aula 11.pdf",
     "Aula 2.pdf",
     "Mortimer 1996.pdf",
     "Plano - PEQ I.pdf"
