@@ -81,6 +81,22 @@ Cada pasta em `Disciplinas/` tem:
   ```
 - **Delimitadores:** inline com `\( ... \)`, display com `\[ ... \]`. Em LaTeX dentro do HTML,
   escapar a barra (`\\(`, `\\frac`) só na config JS; no corpo do texto basta `\(` normal.
+- 🐞 **Armadilha de CSS (achada em 05/08/2026, guia da P2 de Discreta) — nunca estilizar `figure svg`.**
+  O seletor pega **também** os SVGs de fórmula que o MathJax gera dentro da `<figcaption>`.
+  Com `*{box-sizing:border-box}`, o `padding:8px` + borda do estilo de diagrama **zeravam a caixa**
+  das fórmulas curtas (`\(G\)`, `\(M\)`, `\(\delta\)`) e, como `mjx-container>svg` é `overflow:visible`,
+  o glifo vazava em **tamanho gigante (600–1000 px)** por cima do texto — a tela ficava coberta.
+  ✅ Usar sempre **`figure > svg`** (filho direto) + a trava
+  `figure mjx-container svg{max-width:none;background:none;border:0;padding:0}`.
+- 📱 **Fórmula inline longa quebra o layout no celular.** SVG pré-renderizado não quebra linha:
+  uma fórmula de ~50ex estoura a coluna (~45ex no celular) e empurra a **página inteira** para o lado.
+  ✅ Marcar no build as inline com `width ≥ 30ex` com `class="wide"` e usar
+  `mjx-container.wide{max-width:100%;overflow-x:auto}` + `mjx-container.wide>svg{max-width:100%;height:auto;min-width:260px}`
+  (encolhe proporcionalmente até caber; só rola se ainda não couber). Não afeta o desktop.
+- **Como conferir a visualização:** abrir o guia no Chromium headless (Playwright) em 390 / 768 / 1280 px e
+  checar (a) `document.documentElement.scrollWidth == window.innerWidth` em cada largura e
+  (b) para todo `mjx-container svg`, a razão `rect.width/rect.height` bate com a do `viewBox` (±5%).
+  Distorção nessa razão = alguma regra de CSS está vazando em cima do MathJax.
 - **Por que `tex-svg` (e não CHTML):** renderiza em **SVG** → nítido em qualquer zoom, imprime
   bem e **não depende de baixar fontes** (essencial para a releitura **offline via PWA** do site
   publicado). `fontCache:'global'` deixa rápido em páginas com muitas fórmulas.
