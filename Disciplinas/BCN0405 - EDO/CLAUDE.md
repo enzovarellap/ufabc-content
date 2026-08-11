@@ -23,7 +23,7 @@ Bibliografia base: Zill; Boyce & DiPrima; Edwards & Penney.
 | Data | Avaliação / Entrega | Peso |
 |---|---|---|
 | **03/07/2026** (sexta) | **Prova 1 (P1)** — _remarcada (era 30/06)_ | 50% |
-| **07/08/2026** (sexta) | **Prova 2 (P2)** | 50% |
+| **07/08/2026** (sexta) | **Prova 2 (P2)** — _⚠️ conteúdo oficial (aulas 9-10, Listas 3-4) só chegou em 11/08, prazo já vencido → provavelmente remarcada, confirmar no Moodle_ | 50% |
 | 11/08/2026 (terça) | Prova Substitutiva (SUB) — só com justificativa | — |
 | 18/08/2026 (terça) | Exame de Recuperação (REC) | — |
 
@@ -42,7 +42,9 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
 - `aula6-v2.pdf` (02/07/2026) — Autônomas **revisada**: vocabulário formal (ponto × solução de equilíbrio, **assintoticamente estável** com lim y(x)=c), **propriedades geométricas das curvas solução** (unicidade → curvas não se cruzam/tangenciam, nenhuma cruza equilíbrio), roteiro 5 passos, exemplos y'=y−1, y'=2−y, logística.
 - `aula7.pdf` (02/07/2026) — **Modelos de população**: Malthusiano (P'=kP, limitações) e **logístico de Verhulst** P'=P(a−bP)=rP(1−P/K), K=a/b capacidade de carga, solução explícita P(t)=aP₀/(bP₀+(a−bP₀)e^{−at}), lim=K, curva em S; ref. Exercício 6.13 do livro do Santos.
 - `aula8.pdf` (02/07/2026) — **TEU** formalizado: retângulo R, f e f_y contínuas → existência e unicidade local em J⊂(a,b), + consequências geométricas (mesmas da aula 6-v2).
-- **Listas (`listas/`):** Lista 0 (revisão de derivadas/integrais), Lista 1 (classificação + 1ª ordem, Bernoulli/Riccati), Lista 2 (modelagem, autônomas, TEU). Todas com gabarito.
+- `aula9.pdf` (Agosto 2026) — **EDOs lineares de 2ª ordem não-homogêneas**: operador diferencial `L = D²+p(x)D+q(x)` (linearidade, "anulador"), estrutura da solução geral `y = yh+yp` (complementar + particular), **método dos coeficientes a determinar** (polinômio/exponencial/seno-cosseno/produtos, tabela de chutes, caso de falha quando `yp` coincide com solução da homogênea → multiplicar por x), **método de variação dos parâmetros** (dedução via sistema de Cramer, fórmulas `u1'=-fy2/W`, `u2'=fy1/W`), exercícios resolvidos comparando os dois métodos.
+- `aula10.pdf` (Agosto 2026) — **Aplicações de EDOs de 2ª ordem**: sistema massa-mola `mx''+γx'+kx=Fext`; oscilação livre sem amortecimento (forma alternativa `x(t)=A sen(ωt+φ)`, definições formais de período/frequência natural/amplitude/fase); oscilação livre com amortecimento e **classificação formal** super/critic./subamortecido via `Δ=γ²-4mk`; oscilação forçada sem amortecimento e **ressonância** (Exercício 14 da Lista 4 resolvido passo a passo) e **fenômeno de batimento** (`ω≠ω0`, envelope lento × oscilação rápida); circuitos **RLC em série** como analogia direta ao sistema massa-mola (`q`↔`x`, `L`↔`m`, `R`↔`γ`, `1/C`↔`k`).
+- **Listas (`listas/`):** Lista 0 (revisão de derivadas/integrais), Lista 1 (classificação + 1ª ordem, Bernoulli/Riccati), Lista 2 (modelagem, autônomas, TEU), **Lista 3** (2ª ordem lineares homogêneas: PVI, Wronskiano/independência linear, redução de ordem, Euler-Cauchy, fórmula de Euler `e^{it}`, **PVC** — problema de valor de contorno), **Lista 4** (2ª ordem não-homogêneas: coef. indeterminados, variação de parâmetros, redução de ordem + não-homog., **aplicações massa-mola e circuitos RLC**, exs. 7–18). Todas com gabarito.
 
 > Slides cobrem até substituições (Aula 4). Faltam para a P1 (só nas Listas): campo de direções, autônomas/estabilidade, modelagem e TEU.
 
@@ -74,6 +76,18 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   navegador (Playwright): fluxo, feedback e placar OK, 0 erros de console. Endereça diretamente o gap do diagnóstico da
   P1 (identificação de método).
 
+- **`guia-edo-p2-segunda-ordem.html`** (27/06/2026) — Guia da P2, **desatualizado/incompleto**: foi gerado antes do professor
+  disponibilizar o material oficial da P2 (aulas 9–10, Listas 3–4). Cobre superposição/Wronskiano, redução de ordem,
+  coef. constantes, Euler-Cauchy, coef. indeterminados, variação de parâmetros e vibrações (livre/forçada+ressonância) —
+  mas **falta**: operador diferencial `L` (vocabulário do professor), classificação formal do amortecimento via `Δ=γ²-4mk`,
+  fenômeno de **batimento**, **circuitos RLC**, **PVC** (problema de valor de contorno, Lista 3 ex.17) e a **fórmula de Euler**
+  `e^{it}` (Lista 3 ex.13). **Precisa ser reescrito/expandido** com base nas aulas 9–10 e Listas 3–4 antes da P2 (07/08/2026
+  — já passou! ver nota abaixo).
+
+> ⚠️ **Nota de data (11/08/2026):** o mapa de provas do quadrimestre lista P2 em 07/08/2026, mas o material oficial da P2
+> (aulas 9–10, Listas 3–4) só foi adicionado agora — provável remarcação da P2, igual ocorreu com a P1. **Confirmar com o
+> professor/Moodle a nova data da P2** antes de montar o cronograma de estudo definitivo.
+
 Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matéria difícil).
 
 > **Diagnóstico pré-P1 (02/07/2026):** Enzo errou as 4 questões-diagnóstico (identificação de método,
@@ -87,6 +101,8 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
 - **Lista 1** (classif. + 1ª ordem): 1 · 2b,e,f,g,h · 5a,b,c,d,e,f — _08/06_; 6 · 7 · 8 · 9 · 10 — _10/06_; **5g,h,i,j (homogêneas) · 11e,f (Bernoulli) · 12a (Riccati)** — _19/06/2026_
 - **Lista 2** (modelagem/autônomas/TEU): 1 · 2 · 3 · 4 — _19/06_; 5 · 6 — _24/06_; **9a,b,d,e,f,g** — _27/06/2026_
 - **Zill, Seção 2.5:** 3 · 13 · 17 · 21 · 24 · 26 · 27 — _19/06/2026_
+- **Lista 3** (2ª ordem homogêneas): 5, 6, 8 (verificar y1/y2 soluções) · 4, 7a,b, 8 · 1, 2, 3, 9b,c,f,h,i,j,l, 10a,b,e, 14c, 16a,b,d,f, 17b (encontrar solução geral e usar as duas condições p/ C1,C2) — _11/08/2026_
+- **Lista 4** (2ª ordem não-homogêneas + aplicações): 1a,b,c,d,e,i, 2a,h, 3b,d, 4a,b,c, 5a,c, 7, 8, 12, 13 — _11/08/2026_
 
 ## Progresso
 - [x] Plano de ensino indexado
@@ -100,4 +116,9 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
 - [x] **Quiz "Escolha o caminho certo"** — `guias/guia-edo-p1-quiz-caminho-certo.html` (03/07/2026): 53 cartões
   interativos de reconhecimento de método (sem contas) das Listas 0/1/2 + Zill §2.5; feedback imediato + placar;
   SVG pré-renderizado (offline); testado no navegador.
-- [ ] Guia da P2: 2ª ordem (coef. constantes, Euler-Cauchy), variação de parâmetros, vibrações
+- [x] Material oficial da P2 indexado — `material/aula9.pdf` (não-homogêneas: operador L, coef. indeterminados, variação
+  de parâmetros) e `material/aula10.pdf` (aplicações: massa-mola, ressonância, batimento, circuitos RLC); **Lista 3**
+  (homogêneas + PVC) e **Lista 4** (não-homogêneas + aplicações) recebidas e exercícios recomendados preenchidos (11/08/2026)
+- [ ] **Guia da P2 completo** (reescrever/expandir `guia-edo-p2-segunda-ordem.html`, que é anterior ao material oficial):
+  superposição/Wronskiano, redução de ordem, coef. constantes + Euler-Cauchy, operador L, coef. indeterminados, variação
+  de parâmetros, vibrações (livre/amortecida/forçada+ressonância+batimento), circuitos RLC, PVC, fórmula de Euler
