@@ -152,6 +152,19 @@ Cada pasta em `Disciplinas/` tem:
   offline) em todas as páginas; gera `publish.zip` p/ upload. **Fontes não são alteradas** — só `publish/`.
 - **Workflow ao criar guia novo:** rodar `python build-site.py` → na Cloudflare, projeto
   `estudos-ufabc` → novo deployment arrastando `publish.zip`. Login/proteção continuam valendo.
+- ⚠️ **Ao adicionar link novo no `_dashboard/index.html`:** o `build-site.py` valida que **todo** link
+  do painel tem arquivo correspondente em `publish/` e **aborta** se faltar. Ele só copia
+  **HTML, PDF e DOCX** — linkar um `.txt` (ex.: `Exercicios Recomendados .txt`) quebra o build.
+  Guardar esse tipo de conteúdo no `CLAUDE.md` da matéria, não como link do painel.
+- 🐞 **Bug corrigido em 11/08/2026 no `build-site.py`.** O build abortava com
+  "ESCRITA INCOMPLETA … (esperado N chars, lido N)" — com os **dois números iguais**, o que já
+  denunciava que a mensagem estava errada. Causa real: `guia-edo-p1-vespera.html` tinha **3 bytes
+  NUL (`\x00`) de padding** depois do `</html>` (lixo de sync do OneDrive). `str.rstrip()` sem
+  argumento só tira *whitespace* e **não remove `\x00`**, então o teste `endswith("</html>")`
+  falhava num arquivo íntegro, e o erro era atribuído a truncamento. ✅ Correção em duas frentes:
+  (1) removidos os NULs do arquivo-fonte; (2) `write_html()` agora faz `rstrip("\x00").rstrip()` e
+  **separa os dois diagnósticos** — tamanho diferente = escrita incompleta; tamanho igual mas sem
+  `</html>` = HTML malformado (mensagem própria, mostrando o fim real do arquivo).
 - Passo a passo completo em `COMO-PUBLICAR.md`. (Futuro opcional: automatizar com `wrangler`.)
 
 ## Perfil de estudo do Enzo (contexto que guia tudo)

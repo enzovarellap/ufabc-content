@@ -96,11 +96,19 @@ def write_html(path: str, content: str) -> None:
         f.write(content)
     with open(path, encoding="utf-8") as f:
         back = f.read()
-    if len(back) != len(content) or not back.rstrip().endswith("</html>"):
+    # NUL de padding (\x00) no fim é lixo de sync do OneDrive e NÃO é whitespace:
+    # rstrip() puro não o remove e o endswith("</html>") falharia com o arquivo íntegro.
+    tail = back.rstrip("\x00").rstrip()
+    if len(back) != len(content):
         raise RuntimeError(
             "ESCRITA INCOMPLETA em %s (esperado %d chars, lido %d). "
             "Provável lock/sync do OneDrive — feche o arquivo no OneDrive e rode o build de novo."
             % (path, len(content), len(back))
+        )
+    if not tail.endswith("</html>"):
+        raise RuntimeError(
+            "HTML MALFORMADO em %s: o arquivo não termina com </html> "
+            "(termina com %r). Confira a fonte em Disciplinas/." % (path, tail[-60:])
         )
 
 
