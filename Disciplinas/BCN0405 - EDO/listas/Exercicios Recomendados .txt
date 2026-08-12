@@ -11,5 +11,13 @@ Lista 2
 Resolver 1, 2, 3, 4 - Atualizado em 19/06/2026
 Exercícios do livro do Zill (Seção 2.5) 3, 13, 17, 21, 24, 26, 27 - Atualizado em 19/06/2026
 
-Resolver 5, 6 - Atualizado em 24/06/2026 
+Resolver 5, 6 - Atualizado em 24/06/2026
 Resolver 9 a,b,d,e,f,g - Atualizado em 27/06/2026
+Lista 3
+
+Resolver 5, 6 e 8 (verificar que y1 e y2 são soluções) - Atualizado em 11/08/2026
+Resolver 4, 7a,b e 8 - Atualizado em 11/08/2026
+Resolver 1, 2, 3, 9b,c,f,h,i,j,l, 10a,b,e, 14c (para resolver, use o método descrito em aula), 16a,b,d,f, 17b (encontre a solução geral e use as duas condições para encontrar C1 e C2) - Atualizado em 11/08/2026
+Lista 4
+
+Resolver 1a,b,c,d,e,i, 2a,h, 3b,d, 4a,b,c, 5a,c, 7, 8, 12, 13 - Atualizado em 11/08/2026
