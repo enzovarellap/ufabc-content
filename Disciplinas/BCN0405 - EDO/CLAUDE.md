@@ -76,17 +76,39 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   navegador (Playwright): fluxo, feedback e placar OK, 0 erros de console. Endereça diretamente o gap do diagnóstico da
   P1 (identificação de método).
 
-- **`guia-edo-p2-segunda-ordem.html`** (27/06/2026) — Guia da P2, **desatualizado/incompleto**: foi gerado antes do professor
-  disponibilizar o material oficial da P2 (aulas 9–10, Listas 3–4). Cobre superposição/Wronskiano, redução de ordem,
-  coef. constantes, Euler-Cauchy, coef. indeterminados, variação de parâmetros e vibrações (livre/forçada+ressonância) —
-  mas **falta**: operador diferencial `L` (vocabulário do professor), classificação formal do amortecimento via `Δ=γ²-4mk`,
-  fenômeno de **batimento**, **circuitos RLC**, **PVC** (problema de valor de contorno, Lista 3 ex.17) e a **fórmula de Euler**
-  `e^{it}` (Lista 3 ex.13). **Precisa ser reescrito/expandido** com base nas aulas 9–10 e Listas 3–4 antes da P2 (07/08/2026
-  — já passou! ver nota abaixo).
+- **`guia-edo-p2-segunda-ordem.html`** (**reescrito em 11/08/2026**) — **Guia completo da P2**, gerado a partir do material
+  oficial (aulas 9–10 + Listas 3–4 + exercícios recomendados). Formato **plano de ataque pré-prova de ~10h** (um fim de
+  semana), definido com o Enzo. 28 seções, 1 802 fórmulas pré-renderizadas em SVG, 0 erros de TeX. Conteúdo:
+  **Bloco 0 — socorro de Cálculo** (as 7 integrais que caem em variação de parâmetros: `∫sec` com a dedução do truque,
+  `∫tan`, `∫cot`, `∫te^{at}`, `∫e^{at}sen(bt)` por partes cíclica + fórmula pronta, identidade `sen²=1−cos²`,
+  soma-produto `cosA−cosB`) · superposição (+ contraexemplo não-linear, L3 ex.6) · **Wronskiano** e LI/LD com a
+  **fórmula de Abel** (`W=Ce^{−∫p}` → um ponto basta) · TEU de 2ª ordem e maior intervalo (L3 ex.5, 6 itens) ·
+  coef. constantes 3 casos (L3 ex.9, 10, 1, 2, 3) · redução de ordem com dedução (L3 ex.16a,b,d,f) · **Euler-Cauchy**
+  pela substituição `x=ln t` (L3 ex.14c, 4 itens) · **operador `L`** (linearidade, anulador, prova de `y=y_h+y_p`) ·
+  coef. a determinar + **caso de falha** (L4 ex.1a,b,c,d,e,i e 2a,h) · **variação de parâmetros** com a dedução completa
+  via sistema/Cramer (L4 ex.3b,d e 4a,b,c) · **combo redução+não-homogênea** (L4 ex.5a,c) · massa-mola: montagem,
+  livre s/ amort. (`A sen(ωt+φ)`, período/frequência/amplitude/fase), livre c/ amort. (**Δ=γ²−4mk**), forçada
+  (**ressonância**, L4 ex.14 = exemplo da aula) e **batimento** (envelope lento × oscilação rápida) · **RLC** com a
+  analogia completa (L4 ex.16) · **PVC** (L3 ex.17: os 3 destinos — única/infinitas/nenhuma) · **fórmula de Euler**
+  `e^{it}` (L3 ex.13, 6 passos). Fecha com **erros comuns**, **5 blocos Feynman** (operador L, batimento, RLC, PVC,
+  escolha do método — com respostas salvas no localStorage), **quiz de 12 questões** com placar, **18 flashcards** e
+  **cola de 1 página** imprimível. Math pré-renderizado em SVG (mathjax-full/Node, `fontCache:'global'` → cache de
+  glifos de 68 KB compartilhado, arquivo 3,0 MB; sem CDN, 100% offline). Testado no navegador: 0 estouro horizontal e
+  0 distorção de fórmula em 390/768/1280 px, 0 erro de console, quiz/flashcards/busca/Feynman OK.
 
-> ⚠️ **Nota de data (11/08/2026):** o mapa de provas do quadrimestre lista P2 em 07/08/2026, mas o material oficial da P2
-> (aulas 9–10, Listas 3–4) só foi adicionado agora — provável remarcação da P2, igual ocorreu com a P1. **Confirmar com o
-> professor/Moodle a nova data da P2** antes de montar o cronograma de estudo definitivo.
+> ⚠️ **Data da P2 (confirmado com o Enzo em 11/08/2026):** a P2 **foi remarcada** e ainda não foi aplicada — o mapa do
+> quadrimestre listava 07/08, mas o material oficial só saiu em 11/08. **A data nova ainda não é conhecida**: o guia traz
+> a pill "P2: remarcada — data a confirmar" no topo. Assim que o Enzo confirmar no Moodle, atualizar (a) esta ficha,
+> (b) o `_dashboard/index.html` e (c) a pill do guia.
+
+> 🐞 **Erros encontrados nas fontes oficiais (11/08/2026, todos conferidos no sympy e sinalizados no topo do guia):**
+> 1. **Aula 9, ex. 1** (`y''−5y'+6y=e^x`): resposta do slide traz `+2e^{2x}+3e^{3x}` redundantes (já estão em c₁,c₂).
+> 2. **Aula 10, exemplo subamortecido**: slide diz `x(0)=0, x'(0)=0` (daria `x≡0`); o correto é `x(0)=1, x'(0)=0`.
+>    No exemplo criticamente amortecido, "x(t)<0 para todo t>0" deveria ser "x(t)>0".
+> 3. **Aula 10, ex.14** (batimento): o slide escreve `sen((ω−1)t/2)`; mantendo `6/(1−ω²)` na frente, o correto é
+>    `sen((1−ω)t/2)` (diferem por um sinal global). A fórmula geral do batimento no slide 22 está correta.
+> 4. **Lista 4, ex. 5a** (`t²y''−2y=3t²−1`): gabarito dá constante `+1/3`; o correto é **`+1/2`** (de `−2A=−1`).
+> 5. **Lista 4, ex. 7**: gabarito escreve `x(0)=−0,8` mas usa `−0,2` na resposta (a resposta é que está certa).
 
 Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matéria difícil).
 
@@ -119,6 +141,13 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
 - [x] Material oficial da P2 indexado — `material/aula9.pdf` (não-homogêneas: operador L, coef. indeterminados, variação
   de parâmetros) e `material/aula10.pdf` (aplicações: massa-mola, ressonância, batimento, circuitos RLC); **Lista 3**
   (homogêneas + PVC) e **Lista 4** (não-homogêneas + aplicações) recebidas e exercícios recomendados preenchidos (11/08/2026)
-- [ ] **Guia da P2 completo** (reescrever/expandir `guia-edo-p2-segunda-ordem.html`, que é anterior ao material oficial):
-  superposição/Wronskiano, redução de ordem, coef. constantes + Euler-Cauchy, operador L, coef. indeterminados, variação
-  de parâmetros, vibrações (livre/amortecida/forçada+ressonância+batimento), circuitos RLC, PVC, fórmula de Euler
+- [x] **Guia da P2 completo** — `guias/guia-edo-p2-segunda-ordem.html` **reescrito do zero em 11/08/2026** a partir das
+  aulas 9–10 e Listas 3–4: bloco 0 de Cálculo, superposição/Wronskiano+Abel, TEU 2ª ordem, redução de ordem, coef.
+  constantes, Euler-Cauchy, operador `L`/anulador, coef. a determinar + caso de falha, variação de parâmetros (com
+  dedução), combo redução+não-homogênea, vibrações (livre/amortecida via `Δ=γ²−4mk`/forçada+ressonância+batimento),
+  circuitos RLC, PVC e fórmula de Euler. Formato plano de 10h; Feynman + quiz + flashcards + cola. Todas as contas
+  conferidas no sympy (5 erros dos gabaritos oficiais documentados acima); layout testado no navegador.
+- [ ] **Confirmar a nova data da P2 no Moodle** e propagar para: ficha acima, `_dashboard/index.html`, pill do guia e
+  eventos do Google Calendar (criar revisões espaçadas 1/3/7 dias a partir do fim de semana de estudo)
+- [ ] (opcional) Resoluções passo a passo completas das **Listas 3 e 4** em `listas/`, no padrão das Listas 0/1/2 —
+  o guia já resolve os principais recomendados, mas faltam L3 ex.11/12/15 e L4 ex.6/9/10/11/15/17/18
