@@ -23,10 +23,14 @@ do primeiro/segundo momento, alteração e concentração.
 | Data | Avaliação / Entrega | Peso |
 |---|---|---|
 | **29/06/2026** (seg) | **Prova 1 (P1)** — Semanas 1–4 | 50% |
-| **10/08/2026** (seg) | **Prova 2 (P2)** — Semanas 5–11 | 50% |
-| 12/08/2026 (qua) | Prova Substitutiva (SUB) — solicitar até 10/08 | — |
-| 17/08/2026 (seg) | Vista de provas | — |
+| **17/08/2026** (seg) | **Prova 2 (P2)** — Semanas 5–11 · ⚠️ **remarcada** (era 10/08) | 50% |
+| 12/08/2026 (qua) | Prova Substitutiva (SUB) — data do plano original | — |
 | 19/08/2026 (qua) | Prova de Recuperação (REC) | — |
+
+> ⚠️ **P2 remarcada para 17/08/2026** (informado pelo Enzo em 13/08/2026). O plano de ensino
+> original marcava 10/08 e 17/08 era "vista de provas". **Datas de SUB/REC e a vista provavelmente
+> deslizaram junto — a confirmar com o professor.** Não houve aula de Discreta entre o aviso e a
+> prova (a última foi qua 12/08), então a confirmação teve de ser por e-mail/turma.
 
 ## Critério de avaliação
 Pré-REC = P1·0,5 + P2·0,5. Conceitos: A ≥ 8,5; B ≥ 7,0; C ≥ 6,0; D ≥ 5,0; F < 5,0.
@@ -68,6 +72,33 @@ circunferência (g≤2·diam+1); **bipartidos** (⟺ sem ciclo ímpar); **Teorem
 folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,3)≤6) e paridade.
 
 ## Guias gerados em `guias/`
+- **`guias/guia-p2-pratico.html`** — **CADERNO PRÁTICO DA P2** (gerado 13/08/2026, 1,5 MB).
+  Complemento *de treino* do guia completo, pedido pelo Enzo quando faltavam 4 dias para a prova
+  remarcada. Mesmo tema "Papel & Tinta" (CSS reaproveitado do `guia-p2-completo.html`). **Não repete
+  teoria** — tem três coisas:
+  1. **Roteiro hora a hora** de qui 13/08 a seg 17/08, calibrado na agenda real (entrega do ESMA001
+     na quinta, prova de Química na sexta, trabalho na segunda) → ~12h30 concentradas em sáb+dom+
+     tarde de segunda. Checklist persistido em `localStorage` (chave `md2-p2-pratico`).
+  2. **Ficha de decisão "qual teorema usar"** — triagem de 30 s (gatilho no enunciado → bloco),
+     15 "rotas" (gatilho → ferramenta → esqueleto) cobrindo emparelhamentos, coloração de arestas,
+     coloração de vértices e método probabilístico, + **5 esqueletos de demonstração** para escrever
+     de memória na véspera (Berge, Hall, cota de contagem de χ′, χ≤k+1 por degenerescência, cota da união).
+  3. **Banco de 34 exercícios por tipo** (B1 emparelhamentos ×10, B2 coloração de arestas ×8,
+     B3 coloração de vértices ×8, B4 método probabilístico ×8), em três níveis
+     (aquecimento / prova / desafio), cada um com **Dica** e **Resolução passo a passo** colapsáveis.
+  Fecha com "erros que custam ponto" (por bloco) e checklist da véspera. Contagem regressiva no topo.
+  - **Gabaritos-chave do banco:** B1·E1 ν=τ=4, defeito 1 · B1·E3 sem SDR (I={1,2,3,4}, união {1,2,3}),
+    máx. 4 conjuntos · B1·E5 ν≥m/Δ via τ+König · B1·E10 há ≥|M*|−|M| caminhos aumentantes disjuntos ·
+    B2·E2 **χ′=8** (contagem ⌈30/4⌉=8 supera Δ=7) · B2·E3 grade horária = 5 horários (Δ do multigrafo
+    bipartido) · B2·E5 bipartido⟹Classe 1 por cadeia de Kempe (a paridade do caminho é onde a
+    bipartição entra) · B2·E6 Petersen χ′=4 · B2·E7 K₉ e K₁₀ dão **9 dias** os dois ·
+    B3·E1(d) \(\overline{C_7}\) tem χ=4 — a cota que salva é n/α, não ω · B3·E4 degenerescência ·
+    B3·E6 circuito ímpar **mínimo** (sem cordas) + resto bipartido ⟹ χ≤5 · B4·E1 E[X]=5 triângulos
+    mono em K₆ · B4·E3 R(k)>2^{k/2} · B4·E4 propriedade B, m(k)≥2^{k−1} · B4·E5 torneios S_k ·
+    B4·E6 Caro–Wei · B4·E7 Szele · B4·E8 soma-livre (sortear o **multiplicador**, não o subconjunto).
+  - Build em `scratchpad/p2pratico/` (`build.js` + 8 fragmentos + `check.js` de verificação).
+    1 464 fórmulas pré-renderizadas, 0 erros, cache de glifos de 75 KB. **Verificado** em
+    390/768/1280 px: sem scroll horizontal e sem distorção de razão de aspecto.
 - **`guias/guia-p2-completo.html`** — **GUIA PRINCIPAL DA P2** (gerado 27/07/2026, 2,7 MB).
   Tema visual **"Papel & Tinta"** (claro, bege/serifado, tinta carmim+azul) — *deliberadamente diferente*
   do azul-escuro `#0f1419`/`#6ea8fe` dos demais guias, a pedido do Enzo. Cobre integralmente as aulas
@@ -142,5 +173,8 @@ _Próximo: bloco de probabilidade discreta / método probabilístico (Semanas 9�
 - [x] Material de probabilidade discreta (P2) — `aula17.pdf` = cap. 5 do livro
 - [x] **Guia completo da P2 gerado (27/07/2026)** — aulas 8e9→17, tema Papel & Tinta
 - [x] Listas 4 e 5 resolvidas (dentro do guia da P2)
+- [x] **Caderno prático da P2 gerado (13/08/2026)** — ficha de decisão + 34 exercícios + roteiro
+- [ ] **Confirmar com o professor** a data/horário da P2 remarcada e se o escopo do cap. 5
+      continua limitado a §5.1–5.3
 - [ ] Conseguir `aula12.pdf` e `aula13.pdf` (lacuna sinalizada no guia)
 - [ ] Rodar `python build-site.py` + publicar na Cloudflare para ler no celular

@@ -26,8 +26,8 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 | 29/06 (seg) | Matemática Discreta II | Prova 1 (Sem. 1–4) |
 | 03/07 (sex) | EDO | Prova 1 _(remarcada de 30/06)_ |
 | 07/08 (sex) | EDO | Prova 2 |
-| 10/08 (seg) | Matemática Discreta II | Prova 2 (Sem. 5–11) |
 | 14/08 (sex) | Práticas de Ensino de Química I | Prova escrita individual |
+| **17/08 (seg)** | **Matemática Discreta II** | **Prova 2 (Sem. 5–11)** — _remarcada de 10/08_ |
 
 Substitutivas/REC: EDO SUB 11/08, REC 18/08 · Discreta SUB 12/08, REC 19/08 ·
 Química REC 19–21/08.
@@ -93,10 +93,29 @@ Cada pasta em `Disciplinas/` tem:
   ✅ Marcar no build as inline com `width ≥ 30ex` com `class="wide"` e usar
   `mjx-container.wide{max-width:100%;overflow-x:auto}` + `mjx-container.wide>svg{max-width:100%;height:auto;min-width:260px}`
   (encolhe proporcionalmente até caber; só rola se ainda não couber). Não afeta o desktop.
+- 🐞 **Armadilha nova (13/08/2026, caderno prático da P2) — `<table>` estoura a página no celular.**
+  Uma célula com fórmula inline larga (SVG **não quebra linha**) estica a `<table>` além da coluna e
+  empurra a **página inteira** para o lado — mesmo com todo o CSS de MathJax correto. O diagnóstico
+  aponta para a `<table>`, não para o `mjx-container`.
+  ✅ No build, embrulhar **toda** `<table>` num `<div class="tabwrap">` e usar
+  `.tabwrap{max-width:100%;overflow-x:auto}` + `.tabwrap table{margin:0;min-width:100%}` —
+  o scroll fica preso dentro da caixa.
+- 🐞 **Armadilha nova (13/08/2026) — não redeclarar `counter-increment` ao herdar o tema.**
+  O CSS do `guia-p2-completo.html` já traz `.passos` completo (`counter-reset` + `counter-increment`
+  no `li` + bolinha no `::before`). Ao reaproveitar esse tema e redeclarar `.passos > li::before
+  {counter-increment:passo}`, os dois somam e a numeração dos passos sai **2, 4, 6, 8**.
+  ✅ Ao herdar o tema, **só acrescentar** o que falta; conferir com `grep counter theme.css` antes.
+- 📱 **Piso de legibilidade das `.wide` (13/08/2026).** O `min-width:260px` do padrão deixa uma
+  fórmula inline de ~55ex com **10 px de altura** a 390 px — ilegível. ✅ Subir para
+  `mjx-container.wide>svg{min-width:300px}` **e** promover a display (`\[...\]`) toda inline com
+  `width ≥ 45ex`: acima disso, encolher nunca fica bom, e display já rola sozinho.
 - **Como conferir a visualização:** abrir o guia no Chromium headless (Playwright) em 390 / 768 / 1280 px e
   checar (a) `document.documentElement.scrollWidth == window.innerWidth` em cada largura e
-  (b) para todo `mjx-container svg`, a razão `rect.width/rect.height` bate com a do `viewBox` (±5%).
+  (b) para todo `mjx-container > svg`, a razão `rect.width/rect.height` bate com a do `viewBox` (±5%).
   Distorção nessa razão = alguma regra de CSS está vazando em cima do MathJax.
+  ⚠️ **Usar o seletor de filho direto (`>`), não o descendente.** `mjx-container svg` pega também os
+  `<svg>` **aninhados** que o MathJax cria para delimitadores esticáveis (parênteses grandes, chaves,
+  somatórios), que são distorcidos **de propósito** — deram 33 falsos positivos em 13/08/2026.
 - **Por que `tex-svg` (e não CHTML):** renderiza em **SVG** → nítido em qualquer zoom, imprime
   bem e **não depende de baixar fontes** (essencial para a releitura **offline via PWA** do site
   publicado). `fontCache:'global'` deixa rápido em páginas com muitas fórmulas.
