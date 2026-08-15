@@ -34,6 +34,12 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 > Em 14/08/2026 o `guia-p2-completo.html` ainda mostrava 10/08 em 3 pontos. Varrer com
 > `grep` a data antiga em `guias/*.html` sempre que uma data mudar.
 
+> 📌 **Lista nova perto da prova é sinal de ESCOPO, não dever de casa.** Em 15/08/2026 a Lista 7 de
+> Discreta (método da alteração) contradizia o escopo registrado — o guia dizia, em 3 lugares, que
+> §5.4–5.7 "não cai". Ao receber material novo, **checar se ele contradiz o escopo do `CLAUDE.md`
+> antes de gerar conteúdo**, e confirmar com o Enzo. O mesmo `grep` da nota acima vale para frases
+> de escopo ("não cai", "fora do escopo", "provavelmente"), que também se espalham pelos guias.
+
 Substitutivas/REC: EDO SUB 11/08, REC 18/08 · Discreta SUB 12/08, REC 19/08 ·
 Química REC 19–21/08.
 ESMA001 (projeto): entregas por aula (Relatório Final ≈13/08) — **datas exatas a confirmar**.
@@ -121,6 +127,14 @@ Cada pasta em `Disciplinas/` tem:
   ⚠️ **Usar o seletor de filho direto (`>`), não o descendente.** `mjx-container svg` pega também os
   `<svg>` **aninhados** que o MathJax cria para delimitadores esticáveis (parênteses grandes, chaves,
   somatórios), que são distorcidos **de propósito** — deram 33 falsos positivos em 13/08/2026.
+  - 🐞 **Screenshot do Playwright sai em branco (15/08/2026).** Os guias têm `scroll-behavior:smooth`
+    no CSS, então `scrollIntoView()` **anima** — num arquivo de 4 MB a rolagem não termina antes do
+    `screenshot()` e a imagem sai só com a cor de fundo (parece bug de renderização, não é).
+    ✅ `page.addStyleTag({content:'html,body,*{scroll-behavior:auto!important}'})` antes de rolar,
+    e usar `locator.scrollIntoViewIfNeeded()`. Lembrar de abrir os `<details>` antes de medir.
+  - ⚠️ **Não alarmar com "fórmula de altura < 11 px" na varredura geral.** A maioria são inline de
+    um glifo só (`\(n\)`, `\(x\)`), que legitimamente têm caixa baixa. O piso de legibilidade de
+    14 px só faz sentido medido em **`mjx-container.wide > svg`**.
 - **Por que `tex-svg` (e não CHTML):** renderiza em **SVG** → nítido em qualquer zoom, imprime
   bem e **não depende de baixar fontes** (essencial para a releitura **offline via PWA** do site
   publicado). `fontCache:'global'` deixa rápido em páginas com muitas fórmulas.
@@ -145,6 +159,19 @@ Cada pasta em `Disciplinas/` tem:
   - No corpo do texto, preferir `\lt`/`\gt` a `<`/`>` para o parser de HTML não engasgar.
   - Escrever o guia em **fragmentos** numerados e concatenar num `build.js` — arquivo único de 200 KB+
     é frágil de escrever e impossível de revisar.
+- ➕ **Como ACRESCENTAR conteúdo a um guia já pré-renderizado (15/08/2026).** Não precisa reconstruir
+  o guia inteiro (nem recuperar o TeX com `svg2tex.py`): escreva só os **fragmentos novos** em LaTeX,
+  pré-renderize à parte e injete por patch. Duas regras para o cache global não quebrar:
+  - Ao renderizar, **compare os `id="MJX-…"` gerados com os que o guia já tem** e acrescente ao
+    `<svg>` de cache existente **apenas os inéditos** (`<use xlink:href="#…">` de glifo ausente
+    some **em silêncio** — nada de erro no build, a fórmula só fica com um buraco).
+  - 🐞 **Rode todos os fragmentos numa ÚNICA chamada do renderer.** O cache global é acumulado por
+    processo: rodar `render.js A B C` e depois `render.js D` faz a segunda rodada **sobrescrever** o
+    arquivo de cache com os glifos só de `D`. Aconteceu em 15/08 — 17 glifos ficaram de fora e o
+    patch aplicou "com sucesso" mesmo assim. O `check.py` (todo `<use>` tem `<path>`) pegou.
+  - Fechar com um `patch.py` **idempotente** (aborta se o marcador da seção nova já existe) e que
+    exija contagem exata de ocorrências em cada `replace` — assim o patch falha alto em vez de
+    corromper o guia silenciosamente.
 - 🔁 **Como recuperar o LaTeX de um guia já pré-renderizado (14/08/2026).** Pré-renderizar
   **destrói o TeX** — o arquivo publicado só tem SVG. Para reaproveitar conteúdo de um guia
   antigo (foi o caso do Guia Mestre da P2, que reorganiza exercícios dos guias anteriores),
