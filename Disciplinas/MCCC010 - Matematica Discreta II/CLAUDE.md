@@ -72,6 +72,43 @@ circunferência (g≤2·diam+1); **bipartidos** (⟺ sem ciclo ímpar); **Teorem
 folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,3)≤6) e paridade.
 
 ## Guias gerados em `guias/`
+- **`guias/guia-p2-mestre.html`** — **GUIA MESTRE DA P2** (gerado 14/08/2026, 3,6 MB).
+  Pedido pelo Enzo para **juntar as referências dos outros dois guias da P2**. Decisões dele:
+  (a) **só reorganizar os exercícios existentes**, sem inventar nenhum; (b) **autocontido**
+  (resolução inteira dentro do arquivo) **+ links** para a teoria; (c) cobrir os quatro
+  formatos de "o que preciso saber"; (d) calibrar no que cai. Mesmo tema "Papel & Tinta".
+  Tem duas partes:
+  1. **"Tudo que você precisa saber"** — o núcleo do pedido:
+     **glossário de 39 símbolos** em 5 tabelas (`Símbolo | Lê-se | O que é | Onde aparece`,
+     com os 5 pares confundíveis marcados: ν×τ, α×ω, χ×χ′, δ×Δ, M×M*);
+     **mapa de 30 resultados** (`Resultado | Enunciado | Gatilho no enunciado | Treinar em`);
+     **checklist de domínio** com 33 itens × 3 caixas (enunciar/provar/aplicar, 99 caixas,
+     persistido em `localStorage` na chave `md2-p2-mestre`); e **pré-requisitos da P1**
+     (11 itens, cada um dizendo onde reaparece na P2).
+  2. **55 exercícios reagrupados por conteúdo**, todos com resolução passo a passo e um
+     bloco `ex-ref` de links para a teoria: HAM-01..06 (6), EMP-01..13 (13), ARE-01..12 (12),
+     VER-01..15 (15), PRO-01..09 (9). Cada um traz a origem (Caderno Prático B*·E*,
+     Lista 4/5 E*, Simulado Q*, Lista P1 E*) e o nível (aquecimento/prova/desafio).
+     Cada bloco abre com tabela "gatilho no enunciado → ferramenta" e fecha com os erros
+     que custam ponto daquele assunto.
+  - Escrito por **6 agentes em paralelo** (um por bloco + um da seção de referência), a
+    partir de fatias do conteúdo dos guias existentes. 3 588 fórmulas pré-renderizadas,
+    0 erros, cache de glifos de 80 KB. **Verificado**: 18 350 links/âncoras conferidos
+    (0 quebrados) e 390/768/1280 px sem scroll horizontal nem distorção de razão.
+  - Build em `scratchpad/` (`build.js` + 8 fragmentos + `lint.py` de contrato +
+    `links.py` de âncoras + `check.js` visual).
+  - ⚠️ **Achados a conferir com o professor/monitor** (nenhum altera resultado; todos
+    ficaram como `<p class="nota">` dentro do exercício):
+    - **Gabarito do Simulado Q2(c) do guia completo diz "o único conjunto apertado é
+      S={A,B,C}" — mas S={A,B,C,E} também é apertado.** Defeito 1 e máximo 4 continuam certos.
+    - **B3·E3 do caderno prático afirma que o guloso dá a cor \(i\) a *todo* vértice de
+      \(V_i\); a versão forte é falsa** (contraexemplo: aresta \(uv\) + isolado \(w\)). A prova
+      só precisa de "cor ≤ \(i\)", que é como a Lista 5·E2 enuncia — as duas fontes divergem.
+    - **Lista 5·E5 tem um buraco que o B3·E6 conserta:** pintar um circuito ímpar qualquer com
+      3 cores novas só vale se ele não tiver cordas; escolher o de comprimento **mínimo** fecha.
+    - **B4·E5 chama a propriedade de \(S_k\); a teoria (Teo. 5.2.3) chama de \(T_k\)** — mesmo objeto.
+    - Duplicatas reais entre as fontes: B1·E8 ≡ Lista 4·E1(c); B2·E6 ≡ Lista 4·E4;
+      B2·E8 ≡ Lista 4·E5. Mantidas as duas redações de cada, com nota explicando quando usar qual.
 - **`guias/guia-p2-pratico.html`** — **CADERNO PRÁTICO DA P2** (gerado 13/08/2026, 1,5 MB).
   Complemento *de treino* do guia completo, pedido pelo Enzo quando faltavam 4 dias para a prova
   remarcada. Mesmo tema "Papel & Tinta" (CSS reaproveitado do `guia-p2-completo.html`). **Não repete
@@ -174,6 +211,9 @@ _Próximo: bloco de probabilidade discreta / método probabilístico (Semanas 9�
 - [x] **Guia completo da P2 gerado (27/07/2026)** — aulas 8e9→17, tema Papel & Tinta
 - [x] Listas 4 e 5 resolvidas (dentro do guia da P2)
 - [x] **Caderno prático da P2 gerado (13/08/2026)** — ficha de decisão + 34 exercícios + roteiro
+- [x] **Guia Mestre da P2 gerado (14/08/2026)** — glossário + mapa + checklist + 55 exercícios por conteúdo
+- [x] Data da P2 corrigida para 17/08 dentro do `guia-p2-completo.html` (estava 10/08 no cabeçalho,
+      na véspera do plano de 10h e no rodapé)
 - [ ] **Confirmar com o professor** a data/horário da P2 remarcada e se o escopo do cap. 5
       continua limitado a §5.1–5.3
 - [ ] Conseguir `aula12.pdf` e `aula13.pdf` (lacuna sinalizada no guia)
