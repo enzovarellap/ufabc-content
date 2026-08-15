@@ -29,6 +29,11 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 | 14/08 (sex) | Práticas de Ensino de Química I | Prova escrita individual |
 | **17/08 (seg)** | **Matemática Discreta II** | **Prova 2 (Sem. 5–11)** — _remarcada de 10/08_ |
 
+> 📌 Ao remarcar uma prova, a data está **em vários lugares dentro dos guias já gerados**
+> (cabeçalho, plano de estudo, "véspera", rodapé) — não só no `CLAUDE.md` e no painel.
+> Em 14/08/2026 o `guia-p2-completo.html` ainda mostrava 10/08 em 3 pontos. Varrer com
+> `grep` a data antiga em `guias/*.html` sempre que uma data mudar.
+
 Substitutivas/REC: EDO SUB 11/08, REC 18/08 · Discreta SUB 12/08, REC 19/08 ·
 Química REC 19–21/08.
 ESMA001 (projeto): entregas por aula (Relatório Final ≈13/08) — **datas exatas a confirmar**.
@@ -140,6 +145,23 @@ Cada pasta em `Disciplinas/` tem:
   - No corpo do texto, preferir `\lt`/`\gt` a `<`/`>` para o parser de HTML não engasgar.
   - Escrever o guia em **fragmentos** numerados e concatenar num `build.js` — arquivo único de 200 KB+
     é frágil de escrever e impossível de revisar.
+- 🔁 **Como recuperar o LaTeX de um guia já pré-renderizado (14/08/2026).** Pré-renderizar
+  **destrói o TeX** — o arquivo publicado só tem SVG. Para reaproveitar conteúdo de um guia
+  antigo (foi o caso do Guia Mestre da P2, que reorganiza exercícios dos guias anteriores),
+  **não releia os PDFs**: o `mathjax-full` preserva a árvore MathML em `data-mml-node` e o
+  codepoint de cada glifo em `data-c`, então dá para reconstruir o LaTeX andando na árvore.
+  Script pronto em `scratchpad/svg2tex.py` (+ `extract.py`, que converte o guia inteiro em
+  markdown com as fórmulas de volta em `\(…\)`). Recuperou **4 509 fórmulas dos 3 guias de
+  Discreta com 0 falhas**. Duas armadilhas que custaram tempo:
+  - 🐞 **Espaçar macro com regex genérica parte o nome no meio.** `\subseteqX` precisa virar
+    `\subseteq X`, mas `re.sub(r"(\\[a-zA-Z]+)(?=[A-Za-z])", ...)` faz **backtracking**:
+    em `\omega\le`, o casamento longo falha o lookahead, o regex recua para `\o` (omicron) e
+    sai **`\o mega`** — que é LaTeX *válido* (`\o` = ø), então **renderiza errado em silêncio**,
+    sem erro no build. ✅ Pegar a corrida inteira de letras e cortar no **prefixo conhecido
+    mais longo**; e não mapear omicron como `\o` (é só a letra `o`).
+  - 🐞 **`\binom` volta como `(\frac{a}{b})`.** No SVG, `\binom` é um `mfrac` **sem o `<rect>`**
+    da barra, com parênteses como nós irmãos. ✅ Detectar a ausência do `<rect>` filho direto
+    e colapsar o `mrow` `( mfrac-sem-barra )` num `\binom` só, senão os parênteses dobram.
 - ⚠️ **Atualização (02/07/2026):** o `tex-svg.js` via CDN **falhou ao carregar** na máquina do Enzo
   (guia de véspera de EDO apareceu com LaTeX cru). Novo padrão preferido: **pré-renderizar** as
   fórmulas em SVG com `mathjax-full` (Node, `fontCache:'local'`) antes de entregar o guia — igual ao
