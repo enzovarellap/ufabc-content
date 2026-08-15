@@ -46,7 +46,10 @@ REC para D/F: Pós-REC = Pré-REC·0,5 + REC·0,5 (conceito máx. C).
   bloco `#lacuna` sinalizando isso — se os slides aparecerem, incorporar lá.
 - Listas em `listas/`: `lista1-md2.pdf`, `lista2-md2.pdf`, `gabarito-lista3.pdf`,
   `lista4.pdf` (emparelhamentos + coloração de arestas, E1–E5),
-  `lista5.pdf` (coloração por vértices, E1–E6), `lista-p1.pdf`.
+  `lista5.pdf` (coloração por vértices, E1–E6), `lista-p1.pdf`,
+  **`lista6.pdf`** (introdução ao método probabilístico e primeiro momento, E1–E5) e
+  **`lista7.pdf`** (método da alteração, E1–E3) — as duas entregues em 15/08/2026 e
+  **resolvidas por inteiro dentro do `guia-p2-mestre.html`** (PRO-10…14 e ALT-01…03).
 
 ### Conteúdo coberto até 27/07/2026 (escopo da P2 — confirmado pelo Enzo)
 A P2 cobre **das aulas 8e9 até a 17**, ou seja:
@@ -57,10 +60,16 @@ A P2 cobre **das aulas 8e9 até a 17**, ou seja:
 - **Coloração de arestas** (aula14): χ′, χ′(Cₙ), χ′(Kₙ), χ′≥Δ, χ′≤2Δ−1, **Vizing**, Classe 1/2, bipartido ⟹ Classe 1.
 - **Coloração de vértices** (aulas 15–16): χ, χ≥ω, χ·α≥n, e(G)≥C(χ,2), guloso, χ≤Δ+1,
   **Brooks**, **Nordhaus–Gaddum**.
-- **Método probabilístico** (aula17 = cap. 5 do livro): **apenas §5.1–5.3** foram dadas em aula
+- **Método probabilístico** (aula17 = cap. 5 do livro): **§5.1–5.5**
   (fundamentos, cota da união, prova probabilística — Erdős R(k)>2^{k/2}, hipergrafos, torneios —,
-  esperança/linearidade/indicadoras, primeiro momento, Jensen). **§5.4–5.7 (G(n,p), Markov/alteração,
-  Chebyshev, Chernoff) NÃO caem** — ficaram como apêndice de reconhecimento no guia.
+  esperança/linearidade/indicadoras, primeiro momento, Jensen; **+ §5.4 modelo G(n,p) e desigualdade
+  de Markov e §5.5 método da alteração**). **§5.6 (Chebyshev) e §5.7 (Chernoff) NÃO caem.**
+
+> ⚠️ **Escopo do cap. 5 mudou em 15/08/2026** (confirmado pelo Enzo). Até 14/08 o registro era
+> "§5.4–5.7 inteiro fora do escopo"; o professor liberou a **Lista 7 — Método da alteração** dois
+> dias antes da prova e o Enzo confirmou: **§5.4 e §5.5 caem, §5.6 e §5.7 não**. Lição: *lista nova
+> perto da prova é sinal de escopo, não de dever de casa* — ao receber uma, checar se ela contradiz
+> o escopo registrado **antes** de gerar material.
 
 ### Conteúdo coberto até 06/06/2026 (Semanas 1–4 → cai na P1)
 Cap. 1 (conceitos básicos): grafo, grau, **aperto de mãos** (Σd=2|E|) e paridade;
@@ -72,7 +81,32 @@ circunferência (g≤2·diam+1); **bipartidos** (⟺ sem ciclo ímpar); **Teorem
 folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,3)≤6) e paridade.
 
 ## Guias gerados em `guias/`
-- **`guias/guia-p2-mestre.html`** — **GUIA MESTRE DA P2** (gerado 14/08/2026, 3,6 MB).
+- **`guias/guia-p2-mestre.html`** — **GUIA MESTRE DA P2** (gerado 14/08/2026, **atualizado 15/08, 4,6 MB**).
+  - 🆕 **Atualização de 15/08/2026** (Listas 6 e 7 + mudança de escopo). O arquivo já estava
+    **pré-renderizado** (sem TeX no fonte) e os fragmentos de build da sessão anterior não estavam
+    versionados, então o acréscimo foi feito **por patch**: fragmentos novos escritos em LaTeX,
+    pré-renderizados à parte e injetados no HTML existente. Build em `scratchpad/mestre/`
+    (`render.js` + 4 fragmentos + `patch.py` + `check.py` + `check.js`). **688 fórmulas novas,
+    0 erros**; o cache global de glifos passou de 181 → **198** (só os 17 glifos inéditos foram
+    acrescentados ao `<svg>` de cache já existente, sem duplicar id).
+    - **Seção nova `#plano12` — "Plano de 12 h até a prova"**: roteiro hora a hora de sáb 15/08 a
+      seg 17/08 (4h40 + 6h + 1h30), calibrado nas respostas do Enzo (inseguro nos 5 blocos, o que
+      falta é **volume**). Checklist persistido em `localStorage` (mesma chave `md2-p2-mestre`;
+      as caixas `.chk` são indexadas por `id`, então acrescentar não corrompe o estado salvo).
+      Traz também uma **versão de 6 h** com o que cortar conscientemente.
+    - **PRO-10…14 = Lista 6 inteira** (E1 K₄ mono ≤ C(n,4)2⁻⁵ · E3 corte balanceado mn/(2n−1) ·
+      E4 sinais ±1 com |Σaᵢvᵢ| ≤ √n e ≥ √n · E2 jogo C×R · E5 α(G) ≥ Σ deg/(1+deg+deg₂)).
+    - **Seção nova `#alt-ex` — "Bloco 6 · Método da alteração"**: §5.4 em 5 min (G(n,p), Markov,
+      desigualdades de bolso), **esqueleto de 4 passos** (sorteie · conte defeitos · conserte ·
+      conclua e otimize), tabela de gatilhos, **ALT-01…03 = Lista 7 inteira** e "erros que custam
+      ponto". É o único bloco do guia que o Enzo **nunca estudou** — prioridade, não revisão.
+    - Corrigidos os **3 pontos** que afirmavam o escopo antigo (caixa do topo, linha do G(n,p) no
+      glossário, caixa "fora do escopo" do Bloco 5) e o kicker do bloco de coloração de vértices,
+      que dizia "Bloco 5" igual ao do probabilístico (agora "Bloco 4").
+    - **Verificado:** 198/198 glifos resolvem, 0 id duplicado, 276 âncoras internas + 317 links
+      externos sem quebra, 63 `article.ex`, 0 LaTeX cru. Em 390/768/1280 px: sem rolagem
+      horizontal, 0 SVG com razão distorcida (seletor de filho direto), toda `<table>` larga presa
+      em `.tabwrap` e `.wide` com altura mínima de 14 px.
   Pedido pelo Enzo para **juntar as referências dos outros dois guias da P2**. Decisões dele:
   (a) **só reorganizar os exercícios existentes**, sem inventar nenhum; (b) **autocontido**
   (resolução inteira dentro do arquivo) **+ links** para a teoria; (c) cobrir os quatro
@@ -85,10 +119,11 @@ folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,
      **checklist de domínio** com 33 itens × 3 caixas (enunciar/provar/aplicar, 99 caixas,
      persistido em `localStorage` na chave `md2-p2-mestre`); e **pré-requisitos da P1**
      (11 itens, cada um dizendo onde reaparece na P2).
-  2. **55 exercícios reagrupados por conteúdo**, todos com resolução passo a passo e um
-     bloco `ex-ref` de links para a teoria: HAM-01..06 (6), EMP-01..13 (13), ARE-01..12 (12),
-     VER-01..15 (15), PRO-01..09 (9). Cada um traz a origem (Caderno Prático B*·E*,
-     Lista 4/5 E*, Simulado Q*, Lista P1 E*) e o nível (aquecimento/prova/desafio).
+  2. **63 exercícios reagrupados por conteúdo** (55 + 8 novos em 15/08), todos com resolução passo
+     a passo e um bloco `ex-ref` de links para a teoria: HAM-01..06 (6), EMP-01..13 (13),
+     ARE-01..12 (12), VER-01..15 (15), PRO-01..14 (14), **ALT-01..03 (3)**. Cada um traz a origem
+     (Caderno Prático B*·E*, Lista 4/5/6/7 E*, Simulado Q*, Lista P1 E*) e o nível
+     (aquecimento/prova/desafio).
      Cada bloco abre com tabela "gatilho no enunciado → ferramenta" e fecha com os erros
      que custam ponto daquele assunto.
   - Escrito por **6 agentes em paralelo** (um por bloco + um da seção de referência), a
@@ -109,6 +144,22 @@ folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,
     - **B4·E5 chama a propriedade de \(S_k\); a teoria (Teo. 5.2.3) chama de \(T_k\)** — mesmo objeto.
     - Duplicatas reais entre as fontes: B1·E8 ≡ Lista 4·E1(c); B2·E6 ≡ Lista 4·E4;
       B2·E8 ≡ Lista 4·E5. Mantidas as duas redações de cada, com nota explicando quando usar qual.
+  - ⚠️ **Achados novos nas Listas 6 e 7 (15/08/2026)** — os três viraram nota dentro do exercício:
+    - **Lista 7·E3 tem erro de digitação.** O parágrafo define o número de Ramsey assimétrico com
+      **K₃ vermelho** (isto é, R(3,k)), mas o que se pede é **R(4,k) ≥ (ck/log k)²**. A alteração
+      dá R(s,k) ≥ c(k/log k)^{s/2}, então o expoente 2 **só sai com s = 4** — resolvido como K₄.
+      Com K₃ o método daria (k/log k)^{3/2}; a cota quadrática para R(3,k) é verdadeira, mas é
+      Kim/Shearer, fora do alcance da alteração.
+    - **Lista 6·E5 (α(G) ≥ Σ deg/(1+deg+deg₂), cintura ≥ 4): a construção natural tem um furo.**
+      Sortear σ, tomar W = {v mínimo em B₂(v)} e S = ∪_{v∈W} N(v) dá a esperança certa, e dois
+      centros ficam a distância ≥ 3 — o que garante que os N(v) são **disjuntos**, mas **não** que
+      não há aresta entre eles. Contraexemplo: P₄ = v–u–b–v′ com σ = (v,v′,u,b) dá S = {u,b} com
+      ub ∈ E. Independência exigiria distância ≥ 4. Conserto que registrei no guia: aceitar
+      u ∈ N(v) só quando v for o centro σ-mínimo entre os centros a distância ≤ 2 de u (custa um
+      pouco da esperança). **Confirmar com o professor qual fecho ele considera completo.**
+    - **Lista 7·E1:** o `x = n − C(n,k)2^{1−C(k,2)}` do enunciado não é inteiro nem
+      necessariamente positivo — ler como ⌈x⌉ / "existe T com |T| ≥ x"; a afirmação só tem
+      conteúdo quando x ≥ 1, e é por isso que o passo de otimizar n existe.
 - **`guias/guia-p2-pratico.html`** — **CADERNO PRÁTICO DA P2** (gerado 13/08/2026, 1,5 MB).
   Complemento *de treino* do guia completo, pedido pelo Enzo quando faltavam 4 dias para a prova
   remarcada. Mesmo tema "Papel & Tinta" (CSS reaproveitado do `guia-p2-completo.html`). **Não repete
@@ -214,7 +265,14 @@ _Próximo: bloco de probabilidade discreta / método probabilístico (Semanas 9�
 - [x] **Guia Mestre da P2 gerado (14/08/2026)** — glossário + mapa + checklist + 55 exercícios por conteúdo
 - [x] Data da P2 corrigida para 17/08 dentro do `guia-p2-completo.html` (estava 10/08 no cabeçalho,
       na véspera do plano de 10h e no rodapé)
-- [ ] **Confirmar com o professor** a data/horário da P2 remarcada e se o escopo do cap. 5
-      continua limitado a §5.1–5.3
+- [x] **Escopo do cap. 5 corrigido (15/08/2026)** — §5.4 e §5.5 caem; §5.6 e §5.7 não
+- [x] **Listas 6 e 7 indexadas e resolvidas (15/08/2026)** — PRO-10…14 e ALT-01…03 no Guia Mestre
+- [x] **Bloco 6 (método da alteração) criado no Guia Mestre** — teoria de §5.4/§5.5 + esqueleto de
+      4 passos + 3 exercícios (era o único assunto do escopo sem nenhum material)
+- [x] **Plano de 12 h até a P2 (sáb 15 → seg 17) no Guia Mestre**, seção `#plano12`
+- [ ] **Confirmar com o professor** a data/horário da P2 remarcada; o `K_3`×`K_4` da Lista 7·E3;
+      e o fecho esperado da Lista 6·E5 (caso da distância 3)
+- [ ] Só se sobrar tempo depois da P2: `guia-p2-completo.html` ainda marca o apêndice §5.4–5.7
+      como "provavelmente não cai" — o Guia Mestre já corrige, mas o Completo não foi tocado
 - [ ] Conseguir `aula12.pdf` e `aula13.pdf` (lacuna sinalizada no guia)
 - [ ] Rodar `python build-site.py` + publicar na Cloudflare para ler no celular
