@@ -81,6 +81,33 @@ circunferência (g≤2·diam+1); **bipartidos** (⟺ sem ciclo ímpar); **Teorem
 folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,3)≤6) e paridade.
 
 ## Guias gerados em `guias/`
+- **`guias/quiz-emparelhamentos.html`** — **QUIZ interativo de Emparelhamentos** (gerado 16/08/2026,
+  128 KB). Pedido pelo Enzo: quiz rápido pra treinar reconhecimento de tema + ordem de resolução,
+  não teoria nova. Fonte: só exercícios oficiais da **Lista 4** (E1(a)(b), E1(c), E2, E3, E4) — sem
+  inventar enunciado. 5 cards, cada um em duas etapas progressivas: (1) múltipla escolha da
+  ferramenta certa (Diferença simétrica, único emp. perfeito em árvore, troca por caminho
+  aumentante, coloração de arestas/emparelhamento por dia, 1-fatoração do Petersen), liberando
+  (2) ordenar por clique os passos da resolução (chips movem entre "passos"/"sua ordem", "conferir"
+  pinta certo/errado por posição). Cada card linka pro exercício correspondente no Guia Mestre
+  (EMP-03, EMP-09, EMP-10, ARE-06, ARE-10) e tem um `<details>` com a resposta certa como fallback
+  offline. Barra de placar fixa no topo (temas × passos).
+  - Escopo por enquanto: **só Emparelhamentos** — Hamiltonianos/Coloração/Probabilístico ficam
+    pra depois, se o formato validar.
+  - ⚠️ **CDN do MathJax bloqueado no sandbox onde foi gerado** (jsDelivr nega no proxy do ambiente,
+    403 de política — não deu pra confirmar se é só o sandbox ou reproduz na máquina do Enzo, mas já
+    havia o precedente de 02/07 com o guia de véspera de EDO). Pré-renderizado com `mathjax-full`
+    (mesma receita do guia mestre): **110 fórmulas, 0 erros**, cache de glifos de ~22 KB injetado uma
+    vez após `<body>`. **Armadilha nova:** o `<script>` de config do MathJax no `<head>` guarda os
+    delimitadores como `'\\('`/`'\\)'` (barra dupla, string JS) — um regex ingênuo de conversão que
+    varre o arquivo inteiro casa a segunda barra desse literal com um `\(` de verdade e devora o
+    arquivo a partir dali. Corrigido restringindo a conversão ao conteúdo **depois** de `<body>`
+    (o `<head>` nunca é tocado) — vale para qualquer pré-render futuro que reaproveite esse bloco de
+    config no `<head>`.
+  - **Verificado** (Playwright headless, 390/768/1280 px): sem rolagem horizontal, 0 SVG com razão
+    de aspecto distorcida, 0 sobra de LaTeX cru no texto visível, fluxo completo testado (clique na
+    opção certa/errada libera os passos, ordenar corretamente pinta os 6 chips de verde, placar
+    atualiza, `<details>` de resposta abre com a lista de fallback).
+  - Linkado no `_dashboard/index.html`.
 - **`guias/guia-p2-mestre.html`** — **GUIA MESTRE DA P2** (gerado 14/08/2026, **atualizado 15/08, 4,6 MB**).
   - 🆕 **Atualização de 15/08/2026** (Listas 6 e 7 + mudança de escopo). O arquivo já estava
     **pré-renderizado** (sem TeX no fonte) e os fragmentos de build da sessão anterior não estavam
@@ -270,6 +297,7 @@ _Próximo: bloco de probabilidade discreta / método probabilístico (Semanas 9�
 - [x] **Bloco 6 (método da alteração) criado no Guia Mestre** — teoria de §5.4/§5.5 + esqueleto de
       4 passos + 3 exercícios (era o único assunto do escopo sem nenhum material)
 - [x] **Plano de 12 h até a P2 (sáb 15 → seg 17) no Guia Mestre**, seção `#plano12`
+- [x] **Quiz de Emparelhamentos gerado (16/08/2026)** — 5 exercícios da Lista 4, tema + passos, linkado no dashboard
 - [ ] **Confirmar com o professor** a data/horário da P2 remarcada; o `K_3`×`K_4` da Lista 7·E3;
       e o fecho esperado da Lista 6·E5 (caso da distância 3)
 - [ ] Só se sobrar tempo depois da P2: `guia-p2-completo.html` ainda marca o apêndice §5.4–5.7
