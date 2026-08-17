@@ -81,6 +81,68 @@ circunferência (g≤2·diam+1); **bipartidos** (⟺ sem ciclo ímpar); **Teorem
 folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,3)≤6) e paridade.
 
 ## Guias gerados em `guias/`
+- **`guias/quiz-emparelhamentos.html`** — **QUIZ interativo de Emparelhamentos** (gerado 16/08/2026,
+  128 KB). Pedido pelo Enzo: quiz rápido pra treinar reconhecimento de tema + ordem de resolução,
+  não teoria nova. Fonte: só exercícios oficiais da **Lista 4** (E1(a)(b), E1(c), E2, E3, E4) — sem
+  inventar enunciado. 5 cards, cada um em duas etapas progressivas: (1) múltipla escolha da
+  ferramenta certa (Diferença simétrica, único emp. perfeito em árvore, troca por caminho
+  aumentante, coloração de arestas/emparelhamento por dia, 1-fatoração do Petersen), liberando
+  (2) ordenar por clique os passos da resolução (chips movem entre "passos"/"sua ordem", "conferir"
+  pinta certo/errado por posição). Cada card linka pro exercício correspondente no Guia Mestre
+  (EMP-03, EMP-09, EMP-10, ARE-06, ARE-10) e tem um `<details>` com a resposta certa como fallback
+  offline. Barra de placar fixa no topo (temas × passos).
+  - Escopo por enquanto: **só Emparelhamentos** — Hamiltonianos/Coloração/Probabilístico ficam
+    pra depois, se o formato validar.
+  - ⚠️ **CDN do MathJax bloqueado no sandbox onde foi gerado** (jsDelivr nega no proxy do ambiente,
+    403 de política — não deu pra confirmar se é só o sandbox ou reproduz na máquina do Enzo, mas já
+    havia o precedente de 02/07 com o guia de véspera de EDO). Pré-renderizado com `mathjax-full`
+    (mesma receita do guia mestre): **110 fórmulas, 0 erros**, cache de glifos de ~22 KB injetado uma
+    vez após `<body>`. **Armadilha nova:** o `<script>` de config do MathJax no `<head>` guarda os
+    delimitadores como `'\\('`/`'\\)'` (barra dupla, string JS) — um regex ingênuo de conversão que
+    varre o arquivo inteiro casa a segunda barra desse literal com um `\(` de verdade e devora o
+    arquivo a partir dali. Corrigido restringindo a conversão ao conteúdo **depois** de `<body>`
+    (o `<head>` nunca é tocado) — vale para qualquer pré-render futuro que reaproveite esse bloco de
+    config no `<head>`.
+  - **Verificado** (Playwright headless, 390/768/1280 px): sem rolagem horizontal, 0 SVG com razão
+    de aspecto distorcida, 0 sobra de LaTeX cru no texto visível, fluxo completo testado (clique na
+    opção certa/errada libera os passos, ordenar corretamente pinta os 6 chips de verde, placar
+    atualiza, `<details>` de resposta abre com a lista de fallback).
+  - Linkado no `_dashboard/index.html`.
+- **Quiz dos outros 5 blocos da P2 gerados (16/08/2026)** — pedido pelo Enzo para cobrir "todos os
+  outros temas" no mesmo formato do quiz de Emparelhamentos, com a mesma regra: **só exercícios já
+  nas listas oficiais do professor**, nada inventado. Fonte de cada passo-a-passo foi o próprio
+  `guia-p2-mestre.html` (blocos HAM/ARE/VER/PRO/ALT, já verificados em sessões anteriores) — não
+  recalculado do zero. Mesmo layout, CSS e mecânica de interação do quiz de Emparelhamentos
+  (reaproveitados tal qual); mesma receita de pré-render (`mathjax-full`, `fontCache:'global'`,
+  conversão restrita ao conteúdo depois de `<body>`); mesma bateria de verificação Playwright
+  (390/768/1280 px, 0 distorção, 0 LaTeX cru, fluxo completo testado). Todos linkados no
+  `_dashboard/index.html`.
+  - **`guias/quiz-hamiltonianos.html`** (113 fórmulas) — 5 exercícios da **Lista P1** (E1, E8, E9,
+    E10, E11). Temas: construção direta do ciclo · \(c(G-S)\le|S|\) (atalho bipartido, grafo de
+    Herschel) · arestas forçadas por vértice de grau 2 · "Ore bipartido" (crossover) · cota por
+    número de arestas + exemplo extremal (pêndulo). Link de cada card para HAM-01/03/04/05/06.
+  - **`guias/quiz-coloracao-arestas.html`** (86 fórmulas) — só a **Lista 4 · E5** (os 4 itens que
+    fecham \(\chi'(K_n)\)); E3 e E4 da mesma lista já estavam no quiz de Emparelhamentos (viram
+    "cada dia é um emparelhamento"), então não duplicados aqui — o quiz linka de volta para eles.
+    Link para ARE-12.
+  - **`guias/quiz-coloracao-vertices.html`** (160 fórmulas) — **Lista 5 · E1–E6** inteira. Temas:
+    lema da fusão (\(|E|\ge\binom{\chi}{2}\)) · guloso na ordem "classe por classe" · isolar circuito
+    ímpar (2+3 cores) · eliminação perfeita (grafos de intervalo) · Nordhaus–Gaddum por indução ·
+    troca de vértice entre classes. Link para VER-03/07/10/12/14/15.
+  - **`guias/quiz-metodo-probabilistico.html`** (183 fórmulas) — **Lista 6 · E1–E5** inteira. Temas:
+    indicadora por 4-subconjunto · primeiro momento com bipartição balanceada · sinais \(\pm1\) e
+    esperança do quadrado · primeiro momento "contra uma estratégia" (jogo C×R, com determinação de
+    Zermelo) · permutação aleatória + centros (bolas de raio 2). O card do jogo C×R e o dos centros
+    (E5) ficaram os mais longos (8 e 6 passos) — são os dois exercícios mais densos da lista.
+    Link para PRO-10/11/12/13/14.
+  - **`guias/quiz-metodo-alteracao.html`** (134 fórmulas) — **Lista 7 · E1–E3** inteira, o bloco que
+    o CLAUDE.md já registrava como "nunca estudado" pelo Enzo. Temas: apagar um vértice por \(K_k\)
+    monocromático (Ramsey) · acrescentar um vértice por hiperaresta descoberta (conjunto dominante)
+    · dois defeitos simultâneos (Ramsey assimétrico \(R(4,k)\)). O aviso de erro de digitação da
+    Lista 7·E3 (K₃ vs. K₄) foi reproduzido no enunciado do quiz, igual ao Guia Mestre.
+  - Cada quiz reaproveita as notas de rigor que o Guia Mestre já tinha registrado (achados a
+    confirmar com o professor), quando existiam: VER-10 (circuito ímpar tem que ser de comprimento
+    mínimo) e PRO-14 (caso de centros a distância 3) foram citados no `<details>` de resposta.
 - **`guias/guia-p2-mestre.html`** — **GUIA MESTRE DA P2** (gerado 14/08/2026, **atualizado 15/08, 4,6 MB**).
   - 🆕 **Atualização de 15/08/2026** (Listas 6 e 7 + mudança de escopo). O arquivo já estava
     **pré-renderizado** (sem TeX no fonte) e os fragmentos de build da sessão anterior não estavam
@@ -270,6 +332,10 @@ _Próximo: bloco de probabilidade discreta / método probabilístico (Semanas 9�
 - [x] **Bloco 6 (método da alteração) criado no Guia Mestre** — teoria de §5.4/§5.5 + esqueleto de
       4 passos + 3 exercícios (era o único assunto do escopo sem nenhum material)
 - [x] **Plano de 12 h até a P2 (sáb 15 → seg 17) no Guia Mestre**, seção `#plano12`
+- [x] **Quiz de Emparelhamentos gerado (16/08/2026)** — 5 exercícios da Lista 4, tema + passos, linkado no dashboard
+- [x] **Quizzes dos outros 5 blocos da P2 gerados (16/08/2026)** — Hamiltonianos (Lista P1),
+      Coloração de arestas (Lista 4·E5), Coloração de vértices (Lista 5), Método probabilístico
+      (Lista 6), Método da alteração (Lista 7); todos linkados no dashboard
 - [ ] **Confirmar com o professor** a data/horário da P2 remarcada; o `K_3`×`K_4` da Lista 7·E3;
       e o fecho esperado da Lista 6·E5 (caso da distância 3)
 - [ ] Só se sobrar tempo depois da P2: `guia-p2-completo.html` ainda marca o apêndice §5.4–5.7
