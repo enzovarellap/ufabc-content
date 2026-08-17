@@ -55,7 +55,13 @@
     "guia-p2-mestre.html",
     "guia-p2-pratico.html",
     "guia-probabilidade-p2.html",
-    "guia-teoria-semanas1-4.html"
+    "guia-teoria-semanas1-4.html",
+    "quiz-coloracao-arestas.html",
+    "quiz-coloracao-vertices.html",
+    "quiz-emparelhamentos.html",
+    "quiz-hamiltonianos.html",
+    "quiz-metodo-alteracao.html",
+    "quiz-metodo-probabilistico.html"
    ],
    "listas": [
     "gabarito-lista3.pdf",
