@@ -37,6 +37,8 @@ Pré-REC = P1·0,5 + P2·0,5. Conceitos: A ≥ 8,5; B ≥ 7,0; C ≥ 6,0; D ≥ 
 REC para D/F: Pós-REC = Pré-REC·0,5 + REC·0,5 (conceito máx. C).
 
 ## Material em `material/`
+- **`prova1A-md2.pdf`** — a **P1 aplicada** (Prova 1A), enviada pelo Enzo em 17/08/2026. É a
+  única prova real do professor que temos — base da análise de formato acima.
 - `plano-ensino-md2.pdf`, `intro.pdf`, `aula1.pdf`, `aula2.pdf`, `aula3.pdf`, `aula3.2.pdf`,
   `aula4e5.pdf`, `aula6e7.pdf`, `aula8e9.pdf`, `aula10.pdf`, `aula11.pdf`,
   `aula14.pdf`, `aula15.pdf`, `aula16.pdf`, `aula17.pdf`.
@@ -80,7 +82,55 @@ circunferência (g≤2·diam+1); **bipartidos** (⟺ sem ciclo ímpar); **Teorem
 (⌊n²/4⌋) e subgrafo bipartido ≥|E|/2. Cap. 3: **árvores** (e=n−1, 4 caracterizações,
 folhas, árvore geradora, ponte/vértice de corte). Clássicos: festa de 6 (R(3,3)≤6) e paridade.
 
+### 📄 Prova 1A analisada (17/08/2026) — como o Renzo cobra
+O Enzo enviou o PDF da **P1A** na manhã da P2. Padrão extraído (vale para P2/SUB/REC):
+- **6 questões × 2 pts.** Nenhuma domina a nota → ponto parcial em todas rende mais que perfeição em duas.
+- **E1 = grafo concreto desenhado** com 3–4 perguntinhas (diâmetro? hamiltoniano? trilha euleriana?
+  caminho euleriano?). São os pontos mais baratos da prova — fazer primeiro.
+- **E2 = raciocínio curto** (achar δ(G) por Σdeg=2|E| com restrições de Δ). Também barata.
+- **E3–E6 = 4 demonstrações**, mas ⚠️ **nenhuma é "reproduza a prova do livro"** — todas são
+  *aplicar um teorema conhecido a uma situação nova* (E3 cintura 5 + k-regular ⟹ n≥k²+1;
+  E4 troca de aresta entre duas árvores; E5 grafo de 70 vértices com propriedade deg(u)=deg(v)⟺uv∈E
+  ⟹ Δ≥11; E6 decompor grafo com 2k arestas em caminhos de 2 arestas).
+  **Consequência prática: decorar demonstração longa rende pouco; saber enunciar + reconhecer
+  o gatilho rende tudo.** Foi o que calibrou a Folha de Gatilhos.
+- **"Defina a cintura de G" valeu ponto** (E3) → definição é ponto de graça; abrir questão com a
+  definição correta compra ponto parcial mesmo quando não pedem.
+- **Ele dá "Sugestão:" nas questões difíceis** (E3) — a sugestão é metade da resolução.
+- 🐞 **E6 tem erro de digitação** (mistura `k` e `2k`: fala em P₁…P_{2k} mas indexa ∪ e |E(Pᵢ)| até k).
+  É o **segundo** typo confirmado do professor (o outro é a Lista 7·E3, K₃×K₄). Orientação registrada
+  para o Enzo: se a conta não fecha, resolver a versão coerente e escrever *"assumo que o enunciado
+  quis dizer …"* — travar custa mais que a hipótese explícita.
+- **Nota do Enzo na P1: abaixo de 5** (informado em 17/08) → precisa puxar na P2; REC 19/08 é a rede.
+
 ## Guias gerados em `guias/`
+- **`guias/folha-gatilhos-p2.html`** — **FOLHA DE GATILHOS DA P2** (gerada 17/08/2026, dia da prova,
+  306 KB). Pedida pelo Enzo às 11h36 do dia da prova: *"o conteúdo não está entrando na minha cabeça,
+  estou ficando desesperado"*, com **~1h30 fragmentada** de estudo (trabalhando) e **prova fechada**.
+  Respostas dele que calibraram o material: inseguro em **todos** os 6 blocos; formatos que funcionam
+  = **sabatina no chat + uma folha só**; começar pela folha.
+  - **Decisão de escopo:** com 1h30 e tudo fraco, não dá para cobrir 6 blocos em profundidade → a folha
+    **não ensina teoria**, só faz *gatilho no enunciado → ferramenta → esqueleto de 3–4 passos*.
+    Objetivo declarado: **maximizar ponto parcial**, não dominar bloco.
+  - 12 seções: Triagem de 30 s (palavra do enunciado → bloco) · **"Como o Renzo cobra"** (tabela lida
+    da P1A, ver acima) · **regra do ponto parcial** (definição → teorema → tentativa → o que sair) ·
+    os 6 blocos (HAM/EMP/ARE/VER/PRO/ALT) com tabela de gatilhos + esqueleto numerado + caixa de erro
+    clássico · definições que valem ponto de graça · ordem de ataque na prova (teto de 12 min/questão) ·
+    erros que custam ponto.
+  - **Bloco 6 (alteração) marcado como prioridade máxima** — é o único que o Enzo nunca estudou e o
+    mais mecânico dos seis (4 passos sempre iguais), logo o melhor retorno por minuto.
+  - **277 fórmulas pré-renderizadas** (`mathjax-full`, `fontCache:'global'`), 0 erros, cache de 46,6 KB.
+    Funciona offline (o CDN já falhou na máquina do Enzo antes).
+  - 📱 **Padrão novo de tabela no celular:** em `max-width:560px` as tabelas de 2 colunas viram **cards
+    empilhados** (`thead` oculto, `tr`/`td` em `display:block`, 1ª célula como título em carmim). Rolar
+    tabela lateralmente com o polegar sob estresse é ruim — o `.tabwrap` sozinho evita o bug de layout
+    mas não resolve a leitura. Vale reaproveitar em guias futuros de véspera.
+  - **Verificado:** 103/103 glifos resolvem, 0 id duplicado, 0 LaTeX cru, 8/8 tabelas em `.tabwrap`,
+    0 âncora quebrada; em 390/768/1280 px sem rolagem horizontal e 0 SVG com razão distorcida.
+  - Build em `scratchpad/folha/` (`src.html` + `render.js` + `check.py` + `check.js`).
+  - ⚠️ **Playwright neste sandbox:** o `chromium.launch()` puro falha (espera um build que não existe);
+    usar `executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'`.
+  - Linkado no `_dashboard/index.html` como primeiro item de Discreta.
 - **`guias/quiz-emparelhamentos.html`** — **QUIZ interativo de Emparelhamentos** (gerado 16/08/2026,
   128 KB). Pedido pelo Enzo: quiz rápido pra treinar reconhecimento de tema + ordem de resolução,
   não teoria nova. Fonte: só exercícios oficiais da **Lista 4** (E1(a)(b), E1(c), E2, E3, E4) — sem
@@ -336,6 +386,10 @@ _Próximo: bloco de probabilidade discreta / método probabilístico (Semanas 9�
 - [x] **Quizzes dos outros 5 blocos da P2 gerados (16/08/2026)** — Hamiltonianos (Lista P1),
       Coloração de arestas (Lista 4·E5), Coloração de vértices (Lista 5), Método probabilístico
       (Lista 6), Método da alteração (Lista 7); todos linkados no dashboard
+- [x] **P1A real indexada e analisada (17/08/2026)** — `material/prova1A-md2.pdf`; formato extraído
+      no CLAUDE.md e usado para calibrar a Folha de Gatilhos
+- [x] **Folha de Gatilhos da P2 gerada (17/08/2026)** — gatilho → ferramenta → esqueleto, 12 seções,
+      calibrada em 1h30 fragmentada + prova fechada; linkada no dashboard
 - [ ] **Confirmar com o professor** a data/horário da P2 remarcada; o `K_3`×`K_4` da Lista 7·E3;
       e o fecho esperado da Lista 6·E5 (caso da distância 3)
 - [ ] Só se sobrar tempo depois da P2: `guia-p2-completo.html` ainda marca o apêndice §5.4–5.7
