@@ -49,6 +49,7 @@
   },
   "Disciplinas/MCCC010 - Matematica Discreta II": {
    "guias": [
+    "folha-gatilhos-p2.html",
     "guia-grafos-avancados-p2.html",
     "guia-p1-completo.html",
     "guia-p2-completo.html",
@@ -89,7 +90,8 @@
     "aula6e7.pdf",
     "aula8e9.pdf",
     "intro.pdf",
-    "plano-ensino-md2.pdf"
+    "plano-ensino-md2.pdf",
+    "prova1A-md2.pdf"
    ]
   },
   "Disciplinas/NHLQ002 - Praticas Ensino Quimica I": {
