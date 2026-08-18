@@ -96,20 +96,19 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   glifos de 68 KB compartilhado, arquivo 3,0 MB; sem CDN, 100% offline). Testado no navegador: 0 estouro horizontal e
   0 distorção de fórmula em 390/768/1280 px, 0 erro de console, quiz/flashcards/busca/Feynman OK.
 
-- **`guia-edo-formulario-1pagina.html`** (18/08/2026) — **Formulário de 1 página**: *todo* o conteúdo e todas as
-  fórmulas da disciplina (Aulas 1–10 + Listas 0–4) em **27 cartões** numa grade de colunas, sem exercícios e sem
-  teoria longa — é o "mapa + cola" da matéria inteira, não um guia de estudo. Ordem: 01 vocabulário/classificação ·
-  02 **fluxograma de escolha de método** (1ª ordem) · 03 separáveis · 04 fator integrante (com dedução) ·
-  05 exatas + fatores integrantes `μ(x)`/`μ(y)` · 06 substituições (linear, homogênea, Bernoulli, Riccati) ·
-  07 campo de direções/isóclinas · 08 autônomas (roteiro 5 passos, tabela de estabilidade, consequências geométricas) ·
-  09 TEU · 10–12 modelagem (exponencial/meia-vida, Newton, crescimento limitado, misturas, RC/RL, Malthus, logística,
-  Gompertz) · 13 estrutura + TEU de 2ª ordem · 14 Wronskiano + Abel · 15 coef. constantes + Euler · 16 redução de
-  ordem · 17 Euler-Cauchy · 18 operador `L`/anulador · 19 coef. a determinar (tabela + caso de falha) ·
-  20 variação de parâmetros · 21 **integrais de socorro** · 22–23 massa-mola (livre/amortecida/forçada, ressonância,
-  batimento) · 24 RLC · 25 PVC · 26 erros comuns/checklist · 27 mapa de onde aprofundar (links p/ os outros guias)
-  + as 5 erratas do material oficial. **431 fórmulas pré-renderizadas em SVG**, 0 erros de TeX, cache global de 67 KB,
-  718 KB no total (offline, sem CDN). Tem **CSS de impressão** (Ctrl+P → 3 colunas, cabe em ~2 folhas).
-  Testado no navegador: 0 estouro horizontal e 0 distorção em 390/768/1280 px.
+- **`guia-edo-formulario-1pagina.html`** (18/08/2026) — **Formulário de 1 página da P2**. Nasceu cobrindo a matéria
+  inteira (1ª + 2ª ordem, 27 cartões) e no mesmo dia **foi filtrado, a pedido do Enzo, para só a P2** — a versão
+  completa continua no histórico do git (commit `f49c904`), caso sirva para a REC. Hoje tem **18 cartões** numa grade
+  de colunas, sem exercícios e sem teoria longa (é "mapa + cola", não guia de estudo), cobrindo **Aulas 9–10 e
+  Listas 3–4**: 01 estrutura + TEU de 2ª ordem · 02 **fluxograma de escolha de método** (homogênea → \(y_p\) → CI) ·
+  03 Wronskiano + Abel · 04 coef. constantes + fórmula de Euler · 05 redução de ordem · 06 Euler-Cauchy ·
+  07 operador `L`/anulador · 08 coef. a determinar (tabela + caso de falha) · 09 variação de parâmetros ·
+  10 **combo redução + não-homogênea** (L4 ex.5, os 2 caminhos) · 11 **o que sobra da P1 e ainda cai** (fator
+  integrante e separável dentro da redução de ordem) · 12 integrais de socorro · 13–14 massa-mola (livre,
+  amortecida via `Δ=γ²−4mk`, forçada, ressonância, batimento) · 15 RLC · 16 PVC · 17 erros comuns + checklist ·
+  18 exercícios recomendados das Listas 3–4, para onde ir quando travar e as 5 erratas do material oficial.
+  **322 fórmulas pré-renderizadas em SVG**, 0 erros de TeX, cache global de 56 KB, 514 KB (offline, sem CDN).
+  CSS de impressão (Ctrl+P → 3 colunas). Testado no navegador: 0 estouro horizontal e 0 distorção em 390/768/1280 px.
   - 🐞 **Armadilha nova (18/08/2026) — fórmula em `display` também precisa de piso de legibilidade.** A regra do
     `CLAUDE.md` raiz só cobria `mjx-container.wide` (inline). Num layout de **colunas estreitas** (cartão ≈ 330 px no
     celular), um `\[...\]` longo encolhido por `max-width:100%` caiu para **12 px de altura**. ✅ Usar
@@ -118,6 +117,10 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   - 🐞 **Dentro de `<table>` não deixe o MathJax encolher.** Com `.tabwrap` (que já rola), aplicar
     `max-width:100%` nas fórmulas da tabela espreme a célula e a fórmula fica ilegível. ✅
     `.tabwrap mjx-container>svg{max-width:none;min-width:0}` — quem rola é a caixa, não a fórmula.
+  - 💡 **Receita de "filtrar" um guia já pré-renderizado:** não reescrever nem recuperar TeX — os **fragmentos-fonte**
+    ficam no scratchpad, então basta um `montar.py` que quebra os fragmentos em cartões pelo comentário
+    `<!-- === chave === -->`, escolhe/reordena a lista, **renumera** os `<span class="n">` e conserta as referências
+    cruzadas ("cartão 15" → "cartão 04") com `assert` de contagem em cada troca. Depois é só rodar o mesmo `build.js`.
 
 > ⚠️ **Data da P2 (confirmado com o Enzo em 11/08/2026):** a P2 **foi remarcada** e ainda não foi aplicada — o mapa do
 > quadrimestre listava 07/08, mas o material oficial só saiu em 11/08. **A data nova ainda não é conhecida**: o guia traz
@@ -170,9 +173,10 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
   dedução), combo redução+não-homogênea, vibrações (livre/amortecida via `Δ=γ²−4mk`/forçada+ressonância+batimento),
   circuitos RLC, PVC e fórmula de Euler. Formato plano de 10h; Feynman + quiz + flashcards + cola. Todas as contas
   conferidas no sympy (5 erros dos gabaritos oficiais documentados acima); layout testado no navegador.
-- [x] **Formulário de 1 página** — `guias/guia-edo-formulario-1pagina.html` (18/08/2026): 27 cartões com todo o
-  conteúdo e todas as fórmulas de 1ª e 2ª ordem + aplicações, versão imprimível; linkado no `_dashboard/index.html`
-  (build do site validado). Serve de índice: cada bloco aponta para o guia que aprofunda.
+- [x] **Formulário de 1 página da P2** — `guias/guia-edo-formulario-1pagina.html` (18/08/2026): 18 cartões com
+  todas as fórmulas de 2ª ordem + aplicações (Aulas 9–10, Listas 3–4), versão imprimível; linkado no
+  `_dashboard/index.html` (build do site validado). Filtrado a pedido do Enzo — a versão com 1ª ordem também
+  (27 cartões) está no commit `f49c904`.
 - [ ] **Confirmar a nova data da P2 no Moodle** e propagar para: ficha acima, `_dashboard/index.html`, pill do guia e
   eventos do Google Calendar (criar revisões espaçadas 1/3/7 dias a partir do fim de semana de estudo)
 - [ ] (opcional) Resoluções passo a passo completas das **Listas 3 e 4** em `listas/`, no padrão das Listas 0/1/2 —
