@@ -120,6 +120,15 @@ Cada pasta em `Disciplinas/` tem:
   fórmula inline de ~55ex com **10 px de altura** a 390 px — ilegível. ✅ Subir para
   `mjx-container.wide>svg{min-width:300px}` **e** promover a display (`\[...\]`) toda inline com
   `width ≥ 45ex`: acima disso, encolher nunca fica bom, e display já rola sozinho.
+- 🐞 **Armadilha nova (18/08/2026, formulário de 1 página de EDO) — o piso de legibilidade vale também para `display`.**
+  A regra do `min-width` só existia para as inline `.wide`. Num layout de **colunas estreitas** (cartão ≈ 330 px no
+  celular), um `\[...\]` longo espremido por `max-width:100%` desceu para **12 px de altura**. ✅ Usar
+  `mjx-container[display]{max-width:100%;overflow-x:auto}` +
+  `mjx-container[display]>svg{max-width:100%;height:auto;min-width:290px}` e **medir a altura dos `[display]`**
+  na varredura do Playwright; se sobrar alguma < 13 px, **quebrar a fórmula em duas** — encolher mais não resolve.
+- 🐞 **Complemento da armadilha da `<table>`:** dentro da `.tabwrap`, **não** deixe o MathJax encolher — espremer a
+  célula deixa a fórmula ilegível. ✅ `.tabwrap mjx-container{overflow:visible}` +
+  `.tabwrap mjx-container>svg{max-width:none;min-width:0}`: quem rola é a caixa, não a fórmula.
 - **Como conferir a visualização:** abrir o guia no Chromium headless (Playwright) em 390 / 768 / 1280 px e
   checar (a) `document.documentElement.scrollWidth == window.innerWidth` em cada largura e
   (b) para todo `mjx-container > svg`, a razão `rect.width/rect.height` bate com a do `viewBox` (±5%).
