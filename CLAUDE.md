@@ -28,6 +28,7 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 | 07/08 (sex) | EDO | Prova 2 |
 | 14/08 (sex) | Práticas de Ensino de Química I | Prova escrita individual |
 | **17/08 (seg)** | **Matemática Discreta II** | **Prova 2 (Sem. 5–11)** — _remarcada de 10/08_ |
+| **25/09 (sex)** | **EDO (IEDO)** | **🚨 Exame de Recuperação (REC)** — _horário a confirmar no Moodle_ |
 
 > 📌 Ao remarcar uma prova, a data está **em vários lugares dentro dos guias já gerados**
 > (cabeçalho, plano de estudo, "véspera", rodapé) — não só no `CLAUDE.md` e no painel.
@@ -40,8 +41,14 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 > antes de gerar conteúdo**, e confirmar com o Enzo. O mesmo `grep` da nota acima vale para frases
 > de escopo ("não cai", "fora do escopo", "provavelmente"), que também se espalham pelos guias.
 
-Substitutivas/REC: EDO SUB 11/08, REC 18/08 · Discreta SUB 12/08, REC 19/08 ·
-Química REC 19–21/08.
+Substitutivas/REC: EDO SUB 11/08, ~~REC 18/08~~ → **REC de EDO remarcada para 25/09** (confirmado com o
+Enzo em 22/08/2026 — ele ficou de REC em IEDO) · Discreta SUB 12/08, REC 19/08 · Química REC 19–21/08.
+
+> 🚨 **REC de IEDO em 25/09/2026** — plano de revisão de 5 semanas em
+> `Disciplinas/BCN0405 - EDO/guias/plano-rec-iedo.html` (13 guias curtos + 2 simulados, agendado no
+> Google Calendar). Formato acordado com o Enzo para **todo** guia da REC:
+> **teoria enxuta → exemplos resolvidos passo a passo → só então exercícios do mesmo assunto**
+> (recomendados do professor + 2–3 inéditos). Escopo: **P1 + P2**. NF entre 2,0 e 3,4 → alvo **REC 7,0**.
 ESMA001 (projeto): entregas por aula (Relatório Final ≈13/08) — **datas exatas a confirmar**.
 
 > ⚠️ **Práticas de Química** proíbe uso de IA em atividades avaliadas — guias só para estudo, nunca para produzir entregas.
