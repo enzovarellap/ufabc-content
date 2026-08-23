@@ -77,7 +77,7 @@
     <h1>Plano de Revisão — REC de IEDO</h1>
     <div class="sub">BCN0405-15 · Introdução às Equações Diferenciais Ordinárias · Prof. Edson Arrázola</div>
   </div>
-  <div><span class="pill hot" id="countdown">REC: 25/09/2026 (sexta)</span></div>
+  <div><span class="pill hot" id="countdown">REC: 25/09/2026 (sexta), 19h</span></div>
 </div>
 
 <section>
@@ -85,7 +85,7 @@
     <div class="kpi"><div class="n" id="dias">34</div><div class="l">dias até a REC</div></div>
     <div class="kpi"><div class="n">13</div><div class="l">guias curtos</div></div>
     <div class="kpi"><div class="n">~50h</div><div class="l">de estudo planejado</div></div>
-    <div class="kpi"><div class="n">7,0</div><div class="l">nota-alvo na REC</div></div>
+    <div class="kpi"><div class="n">6,0</div><div class="l">nota mínima na REC</div></div>
   </div>
 </section>
 
@@ -95,18 +95,15 @@
     <p><b>Como a REC funciona nesta disciplina:</b> a nota final vira <code>(NF + REC) / 2</code>, e essa média
     precisa ficar <b>≥ 4,5</b>. O conceito máximo que dá para tirar por recuperação é <b>C</b> — o objetivo aqui é
     passar, não brigar por A.</p>
-    <p><b>Sua conta:</b> com <code>NF</code> entre <b>2,0 e 3,4</b>, você precisa de
-    <code>REC ≥ 9 − NF</code>, ou seja: entre <b>5,6 e 7,0</b>.</p>
-    <p>Por isso a meta do plano é <b>7,0</b>, não 5,5. Mirar no mínimo é como a gente chega em 4,2 —
-    a margem tem que estar embutida. Se você conseguir a nota exata da NF no Moodle, eu recalibro o alvo.</p>
+    <p><b>Sua conta (confirmada em 22/08):</b> <code>NF = 3,0</code>. De <code>(3,0 + REC)/2 ≥ 4,5</code> sai
+    <code>REC ≥ 6,0</code>.</p>
+    <p><b>O plano mira 7,0</b>, não 6,0. Mirar no mínimo é como se chega em 5,8 — a margem de um ponto
+    precisa estar embutida no estudo, não na sorte.</p>
   </div>
   <div class="box alert">
-    <p><b>⚠️ Duas coisas a confirmar no Moodle (te destravam o plano):</b></p>
-    <ul class="plain">
-      <li><b>Data e horário da REC.</b> A ficha da matéria trazia 18/08 (data antiga, de antes da P2 ser
-      remarcada). Estou trabalhando com <b>25/09, sexta</b>, provavelmente no horário da aula (19–21h).</li>
-      <li><b>Sua NF exata.</b> Muda o alvo de nota e o quanto dá para arriscar deixar tópico de fora.</li>
-    </ul>
+    <p style="margin-bottom:0"><b>Confirmado com você em 22/08:</b> REC em <b>25/09 (sexta), 19h</b>, e
+    <b>NF = 3,0</b>. Falta só a <b>sala</b> — confira no Moodle na semana da prova. (A ficha da matéria trazia
+    REC em 18/08: era a data antiga, de antes de a P2 ser remarcada; já corrigida.)</p>
   </div>
 </section>
 
@@ -219,14 +216,14 @@
 
 <script>
 const GUIAS=[
- {n:1,t:"A base de Cálculo que a EDO exige",c:"#ffb454",min:60,
+ {n:1,t:"A base de Cálculo que a EDO exige",c:"#ffb454",min:60,link:"rec-guia-01-calculo-base.html",
   pts:["Derivadas: cadeia, produto, quociente, derivação implícita",
        "Integrais: imediatas, substituição, por partes (incl. a cíclica ∫e^{at}·sen(bt))",
        "Frações parciais — incluindo o caso de dividir antes",
        "As 7 integrais que aparecem em variação de parâmetros: ∫sec, ∫tan, ∫cot, ∫t·e^{at}…"],
   src:"Lista 0 (1a,b,c · 7a,b,c,d · 8 · 9a,b,c,e,f) + Bloco 0 do guia da P2",
   por:"Gargalo nº 1 do diagnóstico. Errar EDO por causa de integral é o jeito mais burro de perder nota."},
- {n:2,t:"A linguagem das EDOs + separáveis",c:"#4da3ff",min:50,
+ {n:2,t:"A linguagem das EDOs + separáveis",c:"#4da3ff",min:50,link:"rec-guia-02-linguagem-separaveis.html",
   pts:["Ordem, tipo, linearidade; forma geral × forma normal",
        "Verificar se uma função é solução; solução explícita, implícita e trivial",
        "Intervalo de definição e o que é um PVI",
@@ -344,7 +341,7 @@ document.getElementById('guias').innerHTML=GUIAS.map(g=>`
     <input type="checkbox" id="ck${g.n}" aria-label="marcar guia ${g.n} como concluído">
     <div class="num">${g.n}</div>
     <div class="body">
-      <h3>${g.t}</h3>
+      <h3>${g.link?`<a href="${g.link}">${g.t}</a> <span class="pill ok" style="vertical-align:middle;font-size:.68rem;padding:2px 8px">pronto</span>`:g.t}</h3>
       <ul>${g.pts.map(p=>`<li>${p}</li>`).join('')}</ul>
       <div class="meta">
         <span>⏱ <b>${g.min} min</b></span>
@@ -380,7 +377,7 @@ sync();
 const REC=new Date(2026,8,25,19,0);
 const dias=Math.ceil((REC-new Date())/864e5);
 document.getElementById('dias').textContent=dias>0?dias:0;
-if(dias<=0){document.getElementById('countdown').textContent='REC: 25/09/2026 — é hoje/já foi';}
+if(dias<=0){document.getElementById('countdown').textContent='REC: 25/09/2026, 19h — é hoje/já foi';}
 </script>
 </body>
 </html>

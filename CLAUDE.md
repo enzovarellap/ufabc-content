@@ -28,7 +28,7 @@ Serve para: (1) gerar guias de estudo, (2) ser a principal fonte de estudo,
 | 07/08 (sex) | EDO | Prova 2 |
 | 14/08 (sex) | Práticas de Ensino de Química I | Prova escrita individual |
 | **17/08 (seg)** | **Matemática Discreta II** | **Prova 2 (Sem. 5–11)** — _remarcada de 10/08_ |
-| **25/09 (sex)** | **EDO (IEDO)** | **🚨 Exame de Recuperação (REC)** — _horário a confirmar no Moodle_ |
+| **25/09 (sex)** | **EDO (IEDO)** | **🚨 Exame de Recuperação (REC)** — _19h; sala a confirmar_ |
 
 > 📌 Ao remarcar uma prova, a data está **em vários lugares dentro dos guias já gerados**
 > (cabeçalho, plano de estudo, "véspera", rodapé) — não só no `CLAUDE.md` e no painel.
@@ -48,7 +48,8 @@ Enzo em 22/08/2026 — ele ficou de REC em IEDO) · Discreta SUB 12/08, REC 19/0
 > `Disciplinas/BCN0405 - EDO/guias/plano-rec-iedo.html` (13 guias curtos + 2 simulados, agendado no
 > Google Calendar). Formato acordado com o Enzo para **todo** guia da REC:
 > **teoria enxuta → exemplos resolvidos passo a passo → só então exercícios do mesmo assunto**
-> (recomendados do professor + 2–3 inéditos). Escopo: **P1 + P2**. NF entre 2,0 e 3,4 → alvo **REC 7,0**.
+> (recomendados do professor + 2–3 inéditos). Escopo: **P1 + P2**. **NF = 3,0 → precisa de REC ≥ 6,0**;
+> o plano mira **7,0** para ter margem. Guias 1 e 2 prontos em 22/08.
 ESMA001 (projeto): entregas por aula (Relatório Final ≈13/08) — **datas exatas a confirmar**.
 
 > ⚠️ **Práticas de Química** proíbe uso de IA em atividades avaliadas — guias só para estudo, nunca para produzir entregas.
@@ -166,6 +167,39 @@ Cada pasta em `Disciplinas/` tem:
   - No corpo do texto, preferir `\lt`/`\gt` a `<`/`>` para o parser de HTML não engasgar.
   - Escrever o guia em **fragmentos** numerados e concatenar num `build.js` — arquivo único de 200 KB+
     é frágil de escrever e impossível de revisar.
+- 🐞 **Armadilha nova (22/08/2026, guias 1–2 da REC) — `mjx-container` pré-renderizado nasce `display:inline`.**
+  Sem a folha de estilo do MathJax (que não é carregada quando se pré-renderiza), `<mjx-container>` é um
+  **elemento desconhecido** para o CSS → `display:inline` → **`max-width` e `overflow-x` simplesmente não se
+  aplicam**. Resultado no guia 1: `scrollWidth` de **719 px** num viewport de 390 px, com 834 elementos
+  estourando — e nenhuma regra de `.wide`/`tabwrap` adiantava, porque o problema era o display.
+  ✅ Declarar o display explicitamente **antes** de qualquer outra regra de MathJax:
+  ```css
+  mjx-container{display:inline-block;max-width:100%;vertical-align:-0.25ex;font-size:1.06em}
+  mjx-container>svg{max-width:100%;height:auto}          /* height:auto preserva a razão do viewBox */
+  mjx-container[display="true"]{display:block;max-width:100%;overflow-x:auto;overflow-y:hidden}
+  mjx-container[display="true"]>svg{max-width:none}      /* display rola em vez de encolher */
+  mjx-container.wide{overflow-x:auto}
+  mjx-container.wide>svg{min-width:300px}
+  ```
+  O `font-size:1.06em` compensa o x-height da fonte sans do tema — sem ele a fórmula fica visivelmente
+  menor que o texto ao redor (o `ex` do SVG resolve contra a fonte do pai).
+- 🐞 **Armadilha nova (22/08/2026) — LaTeX dentro de string JavaScript não sobrevive ao pré-render.**
+  Quiz e flashcards escritos como array JS com `\\(...\\)` quebram de duas formas: (a) a regex do
+  pré-render casa `\(` e deixa a primeira barra órfã, corrompendo o arquivo; (b) mesmo que passasse, não há
+  MathJax em runtime para renderizar conteúdo inserido via `innerHTML`.
+  ✅ Escrever quiz/flashcards como **HTML estático** no documento (gerado por um script Python no build) e
+  deixar o JS só com a interação (virar cartão, marcar acerto). Fechar o build com um assert de que **não há
+  `\(` dentro de nenhum `<script>`**.
+- ⚠️ **Na varredura visual, não conte como falha o que está dentro de caixa que rola.** Elementos com
+  `getBoundingClientRect().right > innerWidth` dentro de `.tabwrap` ou de `mjx-container` com
+  `overflow-x:auto` são transbordo **proposital** e não empurram a página (deram 729 falsos positivos em
+  22/08). ✅ Ignorar o elemento se algum ancestral tiver `overflow-x` diferente de `visible`; o veredito real
+  é `document.documentElement.scrollWidth == window.innerWidth`.
+- 🧰 **Pipeline dos guias da REC, versionado em `scripts/`** (22/08/2026): `build.py` (concatena os fragmentos
+  numerados de uma pasta e injeta o `theme.css`), `render.js` (pré-render mathjax-full, `fontCache:'global'`,
+  marca `.wide` ≥ 30ex e promove a display ≥ 45ex), `check.py` (todo `<use>` tem `<path>`) e `visual.py`
+  (Chromium em 390/768/1280: estouro, razão do `viewBox`, piso de 14 px nas `.wide`, erros de console).
+  Fluxo: escrever fragmentos → `build.py` → `render.js` → `check.py` → `visual.py`.
 - ➕ **Como ACRESCENTAR conteúdo a um guia já pré-renderizado (15/08/2026).** Não precisa reconstruir
   o guia inteiro (nem recuperar o TeX com `svg2tex.py`): escreva só os **fragmentos novos** em LaTeX,
   pré-renderize à parte e injete por patch. Duas regras para o cache global não quebrar:
