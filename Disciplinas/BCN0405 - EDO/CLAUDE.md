@@ -25,7 +25,7 @@ Bibliografia base: Zill; Boyce & DiPrima; Edwards & Penney.
 | **03/07/2026** (sexta) | **Prova 1 (P1)** — _remarcada (era 30/06)_ | 50% |
 | **07/08/2026** (sexta) | **Prova 2 (P2)** — _⚠️ conteúdo oficial (aulas 9-10, Listas 3-4) só chegou em 11/08, prazo já vencido → provavelmente remarcada, confirmar no Moodle_ | 50% |
 | 11/08/2026 (terça) | Prova Substitutiva (SUB) — só com justificativa | — |
-| 18/08/2026 (terça) | Exame de Recuperação (REC) | — |
+| **25/09/2026 (sexta), 19h** | **Exame de Recuperação (REC)** — _confirmado com o Enzo em 22/08/2026; a data 18/08 desta ficha era a antiga, de antes da P2 ser remarcada. **Sala ainda a confirmar no Moodle.**_ | — |
 
 ## Critério de avaliação
 NF = (P1 + P2)/2. **Aprovação exige P1 ≥ 4,5 E P2 ≥ 4,5.** Conceitos: A ≥ 8,5; B ≥ 7,0;
@@ -49,6 +49,32 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
 > Slides cobrem até substituições (Aula 4). Faltam para a P1 (só nas Listas): campo de direções, autônomas/estabilidade, modelagem e TEU.
 
 ## Guias gerados em `guias/`
+- **`plano-rec-iedo.html`** (22/08/2026) — **Plano de revisão da REC (25/09)**: a régua de todo o resto.
+  Traz a conta da nota-alvo, o método fixo de cada guia (**teoria enxuta → exemplos resolvidos → só então
+  exercícios**, decidido com o Enzo), os **13 guias curtos** (45–60 min cada) com tópicos/fontes/porquê,
+  o **cronograma de 5 semanas** (8–10h/semana, 24 blocos, 2 simulados) e os pontos de atenção (erros
+  conhecidos dos gabaritos oficiais, ausência de provas antigas, os 2 gargalos do diagnóstico da P1).
+  Checklist dos 13 guias com progresso salvo em `localStorage`. Sem MathJax de propósito (é um plano,
+  não conteúdo — fórmulas em `<code>`, zero risco de CDN). Testado no navegador: 0 estouro horizontal
+  em 390/768/1280 px, 0 erro de console.
+- **`rec-guia-01-calculo-base.html`** (22/08/2026) — **REC · Guia 1: a base de Cálculo que a EDO exige** (~60 min).
+  Não tem EDO nenhuma de propósito — ataca o gargalo nº 1 do diagnóstico pré-P1. Derivadas (cadeia, produto,
+  quociente, `a^x`, truque do `ln`, implícita), integral por substituição (incl. troca de limites na definida),
+  por partes com **LIATE** e o **caso cíclico** (`∫e^x cos x`, com a fórmula geral de `∫e^{at}sen(bt)`),
+  **frações parciais** nos 3 casos (fatores simples, repetidos e **dividir antes**), e as integrais de socorro
+  (`∫sec`, `∫tg`, `∫cotg`, `∫sen²`) que voltam em variação de parâmetros. 17 exemplos resolvidos passo a passo +
+  exercícios recomendados (Lista 0: 1a,b,c · 7a,b,c,d · 8 · 9a,b,c,d,e,f · 11d) e 9 inéditos, todos com resolução
+  em `<details>`. Erros comuns, 3 blocos Feynman (localStorage), 12 flashcards, quiz de 8 e cola de 1 página.
+  **565 fórmulas pré-renderizadas em SVG**, 0 erro de TeX. Testado no navegador: 0 estouro horizontal e 0
+  distorção de fórmula em 390/768/1280 px, 0 erro de console.
+- **`rec-guia-02-linguagem-separaveis.html`** (22/08/2026) — **REC · Guia 2: a linguagem das EDOs e separáveis**
+  (~50 min). Classificação (tipo/ordem/**linearidade** com os 4 assassinos da linearidade e a comparação
+  `e^x·y` × `e^y`), forma geral × **forma normal**, PVI × PVC, o que é ser solução + roteiro de verificação em
+  3 passos (incl. **intervalo de definição**), solução implícita, e **separáveis** (reconhecer pela fatoração,
+  por que o método funciona via cadeia, os 2 passos, solução implícita × explícita, **escolha do ramo** pela
+  condição inicial e domínio). 10 exemplos resolvidos + Lista 1 ex. 1 · 2b,e,f,g,h · 5a,b,c,d + 2 inéditos.
+  Checklist de fechamento, erros comuns, 3 Feynman, 14 flashcards, quiz de 8 e cola. **531 fórmulas
+  pré-renderizadas em SVG**, 0 erro de TeX; mesmos testes de navegador do Guia 1.
 - **`guia-edo-p1-fundamentos.html`** (07/06/2026) — Guia 1, **aprofundado**: fundamentos/classificação, separáveis e lineares de 1ª ordem (com dedução do fator integrante). Exemplos das Listas 0/1 + Feynman.
 - **`guia-edo-p1-substituicoes.html`** (17/06/2026) — Guia 2, **aprofundado** (Aula 4): métodos de substituição — `y'=F(ax+by+c)`, homogêneas, Bernoulli e **Riccati** (tópico extra, da Lista 1 ex.12). Exemplos do slide + Lista 1, conferidos simbolicamente. Tem link cruzado com o Guia 1.
 - **`guia-edo-p1-revisao.html`** (29/06/2026) — **Guia de revisão da P1**: mapa de todos os tópicos da P1 com link pro guia que aprofunda cada um, + aprofundamento condensado do conteúdo novo (aula5 modelagem + aula6 autônomas) com active recall, Feynman, cola de 1 página e quiz. Contas (Newton/mistura/logística) conferidas no sympy.
@@ -96,10 +122,24 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   glifos de 68 KB compartilhado, arquivo 3,0 MB; sem CDN, 100% offline). Testado no navegador: 0 estouro horizontal e
   0 distorção de fórmula em 390/768/1280 px, 0 erro de console, quiz/flashcards/busca/Feynman OK.
 
+> 🚨 **Situação em 22/08/2026: o Enzo ficou de REC.** P2 aplicada (data exata não registrada aqui).
+> **NF = 3,0** (F, confirmado pelo Enzo em 22/08) → pela regra `(NF+REC)/2 ≥ 4,5`, precisa de **REC ≥ 6,0**;
+> o plano mira **7,0** para ter margem. Conceito máximo por REC é **C**. **Escopo da REC: tudo (P1+P2)**,
+> confirmado com o Enzo. Ele **não tem** as provas P1/P2 corrigidas — simulados saem das Listas 0–4 +
+> exercícios inéditos no mesmo estilo. Se a prova aparecer, refazer os simulados calibrados por ela.
+
 > ⚠️ **Data da P2 (confirmado com o Enzo em 11/08/2026):** a P2 **foi remarcada** e ainda não foi aplicada — o mapa do
 > quadrimestre listava 07/08, mas o material oficial só saiu em 11/08. **A data nova ainda não é conhecida**: o guia traz
 > a pill "P2: remarcada — data a confirmar" no topo. Assim que o Enzo confirmar no Moodle, atualizar (a) esta ficha,
 > (b) o `_dashboard/index.html` e (c) a pill do guia.
+
+> 🐞 **Erros novos achados em 22/08/2026 (conferidos no sympy, sinalizados dentro do Guia 2 da REC):**
+> 6. **Aula 1, exemplo 1:** enuncia `y' + y² = 1` com `φ(x)=tg x` como solução. Não é — `sec²x + tg²x = 1+2tg²x`.
+>    O enunciado correto é **`y' − y² = 1`**; a cadeia de igualdades impressa no slide também não fecha.
+>    (Para `y' + y² = 1` a solução seria `tgh x`.)
+> 7. **Aula 2, exemplo 4:** a solução implícita `(y−1)² = x³+2x²+2x+4` e o intervalo `(−2,∞)` estão certos,
+>    mas a explícita sai como `y = 1 + √(...)`, que dá `y(0)=3` e **viola a condição inicial `y(0)=−1`** do
+>    próprio exemplo. O correto é **`y = 1 − √(...)`** (o ramo negativo).
 
 > 🐞 **Erros encontrados nas fontes oficiais (11/08/2026, todos conferidos no sympy e sinalizados no topo do guia):**
 > 1. **Aula 9, ex. 1** (`y''−5y'+6y=e^x`): resposta do slide traz `+2e^{2x}+3e^{3x}` redundantes (já estão em c₁,c₂).
@@ -147,7 +187,18 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
   dedução), combo redução+não-homogênea, vibrações (livre/amortecida via `Δ=γ²−4mk`/forçada+ressonância+batimento),
   circuitos RLC, PVC e fórmula de Euler. Formato plano de 10h; Feynman + quiz + flashcards + cola. Todas as contas
   conferidas no sympy (5 erros dos gabaritos oficiais documentados acima); layout testado no navegador.
-- [ ] **Confirmar a nova data da P2 no Moodle** e propagar para: ficha acima, `_dashboard/index.html`, pill do guia e
+- [x] **Plano de revisão da REC** — `guias/plano-rec-iedo.html` (22/08/2026): 13 guias curtos + cronograma
+  de 5 semanas + 2 simulados, agendado no Google Calendar
+- [x] **REC · Guia 1** — `guias/rec-guia-01-calculo-base.html` (22/08/2026): base de Cálculo, 565 fórmulas
+- [x] **REC · Guia 2** — `guias/rec-guia-02-linguagem-separaveis.html` (22/08/2026): linguagem + separáveis, 531 fórmulas
+- [ ] **Gerar os 11 guias restantes da REC**, um por vez, no formato teoria → exemplos → exercícios:
+  ~~1. Base de Cálculo~~ · ~~2. Linguagem das EDOs + separáveis~~ · 3. Fator integrante ·
+  4. Substituições · 5. Qual método usar (reconhecimento) · 6. Modelagem · 7. Autônomas/reta de fase ·
+  8. TEU · 9. 2ª ordem homogênea coef. constantes · 10. Wronskiano/redução/Euler-Cauchy ·
+  11. Coef. a determinar · 12. Variação de parâmetros · 13. Massa-mola e RLC
+- [ ] **Simulado 1** (1ª ordem, 2h cronometradas) para 12/09 e **Simulado 2** (completo) para 21/09
+- [ ] **Confirmar no Moodle: horário da REC e a NF exata** (a NF muda a nota-alvo)
+- [ ] ~~Confirmar a nova data da P2 no Moodle~~ (obsoleto — P2 já aplicada) e propagar para: ficha acima, `_dashboard/index.html`, pill do guia e
   eventos do Google Calendar (criar revisões espaçadas 1/3/7 dias a partir do fim de semana de estudo)
 - [ ] (opcional) Resoluções passo a passo completas das **Listas 3 e 4** em `listas/`, no padrão das Listas 0/1/2 —
   o guia já resolve os principais recomendados, mas faltam L3 ex.11/12/15 e L4 ex.6/9/10/11/15/17/18
