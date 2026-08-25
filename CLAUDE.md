@@ -49,7 +49,7 @@ Enzo em 22/08/2026 — ele ficou de REC em IEDO) · Discreta SUB 12/08, REC 19/0
 > Google Calendar). Formato acordado com o Enzo para **todo** guia da REC:
 > **teoria enxuta → exemplos resolvidos passo a passo → só então exercícios do mesmo assunto**
 > (recomendados do professor + 2–3 inéditos). Escopo: **P1 + P2**. **NF = 3,0 → precisa de REC ≥ 6,0**;
-> o plano mira **7,0** para ter margem. Guias 1 e 2 prontos em 22/08.
+> o plano mira **7,0** para ter margem. Guias 1–4 prontos (1 e 2 em 22/08; 3 e 4 em 23/08).
 ESMA001 (projeto): entregas por aula (Relatório Final ≈13/08) — **datas exatas a confirmar**.
 
 > ⚠️ **Práticas de Química** proíbe uso de IA em atividades avaliadas — guias só para estudo, nunca para produzir entregas.

@@ -75,6 +75,25 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   condição inicial e domínio). 10 exemplos resolvidos + Lista 1 ex. 1 · 2b,e,f,g,h · 5a,b,c,d + 2 inéditos.
   Checklist de fechamento, erros comuns, 3 Feynman, 14 flashcards, quiz de 8 e cola. **531 fórmulas
   pré-renderizadas em SVG**, 0 erro de TeX; mesmos testes de navegador do Guia 1.
+- **`rec-guia-03-fator-integrante.html`** (23/08/2026) — **REC · Guia 3: lineares de 1ª ordem, fator integrante**
+  (~60 min, 619 fórmulas). Forma padrão (o "Passo 0" e por que ele é o erro nº 1), **dedução completa** do
+  `μ = e^{∫p dx}` (multiplicar por μ para o lado esquerdo virar `[μy]'` → exige `μ'=pμ`, que é separável),
+  método em 4 passos, e a tabela dos três μ que sempre caem (`e^{ax}`, `x^n` quando `p=n/x`, `e^{x²}`).
+  6 exemplos resolvidos (aula 3 ex.1 e 2; L1 6c com **μ polinomial**, 6b com μ aniquilando a exponencial,
+  7b com PVI, e o **ex. 9** "para qual y₀ a solução permanece finita" → `y₀=−5/2`). Seção própria sobre
+  **comportamento em t→∞** (tabela de quem decai/explode + L1 ex. 8a,8b e a demonstração do ex. 10, com o
+  caso `a=λ` que quase todo mundo esquece). 10 exercícios resolvidos + **tabela-gabarito com o μ e a resposta
+  de TODOS os 11 itens do ex. 6 e dos 7 do ex. 7** (nenhuma divergência com o gabarito oficial).
+  Erros comuns, 3 Feynman, 13 flashcards, quiz de 8, cola.
+- **`rec-guia-04-substituicoes.html`** (23/08/2026) — **REC · Guia 4: substituições** (~60 min, 542 fórmulas).
+  Os 4 disfarces com dedução de cada um: `y'=F(ax+by+c)` → `v=ax+by+c` (separável); **homogêneas**
+  `y'=F(y/x)` → `v=y/x` com o alerta de que `y'=xv'+v` (produto!) e o teste `x→λx, y→λy`; **Bernoulli**
+  `y'+py=qy^n` → `v=y^{1−n}` (multiplicar antes por `y^{−n}`); **Riccati** → `y=y₁+1/z`, com a dedução do
+  ex. 12a e a fórmula pronta **`z' − (p+2q·y₁)z = q`**. Seção dedicada a **distinguir homogênea de Bernoulli**
+  usando o exemplo do próprio slide (`xy·y'=x²+y²` é as duas: homogênea e Bernoulli com n=−1).
+  6 exemplos + 10 exercícios (L1 5g,h,i,j · 11e,f · 12 c.3 · exercício da aula + 3 inéditos).
+  Destaque: **5h sai muito mais limpo como `3x²y − y³ = K`** que na forma logarítmica do gabarito.
+  Erros comuns, 3 Feynman, 14 flashcards, quiz de 8, cola com a tabela das 4 substituições.
 - **`guia-edo-p1-fundamentos.html`** (07/06/2026) — Guia 1, **aprofundado**: fundamentos/classificação, separáveis e lineares de 1ª ordem (com dedução do fator integrante). Exemplos das Listas 0/1 + Feynman.
 - **`guia-edo-p1-substituicoes.html`** (17/06/2026) — Guia 2, **aprofundado** (Aula 4): métodos de substituição — `y'=F(ax+by+c)`, homogêneas, Bernoulli e **Riccati** (tópico extra, da Lista 1 ex.12). Exemplos do slide + Lista 1, conferidos simbolicamente. Tem link cruzado com o Guia 1.
 - **`guia-edo-p1-revisao.html`** (29/06/2026) — **Guia de revisão da P1**: mapa de todos os tópicos da P1 com link pro guia que aprofunda cada um, + aprofundamento condensado do conteúdo novo (aula5 modelagem + aula6 autônomas) com active recall, Feynman, cola de 1 página e quiz. Contas (Newton/mistura/logística) conferidas no sympy.
@@ -132,6 +151,13 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
 > quadrimestre listava 07/08, mas o material oficial só saiu em 11/08. **A data nova ainda não é conhecida**: o guia traz
 > a pill "P2: remarcada — data a confirmar" no topo. Assim que o Enzo confirmar no Moodle, atualizar (a) esta ficha,
 > (b) o `_dashboard/index.html` e (c) a pill do guia.
+
+> 🐞 **Erro novo achado em 23/08/2026 (conferido no sympy, sinalizado dentro do Guia 4 da REC):**
+> 8. **Lista 1, ex. 5i** (`x³y dy − (x⁴+3x²y²+y⁴)dx = 0`): a resposta explícita do gabarito,
+>    `y = ±x√((−2C+2ln x+1)/(2C+2ln x))`, **não satisfaz a EDO** (resíduo ≠ 0, testado em C=3, −½, 5/2 e
+>    x=3/2, 4). Os sinais de `ln x` no denominador estão trocados; a forma correta é
+>    `y = ±x√((1+2ln|x|+2C)/(−2ln|x|−2C))`. Mais seguro entregar a **implícita**
+>    `x²/(2(x²+y²)) + ln|x| = C`, que é curta e sem armadilha de sinal.
 
 > 🐞 **Erros novos achados em 22/08/2026 (conferidos no sympy, sinalizados dentro do Guia 2 da REC):**
 > 6. **Aula 1, exemplo 1:** enuncia `y' + y² = 1` com `φ(x)=tg x` como solução. Não é — `sec²x + tg²x = 1+2tg²x`.
@@ -191,9 +217,11 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
   de 5 semanas + 2 simulados, agendado no Google Calendar
 - [x] **REC · Guia 1** — `guias/rec-guia-01-calculo-base.html` (22/08/2026): base de Cálculo, 565 fórmulas
 - [x] **REC · Guia 2** — `guias/rec-guia-02-linguagem-separaveis.html` (22/08/2026): linguagem + separáveis, 531 fórmulas
-- [ ] **Gerar os 11 guias restantes da REC**, um por vez, no formato teoria → exemplos → exercícios:
-  ~~1. Base de Cálculo~~ · ~~2. Linguagem das EDOs + separáveis~~ · 3. Fator integrante ·
-  4. Substituições · 5. Qual método usar (reconhecimento) · 6. Modelagem · 7. Autônomas/reta de fase ·
+- [x] **REC · Guia 3** — `guias/rec-guia-03-fator-integrante.html` (23/08/2026): fator integrante, 619 fórmulas
+- [x] **REC · Guia 4** — `guias/rec-guia-04-substituicoes.html` (23/08/2026): substituições, 542 fórmulas
+- [ ] **Gerar os 9 guias restantes da REC**, um por vez, no formato teoria → exemplos → exercícios:
+  ~~1. Base de Cálculo~~ · ~~2. Linguagem das EDOs + separáveis~~ · ~~3. Fator integrante~~ ·
+  ~~4. Substituições~~ · 5. Qual método usar (reconhecimento) · 6. Modelagem · 7. Autônomas/reta de fase ·
   8. TEU · 9. 2ª ordem homogênea coef. constantes · 10. Wronskiano/redução/Euler-Cauchy ·
   11. Coef. a determinar · 12. Variação de parâmetros · 13. Massa-mola e RLC
 - [ ] **Simulado 1** (1ª ordem, 2h cronometradas) para 12/09 e **Simulado 2** (completo) para 21/09
