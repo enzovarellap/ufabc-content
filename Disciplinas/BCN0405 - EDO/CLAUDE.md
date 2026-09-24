@@ -75,6 +75,19 @@ C ≥ 5,5; D ≥ 4,5. Frequência < 75% → conceito O. REC só para F ou D (mé
   condição inicial e domínio). 10 exemplos resolvidos + Lista 1 ex. 1 · 2b,e,f,g,h · 5a,b,c,d + 2 inéditos.
   Checklist de fechamento, erros comuns, 3 Feynman, 14 flashcards, quiz de 8 e cola. **531 fórmulas
   pré-renderizadas em SVG**, 0 erro de TeX; mesmos testes de navegador do Guia 1.
+- **`rec-guia-07-reta-de-fase.html`** (24/09/2026, véspera da REC) — **REC · Guia 7: campo de direções, autônomas e
+  reta de fase** (~40 min), pedido pelo Enzo como explicação **visual** no método Feynman. Peça central: **laboratório em
+  canvas** com 3 painéis no mesmo eixo `y` (gráfico de `f(y)` deitado em escala raiz · reta de fase · campo em `(t,y)`),
+  6 equações (`y'=t−y` não autônoma, `y−1`, `2−y`, logística, Lista 2 9g e 9f), toque para soltar solução (RK4) com
+  bolinha animada sincronizada na reta de fase, **slider "comprimir o campo"** (autônoma colapsa numa coluna = reta de
+  fase; a não autônoma vira leque de setas brigando) e linhas de concavidade (`f'(y)=0`). Texto: ideia em 1 minuto,
+  leitura do campo + isóclinas, propriedades geométricas (TEU), roteiro de 5 passos, divisão perigosa, estabilidade com
+  analogia do relevo com mel (SVG), estável × assint. estável, atalho `f'(c)`. 5 exemplos (Aula 6-v2 ex. 1–3, Lista 2
+  9g, 9f), exercícios 9a,b,d,e + 3 inéditos, 3 Feynman com botão **copiar para o Claude corrigir**, 6 flashcards, quiz
+  de 6, cola. Barra de progresso (18 etapas) salva em `localStorage`. Conferido no sympy; 327 fórmulas em SVG, 0 erro
+  de TeX; `visual.py` OK em 390/768/1280. Texto sem travessão (preferência do Enzo).
+  🐞 **Armadilha nova:** no `requestAnimationFrame`, o timestamp do 1º quadro pode ser **anterior** ao
+  `performance.now()` lido ao iniciar → progresso `u` negativo → índice negativo → `TypeError`. Prender `u` em `[0,1]`.
 - **`guia-edo-p1-fundamentos.html`** (07/06/2026) — Guia 1, **aprofundado**: fundamentos/classificação, separáveis e lineares de 1ª ordem (com dedução do fator integrante). Exemplos das Listas 0/1 + Feynman.
 - **`guia-edo-p1-substituicoes.html`** (17/06/2026) — Guia 2, **aprofundado** (Aula 4): métodos de substituição — `y'=F(ax+by+c)`, homogêneas, Bernoulli e **Riccati** (tópico extra, da Lista 1 ex.12). Exemplos do slide + Lista 1, conferidos simbolicamente. Tem link cruzado com o Guia 1.
 - **`guia-edo-p1-revisao.html`** (29/06/2026) — **Guia de revisão da P1**: mapa de todos os tópicos da P1 com link pro guia que aprofunda cada um, + aprofundamento condensado do conteúdo novo (aula5 modelagem + aula6 autônomas) com active recall, Feynman, cola de 1 página e quiz. Contas (Newton/mistura/logística) conferidas no sympy.
@@ -193,7 +206,7 @@ Para resolver listas: `calculus-problem-set-solver`. **Prioridade alta** (matér
 - [x] **REC · Guia 2** — `guias/rec-guia-02-linguagem-separaveis.html` (22/08/2026): linguagem + separáveis, 531 fórmulas
 - [ ] **Gerar os 11 guias restantes da REC**, um por vez, no formato teoria → exemplos → exercícios:
   ~~1. Base de Cálculo~~ · ~~2. Linguagem das EDOs + separáveis~~ · 3. Fator integrante ·
-  4. Substituições · 5. Qual método usar (reconhecimento) · 6. Modelagem · 7. Autônomas/reta de fase ·
+  4. Substituições · 5. Qual método usar (reconhecimento) · 6. Modelagem · ~~7. Autônomas/reta de fase~~ (24/09) ·
   8. TEU · 9. 2ª ordem homogênea coef. constantes · 10. Wronskiano/redução/Euler-Cauchy ·
   11. Coef. a determinar · 12. Variação de parâmetros · 13. Massa-mola e RLC
 - [ ] **Simulado 1** (1ª ordem, 2h cronometradas) para 12/09 e **Simulado 2** (completo) para 21/09
